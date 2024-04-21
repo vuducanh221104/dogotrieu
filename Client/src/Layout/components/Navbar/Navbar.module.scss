@@ -1,0 +1,121 @@
+.navbar {
+    display: block;
+    position: relative;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+    background: #ffffff;
+}
+.navbar-list {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-item {
+    position: relative;
+    display: inline-block;
+    margin-right: 35px;
+    padding: 17px 0;
+    &.static {
+        position: static !important;
+    }
+    &:nth-child(2)::after {
+        position: absolute;
+        content: '';
+        left: 16.6%;
+        top: 83%;
+        width: 0;
+        height: 0;
+        background-color: #ffffff; /* Màu nền là trắng */
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid var(--border-color); /* Màu border là đỏ */
+        z-index: 10;
+    }
+}
+
+.icon-down {
+    margin-left: 7px;
+    font-size: 0.8rem;
+}
+
+// MEGA MENU
+.mega-menu {
+    position: absolute;
+    width: 100vw;
+    left: 0;
+    top: 100%;
+    background: var(--secondary-background);
+    border-radius: 0 0 3px 3px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    // opacity: 0;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    z-index: 100;
+}
+.mega-menu-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 25px 0 0 0;
+    max-height: 100%;
+    min-height: 100%;
+    overflow: auto;
+}
+.mega-menu-column {
+    display: block;
+    flex: 0 1 auto;
+    margin: 0 40px 30px 40px;
+    &:first-child {
+        margin-left: 0;
+    }
+}
+.mega-menu-title {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-style: norma;
+    color: var(--heading-color);
+    & b {
+        font-weight: 600;
+    }
+}
+.mega-menu-list {
+    list-style: none;
+    padding: 0;
+}
+.mega-menu-item {
+}
+.mega-menu-item-link {
+    display: block;
+    padding: 5px 0 6px 0;
+    line-height: 1.4;
+    transition: color 0.2s ease-in-out;
+}
+
+.mega-menu-promo {
+    flex-basis: 290px;
+    width: 290px;
+    display: block;
+    flex: 0 1 230px;
+    min-width: 200px;
+    margin: 0 0 30px 50px;
+    white-space: normal;
+    text-align: center;
+}
+.mega-menu-image-wrapper {
+    margin: 5px 0 22px 0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.mega-menu-image-promo {
+}
+
+@media screen and (max-width: 992px) {
+    .navbar {
+        display: none;
+    }
+}

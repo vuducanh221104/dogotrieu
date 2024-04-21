@@ -1,0 +1,7 @@
+<svg focusable="false" class="icon icon--cart" viewBox="0 0 27 24" role="presentation">
+      <g transform="translate(0 1)" stroke-width="2" stroke="currentColor" fill="none" fill-rule="evenodd">
+        <circle stroke-linecap="square" cx="11" cy="20" r="2"></circle>
+        <circle stroke-linecap="square" cx="22" cy="20" r="2"></circle>
+        <path d="M7.31 5h18.27l-1.44 10H9.78L6.22 0H0"></path>
+      </g>
+</svg>

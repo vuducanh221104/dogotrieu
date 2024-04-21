@@ -1,0 +1,171 @@
+:root {
+    --btn-background: rgb(0, 0, 0);
+    --default-text-font-size: 15px;
+    --base-text-font-size: 14px;
+    --heading-font-weight: 400;
+    --text-font-bolder-weight: 600;
+    --text-link-decoration: underline;
+    --text-color: #030303;
+    --text-color-rgb: 3, 3, 3;
+    --heading-color: #030303;
+    --border-color: #dfcc8e;
+    --border-color-rgb: 223, 204, 142;
+    --form-border-color: #d9c37a;
+    --accent-color: #030303;
+    --accent-color-rgb: 3, 3, 3;
+    --link-color: #000000;
+    --link-color-hover: #000000;
+    --background: #ffffff;
+    --secondary-background: #ffffff;
+    --secondary-background-rgb: 255, 255, 255;
+    --accent-background: rgba(3, 3, 3, 0.08);
+    --input-background: #ffffff;
+    --error-color: #c45a12;
+    --error-background: rgba(196, 90, 18, 0.07);
+    --success-color: #6a8057;
+    --success-background: rgba(106, 128, 87, 0.11);
+    --primary-button-background: #030303;
+    --primary-button-background-rgb: 3, 3, 3;
+    --primary-button-text-color: #ffffff;
+    --secondary-button-background: #030303;
+    --secondary-button-background-rgb: 3, 3, 3;
+    --secondary-button-text-color: #ffffff;
+    --header-background: #ffffff;
+    --header-text-color: #030303;
+    --header-light-text-color: #030303;
+    --header-border-color: rgba(3, 3, 3, 0.3);
+    --header-accent-color: #000000;
+    --footer-background-color: #f7f7f7;
+    --footer-heading-text-color: #030303;
+    --footer-body-text-color: #030303;
+    --footer-accent-color: #6a8057;
+    --footer-accent-color-rgb: 106, 128, 87;
+    --footer-border: none;
+    --flickity-arrow-color: #c8a83f;
+    --product-on-sale-accent: #8e1616;
+    --product-on-sale-accent-rgb: 142, 22, 22;
+    --product-on-sale-color: #ffffff;
+    // BREAKPOINT
+    --breakpoint-moblie: 640px;
+    --breakpoint-sm-tablet: 768px;
+    --breakpoint-tablet: 992px;
+    --breakpoint-pc: 1200px;
+}
+
+// html,
+// body {
+//     height: 10000px;
+// }
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+    text-decoration: none;
+    outline: none;
+    list-style: none;
+    list-style-type: none;
+}
+li {
+    text-decoration: none;
+    outline: none;
+    list-style: none;
+    list-style-type: none;
+}
+
+body {
+    // position: relative !important;
+    // font-family: 'SF Pro Display', sans-serif !important;
+    // font-size: 1.6rem !important;
+    // color: RGB(0, 8, 28) !important;
+    // overscroll-behavior-y: none;
+    // overflow-x: hidden !important;
+    // overflow-y: auto;
+    // width: 100% !important;
+    // background-color: #fff !important;
+    // transition: all 0.3s ease !important;
+    // -moz-transition: all 0.3s ease !important;
+    // -webkit-transition: all 0.3s ease !important;
+}
+
+@media screen and (min-width: 641px) {
+    html {
+        font-size: var(--base-text-font-size);
+    }
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-style: none;
+    vertical-align: top;
+}
+
+a {
+    color: inherit;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.disabled-button {
+    cursor: not-allowed !important;
+    pointer-events: none; /* Không cho phép sự kiện click vào button */
+    opacity: 0.5; /* Làm mờ button */
+}
+
+.text {
+    color: red;
+    font-weight: 200;
+}
+
+#tippy-2 {
+    width: 100% !important;
+}
+
+.container {
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+@media screen and (min-width: 641px) {
+    .container {
+        padding: 0 40px;
+    }
+}
+button {
+    padding: 0;
+    overflow: visible;
+    background: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+}
+
+a {
+    color: inherit;
+    background-color: transparent;
+    text-decoration: none;
+}
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
