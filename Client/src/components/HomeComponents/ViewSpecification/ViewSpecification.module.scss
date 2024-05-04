@@ -1,0 +1,126 @@
+.specification-wrapper {
+    position: relative;
+    padding: 40px 0;
+    background-color: #000;
+    margin: 40px 0;
+    color: #fff;
+}
+.specification-item {
+    width: 100%;
+}
+.specification-item-icon {
+    margin: 0.5em 18px 0 0;
+    & img {
+        max-width: 30px;
+    }
+}
+.specification-item-info {
+    & p {
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+    & a {
+        font-size: 1.4rem;
+        text-decoration: underline;
+    }
+    & span {
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 641px) {
+    .specification-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -40px -45px -40px;
+    }
+    .specification-item {
+        display: flex;
+        flex-basis: calc(50% - 90px);
+        margin: 0 40px 45px 40px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .specification-list {
+        padding: 0 100px;
+        justify-content: center;
+    }
+    .specification-item {
+        display: flex;
+        flex-basis: calc(50% - 140px);
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .specification-list {
+        padding: 0;
+
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: center;
+    }
+}
+
+// SCROLL
+.specification-item-scroll {
+    text-align: center;
+}
+.specification-item-scroll-icon {
+    & img {
+        width: 30px;
+        height: 30px;
+    }
+}
+.specification-item-scroll-info {
+    & p {
+        font-size: 14px;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+    & a {
+        font-size: 14px;
+        text-decoration: underline;
+    }
+    & span {
+        font-size: 14px;
+    }
+}
+
+.product-icon-navigate-wrapper {
+    .prev-arrow-customer {
+        left: 0;
+    }
+    .next-arrow-customer {
+        right: 0;
+    }
+
+    .prev-arrow-customer,
+    .next-arrow-customer {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        background: transparent;
+        top: 45%;
+        font-size: 2.5rem;
+        z-index: 3;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -webkit-transition: all 0.2s ease-out;
+        transform: scale(0.7);
+        opacity: 0.8;
+    }
+
+    .icon-prev-customer,
+    .icon-next-customer {
+        color: #fff;
+        width: 40px;
+        height: 40px;
+    }
+}

@@ -4,34 +4,42 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import { Container } from 'react-bootstrap';
 import styles from './Header.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook } from '@fortawesome/free-brands-svg-icons';
-
-import {
-    faShoppingCart,
-    faUser,
-    faEarthAmerica,
-    faChevronDown,
-    faBars,
-    faSearch,
-    faPhone,
-    faEnvelopeOpenText,
-    faClose,
-    faChevronRight,
-    faChevronLeft,
-    faChevronUp,
-} from '@fortawesome/free-solid-svg-icons';
 import SearchInner from '@/components/Tippy/SearchInner';
 import Navbar from '../Navbar';
 import SearchOnMoblie from '@/components/SearchOnMoblie';
-import { useEffect, useRef, useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import {
+    BarsIcon,
+    ChervonDonwIcon,
+    ChervonLeft,
+    ChervonRight,
+    FacebookIcon,
+    InstaIcon,
+    MailTextIcon,
+    PhoneIcon,
+    PrinterestIcon,
+    SearchIcon,
+    XmarkIcon,
+    YoutubeIcon,
+} from '@/components/Icons';
+import Tippy from '@tippyjs/react/headless';
+import Login from '@/components/Auth/Login';
+import CartTippy from '@/components/Tippy/CartTippy';
 const cx = classNames.bind(styles);
 
 function Header() {
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showBars, setShowBars] = useState<boolean>(false);
+    const [showShop, setShowShop] = useState<boolean>(false);
+    const [showTippyLang, setShowTippyLang] = useState<boolean>(false);
+    const [classActive, setClassActive] = useState<any>('');
     const [height, setHeight] = useState(window.innerHeight);
+    const [toggleIndex, setToggleIndex] = useState(null);
+
+    const handleToggle = (index: any) => {
+        setToggleIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+
     const updateDimensions = () => {
         setHeight(window.innerHeight);
     };
@@ -42,23 +50,94 @@ function Header() {
     const menuHeightPrev = height - 105;
     const menuHeightReal = height * 0.04;
 
+    const dataMenuPanel: IMenuPanel[] = [
+        {
+            id: 0,
+            title: 'SEATING',
+            subMenu: [
+                { title: 'Accent Chairs', link: '/' },
+                { title: 'Barstools', link: '/' },
+                { title: 'Benches', link: '/' },
+                { title: 'Dining Chairs', link: '/' },
+                { title: 'Poufs & Stools', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 1,
+            title: 'TABLES',
+            subMenu: [
+                { title: 'Coffee Tables', link: '/' },
+                { title: 'Console Tables', link: '/' },
+                { title: 'Desks', link: '/' },
+                { title: 'Dining Tables', link: '/' },
+                { title: 'Side Tables', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 2,
+            title: 'STORAGE',
+            subMenu: [
+                { title: 'Bookcases', link: '/' },
+                { title: 'Cabinets', link: '/' },
+                { title: 'Dressers', link: '/' },
+                { title: 'Media Units', link: '/' },
+                { title: 'Sideboards', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 2,
+            title: 'BED & BATH',
+            subMenu: [
+                { title: 'Bathroom', link: '/' },
+                { title: 'Beds', link: '/' },
+            ],
+            height: 70,
+        },
+        {
+            id: 3,
+            title: 'LIGHTING',
+            subMenu: [
+                { title: 'Floor Lamps', link: '/' },
+                { title: 'Table Lamps', link: '/' },
+                { title: 'Wall Lamps', link: '/' },
+                { title: 'Pendant Lights', link: '/' },
+            ],
+            height: 150,
+        },
+        {
+            id: 4,
+            title: 'DECOR',
+            subMenu: [
+                { title: 'Home Decor', link: '/' },
+                { title: 'Chest', link: '/' },
+            ],
+            height: 70,
+        },
+    ];
+
     return (
         <div className={cx('wrapper')}>
             <header className={cx('header')}>
                 <Container>
                     <div className={cx('header-inner')}>
+                        {/* Menu Bars */}
                         <nav className={cx('header-bars')}>
                             {showBars ? (
                                 <button className={cx('btn-bars')}>
-                                    <FontAwesomeIcon
-                                        icon={faClose}
-                                        className={cx('icon-bars')}
+                                    <XmarkIcon
+                                        style={{ width: '19px', height: '19px' }}
                                         onClick={() => setShowBars(!showBars)}
                                     />
                                 </button>
                             ) : (
                                 <button className={cx('btn-bars')} onClick={() => setShowBars(!showBars)}>
-                                    <FontAwesomeIcon icon={faBars} className={cx('icon-bars')} />
+                                    <BarsIcon
+                                        style={{ width: '20px', height: '16px' }}
+                                        onClick={() => setShowBars(!showBars)}
+                                    />
                                 </button>
                             )}
                             {/* MENU MOBILE */}
@@ -92,9 +171,12 @@ function Header() {
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-item')}>
-                                                    <button className={cx('mobile-menu-section-item-button')}>
+                                                    <button
+                                                        className={cx('mobile-menu-section-item-button')}
+                                                        onClick={() => setShowShop(!showShop)}
+                                                    >
                                                         SHOP
-                                                        <FontAwesomeIcon icon={faChevronRight} />
+                                                        <ChervonRight />
                                                     </button>
                                                 </li>
 
@@ -124,7 +206,7 @@ function Header() {
                                             <p className={cx('mobile-menu-section-need-help-tile')}> NEED HELP?</p>
                                             <ul className={cx('mobile-menu-section-need-help-list')}>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
-                                                    <FontAwesomeIcon icon={faPhone} className={cx('icon-iphone')} />
+                                                    <PhoneIcon className={cx('icon-iphone')} />
                                                     <a
                                                         href="/"
                                                         className={cx('mobile-menu-section-need-help-item-link')}
@@ -133,10 +215,7 @@ function Header() {
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
-                                                    <FontAwesomeIcon
-                                                        icon={faEnvelopeOpenText}
-                                                        className={cx('icon-mail')}
-                                                    />
+                                                    <MailTextIcon className={cx('icon-mail')} />
 
                                                     <a
                                                         href="/"
@@ -152,26 +231,26 @@ function Header() {
 
                                             <ul className={cx('mobile-menu-section-follow-list')}>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <FontAwesomeIcon icon={faFacebook} className={cx('icon-social')} />
+                                                    <FacebookIcon className={cx('icon-social')} />
                                                     <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
                                                         Facebook
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <FontAwesomeIcon icon={faFacebook} className={cx('icon-social')} />
+                                                    <InstaIcon className={cx('icon-social')} />
                                                     <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
                                                         Instagram
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <FontAwesomeIcon icon={faFacebook} className={cx('icon-social')} />
+                                                    <PrinterestIcon className={cx('icon-social')} />
 
                                                     <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
                                                         Pinterest
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <FontAwesomeIcon icon={faFacebook} className={cx('icon-social')} />
+                                                    <YoutubeIcon className={cx('icon-social')} />
 
                                                     <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
                                                         Youtube
@@ -181,11 +260,20 @@ function Header() {
                                         </div>
                                     </div>
                                     {/* -> SHOP PANEL */}
-                                    <div className={cx('mobile-menu-panel-shop')}>
+                                    <div
+                                        className={cx('mobile-menu-panel-shop')}
+                                        style={showShop ? { transform: 'translateX(0)', visibility: 'visible' } : {}}
+                                    >
                                         <div className={cx('mobile-menu-panel-shop-title')}>
-                                            <button className={cx('mobile-menu-panel-shop-title-button')}>
-                                                <FontAwesomeIcon
+                                            <button
+                                                className={cx('mobile-menu-panel-shop-title-button')}
+                                                onClick={() => setShowShop(!showShop)}
+                                            >
+                                                {/* <FontAwesomeIcon
                                                     icon={faChevronLeft}
+                                                    className={cx('icon-mobile-menu-panel-shop-chervonleft')}
+                                                /> */}
+                                                <ChervonLeft
                                                     className={cx('icon-mobile-menu-panel-shop-chervonleft')}
                                                 />
                                                 Back
@@ -193,93 +281,65 @@ function Header() {
                                         </div>
                                         <div className={cx('mobile-menu-panel-shop-section')}>
                                             <div className={cx('mobile-menu-panel-shop-list')}>
-                                                <div className={cx('mobile-menu-panel-shop-item')}>
-                                                    <button className={cx('mobile-menu-panel-shop-item-toggle')}>
-                                                        <b>SEATING</b>
-                                                        <FontAwesomeIcon
-                                                            icon={faChevronDown}
-                                                            className={cx('icon-mobile-menu-panel-shop-chervondown')}
-                                                        />
-                                                        {/* <FontAwesomeIcon
-                                                            icon={faChevronUp}
-                                                            className={cx('icon-mobile-menu-panel-shop-chervonup')}
-                                                        /> */}
-                                                    </button>
-                                                    <div className={cx('mobile-menu-panel-shop-toggle-wrapper')}>
-                                                        <div className={cx('mobile-menu-panel-shop-toggle-menu')}>
-                                                            <ul className={cx('mobile-menu-panel-shop-toggle-list')}>
-                                                                <li
-                                                                    className={cx('mobile-menu-panel-shop-toggle-item')}
+                                                {dataMenuPanel.map((item, index) => (
+                                                    <div className={cx('mobile-menu-panel-shop-item')}>
+                                                        <button
+                                                            className={cx('mobile-menu-panel-shop-item-toggle')}
+                                                            onClick={() => handleToggle(index)}
+                                                        >
+                                                            <b>{item.title}</b>
+                                                            <ChervonDonwIcon
+                                                                className={cx(
+                                                                    'icon-mobile-menu-panel-shop-chervondown',
+                                                                    toggleIndex === index && 'active',
+                                                                )}
+                                                            />
+                                                            {/* <FontAwesomeIcon
+                                                                icon={faChevronDown}
+                                                              
+                                                            /> */}
+                                                        </button>
+                                                        <div
+                                                            className={cx('mobile-menu-panel-shop-toggle-wrapper')}
+                                                            style={
+                                                                toggleIndex === index
+                                                                    ? { height: `${item.height}px` }
+                                                                    : { height: '0' }
+                                                            }
+                                                        >
+                                                            <div className={cx('mobile-menu-panel-shop-toggle-menu')}>
+                                                                <ul
+                                                                    className={cx('mobile-menu-panel-shop-toggle-list')}
                                                                 >
-                                                                    <a
-                                                                        href="/"
-                                                                        className={cx(
-                                                                            'mobile-menu-panel-shop-toggle-link',
-                                                                        )}
-                                                                    >
-                                                                        Accent Chairs
-                                                                    </a>
-                                                                </li>
-                                                                <li
-                                                                    className={cx('mobile-menu-panel-shop-toggle-item')}
-                                                                >
-                                                                    <a
-                                                                        href="/"
-                                                                        className={cx(
-                                                                            'mobile-menu-panel-shop-toggle-link',
-                                                                        )}
-                                                                    >
-                                                                        Barstools
-                                                                    </a>
-                                                                </li>
-                                                                <li
-                                                                    className={cx('mobile-menu-panel-shop-toggle-item')}
-                                                                >
-                                                                    <a
-                                                                        href="/"
-                                                                        className={cx(
-                                                                            'mobile-menu-panel-shop-toggle-link',
-                                                                        )}
-                                                                    >
-                                                                        Benches
-                                                                    </a>
-                                                                </li>
-                                                                <li
-                                                                    className={cx('mobile-menu-panel-shop-toggle-item')}
-                                                                >
-                                                                    <a
-                                                                        href="/"
-                                                                        className={cx(
-                                                                            'mobile-menu-panel-shop-toggle-link',
-                                                                        )}
-                                                                    >
-                                                                        Dining Chairs
-                                                                    </a>
-                                                                </li>
-                                                                <li
-                                                                    className={cx('mobile-menu-panel-shop-toggle-item')}
-                                                                >
-                                                                    <a
-                                                                        href="/"
-                                                                        className={cx(
-                                                                            'mobile-menu-panel-shop-toggle-link',
-                                                                        )}
-                                                                    >
-                                                                        Poufs & Stools
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
+                                                                    {item?.subMenu.map((subMenuItem) => (
+                                                                        <li
+                                                                            className={cx(
+                                                                                'mobile-menu-panel-shop-toggle-item',
+                                                                            )}
+                                                                        >
+                                                                            <a
+                                                                                href={subMenuItem.link}
+                                                                                className={cx(
+                                                                                    'mobile-menu-panel-shop-toggle-link',
+                                                                                )}
+                                                                            >
+                                                                                {subMenuItem.title}
+                                                                            </a>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                ))}
                                             </div>
                                             <div className={cx('mobile-menu-panel-shop-promo-item')}>
                                                 <a href="/" className={cx('mobile-menu-panel-shop-promo-link')}>
                                                     <div className={cx('mobile-menu-panel-shop-promo-wrapper')}>
                                                         <div className={cx('aspect-ratio')}>
-                                                            <img
-                                                                src="https://woodfurniture.com/cdn/shop/files/351475737_6200426373358841_5029300433322005183_n_550x.jpg?v=1693995998"
-                                                                alt="image-promo"
+                                                            <Image
+                                                                src={images.imgPromo}
+                                                                alt="img-promo"
                                                                 className={cx('mobile-menu-panel-shop-promo-image')}
                                                             />
                                                         </div>
@@ -291,6 +351,7 @@ function Header() {
                                 </div>
                             </div>
                         </nav>
+
                         <div className={cx('header-logo')}>
                             <a href="/" className={cx('header-logo-link')}>
                                 <Image
@@ -310,36 +371,60 @@ function Header() {
                         <div className={cx('header-search')}>
                             <SearchInner />
                         </div>
+
                         <div className={cx('header-action')}>
-                            <div className={cx('header-icon-map')}>
-                                <FontAwesomeIcon
-                                    icon={faEarthAmerica}
-                                    size="sm"
-                                    style={{ height: '15px', width: '15px' }}
-                                />
-                                <FontAwesomeIcon
-                                    icon={faChevronUp}
-                                    size="sm"
-                                    style={{ height: '15px', width: '15px', paddingLeft: '3px' }}
-                                />
-                            </div>
+                            {/* Icon Language */}
+                            <Tippy
+                                interactive
+                                visible={showTippyLang}
+                                onClickOutside={() => setShowTippyLang(!showTippyLang)}
+                                placement="bottom"
+                                onShow={() => setClassActive('active')}
+                                onHide={() => setClassActive('')}
+                                animation={' transition: opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform;'}
+                                render={(attrs: any) => (
+                                    <div className={cx('popperover')} tabIndex="-1" {...attrs}>
+                                        <div className={cx('wrapper-tippy', 'no-padding', classActive)}>
+                                            <ul className={cx('language-change-list')}>
+                                                <li className={cx('language-change-item')}>
+                                                    <button>Vietnam</button>
+                                                </li>
+                                                <li className={cx('language-change-item')}>
+                                                    <button>English</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                )}
+                                offset={[0, 0]}
+                            >
+                                <div className={cx('header-icon-map')} onClick={() => setShowTippyLang(!showTippyLang)}>
+                                    <span style={{ height: '15px', width: '15px' }}>🇺🇸</span>
+                                    <ChervonDonwIcon
+                                        style={{
+                                            height: '15px',
+                                            width: '18px',
+                                            paddingLeft: '3px',
+                                            fontSize: '1.2rem',
+                                        }}
+                                    />
+                                </div>
+                            </Tippy>
+                            {/* Icon Search */}
                             <div className={cx('header-icon-search')}>
-                                <FontAwesomeIcon
-                                    icon={faSearch}
+                                <SearchIcon
                                     className={cx('header-icon-search-wrapper')}
+                                    style={{ height: '15px', width: '18px', paddingLeft: '3px', fontSize: '1.2rem' }}
                                     onClick={() => setShowSearch(!showSearch)}
                                 />
                             </div>
+                            {/* Icon User */}
                             <div className={cx('header-icon-user')}>
-                                <FontAwesomeIcon icon={faUser} size="sm" style={{ height: '22px', width: '20px' }} />
+                                <Login />
                             </div>
+                            {/* Icon Cart */}
                             <div className={cx('header-icon-shopping')}>
-                                <FontAwesomeIcon
-                                    icon={faShoppingCart}
-                                    size="sm"
-                                    style={{ height: '24px', width: '27px' }}
-                                />
-                                <span className={cx('header-count')}>0</span>
+                                <CartTippy />
                             </div>
                         </div>
                     </div>
@@ -347,6 +432,7 @@ function Header() {
                 {/* Navbar */}
                 <Navbar />
             </header>
+
             <SearchOnMoblie showSearch={showSearch} />
         </div>
     );

@@ -1,0 +1,87 @@
+.wrapper {
+}
+
+.image-home {
+    display: block;
+    // object-fit: contain !important;
+    width: 100%;
+    height: auto;
+}
+
+.icon-prev {
+    left: 6px;
+}
+
+.icon-next {
+    right: 6px;
+}
+
+.customer-background {
+    position: relative;
+    background-color: rgba(223, 204, 142, 0.6);
+    padding-top: 39px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    &:hover {
+        .prev-arrow-customer,
+        .next-arrow-customer {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+    }
+}
+
+.image-customer-header {
+    margin-top: 20px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.icon-prev-customer,
+.icon-next-customer {
+    cursor: pointer;
+}
+
+.swiper-slide {
+    margin: 0 !important;
+}
+
+// BTN NEXT PREV
+.product-icon-navigate-wrapper {
+    .prev-arrow-customer {
+        left: 0px;
+    }
+    .next-arrow-customer {
+        right: 0px;
+    }
+
+    .prev-arrow-customer,
+    .next-arrow-customer {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 40px;
+        border-radius: 2px;
+        background: #c8a83f;
+        top: 50%;
+        font-size: 2.5rem;
+        z-index: 3;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -webkit-transition: all 0.2s ease-out;
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    .icon-prev-customer,
+    .icon-next-customer {
+        color: #fff;
+        width: 16px;
+        height: 16px;
+    }
+}

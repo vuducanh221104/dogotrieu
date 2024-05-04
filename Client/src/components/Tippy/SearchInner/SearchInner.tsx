@@ -4,22 +4,23 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from './SearchInner.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faChevronRight, faXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
+import { SearchIcon, XmarkIcon } from '@/components/Icons';
 const cx = classNames.bind(styles);
 
 function SearchInner() {
     const [searchResult, setSearchResult] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     setLoading(true);
-    //     setTimeout(() => {
-    //         setSearchResult([1, 2, 3]);
-    //         setLoading(false);
-    //     }, 3000);
-    // }, []);
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setSearchResult([1, 2, 3]);
+            setLoading(false);
+        }, 3000);
+    }, []);
     return (
         <Tippy
             interactive
@@ -27,6 +28,7 @@ function SearchInner() {
             // visible={true}
             // visible={searchResult.length > 0}
             placement="bottom"
+            className={'search-custom'}
             render={(attrs: any) => (
                 <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                     <div className={cx('wrapper-tippy')}>
@@ -136,21 +138,20 @@ function SearchInner() {
                 </div>
             )}
             // onClickOutside={() => handleOutside()}
+
             offset={[0, 0]}
         >
             <div className={cx('header-search-inner')}>
                 <div className={cx('header-search-content')}>
                     <input className={cx('header-input')} placeholder="Search..." />
-                    <button className={cx('button-search')}>
-                        <FontAwesomeIcon icon={faSearch} className={cx('icon-search')} />
-                    </button>
+
                     {!loading && (
                         <button className={cx('button-search')}>
-                            <FontAwesomeIcon icon={faSearch} className={cx('icon-search')} />
+                            <SearchIcon className={cx('icon-search')} />
                         </button>
                     )}
                     <button className={cx('button-clear')}>
-                        <FontAwesomeIcon icon={faXmark} className={cx('icon-xmark')} />
+                        <XmarkIcon className={cx('icon-xmark')} />
                     </button>
                     {loading && (
                         <button className={cx('button-search')}>
