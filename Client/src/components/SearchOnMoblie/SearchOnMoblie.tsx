@@ -3,16 +3,7 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from './SearchOnMobile.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faSearch,
-    faXmark,
-    faChevronRight,
-    faSpinner,
-    faPhone,
-    faEnvelopeOpenText,
-} from '@fortawesome/free-solid-svg-icons';
-import { faFacebook } from '@fortawesome/free-brands-svg-icons';
-import { Row } from 'react-bootstrap';
+import { faSearch, faXmark, faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
 interface SearchOnMobileProps {
@@ -26,7 +17,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
     const [loading, setLoading] = useState<boolean>(false);
     const [close, setClose] = useState<boolean>(false);
 
-    console.log(close);
     useEffect(() => {
         setLoading(true);
         setTimeout(() => {
@@ -180,8 +170,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                     {/* <div className={cx('no-result')}>
                         <p>No results matched</p>
                     </div> */}
-
-                    {/* NAVBARS */}
                 </div>
             </div>
         </>

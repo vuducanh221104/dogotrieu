@@ -20,6 +20,7 @@
 .header-input {
     height: 100%;
     width: 100%;
+    font-size: 1.4rem;
     padding: 0 15px 1px 15px;
     border: 1px solid #000;
     background: transparent;
@@ -40,15 +41,16 @@
 .button-clear {
     position: absolute;
     content: '';
-    top: 2px;
-    right: 45px;
-    width: 50px;
+    top: 0px;
+    right: 60px;
+    width: 19px;
     height: 44px;
     background: transparent;
 }
 
 .icon-xmark {
-    width: 20px;
+    width: 19px;
+    height: 19px;
     font-size: 1.8rem;
     color: #979797dd;
 }

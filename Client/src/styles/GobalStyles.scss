@@ -52,10 +52,19 @@
     --breakpoint-pc: 1200px;
 }
 
-// html,
-// body {
-//     height: 10000px;
-// }
+html {
+    font-size: 62.5%;
+}
+body {
+    height: 100%; //CO HAY KHONG CUNG DUOC
+    overflow-y: hidden;
+}
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
 * {
     margin: 0;
@@ -66,13 +75,28 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+// TIPPY
+#tippy-5 {
+    width: 100% !important;
+}
+
+#tippy-8 {
+    inset: 0px auto auto -10px !important;
+}
+
 ul {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
     text-decoration: none;
     outline: none;
     list-style: none;
     list-style-type: none;
 }
 li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
     text-decoration: none;
     outline: none;
     list-style: none;
@@ -94,12 +118,7 @@ body {
     // -webkit-transition: all 0.3s ease !important;
 }
 
-@media screen and (min-width: 641px) {
-    html {
-        font-size: var(--base-text-font-size);
-    }
-}
-
+// ELEMENT
 img {
     max-width: 100%;
     height: auto;
@@ -115,49 +134,13 @@ a {
 
 .disabled-button {
     cursor: not-allowed !important;
-    pointer-events: none; /* Không cho phép sự kiện click vào button */
-    opacity: 0.5; /* Làm mờ button */
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .text {
     color: red;
     font-weight: 200;
-}
-
-#tippy-2 {
-    width: 100% !important;
-}
-
-.container {
-    max-width: 1480px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 20px;
-}
-
-@media screen and (min-width: 641px) {
-    .container {
-        padding: 0 40px;
-    }
-}
-button {
-    padding: 0;
-    overflow: visible;
-    background: none;
-    border: none;
-    border-radius: 0;
-    -webkit-appearance: none;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-    list-style-position: inside;
-}
-li {
-    display: list-item;
-    text-align: -webkit-match-parent;
-    unicode-bidi: isolate;
 }
 
 a {
@@ -168,4 +151,57 @@ a {
 div {
     display: block;
     unicode-bidi: isolate;
+}
+
+// BOOTSTRAP
+.container {
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+@media screen and (min-width: 641px) {
+    .container {
+        padding: 0 40px;
+    }
+}
+
+.noGutters {
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+}
+
+.noGutters > .col,
+.noGutters > [class*='col-'] {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.guttersCustom > .col,
+.guttersCustom > [class*='col-'] {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+}
+
+// SEARCH
+.search-custom {
+    width: 100% !important;
+}
+
+// BTN
+button {
+    padding: 0;
+    overflow: visible;
+    background: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+.swiper-pagination-bullet {
+    width: 12px !important;
+    height: 12px !important;
+    background: #555557 !important;
 }

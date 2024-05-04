@@ -7,12 +7,80 @@ const openSans = Open_Sans({
 import classNames from 'classnames/bind';
 import styles from './Navbar.module.scss';
 import { Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
+import { ChervonDonwIcon, ChervonUpMenuIcon } from '@/components/Icons';
+import images from '@/assets';
 
 const cx = classNames.bind(styles);
 function Navbar() {
+    const dataMenuPanel: IMenuPanel[] = [
+        {
+            id: 0,
+            title: 'SEATING',
+            subMenu: [
+                { title: 'Accent Chairs', link: '/' },
+                { title: 'Barstools', link: '/' },
+                { title: 'Benches', link: '/' },
+                { title: 'Dining Chairs', link: '/' },
+                { title: 'Poufs & Stools', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 1,
+            title: 'TABLES',
+            subMenu: [
+                { title: 'Coffee Tables', link: '/' },
+                { title: 'Console Tables', link: '/' },
+                { title: 'Desks', link: '/' },
+                { title: 'Dining Tables', link: '/' },
+                { title: 'Side Tables', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 2,
+            title: 'STORAGE',
+            subMenu: [
+                { title: 'Bookcases', link: '/' },
+                { title: 'Cabinets', link: '/' },
+                { title: 'Dressers', link: '/' },
+                { title: 'Media Units', link: '/' },
+                { title: 'Sideboards', link: '/' },
+            ],
+            height: 190,
+        },
+        {
+            id: 2,
+            title: 'BED & BATH',
+            subMenu: [
+                { title: 'Bathroom', link: '/' },
+                { title: 'Beds', link: '/' },
+            ],
+            height: 70,
+        },
+        {
+            id: 3,
+            title: 'LIGHTING',
+            subMenu: [
+                { title: 'Floor Lamps', link: '/' },
+                { title: 'Table Lamps', link: '/' },
+                { title: 'Wall Lamps', link: '/' },
+                { title: 'Pendant Lights', link: '/' },
+            ],
+            height: 150,
+        },
+        {
+            id: 4,
+            title: 'DECOR',
+            subMenu: [
+                { title: 'Home Decor', link: '/' },
+                { title: 'Chest', link: '/' },
+            ],
+            height: 70,
+        },
+    ];
+
     return (
         <nav className={cx('navbar')}>
             <div className={openSans.className}>
@@ -27,180 +95,37 @@ function Navbar() {
                             <li className={cx('navbar-item', 'static')}>
                                 <a href="/" className={cx('navbar-item-link')}>
                                     SHOP
-                                    <FontAwesomeIcon icon={faChevronDown} size="sm" className={cx('icon-down')} />
+                                    <ChervonDonwIcon style={{ height: '8px', width: '12px', marginLeft: '8px' }} />
+                                    <ChervonUpMenuIcon className={cx('icon-menu-up')} />
                                 </a>
                                 <div className={cx('mega-menu')}>
                                     <Container>
                                         <div className={cx('mega-menu-inner')}>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className={cx('mega-menu-column')}>
-                                                <a className={cx('mega-menu-title')}>
-                                                    <b>SEATING</b>
-                                                </a>
-                                                <ul className={cx('mega-menu-list')}>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                    <li className={cx('mega-menu-item')}>
-                                                        <a href="/" className={cx('mega-menu-item-link')}>
-                                                            Accent Chairs
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            {dataMenuPanel.map((item, index) => (
+                                                <div className={cx('mega-menu-column')}>
+                                                    <a className={cx('mega-menu-title')}>
+                                                        <b>{item.title}</b>
+                                                    </a>
+                                                    <ul className={cx('mega-menu-list')}>
+                                                        {item.subMenu.map((subMenuItem) => (
+                                                            <li className={cx('mega-menu-item')}>
+                                                                <a
+                                                                    href={subMenuItem.link}
+                                                                    className={cx('mega-menu-item-link')}
+                                                                >
+                                                                    {subMenuItem.title}
+                                                                </a>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+
                                             <a className={cx('mega-menu-promo')}>
                                                 <div className={cx('mega-menu-image-wrapper')}>
-                                                    <img
-                                                        src={
-                                                            'https://woodfurniture.com/cdn/shop/files/351475737_6200426373358841_5029300433322005183_n_550x.jpg?v=1693995998'
-                                                        }
-                                                        alt="image-promo"
+                                                    <Image
+                                                        src={images.imgPromo}
+                                                        alt="img-promo"
                                                         className={cx('mega-menu-image-promo')}
                                                     />
                                                 </div>

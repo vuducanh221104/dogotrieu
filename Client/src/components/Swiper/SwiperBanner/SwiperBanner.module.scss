@@ -1,0 +1,67 @@
+.images-banner-background {
+    position: relative;
+}
+
+.image-home {
+    display: block;
+    // object-fit: contain !important;
+    width: 100%;
+    height: auto;
+}
+
+.icon-next,
+.icon-prev {
+    position: absolute;
+    top: 50%;
+    font-size: 2.5rem;
+    z-index: 3;
+    color: #b2b2b2;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.icon-prev {
+    left: 13px;
+}
+
+.icon-next {
+    right: 13px;
+}
+
+.images-banner-background {
+    padding-top: 39px;
+    padding-bottom: 10px;
+    // padding: 0 10px !important;
+}
+
+.icon-next-customer,
+.icon-prev-customer {
+    position: absolute;
+    top: 60%;
+    font-size: 2.5rem;
+    z-index: 3;
+    color: #b2b2b2;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.icon-prev-customer {
+    left: 10px;
+}
+
+.icon-next-customer {
+    right: 10px;
+}
+
+.icon-prev-customer,
+.icon-next-customer {
+    cursor: pointer;
+}
+
+.swiper-slide {
+    margin: 0 !important;
+}

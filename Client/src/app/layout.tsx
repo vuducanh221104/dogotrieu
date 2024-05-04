@@ -8,7 +8,7 @@ import AnouBar from '@/Layout/components/AnouBar';
 
 const poppins = Poppins({
     subsets: ['latin'],
-    weight: ['200', '300', '400', '500', '600'],
+    weight: ['200', '300', '400', '500', '600', '700'],
     style: ['italic', 'normal'],
 });
 

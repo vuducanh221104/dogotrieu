@@ -1,0 +1,123 @@
+.product-wrapper {
+    padding: 60px 0;
+    .product-heading {
+        font-weight: 400;
+    }
+    .product-inner {
+        padding: 0 15px;
+    }
+    .product-item {
+        margin-top: 10px;
+        padding: 20px;
+        width: 100%;
+        min-height: 100%;
+        border-left: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .product-image {
+        & img {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 1;
+        }
+    }
+
+    .product-info {
+        .product-vendor {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        .product-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .product-price-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .product-price-real {
+                font-size: 2rem;
+            }
+            .product-price-discount {
+                font-size: 2rem;
+                text-decoration: line-through;
+            }
+        }
+        .product-status {
+            margin-top: 14px;
+            font-size: 1.4rem;
+            padding-top: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: #008a00;
+            position: relative;
+            padding-left: 1.4em;
+            &::before {
+                position: absolute;
+                display: inline-block;
+                content: '';
+                width: 8px;
+                height: 8px;
+                left: 0;
+                top: 8px;
+                border-radius: 100%;
+                background: currentColor;
+            }
+        }
+    }
+}
+
+.aspect-ratio {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 125% !important;
+}
+
+.button-see-all {
+    width: 207px;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid var(--color-hover);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 20px;
+    & a {
+        width: 100%;
+        height: auto;
+    }
+    & button {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        font-weight: 600;
+        text-align: center;
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        & span {
+            margin-left: 3px;
+        }
+        &:hover {
+            color: #ffffff;
+            background-color: #f6de90;
+            border-color: #eae2c4;
+        }
+    }
+}
