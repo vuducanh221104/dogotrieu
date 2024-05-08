@@ -1,9 +1,9 @@
 'use client';
-import images from '@/assets';
 import classNames from 'classnames/bind';
+import styles from './Header.module.scss';
+import images from '@/assets';
 import Image from 'next/image';
 import { Container } from 'react-bootstrap';
-import styles from './Header.module.scss';
 import SearchInner from '@/components/Tippy/SearchInner';
 import Navbar from '../Navbar';
 import SearchOnMoblie from '@/components/SearchOnMoblie';
@@ -32,23 +32,24 @@ function Header() {
     const [showBars, setShowBars] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showTippyLang, setShowTippyLang] = useState<boolean>(false);
-    const [classActive, setClassActive] = useState<any>('');
-    const [height, setHeight] = useState(window.innerHeight);
-    const [toggleIndex, setToggleIndex] = useState(null);
 
-    const handleToggle = (index: any) => {
-        setToggleIndex((prevIndex) => (prevIndex === index ? null : index));
-    };
+    const [classActive, setClassActive] = useState<any>('');
+    const [toggleIndex, setToggleIndex] = useState(null);
+    const [height, setHeight] = useState(window.innerHeight);
+    const [width, setWidth] = useState(window.innerWidth);
 
     const updateDimensions = () => {
         setHeight(window.innerHeight);
+        setWidth(window.innerWidth);
     };
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
         return () => window.removeEventListener('resize', updateDimensions);
     }, [showBars]);
-    const menuHeightPrev = height - 105;
-    const menuHeightReal = height * 0.04;
+
+    // HANDLE REPONSIVE HEIGHT MENU
+    const menuHeightPrev = width <= 641 ? (width <= 393 ? height - 100 : height - 75) : height - 80;
+    const menuHeightReal = height * 0.01;
 
     const dataMenuPanel: IMenuPanel[] = [
         {
@@ -118,8 +119,12 @@ function Header() {
         },
     ];
 
+    const handleToggle = (index: any) => {
+        setToggleIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('header-wrapper')}>
             <header className={cx('header')}>
                 <Container>
                     <div className={cx('header-inner')}>
@@ -151,7 +156,7 @@ function Header() {
                                               opacity: '1',
                                               transition:
                                                   'opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),visibility 0.4s linear',
-                                              maxHeight: menuHeightPrev - menuHeightReal,
+                                              maxHeight: 27 + menuHeightPrev - menuHeightReal,
                                           }
                                         : {}
                                 }
@@ -269,10 +274,6 @@ function Header() {
                                                 className={cx('mobile-menu-panel-shop-title-button')}
                                                 onClick={() => setShowShop(!showShop)}
                                             >
-                                                {/* <FontAwesomeIcon
-                                                    icon={faChevronLeft}
-                                                    className={cx('icon-mobile-menu-panel-shop-chervonleft')}
-                                                /> */}
                                                 <ChervonLeft
                                                     className={cx('icon-mobile-menu-panel-shop-chervonleft')}
                                                 />
@@ -294,10 +295,6 @@ function Header() {
                                                                     toggleIndex === index && 'active',
                                                                 )}
                                                             />
-                                                            {/* <FontAwesomeIcon
-                                                                icon={faChevronDown}
-                                                              
-                                                            /> */}
                                                         </button>
                                                         <div
                                                             className={cx('mobile-menu-panel-shop-toggle-wrapper')}
