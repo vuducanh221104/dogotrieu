@@ -1,19 +1,15 @@
 import Container from 'react-bootstrap/Container';
+import classNames from 'classnames/bind';
+import styles from './AnouBar.module.scss';
+
+const cx = classNames.bind(styles);
 
 function AnouBar() {
     return (
-        <div
-            className={'wrapper-anou-bar'}
-            style={{ background: '#9e7c5d', color: '#ffffff', minHeight: '39px', fontSize: '13px', fontWeight: '500' }}
-        >
+        <div className={cx('wrapper-anou-bar')}>
             <Container>
-                <div
-                    className={'anou-bar-inner'}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <a href="/123" style={{ padding: '9px 0px', textAlign: 'center' }}>
-                        LARGE INVENTORY + FREE SHIPPING *
-                    </a>
+                <div className={cx('anou-bar-inner')}>
+                    <a href="/123">LARGE INVENTORY + FREE SHIPPING *</a>
                 </div>
             </Container>
         </div>

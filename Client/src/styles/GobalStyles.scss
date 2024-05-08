@@ -54,16 +54,16 @@
 
 html {
     font-size: 62.5%;
+    overflow-x: hidden;
 }
 body {
     height: 100%; //CO HAY KHONG CUNG DUOC
-    overflow-y: hidden;
+    // overflow-y: hidden;
 }
 html,
 body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
 }
 
 * {
@@ -197,11 +197,17 @@ button {
     background: none;
     border: none;
     border-radius: 0;
-    -webkit-appearance: none;
 }
 
 .swiper-pagination-bullet {
     width: 12px !important;
     height: 12px !important;
     background: #555557 !important;
+}
+
+.aspect-ratio {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 125% !important;
 }

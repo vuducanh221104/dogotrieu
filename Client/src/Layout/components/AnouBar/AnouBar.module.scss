@@ -1,0 +1,32 @@
+.wrapper-anou-bar {
+    background: #9e7c5d;
+    color: #ffffff;
+    min-height: 39px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999;
+}
+.anou-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & a {
+        font-weight: 600;
+        line-height: 39px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 641px) {
+    .wrapper-anou-bar {
+        height: 29px;
+        min-height: 29px;
+        font-size: 1.1rem;
+    }
+    .anou-bar-inner {
+        & a {
+            font-weight: 600;
+            line-height: 29px;
+        }
+    }
+}

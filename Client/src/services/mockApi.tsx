@@ -149,3 +149,82 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
 ];
+
+export const dataNews = [
+    {
+        title: 'Discover Sustainable Luxury With Bolia',
+        description:
+            'Elevate your space with furniture thats as eco-conscious as it is stylish. Introducing the latest brand addition to Wood Furniture: Bolia. This is new post new product ',
+        image_cover:
+            'https://woodfurniture.com/cdn/shop/articles/BOLIA-WOOD-FURNITURE_ba487202-85a2-4da7-ab74-10c1983ccfd2_700x.jpg?v=1714398844',
+        content:
+            '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
+        tags: 'Tin Công Nghệ',
+        author: 'Vu Duc Anh',
+        comment: [
+            {
+                fullname: 'duc anh',
+                createdAt: {
+                    $date: '2024-03-31T14:08:20.572Z',
+                },
+            },
+        ],
+        slug: 'choose-the-perfect-bathroom-vanities-for-every-style',
+        createdAt: {
+            $date: '2024-03-31T14:08:20.575Z',
+        },
+        updatedAt: {
+            $date: '2024-03-31T14:21:13.902Z',
+        },
+    },
+    {
+        title: 'Choose the Perfect Bathroom Vanities for Every Style',
+        description:
+            'A high-quality and versatile bathroom vanity can take your daily routine and organization to the next level.',
+        image_cover: 'https://woodfurniture.com/cdn/shop/articles/vanities_wood_furniture_1200x.png?v=1712764371',
+        content:
+            '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
+        tags: 'Tin Công Nghệ',
+        author: 'Vu Duc Anh',
+        comment: [
+            {
+                fullname: 'duc anh',
+                createdAt: {
+                    $date: '2024-03-31T14:08:20.572Z',
+                },
+            },
+        ],
+        slug: 'discover-sustainable-luxury-with-bolia',
+        createdAt: {
+            $date: '2024-03-31T14:08:20.575Z',
+        },
+        updatedAt: {
+            $date: '2024-03-31T14:21:13.902Z',
+        },
+    },
+    {
+        title: 'The Rise of Sustainable Furniture in Modern Homes',
+        description:
+            'The rising popularity of sustainable furniture in modern homes offers eco-conscious consumers both chic design and a greener footprint.',
+        image_cover: 'https://woodfurniture.com/cdn/shop/articles/unnamed-4_1200x.jpg?v=1687353253',
+        content:
+            '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
+        tags: 'Tin Công Nghệ',
+        author: 'Vu Duc Anh',
+        comment: [
+            {
+                fullname: 'duc anh',
+                createdAt: {
+                    $date: '2024-03-31T14:08:20.572Z',
+                },
+            },
+        ],
+        slug: 'the-rise-of-sustainable-furniture-in-modern-homes',
+        createdAt: {
+            $date: '2024-03-31T14:08:20.575Z',
+        },
+        updatedAt: {
+            $date: '2024-03-31T14:21:13.902Z',
+        },
+    },
+];

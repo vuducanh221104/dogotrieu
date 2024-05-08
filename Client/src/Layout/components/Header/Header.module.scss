@@ -1,10 +1,14 @@
-.header {
-    padding: 20px 0;
+.header-wrapper {
     z-index: 999;
-    position: relative;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0; /* required */
     transition: margin-bottom 0.25s ease-in-out;
     background: #ffffff;
     color: var(--header-text-color);
+}
+.header {
+    padding: 20px 0 20px 0;
 }
 
 .header-bars {
@@ -120,45 +124,6 @@
     }
 }
 
-//
-@media screen and (min-width: 992px) {
-    .header-bars {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 640px) {
-    .header {
-        padding: 13px 0;
-    }
-    .header-search {
-        display: none;
-    }
-    .header-action {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-    }
-    .header-icon-search-wrapper {
-        margin: 0 9px;
-    }
-    .header-icon-map {
-        padding: 0 9px;
-    }
-    .header-icon-user {
-        padding: 0 9px;
-    }
-    .header-icon-shopping {
-        padding: 0 9px;
-    }
-}
-
-@media screen and (min-width: 640px) {
-    .header-icon-search-wrapper {
-        display: none;
-    }
-}
-
 // NAVBAR
 .mobile-menu {
     position: absolute;
@@ -251,9 +216,6 @@
 .mobile-menu-section-need-help-item,
 .mobile-menu-section-follow-item {
     padding-top: 18px;
-}
-.mobile-menu-section-need-help-item-link,
-.mobile-menu-section-follow-item-link {
 }
 
 .icon-iphone,
@@ -399,13 +361,53 @@
     opacity: 1;
 }
 
+//
+@media screen and (min-width: 992px) {
+    .header-bars {
+        display: none;
+    }
+    .header {
+        padding: 20px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .header-wrapper {
+        padding: 17px 0;
+    }
+    .header {
+        padding: 0;
+    }
+    .header-search {
+        display: none;
+    }
+    .header-action {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    .header-icon-search-wrapper {
+        margin: 0 9px;
+    }
+    .header-icon-map {
+        padding: 0 9px;
+    }
+    .header-icon-user {
+        padding: 0 9px;
+    }
+    .header-icon-shopping {
+        padding: 0 9px;
+    }
+}
+
+@media screen and (min-width: 640px) {
+    .header-icon-search-wrapper {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 427px) {
     .header-logo {
         margin-right: 15px;
-    }
-    .header-logo-link {
-        & img {
-            max-width: 60px !important;
-        }
     }
 }

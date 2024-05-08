@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={poppins.className}>
                 <AnouBar />
                 <Header />
-                <div className="App">{children}</div>
+                <main className="App">{children}</main>
                 <Footer />
             </body>
         </html>

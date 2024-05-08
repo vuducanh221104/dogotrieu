@@ -1,0 +1,105 @@
+// MAP-LOCATION
+.wrapper-map {
+    margin-top: 10px;
+    border-radius: 7px;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    min-height: 400px;
+}
+
+.map-header {
+    display: flex;
+    align-items: center;
+    background-color: var(--border-color);
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    color: #fff;
+    height: 37px;
+    padding: 8px 16px;
+    & .location-icon {
+        font-size: 2rem;
+        margin-right: 10px;
+    }
+    & h3 {
+        padding-top: 5px;
+        font-size: 1.6rem;
+        font-weight: 500;
+    }
+}
+
+.map-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 8px 8px 8px;
+
+    & .select-city {
+        border-radius: 5px;
+        width: 48%;
+        border: 1px solid var(--bs-border-color);
+        padding: 6px 12px 6px 8px;
+        font-size: 1.3rem;
+    }
+
+    & .select-district {
+        border-radius: 5px;
+        width: 48%;
+        border: 1px solid var(--bs-border-color);
+        padding: 6px 12px 6px 8px;
+        font-size: 1.3rem;
+        &.active {
+            opacity: 0.7;
+            background-color: #ddd;
+            pointer-events: none;
+        }
+    }
+}
+
+.map-list {
+    padding: 0;
+    max-height: 410px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    overflow: auto;
+    &::-webkit-scrollbar-thumb {
+        background: var(--border-color); /* Màu nền */
+    }
+    &::-webkit-scrollbar {
+        width: 5px; /* Chiều rộng thanh cuộn */
+    }
+}
+
+.map-item {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--bs-border-color);
+    padding: 15px 12px 20px 12px;
+    & .map-icon {
+        padding-right: 8px;
+        font-size: 1.8rem;
+        color: var(--border-color);
+    }
+    & span {
+        width: 100%;
+        font-size: 1.4rem;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+.map-description {
+    display: flex;
+    justify-content: center;
+    padding: 5px 12px 0px 12px;
+    & h4 {
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    // .wrapper-map {
+    //     display: none;
+    // }
+}

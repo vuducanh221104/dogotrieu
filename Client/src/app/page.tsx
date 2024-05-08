@@ -13,6 +13,7 @@ import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
 import ViewListProductScroll from '@/components/HomeComponents/ViewListProductScroll';
 import { dataBannerAndCustomer } from '@/services/mockApi';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
+import News from '@/components/News';
 
 const cx = classNames.bind(styles);
 
@@ -37,6 +38,8 @@ function Home() {
                 <ViewListProductScroll />
                 {/* Specification */}
                 <ViewSpecification />
+                {/* NEWS */}
+                <News />
             </>
         </>
     );
