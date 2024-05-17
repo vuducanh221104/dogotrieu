@@ -1,3 +1,4 @@
+'use client';
 import styles from './MapMini.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,0 +1,42 @@
+.page-sub-header {
+    display: none;
+    margin: 23px 0;
+    font-size: 1.2rem;
+}
+.breadcrumb {
+    display: block;
+}
+.breadcrumb-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.breadcrumb-item {
+    &::before {
+        display: none;
+    }
+    &:last-child {
+        .breadcrumb-icon {
+            display: none;
+        }
+    }
+}
+.breadcrumb-link {
+    transition: color 0.2s ease-in-out;
+}
+.breadcrumb-icon {
+    margin: 0 7px;
+    width: 6px;
+    height: 8px;
+    vertical-align: inherit;
+}
+
+@media screen and (min-width: 641px) {
+    .page-sub-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

@@ -76,12 +76,19 @@ body {
 }
 
 // TIPPY
-#tippy-5 {
+// Search
+#tippy-6 {
     width: 100% !important;
 }
-
-#tippy-8 {
+// CART-ON-MOBILE
+#tippy-9 {
     inset: 0px auto auto -10px !important;
+}
+// Filter-asc-desc
+@media screen and (max-width: 999px) {
+    #tippy-10 {
+        width: 100% !important;
+    }
 }
 
 ul {
@@ -97,25 +104,20 @@ li {
     display: list-item;
     text-align: -webkit-match-parent;
     unicode-bidi: isolate;
-    text-decoration: none;
-    outline: none;
-    list-style: none;
-    list-style-type: none;
 }
 
-body {
-    // position: relative !important;
-    // font-family: 'SF Pro Display', sans-serif !important;
-    // font-size: 1.6rem !important;
-    // color: RGB(0, 8, 28) !important;
-    // overscroll-behavior-y: none;
-    // overflow-x: hidden !important;
-    // overflow-y: auto;
-    // width: 100% !important;
-    // background-color: #fff !important;
-    // transition: all 0.3s ease !important;
-    // -moz-transition: all 0.3s ease !important;
-    // -webkit-transition: all 0.3s ease !important;
+.h1 {
+    margin-bottom: 20px;
+    font-size: 2.3rem;
+    line-height: 1.45;
+}
+.h3 {
+    font-size: 2rem;
+    line-height: 1.5;
+}
+.heading {
+    font-weight: 400;
+    color: var(--heading-color);
 }
 
 // ELEMENT
@@ -130,6 +132,20 @@ a {
     color: inherit;
     background-color: transparent;
     text-decoration: none;
+}
+
+.product-label {
+    display: inline-block;
+    padding: 4px 10px;
+    color: #ffffff;
+    border-radius: 3px;
+    font-weight: var(--text-font-bolder-weight);
+    font-size: calc(var(--base-text-font-size) - (var(--default-text-font-size) - 13px));
+    line-height: 1;
+    vertical-align: top;
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
 }
 
 .disabled-button {
@@ -153,7 +169,7 @@ div {
     unicode-bidi: isolate;
 }
 
-// BOOTSTRAP
+// BOOTSTRAP -CONTAINER
 .container {
     max-width: 1480px;
     margin-left: auto;
@@ -165,7 +181,11 @@ div {
         padding: 0 40px;
     }
 }
-
+@media screen and (max-width: 641px) {
+    .container-flush {
+        padding: 0 !important;
+    }
+}
 .noGutters {
     margin-right: -15px !important;
     margin-left: -15px !important;
@@ -210,4 +230,11 @@ button {
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 125% !important;
+}
+
+@media screen and (min-width: 641px) {
+    .h1 {
+        font-size: 2.4rem;
+        line-height: 1.43;
+    }
 }

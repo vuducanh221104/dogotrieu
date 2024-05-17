@@ -24,6 +24,23 @@ export const SearchIcon: React.FC<IconsType> = ({ width, height, className, onCl
     </svg>
 );
 
+export const CheckIcon: React.FC<IconsType> = ({ width = 20, height = 20, className = '', onClick }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        width={width}
+        height={height}
+        className={className}
+        onClick={onClick}
+        style={{ backgroundColor: 'transparent' }} // Thêm màu nền vào style của SVG
+    >
+        <path
+            fill="#ffffff"
+            d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0"
+        />
+    </svg>
+);
+
 export const ChervonDonwIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4rem', className, style }) => (
     <svg
         className={className}
@@ -133,7 +150,7 @@ export const SpinnerIcon: React.FC<IconsType> = ({ width, height, className, sty
     </svg>
 );
 
-export const XmarkIcon: React.FC<IconsType> = ({ width, height, className, style, onClick }) => (
+export const XmarkIcon: React.FC<IconsType> = ({ width = '18px', height = '18px', className, style, onClick }) => (
     <svg
         focusable="false"
         className={className}

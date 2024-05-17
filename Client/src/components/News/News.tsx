@@ -12,12 +12,12 @@ import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { Open_Sans } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 import { Poppins } from 'next/font/google';
 import { dataNews } from '@/services/mockApi';
 import { routesUser } from '@/config/routesUser/routesUser';
 
-const openSans = Open_Sans({
+const archivo = Archivo({
     subsets: ['latin'],
     weight: ['400', '500', '600'],
     style: ['italic', 'normal'],
@@ -56,7 +56,7 @@ function News() {
     };
     return (
         <div className={cx('news-wrapper')}>
-            <div className={openSans.className}>
+            <div className={archivo.className}>
                 <Container>
                     <div className={cx('news-inner')}>
                         <h3 className={cx('news-heading')}>

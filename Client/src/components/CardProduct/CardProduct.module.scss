@@ -1,0 +1,182 @@
+.product-item {
+    position: relative;
+    padding: 20px;
+    min-width: 0;
+    min-height: 100%;
+    flex-shrink: 0;
+    background: var(--secondary-background);
+    white-space: normal;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.product-label-list {
+    position: relative;
+    top: 11px;
+    font-size: 0;
+    z-index: 2;
+    padding: 0 5px 0 5px !important;
+    & .product-label-on-sale {
+        display: block;
+        margin-bottom: 5px;
+        border-radius: 0 3px 3px 0;
+        background: #8e1616;
+        color: #ffffff;
+    }
+}
+
+.product-image {
+    & img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+}
+
+.product-info {
+    .product-tag {
+        background-color: #000;
+        font-size: 1.1rem;
+        color: #fff;
+        width: 88px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-weight: 600;
+        margin-top: 5px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    .product-vendor {
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin-bottom: 6px;
+    }
+    .product-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    .product-price-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        .product-price-real {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 0;
+        }
+        .product-price-discount {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 0;
+        }
+        &.have-price-discount {
+            justify-content: unset;
+            .product-price-discount {
+                margin-right: 10px;
+            }
+            .product-price-real {
+                text-decoration: line-through;
+                margin: 2px 0 0 0;
+                font-size: 1.3rem;
+            }
+        }
+    }
+    .product-status {
+        margin-top: 14px;
+        font-size: 1.2rem;
+        padding-top: 2px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: #008a00;
+        position: relative;
+        padding-left: 1.4em;
+        &::before {
+            position: absolute;
+            display: inline-block;
+            content: '';
+            width: 8px;
+            height: 8px;
+            left: 0;
+            top: 8px;
+            border-radius: 100%;
+            background: currentColor;
+        }
+        &.out-stock {
+            color: #dd3535eb;
+        }
+    }
+}
+
+.aspect-ratio {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 150% !important;
+}
+
+@media screen and (max-width: 640px) {
+    .product-info {
+        .product-vendor {
+            font-size: 1.1rem;
+        }
+        .product-name {
+            font-size: 1.2rem;
+        }
+        .product-price-wrapper {
+            .product-tag {
+                font-size: 1rem;
+                width: 80px;
+            }
+        }
+        .product-status {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+@media screen and (max-width: 999px) {
+    .product-item {
+        &:first-child {
+            border-radius: 3px 0 0 3px;
+        }
+        &:last-child {
+            border-radius: 0 3px 3px 0;
+            border-right: 1px solid var(--border-color);
+        }
+    }
+}
+
+@media screen and (min-width: 641px) {
+    .product-item {
+        width: 33.333333%;
+    }
+}
+
+@media screen and (max-width: 641px) {
+    .product-item {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .product-label-list {
+        left: 0;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .product-item {
+        width: 25%;
+    }
+}
