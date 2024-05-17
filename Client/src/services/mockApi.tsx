@@ -29,13 +29,13 @@ export const dataProduct = [
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/files/BLA02-330-01_00326_300x.png?v=1712314476',
         price: 5000000,
-        price_discount: 4000000,
+        price_discount: null,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //0 : OUTSTOCK , 1: IN STOCK
         tags: ['Tủ', 'Gỗ S'],
-        slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
         categories: ['phong-khach', 'tu', 'tu-bep'],
+        slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
         color: [],
     },
     {
@@ -45,8 +45,9 @@ export const dataProduct = [
         price_discount: null,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1,
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -55,9 +56,10 @@ export const dataProduct = [
         price: 5000000,
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
-        ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        ship: 'quick-ship',
+        stock_quantity: 0,
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -66,9 +68,10 @@ export const dataProduct = [
         price: 5000000,
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
-        ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        ship: null,
+        stock_quantity: 0,
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -78,8 +81,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -89,8 +93,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -100,8 +105,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -111,8 +117,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -122,8 +129,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -133,8 +141,9 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
@@ -144,8 +153,21 @@ export const dataProduct = [
         price_discount: 4000000,
         wood_type: 'GỖ SỒI',
         ship: 'QUICK-SHIP',
-        stock: 'in stock', //out stock
+        stock_quantity: 1, //out stock
         tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
+        slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
+    },
+    {
+        name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
+        image: 'https://woodfurniture.com/cdn/shop/products/ETH10266_70d918e5-8eb3-4e73-a168-fcb02498205e_300x.png?v=1707487024',
+        price: 5000000,
+        price_discount: 4000000,
+        wood_type: 'GỖ SỒI',
+        ship: 'QUICK-SHIP',
+        stock_quantity: 1, //out stock
+        tags: ['Tủ', 'Gỗ S'],
+        categories: ['phong-khach', 'tu', 'tu-bep'],
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
 ];
@@ -159,6 +181,7 @@ export const dataNews = [
             'https://woodfurniture.com/cdn/shop/articles/BOLIA-WOOD-FURNITURE_ba487202-85a2-4da7-ab74-10c1983ccfd2_700x.jpg?v=1714398844',
         content:
             '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
+        meta: 'reclaimed wood furniture',
         tags: 'Tin Công Nghệ',
         author: 'Vu Duc Anh',
         comment: [
@@ -186,6 +209,7 @@ export const dataNews = [
             '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
         tags: 'Tin Công Nghệ',
         author: 'Vu Duc Anh',
+        meta: 'Bathroom Vanity',
         comment: [
             {
                 fullname: 'duc anh',
@@ -211,6 +235,7 @@ export const dataNews = [
             '![image](https://minhtuanmobile.com/uploads/blog/one-ui-6-1-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5-240408094212.jpg)\n\nNgười dùng Galaxy Z Flip5 và Galaxy Z Fold5 đã phàn nàn về việc thời lượng pin bị giảm sút nghiệm trọng sau khi cập nhật One UI 6.1.\n\nTuần trước, Samsung đã phát hành bản cập nhật One UI 6.1 rất được mong đợi cho Galaxy Z Flip5 và Galaxy Z Fold5. Bản cập nhật này đã mang đến nhiều tính năng AI cho các điện thoại màn hình gập của Samsung. Tuy nhiên, nó cũng dường như đã gây ra một số vấn đề, chẳng hạn như làm suy giảm thời lượng pin.\n\n\n![image2](https://minhtuanmobile.com/uploads/editer/images/one-ui-61-anh-huong-den-thoi-luong-pin-cua-galaxy-z-flip5-fold5.webp)\n\nSamsung vẫn chưa chính thức lên tiếng về vấn đề này, tuy nhiên công ty hẳn đã nhận được phản hồi từ nhiều người dùng trên các trang mạng xã hội và diễn đàn cộng đồng Samsung. Các sự cố tương tự thường xuất hiện sau đợt cập nhật lớn, và Samsung thường nhanh chóng khắc phục chúng trong các bản vá tiếp theo.',
         tags: 'Tin Công Nghệ',
         author: 'Vu Duc Anh',
+        meta: 'Eco-Friendly Outdoor Furniture',
         comment: [
             {
                 fullname: 'duc anh',

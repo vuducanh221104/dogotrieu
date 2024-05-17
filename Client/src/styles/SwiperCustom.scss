@@ -1,0 +1,53 @@
+// Scroll Swiper
+.scroll {
+    &.active-transition {
+        .swiper-wrapper {
+            transition-duration: 0.2s !important;
+        }
+    }
+    .swiper-slide {
+        position: relative;
+        display: block;
+        width: 60px;
+        padding: 2px;
+        margin: 0 4px;
+        border: 2px solid transparent;
+        border-radius: 3px;
+        transition: border 0.2s ease-in-out;
+        cursor: pointer;
+        &.active {
+            border-color: var(--accent-color);
+        }
+    }
+    .swiper-wrapper {
+        will-change: transform;
+    }
+}
+@media screen and (min-width: 641px) and (max-width: 999px) {
+    .scroll {
+        margin: 0 6px;
+    }
+}
+@media screen and (max-width: 999px) {
+    .scroll {
+        overflow: hidden;
+        .swiper-slide {
+            display: inline-block;
+            vertical-align: top;
+        }
+        .swiper-wrapper {
+            display: inline-block;
+        }
+    }
+}
+@media screen and (min-width: 641px) {
+    .scroll {
+        .swiper-slide {
+            width: 72px;
+        }
+        .swiper-wrapper {
+            max-height: 450px;
+            max-width: 96px;
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import { Poppins } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GobalStyles.scss';
+import '../styles/SwiperCustom.scss';
 
 import Footer from '@/Layout/components/Footer';
 import Header from '@/Layout/components/Header';

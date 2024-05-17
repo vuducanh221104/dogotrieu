@@ -14,6 +14,7 @@ import ViewListProductScroll from '@/components/HomeComponents/ViewListProductSc
 import { dataBannerAndCustomer } from '@/services/mockApi';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import News from '@/components/News';
+import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,7 @@ function Home() {
                 </div>
                 {/* Product List */}
                 <ViewListProductScroll />
+                <ViewListProductAuto title={'BEST SELLER'} nextBtn={true} nextBtnLink={'/'} />
                 {/* Specification */}
                 <ViewSpecification />
                 {/* NEWS */}
