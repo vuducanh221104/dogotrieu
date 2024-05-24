@@ -14,7 +14,6 @@ import 'swiper/scss/thumbs';
 
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
 
 const cx = classNames.bind(styles);
 
@@ -64,7 +63,7 @@ function ViewCustomer({ data, setShowOverlay, indexImage }: any) {
                         </Swiper>
                         <div className={cx('swiper-footer')}>
                             <Swiper
-                                // onSwiper={setThumbsSwiper}
+                                onSwiper={setThumbsSwiper}
                                 loop={true}
                                 spaceBetween={10}
                                 freeMode={true}

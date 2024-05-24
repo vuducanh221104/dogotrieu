@@ -1,16 +1,9 @@
 'use client';
 import styles from '../styles/Home.module.scss';
 import classNames from 'classnames/bind';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import React from 'react';
 import SwiperBanner from '@/components/Swiper/SwiperBanner';
 import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
-import ViewListProductScroll from '@/components/HomeComponents/ViewListProductScroll';
 import { dataBannerAndCustomer } from '@/services/mockApi';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import News from '@/components/News';
@@ -36,12 +29,11 @@ function Home() {
                     />
                 </div>
                 {/* Product List */}
-                <ViewListProductScroll />
                 <ViewListProductAuto title={'BEST SELLER'} nextBtn={true} nextBtnLink={'/'} />
-                {/* Specification */}
-                <ViewSpecification />
                 {/* NEWS */}
                 <News />
+                {/* Specification */}
+                <ViewSpecification />
             </>
         </>
     );

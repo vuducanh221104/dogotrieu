@@ -17,6 +17,7 @@
     position: absolute;
     top: 12px;
     right: 30px;
+    cursor: pointer;
     & .icon-close {
         font-size: 4rem;
         color: #999;
@@ -40,12 +41,18 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    & img {
+        cursor: pointer;
+    }
 }
 
 // FOOTER
 
 .footer-swiper-img {
     max-width: 76px;
+    & img {
+        cursor: pointer;
+    }
 }
 .mySwiper {
     & img {

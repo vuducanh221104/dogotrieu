@@ -1,0 +1,123 @@
+.auth-wrapper {
+    display: block;
+    max-width: 350px;
+    margin: 60px auto;
+    text-align: center;
+}
+.auth-header {
+    margin-bottom: 30px;
+    display: block;
+}
+
+.auth-description {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+.form-search-wrapper {
+    max-width: 410px;
+    margin: 40px auto 25px auto;
+}
+.form-search-inner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.form-input {
+    margin-bottom: 0;
+    position: relative;
+    width: 100%;
+}
+.form-field {
+    display: block;
+    padding: 12px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--form-border-color);
+    width: 100%;
+    line-height: normal;
+    height: 48px;
+    color: var(--heading-color);
+    background: var(--input-background);
+    resize: none;
+    font-size: 1.4rem;
+    box-shadow: 0 1px rgba(var(--border-color-rgb), 0.25) inset;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-submit {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    background: #030303;
+    color: #ffffff;
+}
+// Footer
+.auth-footer {
+    margin-top: 32px;
+    font-size: 1.3rem;
+    & p {
+        margin-bottom: 0;
+        display: inline;
+    }
+    & button {
+        color: #030303;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.popper-social {
+    margin-top: 18px;
+    .social-link {
+        text-align: left;
+        padding-left: 20px;
+        height: 40px;
+        display: block;
+        background-size: 40px 40px;
+        border-radius: 0px;
+        color: white;
+        font-family: 'Merriweather Sans', sans-serif;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+        -webkit-font-smoothing: antialiased;
+        line-height: 40px;
+        &.facebook {
+            border-color: #2d5073;
+            background-color: #3b5998;
+            cursor: pointer;
+        }
+        &.google {
+            border-color: #c23321;
+            background-color: #dd4b39;
+            cursor: pointer;
+        }
+    }
+    .social-title {
+        text-align: left;
+        color: white;
+        -webkit-font-smoothing: antialiased;
+        line-height: 44px;
+        font-size: 14px;
+    }
+    .social-icon {
+        float: right;
+        height: 40px;
+        line-height: 36px;
+        width: 36px;
+        text-align: center;
+        font-size: 24px;
+        border-radius: 0px;
+        padding-right: 10px;
+        position: relative;
+    }
+}
+
+@media screen and (min-width: 641px) {
+    .auth-wrapper {
+        margin-top: 110px;
+        margin-bottom: 150px;
+    }
+}

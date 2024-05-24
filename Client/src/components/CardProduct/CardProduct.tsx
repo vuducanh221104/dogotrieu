@@ -4,10 +4,19 @@ import FormatPrice from '@/components/FormatPrice';
 import Link from 'next/link';
 import DiscountCalculation from '@/components/DiscountCalculation';
 
+interface IPropsCardProduct {
+    data: IProduct;
+    isSpecialIndex?: boolean;
+    onPageSearch?: boolean;
+}
+
 const cx = classNames.bind(styles);
-function CardProduct({ data, isSpecialIndex = false }: any) {
+function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPropsCardProduct) {
     return (
-        <div className={cx('product-item')} style={isSpecialIndex ? { borderRight: 'none' } : {}}>
+        <div
+            className={cx('product-item', onPageSearch && 'on-page-search')}
+            style={isSpecialIndex ? { borderRight: 'none' } : {}}
+        >
             <div className={cx('product-label-list')}>
                 {data.price_discount !== null && <DiscountCalculation price={30000000} discountPrice={20000000} />}
             </div>

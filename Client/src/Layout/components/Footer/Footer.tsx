@@ -11,7 +11,9 @@ import {
     VisaPayment,
     YoutubeIcon,
 } from '@/components/Icons';
+import config from '@/config';
 import classNames from 'classnames/bind';
+import Link from 'next/link';
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
@@ -41,12 +43,8 @@ function Footer() {
             id: 1,
             title: 'COMPANY',
             links: [
-                { label: 'About us', url: '/' },
-                { label: 'Contact', url: '/' },
-                { label: 'Shipping & Returns', url: '/' },
-                { label: 'Privacy Policy', url: '/' },
-                { label: 'Terms of Service', url: '/' },
-                { label: 'Refund policy', url: '/' },
+                { label: 'About us', url: config.routesCompany.aboutUs },
+                { label: 'Contact', url: config.routesCompany.contact },
             ],
             classNameChild: 'link',
             height: '181px',
@@ -55,8 +53,8 @@ function Footer() {
             id: 2,
             title: 'EXPLORE',
             links: [
-                { label: 'Trade', url: '/' },
-                { label: 'Blog', url: '/' },
+                { label: 'Trade', url: config.routesCompany.tradeIn },
+                { label: 'Blog', url: config.routes.news },
             ],
             classNameChild: 'link',
             height: '60px',
@@ -146,7 +144,7 @@ function Footer() {
                                             <ul className={cx('footer-block-content-link-list')}>
                                                 {item.links.map((link, index) => (
                                                     <li key={index} className={cx('footer-block-content-link-item')}>
-                                                        <a href={link.url}>{link.label}</a>
+                                                        <Link href={link.url}>{link.label}</Link>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -158,29 +156,41 @@ function Footer() {
                     </div>
                     <aside className={cx('footer-aside')}>
                         <div className={cx('footer-aside-signature')}>
-                            <a href="/">© 2024 DOGOTRIEU.COM</a>
+                            <Link href={config.routesCompany.aboutUs}>© 2024 DOGOTRIEU.COM</Link>
                         </div>
                         <div className={cx('footer-aside-socical-and-payment')}>
                             <div className={cx('footer-aside-social')}>
                                 <h4>Follow Us</h4>
                                 <ul className={cx('footer-aside-social-list')}>
                                     <li className={cx('footer-aside-social-item')}>
-                                        <a href="/">
+                                        <a
+                                            href={config.routesSocial.facebook}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <FacebookIcon className={cx('icon-social', 'facebook')} />
                                         </a>
                                     </li>
                                     <li className={cx('footer-aside-social-item')}>
-                                        <a href="/">
+                                        <a
+                                            href={config.routesSocial.instagram}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <InstaIcon className={cx('icon-social', 'instagram')} />
                                         </a>
                                     </li>
                                     <li className={cx('footer-aside-social-item')}>
-                                        <a href="/">
+                                        <a
+                                            href={config.routesSocial.printerest}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <PrinterestIcon className={cx('icon-social', 'pinterest')} />
                                         </a>
                                     </li>
                                     <li className={cx('footer-aside-social-item')}>
-                                        <a href="/">
+                                        <a href={config.routesSocial.youtube} target="_blank" rel="noopener noreferrer">
                                             <YoutubeIcon className={cx('icon-social', 'youtube')} />
                                         </a>
                                     </li>

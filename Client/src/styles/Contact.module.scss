@@ -1,0 +1,46 @@
+.page-header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 28px 0;
+}
+
+.page-header-heading {
+    font-size: 2.4rem;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.page-description {
+    word-break: break-word;
+    margin: 10px 0 0 0;
+    & p {
+        font-size: 1.4rem;
+        text-align: center;
+        line-height: 26px;
+        margin-bottom: 0.7em;
+    }
+    & a {
+        font-size: 1.4rem;
+        text-decoration: underline;
+    }
+}
+.page-img-wrapper {
+    text-align: center;
+    & img {
+        margin: 2.7em 0;
+    }
+}
+
+@media screen and (min-width: 641px) {
+    .page-header {
+        margin: 35px 0;
+    }
+    .page-img-wrapper {
+        & img {
+            margin: 42px 0;
+            display: block;
+        }
+    }
+}

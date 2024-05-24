@@ -22,7 +22,7 @@ function Login() {
                 offset={[0, 0]}
                 animation={' transition: opacity 0.7s cubic-bezier(0, 1, 0.4, 1), transform;'}
                 render={(attrs: any) => (
-                    <div className={cx('wrapper')}>
+                    <div className={cx('wrapper')} style={!showMenu ? { display: 'none' } : {}}>
                         <div
                             className={cx('popperover')}
                             tabIndex="-1"
@@ -114,7 +114,7 @@ function Login() {
                 )}
             >
                 <div onClick={() => setShowMenu(!showMenu)}>
-                    <UserIcon style={{ height: '22px', width: '20px' }} />
+                    <UserIcon style={{ height: '22px', width: '20px', cursor: 'pointer' }} />
                 </div>
             </Tippy>
         </div>

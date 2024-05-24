@@ -1,0 +1,99 @@
+.empty-state {
+    margin: 100px 0;
+    text-align: center;
+}
+.empty-state-heading {
+    margin-bottom: 15px;
+}
+.empty-state-description {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 14px;
+}
+.form-search-wrapper {
+    max-width: 410px;
+    margin: 40px auto 25px auto;
+}
+.form-search-inner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.form-input {
+    margin-bottom: 0;
+    position: relative;
+    width: 100%;
+}
+.form-field {
+    display: block;
+    padding: 12px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--form-border-color);
+    width: 100%;
+    line-height: normal;
+    height: 48px;
+    color: var(--heading-color);
+    background: var(--input-background);
+    resize: none;
+    font-size: 1rem;
+    font-size: max(1rem, 16px);
+    box-shadow: 0 1px rgba(var(--border-color-rgb), 0.25) inset;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.form-floating-label {
+    position: absolute;
+    left: 13px;
+    top: 0;
+    line-height: 48px;
+    font-size: 1rem;
+    color: var(--text-color);
+    transform: scale(1);
+    transform-origin: left top;
+    transition: transform 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: 0 30px;
+    line-height: 48px;
+    border-radius: 2px;
+    text-align: center;
+    font-weight: var(--text-font-bolder-weight);
+    font-size: var(--base-text-font-size);
+    cursor: pointer;
+    transition: background 0.25s ease-in-out, color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+    background: var(--primary-button-background);
+    color: var(--primary-button-text-color);
+    padding-left: 14px;
+    padding-right: 14px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.icon-seach {
+    width: 23px;
+    height: 23px;
+    display: inline-block;
+    fill: currentColor;
+    vertical-align: middle;
+    background: none;
+    pointer-events: none;
+    overflow: visible;
+}
+.empty-state-link {
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    &:hover {
+        text-decoration: underline;
+    }
+}
+@media screen and (min-width: 641px) {
+    .empty-state {
+        margin: 170px 0;
+    }
+}

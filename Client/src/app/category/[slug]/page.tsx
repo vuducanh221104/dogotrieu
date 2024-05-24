@@ -1,45 +1,47 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from '@/styles/Category.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
-import { CheckIcon, ChervonDonwIcon, ChervonLeft, ChervonUpIcon } from '@/components/Icons';
+import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import { Archivo } from 'next/font/google';
 import { dataProduct } from '@/services/mockApi';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FilterModal from '@/components/FilterModal';
+import { archivo } from '@/assets/FontNext';
 
-const archivo = Archivo({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    style: ['italic', 'normal'],
-});
+type FilterItem = {
+    id: string;
+    title: string;
+    content: string[];
+};
+
+type ShowFilterContent = {
+    [key: number]: boolean;
+};
+
 const cx = classNames.bind(styles);
 
-function prioritizeQuery(url: any) {
+function prioritizeQuery(url: URL): string {
     const params = url.searchParams;
     const gfMaterial = params.getAll('gf_material');
     const sortBy = params.get('sort_by');
 
     const reorderedParams = new URLSearchParams();
 
-    // Append gf_material first
-    gfMaterial.forEach((material: any) => reorderedParams.append('gf_material', material));
+    gfMaterial.forEach((material: string) => reorderedParams.append('gf_material', material));
 
-    // Append sort_by if it exists
     if (sortBy) {
         reorderedParams.append('sort_by', sortBy);
     }
 
-    // Append other params
-    params.forEach((value: any, key: any) => {
+    params.forEach((value: string, key: string) => {
         if (key !== 'gf_material' && key !== 'sort_by') {
             reorderedParams.append(key, value);
         }
@@ -54,8 +56,15 @@ function PageCategory() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showSort, setShowSort] = useState<boolean>(false);
+    const [showFilterMobile, setShowFilterMobile] = useState<boolean>(false);
+    const [showFilterContent, setShowFilterContent] = useState<ShowFilterContent>({});
+    const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
 
-    const handleLimitChange = (event: any) => {
+    useEffect(() => {
+        setSelectedMaterials(searchParams.getAll('gf_material'));
+    }, [searchParams]);
+
+    const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const limit = event.target.value;
         const url = new URL(window.location.href);
         url.searchParams.set('limit', limit);
@@ -65,7 +74,7 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
-    const handleMaterialChange = (event: any) => {
+    const handleMaterialChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const material = event.target.value;
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
@@ -83,10 +92,29 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
+    const handleRemoveMaterial = (material: string) => {
+        const url = new URL(window.location.href);
+        const materials = new Set(url.searchParams.getAll('gf_material'));
+
+        materials.delete(material);
+
+        url.searchParams.delete('gf_material');
+        materials.forEach((mat) => url.searchParams.append('gf_material', mat));
+        const prioritizedUrl = prioritizeQuery(url);
+        window.history.pushState({}, '', prioritizedUrl);
+        router.replace(prioritizedUrl);
+    };
+
+    const toggleContent = (index: number) => {
+        setShowFilterContent((prevState: ShowFilterContent) => ({
+            ...prevState,
+            [index]: !prevState[index],
+        }));
+    };
+
     const onChangeSort = (value: string) => {
         console.log(value);
         const url = new URL(window.location.href);
-        // const sortValue = url.searchParams.get('sort_by');
         url.searchParams.set('sort_by', value);
         const newUrl = url.toString();
         window.history.pushState({}, '', newUrl);
@@ -96,7 +124,7 @@ function PageCategory() {
     const windowWidth = useWindowWidth();
     const totalPages = 73;
     const data = dataProduct;
-    const dataFilter = [
+    const dataFilter: FilterItem[] = [
         {
             id: '1',
             title: 'AVAILABILITY',
@@ -110,8 +138,11 @@ function PageCategory() {
     ];
 
     return (
+        // Nếu không có product thì thêm thẻ này
+        //<div className={cx('no-product-in-category')}>
+        // Sorry, there are no products in this collection
+        // </div>
         <>
-            <FilterModal />
             <Breadcrumb />
             <Container className="container-flush">
                 <div className={cx('layout')}>
@@ -122,42 +153,61 @@ function PageCategory() {
                                     <div className={cx('title-block')}>
                                         <span>Filter</span>
                                     </div>
-                                    <p>Clear All</p>
+                                    <p
+                                        onClick={() => {
+                                            const url = new URL(window.location.href);
+                                            url.searchParams.delete('gf_material');
+                                            const prioritizedUrl = prioritizeQuery(url);
+                                            window.history.pushState({}, '', prioritizedUrl);
+                                            router.replace(prioritizedUrl);
+                                        }}
+                                    >
+                                        Clear All
+                                    </p>
                                 </div>
                                 <div className={cx('filter-selected-items')}>
-                                    <div className={cx('selected-item-option-label')}>
-                                        <span className={cx('selected-item')}>
-                                            <span className={cx('hidden-xs')}>Material</span>:
-                                            <strong>
-                                                <span className={cx('gf-label')}>Wood</span>
-                                            </strong>
-                                        </span>
-                                        <span className={cx('icon-clear')}></span>
-                                    </div>
+                                    {selectedMaterials.map((material: string, index: number) => (
+                                        <div className={cx('selected-item-option-label')} key={material}>
+                                            <span className={cx('selected-item')}>
+                                                <span className={cx('hidden-xs')}>Material</span>:
+                                                <strong>
+                                                    <span className={cx('gf-label')}>{material}</span>
+                                                </strong>
+                                            </span>
+                                            <span
+                                                className={cx('icon-clear')}
+                                                onClick={() => handleRemoveMaterial(material)}
+                                            >
+                                                x
+                                            </span>
+                                        </div>
+                                    ))}
                                 </div>
                                 <div className={cx('filter-group-list')}>
-                                    {dataFilter.map((item) => (
+                                    {dataFilter.map((item: FilterItem, index: number) => (
                                         <div className={cx('filter-group-item')} key={item.id}>
-                                            <button className={cx('filter-name')}>
+                                            <button className={cx('filter-name')} onClick={() => toggleContent(index)}>
                                                 {item.title}
                                                 <ChervonUpIcon className={cx('icon-chervonup')} />
                                             </button>
                                             <div
                                                 className={cx('filter-checkbox-wrapper')}
-                                                style={{ height: 'auto', overflow: 'visible', visibility: 'visible' }}
+                                                style={
+                                                    showFilterContent[index]
+                                                        ? { height: 'auto', overflow: 'visible', visibility: 'visible' }
+                                                        : { height: '0' }
+                                                }
                                             >
                                                 <ul className={cx('filter-checkbox-list')}>
-                                                    {item?.content.map((contentItem, index) => (
-                                                        <li className={cx('filter-checkbox-item')} key={index}>
+                                                    {item?.content.map((contentItem: string, indexItem: number) => (
+                                                        <li className={cx('filter-checkbox-item')} key={indexItem}>
                                                             <div className={cx('checkbox-content')}>
                                                                 <input
                                                                     type="checkbox"
                                                                     className={cx('input-checkbox')}
                                                                     value={contentItem}
                                                                     onChange={handleMaterialChange}
-                                                                    checked={searchParams
-                                                                        .getAll('gf_material')
-                                                                        .includes(contentItem)}
+                                                                    checked={selectedMaterials.includes(contentItem)}
                                                                 />
                                                                 <CheckIcon className={cx('icon-check')} />
                                                             </div>
@@ -200,7 +250,10 @@ function PageCategory() {
                                         <div className={cx('gf-controls-container')}>
                                             <div className={cx('gf-action')}>
                                                 <div className={cx('gf-filter-trigger')}>
-                                                    <div className={cx('gf-refine-toggle-mobile')}>
+                                                    <div
+                                                        className={cx('gf-refine-toggle-mobile')}
+                                                        onClick={() => setShowFilterMobile(!showFilterMobile)}
+                                                    >
                                                         <span>
                                                             <FontAwesomeIcon
                                                                 icon={faBarsProgress}
@@ -271,9 +324,31 @@ function PageCategory() {
                                                         </Tippy>
                                                     </div>
                                                 </div>
+                                                <div className={cx('gf-filter-seleted-on-mobile')}>
+                                                    <ul>
+                                                        {selectedMaterials.map((material: string) => (
+                                                            <li onClick={() => handleRemoveMaterial(material)}>
+                                                                <div>
+                                                                    <span className={cx('selected-item-on-mobile')}>
+                                                                        <strong>
+                                                                            <span className={cx('gf-label')}>
+                                                                                {material}
+                                                                            </span>
+                                                                        </strong>
+                                                                    </span>
+                                                                    <span className={cx('icon-clear')}></span>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
+                                        {/* Product Card  */}
                                         <div className={cx('category-product-item')}>
+                                            {/* <div className={cx('no-product-in-category')}>
+                                                Sorry, there are no products in this collection
+                                            </div> */}
                                             {data.map((item, index) => {
                                                 const isSpecialIndex =
                                                     windowWidth <= 641 ? index % 2 !== 0 : (index + 1) % 3 === 0;
@@ -286,6 +361,7 @@ function PageCategory() {
                                                 );
                                             })}
                                         </div>
+                                        {/* Pagination */}
                                         <Pagination totalPages={totalPages} />
                                     </div>
                                 </div>
@@ -294,6 +370,13 @@ function PageCategory() {
                     </div>
                 </div>
             </Container>
+            <FilterModal
+                dataFilter={dataFilter}
+                showFilterMobile={showFilterMobile}
+                setShowFilterMobile={setShowFilterMobile}
+                toggleContent={toggleContent}
+                showFilterContent={showFilterContent}
+            />
         </>
     );
 }

@@ -639,3 +639,70 @@ export const VisaPayment: React.FC<IconsType> = ({ width = '36px', height = '22p
         ></path>
     </svg>
 );
+
+export const DividerSymbol: React.FC<IconsType> = ({ width = '36px', height = '22px', className, style }) => (
+    <svg
+        className={className}
+        style={style}
+        viewBox="0 0 40 16"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        width={width}
+        height={height}
+        aria-labelledby="divider-symbol"
+    >
+        <title id="divider-symbol">Divider Symbol</title>
+        <g stroke="currentColor" strokeWidth="2">
+            <path d="M7 8C7 9.65685 5.65685 11 4 11C2.34315 11 1 9.65685 1 8C1 6.34315 2.34315 5 4 5C5.65685 5 7 6.34315 7 8Z"></path>
+            <path d="M27 8C27 11.866 23.866 15 20 15C16.134 15 13 11.866 13 8C13 4.13401 16.134 1 20 1C23.866 1 27 4.13401 27 8Z"></path>
+            <path d="M39 8C39 9.65685 37.6569 11 36 11C34.3431 11 33 9.65685 33 8C33 6.34315 34.3431 5 36 5C37.6569 5 39 6.34315 39 8Z"></path>
+        </g>
+    </svg>
+);
+export const MessageChat: React.FC<IconsType> = ({ width = '36px', height = '22px', className, style }) => (
+    <svg
+        className={className}
+        style={style}
+        viewBox="0 0 100 100"
+        role="img"
+        aria-label="Bubble icon button"
+        xmlns="http://www.w3.org/2000/svg"
+        width={width}
+        height={height}
+    >
+        <filter id="33c9df204aeec9aa096f1fd360bd4160">
+            <feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur>
+            <feOffset dx="0" dy="4" result="offsetblur"></feOffset>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.4"></feFuncA>
+            </feComponentTransfer>
+            <feComposite operator="in" in2="offsetblur"></feComposite>
+            <feMerge>
+                <feMergeNode></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <path
+            fill="#161616"
+            filter="#33c9df204aeec9aa096f1fd360bd4160"
+            d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+        ></path>
+    </svg>
+);
+
+export const MessageChatXmark: React.FC<IconsType> = ({ width = '36px', height = '22px', className, style }) => (
+    <svg
+        className={className}
+        style={style}
+        viewBox="0 0 28 28"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        width={width}
+        height={height}
+    >
+        <path
+            d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+            fill="#161616"
+        ></path>
+    </svg>
+);
