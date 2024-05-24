@@ -6,19 +6,9 @@ import { ChervonRight, FacebookIcon, InstaIcon, PrinterestIcon, YoutubeIcon } fr
 import MapMini from '@/components/MapMini';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { dataNews } from '@/services/mockApi';
-import { routesUser } from '@/config/routesUser/routesUser';
-import { Open_Sans } from 'next/font/google';
-import { Poppins } from 'next/font/google';
-const openSans = Open_Sans({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    style: ['italic', 'normal'],
-});
-const poppins = Poppins({
-    subsets: ['latin'],
-    weight: ['200', '300', '400', '500', '600', '700'],
-    style: ['italic', 'normal'],
-});
+import { archivo, poppins } from '@/assets/FontNext';
+import config from '@/config';
+
 const cx = classNames.bind(styles);
 function NewsHome() {
     const data = dataNews;
@@ -38,7 +28,7 @@ function NewsHome() {
                                         <div className={cx('news-item')}>
                                             <div className={cx('article-item')}>
                                                 <a
-                                                    href={`${routesUser.blogsNews}/${item.slug}`}
+                                                    href={`${config.routes.news}/${item.slug}`}
                                                     className={cx('news-item-link')}
                                                 >
                                                     <div className={cx('aspect-ratio')}>
@@ -50,7 +40,7 @@ function NewsHome() {
                                                     </div>
                                                 </a>
                                                 <h3 className={cx('news-item-title')}>
-                                                    <a href="/" className={cx(openSans.className)}>
+                                                    <a href="/" className={cx(archivo.className)}>
                                                         {item.title}
                                                     </a>
                                                 </h3>

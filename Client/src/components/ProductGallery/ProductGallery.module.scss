@@ -35,6 +35,7 @@
 }
 
 // SWIPER
+
 .scroll-inner {
     position: relative;
     padding-bottom: 20px;
@@ -45,6 +46,7 @@
     -ms-scroll-snap-type: x mandatory;
     scroll-snap-type: x mandatory;
     white-space: nowrap;
+    z-index: 100;
 }
 .swiper-gallery-main {
     position: relative;
@@ -148,5 +150,12 @@
     }
     .product-gallery-thumbnail {
         margin: 8px 4px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .swiper-gallery-main {
+        margin-bottom: -70px;
+        margin-top: -70px;
     }
 }

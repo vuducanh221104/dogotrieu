@@ -4,8 +4,10 @@ import '../styles/GobalStyles.scss';
 import '../styles/SwiperCustom.scss';
 
 import Footer from '@/Layout/components/Footer';
-import Header from '@/Layout/components/Header';
+
 import AnouBar from '@/Layout/components/AnouBar';
+import Chat from '@/Layout/components/Chat';
+import Header from '@/Layout/components/Header';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -24,11 +26,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
             <body className={poppins.className}>
                 <AnouBar />
                 <Header />
                 <main className="App">{children}</main>
                 <Footer />
+                <Chat />
             </body>
         </html>
     );

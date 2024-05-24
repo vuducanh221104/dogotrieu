@@ -1,0 +1,36 @@
+.empty-state {
+    margin: 100px 0;
+    text-align: center;
+}
+
+.empty-state-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+.empty-state-icon {
+    width: 81px;
+    height: 70px;
+}
+.empty-state-heading {
+    margin-top: 10px;
+}
+.empty-state-tile {
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+.empty-state-button {
+    margin-top: 16px;
+    & a {
+        min-width: 230px;
+        background: #030303;
+        color: #ffffff;
+    }
+}
+
+@media screen and (min-width: 641px) {
+    // No-product
+    .empty-state {
+        margin: 170px 0;
+    }
+}

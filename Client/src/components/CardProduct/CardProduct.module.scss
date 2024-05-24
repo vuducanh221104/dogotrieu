@@ -170,6 +170,9 @@
 }
 
 @media screen and (min-width: 1000px) {
+    .product-item.on-page-search {
+        width: 25%;
+    }
     .product-label-list {
         left: 0;
     }

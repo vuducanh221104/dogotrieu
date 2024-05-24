@@ -1,0 +1,102 @@
+.trade-wrapper {
+    display: block;
+}
+.trade-inner {
+    padding: 0 15px;
+    width: 100%;
+    margin: auto;
+    max-width: 1170px;
+}
+.trade-header {
+    margin-top: 20px;
+}
+.trade-heading {
+    padding: 16px;
+}
+.trade-h3 {
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: Lato;
+    color: #222;
+    text-align: center;
+}
+.trade-separated {
+    font-size: 2px;
+    margin-top: 25px;
+    position: relative;
+    display: flex;
+    padding: 40px 16px;
+
+    & span {
+        flex: 1 0 auto;
+        display: flex;
+        line-height: 1;
+        padding: 0 16px;
+        margin-top: -10px;
+    }
+    .icon-divider-symbol {
+        fill: none !important;
+    }
+    &::before {
+        display: block;
+        content: '';
+        width: 100%;
+        border-top: 1em solid;
+    }
+    &::after {
+        display: block;
+        content: '';
+        width: 100%;
+        border-top: 1em solid;
+    }
+}
+.trade-image-gobal {
+    width: 100%;
+    height: 482px;
+    padding: 0;
+    max-width: 100%;
+    display: inline-block;
+    position: relative;
+    & img {
+        object-fit: cover;
+        object-position: center center;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        max-width: 100%;
+        border: 0;
+        vertical-align: middle;
+    }
+}
+
+.trade-des-1-inner {
+    padding: 16px;
+}
+.des-1-heading {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 600;
+    margin: 25px 0 20px 0;
+}
+.des-1-heading2 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 400;
+    margin: 25px 0 20px 0;
+}
+
+.trade-des-2-inner {
+    padding: 16px;
+    text-align: center;
+    & p {
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin: 25px 0 20px 0;
+    }
+    & a {
+        font-size: 1.6rem;
+        font-weight: 400;
+        text-decoration: underline !important;
+    }
+}

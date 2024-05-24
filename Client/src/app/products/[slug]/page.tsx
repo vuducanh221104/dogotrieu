@@ -8,17 +8,7 @@ import { Poppins } from 'next/font/google';
 import { DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 import Breadcrumb from '@/components/Breadcrumb';
-
-const archivo = Archivo({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    style: ['italic', 'normal'],
-});
-const poppins = Poppins({
-    subsets: ['latin'],
-    weight: ['200', '300', '400', '500', '600', '700'],
-    style: ['italic', 'normal'],
-});
+import { archivo } from '@/assets/FontNext';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {

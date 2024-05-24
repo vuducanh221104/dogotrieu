@@ -1,0 +1,137 @@
+.popperover {
+    width: 100%;
+    transition: opacity 0.7s cubic-bezier(0, 1, 0.4, 1);
+}
+
+.wrapper {
+    right: 20px;
+    bottom: 20px;
+    visibility: visible;
+    width: 80px;
+    height: 74px;
+    border: none;
+    user-select: none;
+    position: fixed;
+    z-index: 2147483000;
+    color-scheme: light;
+}
+.messsage-inner {
+    display: block;
+}
+.button {
+    cursor: pointer;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    background-color: rgb(223, 204, 142);
+    border: 0px;
+    border-radius: 100px;
+    box-shadow: rgba(22, 22, 22, 0.16) 0px 2px 4px;
+    transition: all 200ms ease 0s;
+    padding: 16px 30px;
+    margin: 7px 10px;
+    height: 60px;
+    max-width: 60px;
+    outline: 0px;
+}
+.icon-message-wrapper {
+    position: absolute;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    transition: all 200ms ease 0s;
+    left: 16px;
+    width: 28px;
+    opacity: 1;
+    height: 28px;
+    &.active {
+        opacity: 0;
+    }
+}
+.icon {
+    width: 28px !important;
+    height: 28px !important;
+}
+
+// Social
+.minichat-social-list {
+    padding: 0;
+    text-decoration: none;
+    & .minichat-social-item {
+        display: flex;
+        align-items: center;
+        margin-top: 8px;
+        padding: 0 5.6px;
+        width: 110px;
+        border-radius: 8px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 0.2rem 0.35rem rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        & a {
+            display: flex;
+            align-items: center;
+        }
+        & .minichat-icon {
+            width: 26px;
+            height: 26px;
+            & svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        & .minichat-social-info {
+            font-size: 1rem;
+            color: #000;
+            margin: 9.8px 0;
+            padding-left: 5px;
+            line-height: 0.4rem;
+            & h6 {
+                font-weight: 700;
+            }
+            & p {
+                margin: 0;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 999px) {
+    .wrapper {
+        width: 70px;
+        height: 64px;
+    }
+
+    .icon-message-wrapper {
+        left: 11px;
+    }
+    .button {
+        padding: 15px 25px;
+        height: 50px;
+        max-width: 50px;
+    }
+}
+
+@media screen and (max-width: 641px) {
+    .wrapper {
+        right: 7px;
+        bottom: 16px;
+    }
+    .button {
+        padding: 13px 22px;
+        height: 45px;
+        max-width: 45px;
+    }
+    .icon-message-wrapper {
+        left: 8px;
+    }
+}

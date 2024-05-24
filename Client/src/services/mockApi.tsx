@@ -23,7 +23,7 @@ export const dataBannerAndCustomer = {
     ],
 };
 
-export const dataProduct = [
+export const dataProduct: IProduct[] = [
     {
         id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
@@ -39,6 +39,7 @@ export const dataProduct = [
         color: [],
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/ETH10341_300x.png?v=1708413169',
         price: 5000000,
@@ -51,6 +52,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/ETH10266_70d918e5-8eb3-4e73-a168-fcb02498205e_300x.png?v=1707487024',
         price: 5000000,
@@ -63,6 +65,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/files/TKAJO10_300x.png?v=1686846898',
         price: 5000000,
@@ -75,6 +78,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/DBOCKN3724_1_300x.png?v=1654084600',
         price: 5000000,
@@ -87,6 +91,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/ETH10266_70d918e5-8eb3-4e73-a168-fcb02498205e_300x.png?v=1707487024',
         price: 5000000,
@@ -99,6 +104,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/ETH10341_300x.png?v=1708413169',
         price: 5000000,
@@ -111,6 +117,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/files/TKAJO10_300x.png?v=1686846898',
         price: 5000000,
@@ -123,6 +130,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/DBOCKN3724_1_300x.png?v=1654084600',
         price: 5000000,
@@ -135,6 +143,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/files/TKAJO10_300x.png?v=1686846898',
         price: 5000000,
@@ -147,6 +156,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/DBOCKN3724_1_300x.png?v=1654084600',
         price: 5000000,
@@ -159,6 +169,7 @@ export const dataProduct = [
         slug: 'oak-scandinavian-lounge-armchair-bolia-bowie',
     },
     {
+        id: '123125412',
         name: 'Oak Scandinavian Lounge Armchair | Bolia Bowie',
         image: 'https://woodfurniture.com/cdn/shop/products/ETH10266_70d918e5-8eb3-4e73-a168-fcb02498205e_300x.png?v=1707487024',
         price: 5000000,

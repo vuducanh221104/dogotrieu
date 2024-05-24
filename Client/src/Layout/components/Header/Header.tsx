@@ -7,7 +7,7 @@ import { Container } from 'react-bootstrap';
 import SearchInner from '@/components/Tippy/SearchInner';
 import Navbar from '../Navbar';
 import SearchOnMoblie from '@/components/SearchOnMoblie';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     BarsIcon,
     ChervonDonwIcon,
@@ -28,6 +28,7 @@ import CartTippy from '@/components/Tippy/CartTippy';
 const cx = classNames.bind(styles);
 
 function Header() {
+    const menuRef = useRef<any>(null);
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showBars, setShowBars] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
@@ -42,14 +43,11 @@ function Header() {
         setHeight(window.innerHeight);
         setWidth(window.innerWidth);
     };
+
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
         return () => window.removeEventListener('resize', updateDimensions);
     }, [showBars]);
-
-    // HANDLE REPONSIVE HEIGHT MENU
-    const menuHeightPrev = width <= 641 ? (width <= 393 ? height - 100 : height - 75) : height - 80;
-    const menuHeightReal = height * 0.01;
 
     const dataMenuPanel: IMenuPanel[] = [
         {
@@ -123,12 +121,26 @@ function Header() {
         setToggleIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
+    const handleClickOutside = (event: any) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setShowBars(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className={cx('header-wrapper')}>
+        <div className={cx('header-wrapper', showSearch && 'header--search-expanded')}>
             <header className={cx('header')}>
                 <Container>
                     <div className={cx('header-inner')}>
                         {/* Menu Bars */}
+
                         <nav className={cx('header-bars')}>
                             {showBars ? (
                                 <button className={cx('btn-bars')}>
@@ -147,6 +159,7 @@ function Header() {
                             )}
                             {/* MENU MOBILE */}
                             <div
+                                ref={menuRef}
                                 className={cx('mobile-menu')}
                                 style={
                                     showBars
@@ -156,7 +169,7 @@ function Header() {
                                               opacity: '1',
                                               transition:
                                                   'opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),visibility 0.4s linear',
-                                              maxHeight: 27 + menuHeightPrev - menuHeightReal,
+                                              maxHeight: width < 386 ? height - 117 : height - 93,
                                           }
                                         : {}
                                 }
@@ -380,7 +393,12 @@ function Header() {
                                 onHide={() => setClassActive('')}
                                 animation={' transition: opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform;'}
                                 render={(attrs: any) => (
-                                    <div className={cx('popperover')} tabIndex="-1" {...attrs}>
+                                    <div
+                                        className={cx('popperover')}
+                                        tabIndex="-1"
+                                        {...attrs}
+                                        style={!showTippyLang ? { display: 'none' } : {}}
+                                    >
                                         <div className={cx('wrapper-tippy', 'no-padding', classActive)}>
                                             <ul className={cx('language-change-list')}>
                                                 <li className={cx('language-change-item')}>
@@ -396,13 +414,14 @@ function Header() {
                                 offset={[0, 0]}
                             >
                                 <div className={cx('header-icon-map')} onClick={() => setShowTippyLang(!showTippyLang)}>
-                                    <span style={{ height: '15px', width: '15px' }}>🇺🇸</span>
+                                    <span style={{ fontSize: '1.4rem' }}>🇺🇸</span>
                                     <ChervonDonwIcon
                                         style={{
                                             height: '15px',
                                             width: '18px',
                                             paddingLeft: '3px',
                                             fontSize: '1.2rem',
+                                            marginBottom: '5px',
                                         }}
                                     />
                                 </div>
