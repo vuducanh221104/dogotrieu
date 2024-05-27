@@ -1,5 +1,5 @@
 'use client';
-import styles from '../styles/Home.module.scss';
+import styles from '@/styles/Home.module.scss';
 import classNames from 'classnames/bind';
 import React from 'react';
 import SwiperBanner from '@/components/Swiper/SwiperBanner';
@@ -28,6 +28,7 @@ function Home() {
                         backgroundColor={'#f9eae9'}
                     />
                 </div>
+
                 {/* Product List */}
                 <ViewListProductAuto title={'BEST SELLER'} nextBtn={true} nextBtnLink={'/'} />
                 {/* NEWS */}

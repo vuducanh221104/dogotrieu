@@ -14,11 +14,16 @@ interface IProduct {
     image: string;
     price: number;
     price_discount: number | null;
-    wood_type: string;
+    material: {
+        name: string;
+        material_type_id: {
+            name: string;
+        };
+    };
     ship?: string | null;
     stock_quantity: number;
     tags: string[];
-    categories?: string[];
+    category: string[];
     color?: string[];
     slug: string;
 }

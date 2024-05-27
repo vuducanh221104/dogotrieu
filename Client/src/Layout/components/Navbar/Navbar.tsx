@@ -10,76 +10,13 @@ import { Container } from 'react-bootstrap';
 import Image from 'next/image';
 import { ChervonDonwIcon, ChervonUpMenuIcon } from '@/components/Icons';
 import images from '@/assets';
+import { dataMenuNavBar } from '@/services/menuData/menuData';
+import config from '@/config';
+import Link from 'next/link';
 
 const cx = classNames.bind(styles);
 function Navbar() {
-    const dataMenuPanel: IMenuPanel[] = [
-        {
-            id: 0,
-            title: 'SEATING',
-            subMenu: [
-                { title: 'Accent Chairs', link: '/' },
-                { title: 'Barstools', link: '/' },
-                { title: 'Benches', link: '/' },
-                { title: 'Dining Chairs', link: '/' },
-                { title: 'Poufs & Stools', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 1,
-            title: 'TABLES',
-            subMenu: [
-                { title: 'Coffee Tables', link: '/' },
-                { title: 'Console Tables', link: '/' },
-                { title: 'Desks', link: '/' },
-                { title: 'Dining Tables', link: '/' },
-                { title: 'Side Tables', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 2,
-            title: 'STORAGE',
-            subMenu: [
-                { title: 'Bookcases', link: '/' },
-                { title: 'Cabinets', link: '/' },
-                { title: 'Dressers', link: '/' },
-                { title: 'Media Units', link: '/' },
-                { title: 'Sideboards', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 2,
-            title: 'BED & BATH',
-            subMenu: [
-                { title: 'Bathroom', link: '/' },
-                { title: 'Beds', link: '/' },
-            ],
-            height: 70,
-        },
-        {
-            id: 3,
-            title: 'LIGHTING',
-            subMenu: [
-                { title: 'Floor Lamps', link: '/' },
-                { title: 'Table Lamps', link: '/' },
-                { title: 'Wall Lamps', link: '/' },
-                { title: 'Pendant Lights', link: '/' },
-            ],
-            height: 150,
-        },
-        {
-            id: 4,
-            title: 'DECOR',
-            subMenu: [
-                { title: 'Home Decor', link: '/' },
-                { title: 'Chest', link: '/' },
-            ],
-            height: 70,
-        },
-    ];
+    const dataMenuPanel = dataMenuNavBar;
 
     return (
         <nav className={cx('navbar')}>
@@ -88,13 +25,13 @@ function Navbar() {
                     <Container>
                         <ul className={cx('navbar-list')}>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    IN STOCK
-                                </a>
+                                <Link href={config.routes.categoryInStock} className={cx('navbar-item-link')}>
+                                    CÒN HÀNG
+                                </Link>
                             </li>
                             <li className={cx('navbar-item', 'static')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    SHOP
+                                <a href={config.routes.categoryAll} className={cx('navbar-item-link')}>
+                                    CỬA HÀNG
                                     <ChervonDonwIcon style={{ height: '8px', width: '12px', marginLeft: '8px' }} />
                                     <ChervonUpMenuIcon className={cx('icon-menu-up')} />
                                 </a>
@@ -135,28 +72,28 @@ function Navbar() {
                                 </div>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    NEW
+                                <a href={config.routes.news} className={cx('navbar-item-link')}>
+                                    TIN TỨC
                                 </a>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
+                                <a href={config.routes.news} className={cx('navbar-item-link')}>
                                     BLOG
                                 </a>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    TRADE
+                                <a href={config.routesCompany.tradeIn} className={cx('navbar-item-link')}>
+                                    GIAO DỊCH
                                 </a>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    CONTACT
+                                <a href={config.routesCompany.contact} className={cx('navbar-item-link')}>
+                                    LIÊN HỆ
                                 </a>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href="/" className={cx('navbar-item-link')}>
-                                    SHOP THE LOOK
+                                <a href={config.routesCompany.aboutUs} className={cx('navbar-item-link')}>
+                                    VỀ CHÚNG TÔI
                                 </a>
                             </li>
                         </ul>

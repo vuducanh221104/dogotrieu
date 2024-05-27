@@ -8,6 +8,8 @@ const routes = {
         search: '/search',
         cart: '/cart',
         news: '/blogs/news',
+        categoryInStock: '/category/in-stock',
+        categoryAll: '/category/all',
         category: '/category', //slug
         productDetail: '/products', //slug
         newsDetail: '/blogs/news', //slug
@@ -15,6 +17,12 @@ const routes = {
 
     admin: {
         dashboard: '/admin/dashboard',
+    },
+
+    pageCompany: {
+        contact: '/pages/contact',
+        aboutUs: '/pages/about',
+        tradeIn: '/pages/trade',
     },
 
     social: {
@@ -25,12 +33,6 @@ const routes = {
         zaloChat: 'https://www.facebook.com/I.Am.DucAnh123',
         phoneChat: 'https://www.facebook.com/I.Am.DucAnh123',
         messagerChat: 'https://www.facebook.com/I.Am.DucAnh123',
-    },
-
-    pageCompany: {
-        contact: '/pages/contact',
-        aboutUs: '/pages/about',
-        tradeIn: '/pages/trade',
     },
 };
 

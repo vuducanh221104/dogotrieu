@@ -11,7 +11,7 @@ function PageContact() {
         <>
             <Container className={'container--narrow'}>
                 <div className={cx('page-header')}>
-                    <h1 className={`${cx('page-header-heading')} ${archivo.className}`}>CONTACT</h1>
+                    <h1 className={`${cx('page-header-heading')} ${archivo.className}`}>LIÊN HỆ</h1>
                     <div className={cx('page-description')}>
                         <div className={cx('page-img-wrapper')}>
                             <center>
@@ -23,21 +23,23 @@ function PageContact() {
                         </div>
                         <p>
                             {' '}
-                            Our team is always ready to assist with any inquiry about the products or services mentioned
-                            on our website. Whether it be a question on design, availability, or price we are
-                            immediately at your disposal. We pride ourselves with being as transparent as possible with
-                            our clients. Whether it be via email or phone, follow the form below to contact us!
+                            Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ với mọi yêu cầu về sản phẩm hoặc dịch vụ được đề
+                            cập trên trang web của chúng tôi. Cho dù đó là câu hỏi về thiết kế, sự có sẵn, hoặc giá cả,
+                            chúng tôi luôn sẵn lòng phục vụ bạn ngay lập tức. Chúng tôi tự hào với việc trở nên càng
+                            minh bạch càng tốt với khách hàng của mình. Cho dù là qua email hay điện thoại, hãy sử dụng
+                            mẫu dưới đây để liên hệ với chúng tôi!
                         </p>
                         <p>
-                            We consider customer service another great opportunity to serve you better. As such, your
-                            questions or concerns are a priority at Wood Furniture. Please feel free to contact us today
-                            with any questions, concerns or requests.
+                            Chúng tôi coi dịch vụ khách hàng như một cơ hội tốt để phục vụ bạn tốt hơn. Vì vậy, các câu
+                            hỏi hoặc quan tâm của bạn là ưu tiên hàng đầu tại Đồ Gỗ Triệu của chúng tôi. Hãy liên hệ với
+                            chúng tôi ngay hôm nay với bất kỳ câu hỏi, lo ngại hoặc yêu cầu nào.
                         </p>
-                        <p>MON-FRI 9AM - 6PM EST</p>
+                        <p>Thứ hai-Chủ Nhật 8h Sáng - 5h Chiều </p>
                         <p>
-                            <a href="/"> Tel: 844 443-WOOD</a>
+                            <a href="tel:0348483612">Tel: 0348483612</a>
                         </p>
-                        <p>Brickell, Miami - FL - 33130</p>
+                        <p>Cửa Hàng : 24 Lương Định Của , Trần Não ,TP.Thủ Đức</p>
+                        <p>Kho,Xưởng :25/4 Xuân Thủy , Thảo Điền , TP.Thủ Đức</p>
                     </div>
                 </div>
             </Container>

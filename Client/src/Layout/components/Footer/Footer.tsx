@@ -33,36 +33,36 @@ function Footer() {
     const footerItems = [
         {
             id: 0,
-            title: 'ABOUT WOOD FURNITURE',
+            title: 'Về Chúng Tôi',
             content:
-                'Wood Furniture was created with the intention of offering you an array of certified sustainably sourced materials for wood furniture, lighting and decor. We strive to be as eco-friendly as possible and are a proud partner of the National Forest Foundation. WOODFURNITURE.COM is part of the OROA Group.',
+                'Đồ Gỗ Triệu Cam Kết tự hào cam kết với bạn rằng mọi sản phẩm gỗ mà chúng tôi cung cấp đều được xây dựng trên nền tảng uy tín và chất lượng tối đa. Chúng tôi không chỉ là một cửa hàng, mà còn là một niềm tin, một sự đảm bảo về sự an tâm và hài lòng cho quý khách hàng.',
             classNameChild: 'text',
             height: '140px',
         },
         {
             id: 1,
-            title: 'COMPANY',
+            title: 'GIỚI THIỆU',
             links: [
-                { label: 'About us', url: config.routesCompany.aboutUs },
-                { label: 'Contact', url: config.routesCompany.contact },
+                { label: 'Về Chúng Tôi', url: config.routesCompany.aboutUs },
+                { label: 'Liên Hệ', url: config.routesCompany.contact },
             ],
             classNameChild: 'link',
             height: '181px',
         },
         {
             id: 2,
-            title: 'EXPLORE',
+            title: 'KHÁM PHÁ',
             links: [
-                { label: 'Trade', url: config.routesCompany.tradeIn },
-                { label: 'Blog', url: config.routes.news },
+                { label: 'GIAO DỊCH', url: config.routesCompany.tradeIn },
+                { label: 'TIN TỨC', url: config.routes.news },
             ],
             classNameChild: 'link',
             height: '60px',
         },
         {
             id: 3,
-            title: 'NEWSLETTER',
-            content: 'Sign up for exclusive promotions, new collections, tips & much more',
+            title: 'ĐĂNG KÝ NHẬN TIN',
+            content: 'Đăng ký nhận tin để nhận các ưu đãi độc quyền, bộ sưu tập mới, mẹo và nhiều hơn nữa',
             classNameChild: 'newsletter',
             height: '40px',
         },

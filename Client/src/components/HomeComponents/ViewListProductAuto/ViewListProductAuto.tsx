@@ -11,6 +11,8 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { dataProduct } from '@/services/mockApi';
 import FormatPrice from '@/components/FormatPrice';
 import { Archivo } from 'next/font/google';
+import CardProduct from '@/components/CardProduct';
+import Link from 'next/link';
 const archivo = Archivo({
     subsets: ['latin'],
     weight: ['400', '500', '600'],
@@ -165,24 +167,34 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                     }
                                                 >
                                                     <div className={cx('product-image')}>
-                                                        <div className={cx('aspect-ratio')}>
-                                                            <img src={item.image} alt="image-product" />
-                                                        </div>
+                                                        <Link href="/">
+                                                            <div className={cx('aspect-ratio')}>
+                                                                <img src={item.thumb} alt="image-product" />
+                                                            </div>
+                                                        </Link>
                                                     </div>
                                                     <div className={cx('product-info')}>
-                                                        <p className={cx('product-tag')}>{item.ship}</p>
-                                                        <h3 className={cx('product-vendor')}>{item.wood_type}</h3>
-                                                        <h2 className={cx('product-name')}>{item.name}</h2>
+                                                        {item.ship !== null && (
+                                                            <p className={cx('product-tag')}>{item.ship}</p>
+                                                        )}
+                                                        <Link href="/">
+                                                            <h3 className={cx('product-vendor')}>
+                                                                {item.material_id.material_type_id.name}
+                                                            </h3>
+                                                        </Link>
+                                                        <Link href="/">
+                                                            <h2 className={cx('product-name')}>{item.name}</h2>
+                                                        </Link>
 
                                                         <div
                                                             className={cx(
                                                                 'product-price-wrapper',
-                                                                item.price_discount !== null && 'have-price-discount',
+                                                                item.discount !== null && 'have-price-discount',
                                                             )}
                                                         >
-                                                            {item.price_discount !== null && (
+                                                            {item.discount !== null && (
                                                                 <p className={cx('product-price-discount')}>
-                                                                    <FormatPrice value={item.price_discount} />
+                                                                    <FormatPrice value={item.discount} />
                                                                 </p>
                                                             )}
                                                             <p className={cx('product-price-real')}>
@@ -190,7 +202,13 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                             </p>
                                                         </div>
 
-                                                        <span className={cx('product-status')}>{item.stock}</span>
+                                                        {item.quantity > 0 ? (
+                                                            <span className={cx('product-status')}>IN STOCK</span>
+                                                        ) : (
+                                                            <span className={cx('product-status', 'out-stock')}>
+                                                                OUT STOCK
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ))}
@@ -219,24 +237,31 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                     {data.map((item: any, index: any) => (
                                         <div className={cx('product-item')}>
                                             <div className={cx('product-image')}>
-                                                <div className={cx('aspect-ratio')}>
-                                                    <img src={item.image} alt="image-product" />
-                                                </div>
+                                                <Link href="/">
+                                                    <div className={cx('aspect-ratio')}>
+                                                        <img src={item.thumb} alt="image-product" />
+                                                    </div>
+                                                </Link>
                                             </div>
                                             <div className={cx('product-info')}>
-                                                <p className={cx('product-tag')}>{item.ship}</p>
-                                                <h3 className={cx('product-vendor')}>{item.wood_type}</h3>
-                                                <h2 className={cx('product-name')}>{item.name}</h2>
-
+                                                {item.ship !== null && <p className={cx('product-tag')}>{item.ship}</p>}
+                                                <Link href="/">
+                                                    <h3 className={cx('product-vendor')}>
+                                                        {item.material_id.material_type_id.name}
+                                                    </h3>
+                                                </Link>
+                                                <Link href="/">
+                                                    <h2 className={cx('product-name')}>{item.name}</h2>
+                                                </Link>
                                                 <div
                                                     className={cx(
                                                         'product-price-wrapper',
-                                                        item.price_discount !== null && 'have-price-discount',
+                                                        item.discount !== null && 'have-price-discount',
                                                     )}
                                                 >
-                                                    {item.price_discount !== null && (
+                                                    {item.discount !== null && (
                                                         <p className={cx('product-price-discount')}>
-                                                            <FormatPrice value={item.price_discount} />
+                                                            <FormatPrice value={item.discount} />
                                                         </p>
                                                     )}
                                                     <p className={cx('product-price-real')}>
@@ -244,7 +269,11 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                     </p>
                                                 </div>
 
-                                                <span className={cx('product-status')}>{item.stock}</span>
+                                                {item.quantity > 0 ? (
+                                                    <span className={cx('product-status')}>IN STOCK</span>
+                                                ) : (
+                                                    <span className={cx('product-status', 'out-stock')}>OUT STOCK</span>
+                                                )}
                                             </div>
                                         </div>
                                     ))}
