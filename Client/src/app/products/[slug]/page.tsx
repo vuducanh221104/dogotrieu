@@ -3,8 +3,6 @@ import classNames from 'classnames/bind';
 import styles from '@/styles/ProductDetail.module.scss';
 import { Container } from 'react-bootstrap';
 import ProductGallery from '@/components/ProductGallery';
-import { Archivo } from 'next/font/google';
-import { Poppins } from 'next/font/google';
 import { DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -46,7 +44,7 @@ function ProductDetail() {
                                                     <div className={cx('product-meta-info-list')}>
                                                         <div className={cx('product-meta-info-item')}>
                                                             <span className={cx('product-meta-info-heading')}>
-                                                                Price:
+                                                                Giá:
                                                             </span>
                                                             <div className={cx('price-wrapper')}>
                                                                 <h4>22,000,000đ</h4>
@@ -55,16 +53,16 @@ function ProductDetail() {
                                                         </div>
                                                         <div className={cx('product-meta-info-item')}>
                                                             <span className={cx('product-meta-info-heading')}>
-                                                                Stock:
+                                                                Còn Lại:
                                                             </span>
-                                                            <span className={cx('product-meta-status')}>IN STOCK</span>
+                                                            <span className={cx('product-meta-status')}>CÒN HÀNG</span>
                                                             {/* <span className={cx('product-meta-status', 'out-stock')}>
-                                                            OUT STOCK
+                                                            HẾT HÀNG
                                                         </span> */}
                                                         </div>
                                                         <div className={cx('product-meta-info-item')}>
                                                             <span className={cx('product-meta-info-heading')}>
-                                                                Quantity:
+                                                                Số Lượng:
                                                             </span>
                                                             <div className={cx('product-meta-info-selector-button')}>
                                                                 <div className={cx('mini-cart-item-quantity')}>
@@ -93,7 +91,7 @@ function ProductDetail() {
                                                         </div>
                                                     </div>
                                                     <div className={cx('product-meta-info-add-to-cart')}>
-                                                        <button>Add to cart</button>
+                                                        <button>Thêm Vào Giỏ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,7 +101,7 @@ function ProductDetail() {
                                         <div className={cx('card')}>
                                             <div className={cx('card-header')}>
                                                 <h2 className={`${cx('card-title ')} h3 heading ${archivo.className}`}>
-                                                    Description
+                                                    Mô Tả
                                                 </h2>
                                             </div>
                                             <div className={cx('card-section')}>
@@ -135,7 +133,7 @@ function ProductDetail() {
                                         <div className={cx('card')}>
                                             <div className={cx('card-header')}>
                                                 <h2 className={`${cx('card-title ')} h3 heading ${archivo.className}`}>
-                                                    Basic Care Instructions
+                                                    Bảo hành sản phẩm
                                                 </h2>
                                             </div>
                                             <div className={cx('card-section')}>
@@ -143,11 +141,11 @@ function ProductDetail() {
                                                     <ul>
                                                         <li>
                                                             <span>
-                                                                For regular dusting use a dry cloth. For cleaning or in
-                                                                case of a spill, use a damp cloth and natural soap. Dry
-                                                                with a soft clean cloth. Do not use abrasive products
-                                                                when cleaning. For more information please download the
-                                                                care instructions below.
+                                                                Chúng tôi cam kết bảo hành sản phẩm trong một khoảng
+                                                                thời gian cụ thể tính từ ngày mua hàng. Thời gian bảo
+                                                                hành có thể thay đổi tùy theo từng sản phẩm cụ thể và sẽ
+                                                                được chỉ rõ trong thông tin bảo hành cụ thể của sản phẩm
+                                                                đó.
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -155,7 +153,34 @@ function ProductDetail() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={cx('product-shipping-item')}>
+                                    <div className={cx('product-content-item')}>
+                                        <div className={cx('card')}>
+                                            <div className={cx('card-header')}>
+                                                <h2 className={`${cx('card-title ')} h3 heading ${archivo.className}`}>
+                                                    Cam kết về chất lượng
+                                                </h2>
+                                            </div>
+                                            <div className={cx('card-section')}>
+                                                <div className={cx('product-mardown-text')}>
+                                                    <ul>
+                                                        <li>
+                                                            <span>
+                                                                Chúng tôi tự hào cam kết rằng tất cả các sản phẩm của
+                                                                chúng tôi được sản xuất và bán ra là từ nguyên liệu chất
+                                                                lượng cao nhất và qua quy trình sản xuất nghiêm ngặt.
+                                                                Chúng tôi luôn đặt hàng đầu sự an toàn, độ bền và tính
+                                                                ổn định của sản phẩm, đảm bảo rằng mọi sản phẩm mà chúng
+                                                                tôi cung cấp đều đáp ứng được tiêu chuẩn chất lượng cao
+                                                                nhất và sẽ mang lại sự hài lòng tuyệt đối cho khách
+                                                                hàng.
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <div className={cx('product-shipping-item')}>
                                         <div className={cx('card')}>
                                             <div className={cx('card-header')}>
                                                 <h2 className={`${cx('card-title ')} h3 heading ${archivo.className}`}>
@@ -191,7 +216,7 @@ function ProductDetail() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

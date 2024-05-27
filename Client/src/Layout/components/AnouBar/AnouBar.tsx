@@ -9,7 +9,7 @@ function AnouBar() {
         <div className={cx('wrapper-anou-bar')}>
             <Container>
                 <div className={cx('anou-bar-inner')}>
-                    <a href="/123">LARGE INVENTORY + FREE SHIPPING *</a>
+                    <a href="/123">Kho hàng lớn + Miễn phí vận chuyển *</a>
                 </div>
             </Container>
         </div>

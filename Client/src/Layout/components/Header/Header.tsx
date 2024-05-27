@@ -25,6 +25,8 @@ import {
 import Tippy from '@tippyjs/react/headless';
 import Login from '@/components/Auth/Login';
 import CartTippy from '@/components/Tippy/CartTippy';
+import { dataMenuNavBar } from '@/services/menuData/menuData';
+
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -49,73 +51,7 @@ function Header() {
         return () => window.removeEventListener('resize', updateDimensions);
     }, [showBars]);
 
-    const dataMenuPanel: IMenuPanel[] = [
-        {
-            id: 0,
-            title: 'SEATING',
-            subMenu: [
-                { title: 'Accent Chairs', link: '/' },
-                { title: 'Barstools', link: '/' },
-                { title: 'Benches', link: '/' },
-                { title: 'Dining Chairs', link: '/' },
-                { title: 'Poufs & Stools', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 1,
-            title: 'TABLES',
-            subMenu: [
-                { title: 'Coffee Tables', link: '/' },
-                { title: 'Console Tables', link: '/' },
-                { title: 'Desks', link: '/' },
-                { title: 'Dining Tables', link: '/' },
-                { title: 'Side Tables', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 2,
-            title: 'STORAGE',
-            subMenu: [
-                { title: 'Bookcases', link: '/' },
-                { title: 'Cabinets', link: '/' },
-                { title: 'Dressers', link: '/' },
-                { title: 'Media Units', link: '/' },
-                { title: 'Sideboards', link: '/' },
-            ],
-            height: 190,
-        },
-        {
-            id: 2,
-            title: 'BED & BATH',
-            subMenu: [
-                { title: 'Bathroom', link: '/' },
-                { title: 'Beds', link: '/' },
-            ],
-            height: 70,
-        },
-        {
-            id: 3,
-            title: 'LIGHTING',
-            subMenu: [
-                { title: 'Floor Lamps', link: '/' },
-                { title: 'Table Lamps', link: '/' },
-                { title: 'Wall Lamps', link: '/' },
-                { title: 'Pendant Lights', link: '/' },
-            ],
-            height: 150,
-        },
-        {
-            id: 4,
-            title: 'DECOR',
-            subMenu: [
-                { title: 'Home Decor', link: '/' },
-                { title: 'Chest', link: '/' },
-            ],
-            height: 70,
-        },
-    ];
+    const dataMenuPanel = dataMenuNavBar;
 
     const handleToggle = (index: any) => {
         setToggleIndex((prevIndex) => (prevIndex === index ? null : index));

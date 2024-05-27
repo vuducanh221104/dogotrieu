@@ -11,18 +11,18 @@ function PageAboutUs() {
                 <div className={cx('wrapper-content', 'first')}>
                     <div className={cx('wrapper-content-bonus')}>
                         <div className={cx('column')}>
-                            <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>ABOUT US</h3>
+                            <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>Về Chúng Tôi</h3>
                             <p className={lato.className}>
                                 <span>
                                     <Link href="/" className={cx('link-color')}>
-                                        Woodfurniture{' '}
+                                        Đồ Gỗ Triệu{' '}
                                     </Link>
-                                    presents a distinctive assortment of European wood furniture, lighting & decor
-                                    brands. Our founding values are sustainability, longevity, exclusivity, and quality.
-                                    Our brands offer a refreshing aesthetic and help you revamp your space or simply
-                                    make a lovely addition to your home! Explore a variety of brands like and much more.
-                                    Discover beautiful premium pieces, and create an ethically conscious combination of
-                                    comfort and style.
+                                    tự hào giới thiệu Nội Thất Đồ Gỗ Cũ. Những giá trị ban đầu của chúng tôi là bền
+                                    vững, lâu dài, độc quyền và chất lượng. Chúng tôi không chỉ là một cửa hàng nội
+                                    thất, mà còn là một điểm đến cho những người yêu thích vẻ đẹp và sự độc đáo của đồ
+                                    gỗ cũ. Tại đây, chúng tôi tôn trọng và giữ gìn sự tinh tế của từng mảnh đồ gỗ cũ,
+                                    mang lại cho không gian của bạn sự ấm áp và phong cách độc đáo. Hãy đến với chúng
+                                    tôi để khám phá thế giới đầy mê hoặc của nội thất đồ gỗ cũ.
                                 </span>
                             </p>
                         </div>
@@ -53,23 +53,20 @@ function PageAboutUs() {
                         <div className={cx('wrapper-content-bonus')}>
                             <div className={cx('column')}>
                                 <div className={cx('heading-wrapper')}>
-                                    <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>LOVE FOR DESIGN</h3>
+                                    <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
+                                        Tình yêu với Thiết Kế
+                                    </h3>
                                 </div>
                                 <div className={`${cx('description-wrapper')} ${lato.className}`}>
                                     <div className={cx('column-padding')}>
                                         <p>
-                                            We love the design and the journey that comes with it from the creative
-                                            inception process to the premium finished product in the showroom, and
-                                            finally to the heart of your home. Our wonderful partnered brands
-                                            collaborate with designers from across the world to create original
-                                            captivating designs. We genuinely love the brands that we sell and are proud
-                                            to deliver a personal, friendly service with every purchase - online or
-                                            in-store. Our International team of professional specialists brings WOOD
-                                            FURNITURE to life each day with their inspiration, dedication, and talent.
-                                            If you need help or have questions,
+                                            Chúng tôi yêu thiết kế và hành trình đi kèm từ quá trình sáng tạo ban đầu
+                                            đến sản phẩm hoàn thiện, và cuối cùng là đến trái tim của ngôi nhà của bạn.
+                                            Chúng tôi tự hào cung cấp dịch vụ thân thiện và cá nhân với mỗi lần mua hàng
+                                            - trực tuyến hoặc tại cửa hàng. Nếu bạn cần sự trợ giúp hoặc có câu hỏi,
                                             <a>
-                                                we are available via email, phone, or live chat to offer advice and
-                                                answer questions.
+                                                chúng tôi sẵn lòng hỗ trợ qua email, điện thoại hoặc trò chuyện trực
+                                                tiếp để cung cấp lời khuyên và giải đáp mọi thắc mắc của bạn.
                                             </a>
                                         </p>
                                     </div>
@@ -85,15 +82,15 @@ function PageAboutUs() {
                                 <div className={cx('column-padding')}>
                                     <div className={cx('heading-wrapper')}>
                                         <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
-                                            KNOWLEDGE IN THE FIELD
+                                            Kiến thức chuyên môn
                                         </h3>
                                     </div>
                                     <div className={`${cx('description-wrapper')} ${lato.className}`}>
                                         <div className={cx('column-padding')}>
                                             <p>
-                                                Our experts have the experience to help you bring your vision to life.
-                                                Whether you need a Free Design Consultation or you are an industry
-                                                professional looking to join our Trade Program.
+                                                Chúng tôi có kinh nghiệm để giúp bạn biến ý tưởng của mình thành hiện
+                                                thực. Cho dù bạn cần một Cuộc Tư vấn Thiết kế Miễn phí, chúng tôi luôn
+                                                sẵn lòng.
                                             </p>
                                         </div>
                                     </div>
@@ -112,15 +109,18 @@ function PageAboutUs() {
                             <div className={cx('wrapper-content-bonus')}>
                                 <div className={cx('column-padding')}>
                                     <div className={cx('heading-wrapper')}>
-                                        <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>WE AIM HIGH</h3>
+                                        <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
+                                            Chúng tôi Hướng Đến
+                                        </h3>
                                     </div>
                                     <div className={`${cx('description-wrapper')} ${lato.className}`}>
                                         <div className={cx('column-padding')}>
                                             <p>
-                                                Our team is always ready to assist with any questions you may have about
-                                                design, specifications, availability, or price. We pride ourselves on
-                                                our transparency and quality of customer service. Don’t hesitate to
-                                                contact us via call, email, or chat. We would be happy to help!
+                                                Đội ngũ của chúng tôi luôn sẵn lòng hỗ trợ với mọi câu hỏi mà bạn có về
+                                                thiết kế, thông số kỹ thuật, sự có sẵn, hoặc giá cả. Chúng tôi tự hào về
+                                                sự minh bạch và chất lượng của dịch vụ khách hàng của chúng tôi. Đừng
+                                                ngần ngại liên hệ với chúng tôi qua cuộc gọi, email hoặc trò chuyện.
+                                                Chúng tôi sẽ rất vui lòng được hỗ trợ!
                                             </p>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@ function PageAboutUs() {
                     </div>
                 </div>
                 <div className={`${cx('footer')} ${lato.className}`}>
-                    <a href="/">info@woodfurniture.com </a>| 844+ 443-WOOD|
+                    <a href="mailto:vuducanh22112004@gmail.com">vuducanh22112004@gmail.com</a>| 0348483612 (em Lan)
                 </div>
             </div>
         </div>
