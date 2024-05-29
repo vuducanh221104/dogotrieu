@@ -27,11 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
             <body className={poppins.className}>
-                <AnouBar />
-                <Header />
-                <main className="App">{children}</main>
-                <Footer />
-                <Chat />
+                <main>
+                    <AnouBar />
+                    <Header />
+                    {children}
+                    <Footer />
+                    <Chat />
+                </main>
             </body>
         </html>
     );
