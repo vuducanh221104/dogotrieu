@@ -30,6 +30,7 @@
         "formik": "^2.4.2",
         "markdown-it": "^13.0.1",
         "next": "^14.2.2",
+        "nextjs": "^0.0.3",
         "nextjs-antd-breadcrumbs": "^1.2.2",
         "nextjs-breadcrumbs": "^1.1.9",
         "proptypes": "^1.1.0",
