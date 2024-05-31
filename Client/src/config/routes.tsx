@@ -17,6 +17,22 @@ const routes = {
 
     admin: {
         dashboard: '/admin/dashboard',
+        //Product
+        productList: '/admin/product/list',
+        productAdd: '/admin/product/add',
+        productUpdate: '/admin/product/update',
+        // Blogs
+        blogsList: '/admin/blogs/list',
+        blogsAdd: '/admin/blogs/add',
+        // Home
+        imageHomeBanner: '/admin/home/banner',
+        imageHomeCustomer: '/admin/home/customer',
+        featuredProduct: '/admin/home/featuredProduct',
+        //Order
+        orderList: '/admin/order/list',
+        //User
+        userList: '/admin/user/list',
+        userAdd: '/admin/user/add',
     },
 
     pageCompany: {
