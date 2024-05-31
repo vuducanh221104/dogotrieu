@@ -1,0 +1,12 @@
+.content {
+    min-height: 100vh;
+}
+.btn-sidebar-toggler {
+    display: none;
+}
+
+@media (max-width: 995px) {
+    .btn-sidebar-toggler {
+        display: block;
+    }
+}

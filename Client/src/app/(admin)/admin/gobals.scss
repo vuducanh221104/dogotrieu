@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    background: #1890ff;
+    color: #fff;
+    border-radius: 0.5rem;
+    margin-left: auto;
+    line-height: 55px;
+}
+
+// .btn-sidebar-toggler {
+//     display: none !important;
+// }
+
+// Select cusom
+.ant-select-single {
+    &.ant-select-open {
+        input {
+            cursor: text !important;
+        }
+    }
+    input {
+        cursor: pointer !important  ;
+    }
+}
