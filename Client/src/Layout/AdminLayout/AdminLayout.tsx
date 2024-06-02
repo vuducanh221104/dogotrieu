@@ -8,11 +8,14 @@ import {
     FolderAddOutlined,
     MessageOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer, Breadcrumb } from 'antd';
+import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer, Breadcrumb, Switch, Divider } from 'antd';
 import Link from 'next/link';
 import config from '@/config';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import BreadcrumbAdmin from '@/components/BreadcrumbAdmin';
+import images from '@/assets';
+import Image from 'next/image';
+import { openSans } from '@/assets/FontNext';
 
 const { Header, Sider, Content } = Layout;
 
@@ -74,7 +77,10 @@ const menuItems = [
         key: 'sub7',
         icon: <FolderAddOutlined />,
         label: 'Blogs/News',
-        children: [{ key: '13', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> }],
+        children: [
+            { key: '13', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
+            { key: '14', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
+        ],
     },
 ];
 
@@ -83,8 +89,8 @@ const breadcrumbs = [
     { url: '/admin/product/list', urlTile: 'Product', name: 'List Product' },
     { url: '/admin/product/add', urlTile: 'Product', name: 'Add Product' },
 ];
+
 const AdminLayout = ({ children }: any) => {
-    const [collapsed, setCollapsed] = useState(false);
     const [visible, setVisible] = useState(false);
 
     const {
@@ -103,11 +109,13 @@ const AdminLayout = ({ children }: any) => {
                 width={250}
             >
                 <Layout>
-                    <Sider
-                        trigger={null}
-                        width={210}
-                        className={'sider-primary ant-layout-sider-primarys bg-slate-900'}
-                    >
+                    <Sider trigger={null} width={210} className={'sider-primary ant-layout-sider-primarys '}>
+                        <div className="brand flex items-center justify-center pt-0 pb-7 px-14 bg-[#ffffff]">
+                            <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
+                            <span className={`text-[#000] align-middle ml-5 font-bold ${openSans.className}`}>
+                                Đồ Gỗ Triệu Dashboard
+                            </span>
+                        </div>
                         <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
                     </Sider>
                 </Layout>
@@ -121,32 +129,38 @@ const AdminLayout = ({ children }: any) => {
                 width={210}
                 style={{ minHeight: '100vh' }}
             >
-                <div className="demo-logo-vertical" />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
+                <div className="brand flex items-center justify-center  pt-14 pb-7 px-14">
+                    <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
+                    <span className={`text-[#ffffff] align-middle ml-5 font-bold ${openSans.className}`}>
+                        Đồ Gỗ Triệu Dashboard
+                    </span>
+                </div>
+
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={menuItems} className="mt-6" />
             </Sider>
             <Layout>
                 <Header style={{ padding: 0, background: colorBgContainer, height: 'auto' }}>
                     <Row
-                        className="!p-5 m-0 lg:!mt-6 lg:!mx-10 md:!mt-4 md:!mx-8 sm:!mt-4"
+                        className="!p-5 m-0 lg:!mt-6 lg:!mx-10 md:!mt-4 md:!mx-8 sm:!mt-5 max-sm:!mt-5"
                         style={{
                             background: colorBgContainer,
                         }}
                     >
-                        <Col xs={6} sm={6} md={0}>
+                        <Col span={24} xs={5} sm={4} md={3} xl={0}>
                             <Button
                                 type="text"
-                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                icon={<MenuUnfoldOutlined />}
                                 onClick={() => setVisible(true)}
                                 style={{ fontSize: '16px', width: 64, height: 64 }}
                                 className={'btn-sidebar-toggler lg:!hidden'}
                             />
                         </Col>
-                        <Col span={6} xs={18} sm={18} md={20}>
-                            <div className="ant-page-header-heading">
+                        <Col span={24} xs={17} sm={16} md={15} xl={21}>
+                            <div className="ant-page-header-heading  md:ml-0 max-md:ml-0 max-sm:!ml-7 ">
                                 <BreadcrumbAdmin breadcrumbs={breadcrumbs} />
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={4} className="max-md:!hidden">
+                        <Col span={24} xs={0} sm={4} md={6} xl={3} className="max-md:!hidden">
                             <Avatar size={'default'} icon={<UserOutlined />} /> Admin
                         </Col>
                     </Row>

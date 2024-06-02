@@ -1,13 +1,12 @@
 'use client';
-import { useState } from 'react';
 import { Card, Col, Row, Typography } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import '@/styles/AdminStyles/resposive.scss';
 import EChart from '@/Layout/AdminLayout/chart/EChart';
-import imagesAdmin from '@/assets/images-admin';
 import LineChart from '@/Layout/AdminLayout/chart/LineChart';
 import images from '@/assets';
+import Image from 'next/image';
 
 function Dashboard() {
     const { Title, Text } = Typography;
@@ -109,7 +108,7 @@ function Dashboard() {
                 <Row className="rowgap-vbox" gutter={[24, 0]}>
                     {count.map((c, index) => (
                         <Col key={c.id} xs={24} sm={24} md={12} lg={6} xl={6} className="mb-24 max-md:!mb-8">
-                            <Card bordered={false} className="criclebox ">
+                            <Card bordered={false} className="criclebox">
                                 <div className="number">
                                     <Row align="middle" gutter={[24, 0]}>
                                         <Col xs={18}>
@@ -145,15 +144,13 @@ function Dashboard() {
                     <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
                         <Card bordered={false} className="criclebox h-full">
                             <Row>
-                                {/* <Row gutter={[0, 0]}> */}
                                 <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mobile-24">
                                     <div className="h-full col-content p-20">
                                         <div className="ant-muse">
-                                            <Text>Built by developers</Text>
-                                            <Title level={5}>Muse Dashboard for Ant Design</Title>
+                                            <Text>Built by @dogotrieu</Text>
+                                            <Title level={5}>Đồ Gỗ Triệu Dashboard</Title>
                                             <Paragraph className="lastweek mb-36">
-                                                From colors, cards, typography to complex elements, you will find the
-                                                full documentation.
+                                                Cập nhật sản phẩm ,giá ,blogs ,news, banner,...
                                             </Paragraph>
                                         </div>
                                         <div className="card-footer">
@@ -166,7 +163,7 @@ function Dashboard() {
                                 </Col>
                                 <Col xs={24} md={12} sm={24} lg={12} xl={10} className="col-img">
                                     <div className="ant-cret text-right">
-                                        <img src={images.imgAdminFooter} alt="" className="border10" />
+                                        <Image src={images.imgAdminFooter} alt="" className="border10" />
                                     </div>
                                 </Col>
                             </Row>
@@ -174,22 +171,17 @@ function Dashboard() {
                     </Col>
 
                     <Col xs={24} md={12} sm={24} lg={12} xl={10} className="mb-24">
-                        <Card bordered={false} className="criclebox card-info-2 h-full">
-                            <div className="gradent h-full col-content">
-                                <div className="card-content">
-                                    <Title level={5}>Work with the best</Title>
-                                    <p>
-                                        Wealth creation is an evolutionarily recent positive-sum game. It is all about
-                                        who take the opportunity first.
-                                    </p>
-                                </div>
-                                <div className="card-footer">
-                                    <a className="icon-move-right" href="#pablo">
-                                        Read More
-                                        <RightOutlined />
-                                    </a>
-                                </div>
-                            </div>
+                        <Card
+                            bordered={false}
+                            className="criclebox card-info-2 h-full flex align-center justify-center"
+                        >
+                            <Image
+                                src={images.imgPromo}
+                                alt=""
+                                width={400}
+                                height={300}
+                                className="w-full object-cover"
+                            />
                         </Card>
                     </Col>
                 </Row>
