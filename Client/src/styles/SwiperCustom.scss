@@ -51,3 +51,13 @@
         }
     }
 }
+
+@media screen and (min-width: 1000px) {
+    .scroll {
+        .swiper-wrapper {
+            max-height: 450px;
+            max-width: 96px;
+            height: 450px !important;
+        }
+    }
+}

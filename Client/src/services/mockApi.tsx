@@ -217,14 +217,14 @@ export const dataNews = [
         meta: 'reclaimed wood furniture',
         tags: 'Tin Công Nghệ',
         author: 'Vu Duc Anh',
-        comment: [
-            {
-                fullname: 'duc anh',
-                createdAt: {
-                    $date: '2024-03-31T14:08:20.572Z',
-                },
-            },
-        ],
+        // comment: [
+        //     {
+        //         fullname: 'duc anh',
+        //         createdAt: {
+        //             $date: '2024-03-31T14:08:20.572Z',
+        //         },
+        //     },
+        // ],
         slug: 'choose-the-perfect-bathroom-vanities-for-every-style',
         createdAt: {
             $date: '2024-03-31T14:08:20.575Z',

@@ -11,25 +11,25 @@ import { FreeMode, Mousewheel, Navigation, Thumbs } from 'swiper/modules';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 
 const cx = classNames.bind(styles);
-function ProductGallery() {
+function ProductGallery({ data }: any) {
     const sliderRef = useRef<any>(null);
     const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const data: any = {
-        images: [
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_1000x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_1_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_2_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_1000x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_1_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_2_600x.png?v=1711449715',
-            'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
-        ],
-    };
+    // const data: any = {
+    //     images: [
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_1000x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_1_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_2_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_1000x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_1_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_2_600x.png?v=1711449715',
+    //         'https://woodfurniture.com/cdn/shop/files/ELE95652_3_600x.png?v=1711449715',
+    //     ],
+    // };
     const handlePrev = useCallback(() => {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slidePrev();
@@ -37,10 +37,9 @@ function ProductGallery() {
     }, []);
 
     const handleNext = useCallback(() => {
-        console.log(sliderRef.current);
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slideNext();
-        setCurrentIndex((prevIndex) => Math.min(data.images.length - 1, prevIndex + 1));
+        setCurrentIndex((prevIndex) => Math.min(data.length - 1, prevIndex + 1));
     }, []);
     const handleClickThumb = (index: number) => {
         setCurrentIndex(index);
@@ -57,7 +56,7 @@ function ProductGallery() {
                             modules={[FreeMode, Thumbs]}
                             className={cx('swiper-gallery-main')}
                         >
-                            {data.images.map((img: string, index: number) => (
+                            {data.map((img: string, index: number) => (
                                 <SwiperSlide>
                                     <div className={cx('aspect-ratio')}>
                                         <img src={img} />
@@ -113,7 +112,7 @@ function ProductGallery() {
                                         }}
                                         className={cx('swiper-thumbnail')}
                                     >
-                                        {data.images.map((img: string, index: number) => (
+                                        {data.map((img: string, index: number) => (
                                             <SwiperSlide
                                                 className={currentIndex === index ? 'active' : ''}
                                                 onClick={() => handleClickThumb(index)}

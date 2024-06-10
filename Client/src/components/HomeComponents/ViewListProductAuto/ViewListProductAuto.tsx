@@ -1,18 +1,18 @@
 'use client';
 import styles from './ViewListProductAuto.module.scss';
 import classNames from 'classnames/bind';
-import React, { useEffect } from 'react';
-import { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { dataProduct } from '@/services/mockApi';
 import FormatPrice from '@/components/FormatPrice';
 import { Archivo } from 'next/font/google';
-import CardProduct from '@/components/CardProduct';
 import Link from 'next/link';
+import slugify from 'slugify';
+import { productGetAll } from '@/services/productServices';
+
 const archivo = Archivo({
     subsets: ['latin'],
     weight: ['400', '500', '600'],
@@ -25,8 +25,9 @@ interface IProps {
     nextBtn?: boolean;
     nextBtnLink?: string;
 }
+
 function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
-    // Nếu như muốn height của scroll giống web # thì cho ref={scrollRef} vào  <div className={cx('scroll')} ref={scrollRef} >
+    const { data, error, isLoading } = productGetAll();
     const productRef = useRef<any>(null);
     const scrollRef = useRef<any>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
@@ -34,88 +35,56 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
     const [currentTransform, setCurrentTransform] = useState<number>(0);
 
     useEffect(() => {
+        if (!isLoading && data && data.length > 0) {
+            setCurrentHeight(scrollRef.current.offsetHeight);
+            const handleResize = () => {
+                if (productRef.current) {
+                    const height = productRef.current.offsetHeight;
+                    setCurrentHeight(height);
+                }
+                setWindowWidth(window.innerWidth);
+            };
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
+    }, [data, isLoading]);
+
+    useEffect(() => {
         if (windowWidth >= 1440) {
-            if (currentTransform === -140) {
-                setCurrentTransform(-100);
-            }
-            if (currentTransform === -200) {
-                setCurrentTransform(-100);
-            }
-        }
-        if (windowWidth >= 1280 && windowWidth < 1440) {
-            if (currentTransform === -200) {
-                setCurrentTransform(-140);
-            }
-            if (currentTransform === -100) {
-                setCurrentTransform(-140);
-            }
-            if (currentTransform === 0) {
-            }
-        }
-        if (windowWidth < 1280) {
-            if (currentTransform === -140) {
-                setCurrentTransform(-200);
-            }
-            if (currentTransform === -100) {
-                setCurrentTransform(-200);
-            }
+            if (currentTransform === -140) setCurrentTransform(-100);
+            if (currentTransform === -200) setCurrentTransform(-100);
+        } else if (windowWidth >= 1280 && windowWidth < 1440) {
+            if (currentTransform === -200) setCurrentTransform(-140);
+            if (currentTransform === -100) setCurrentTransform(-140);
+        } else if (windowWidth < 1280) {
+            if (currentTransform === -140) setCurrentTransform(-200);
+            if (currentTransform === -100) setCurrentTransform(-200);
         }
     }, [windowWidth]);
 
-    useEffect(() => {
-        setCurrentHeight(scrollRef.current.clientHeight);
-        const handleResize = () => {
-            if (productRef.current) {
-                const height = productRef.current.clientHeight;
-
-                setCurrentHeight(height);
-            }
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        handleResize();
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-    const data = dataProduct;
-    // Handle Prev & Next
     const handleNavigation = (value: string) => {
         if (windowWidth < 1280 && value === 'next' && currentTransform !== -200) {
             setCurrentTransform((prev) => prev - 100);
-        }
-        if (windowWidth < 1280 && value === 'prev' && currentTransform !== 0) {
+        } else if (windowWidth < 1280 && value === 'prev' && currentTransform !== 0) {
             setCurrentTransform((prev) => prev + 100);
-        }
-        if (windowWidth >= 1280 && windowWidth < 1440 && value === 'next' && currentTransform !== -140) {
-            if (currentTransform === -100) {
-                setCurrentTransform((prev) => prev - 40);
-            } else {
-                setCurrentTransform((prev) => prev - 100);
-            }
-            return;
-        }
-        if (windowWidth >= 1280 && windowWidth < 1440 && value === 'prev' && currentTransform !== 0) {
-            if (currentTransform === -40) {
-                setCurrentTransform((prev) => prev + 40);
-            } else {
-                setCurrentTransform((prev) => prev + 100);
-            }
-
-            return;
-        }
-        if (windowWidth >= 1440 && value === 'next' && currentTransform !== 100) {
+        } else if (windowWidth >= 1280 && windowWidth < 1440 && value === 'next' && currentTransform !== -140) {
+            setCurrentTransform((prev) => (currentTransform === -100 ? prev - 40 : prev - 100));
+        } else if (windowWidth >= 1280 && windowWidth < 1440 && value === 'prev' && currentTransform !== 0) {
+            setCurrentTransform((prev) => (currentTransform === -40 ? prev + 40 : prev + 100));
+        } else if (windowWidth >= 1440 && value === 'next' && currentTransform !== -100) {
             setCurrentTransform(-100);
-            return;
-        }
-        if (windowWidth >= 1440 && value === 'prev' && currentTransform !== 0) {
+        } else if (windowWidth >= 1440 && value === 'prev' && currentTransform !== 0) {
             setCurrentTransform(0);
-            return;
         }
     };
+
+    const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
+
     return (
         <div className={cx('product-wrapper')}>
             <Container>
@@ -138,67 +107,73 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                 <div className={cx('scroll')}>
                     <div className={cx('scroll-inner')}>
                         <div className={cx('scroll-list')} ref={scrollRef}>
-                            {windowWidth >= 1000 ? (
+                            {isLoading ? (
+                                <p>Loading...</p>
+                            ) : windowWidth >= 1000 ? (
                                 <>
-                                    <div className={cx('flickity-viewport')} style={{ height: `${currentHeight}px` }}>
+                                    <div
+                                        className={cx('flickity-viewport')}
+                                        style={{ height: `${currentHeight || productRef.current?.offsetHeight}px` }}
+                                    >
                                         <div
                                             className={cx('flickity-slider')}
                                             style={{ transform: `translateX(${currentTransform}%)` }}
                                         >
-                                            {data.map((item: any, index: any) => (
+                                            {data?.map((item: any, index: any) => (
                                                 <div
-                                                    ref={productRef}
+                                                    ref={index === 0 ? productRef : null}
                                                     className={cx('product-item')}
                                                     style={
                                                         windowWidth >= 1440
                                                             ? {
                                                                   position: 'absolute',
-                                                                  left: `${index !== 0 ? index * 16.67 : 0}% `,
+                                                                  left: `${index !== 0 ? index * 16.67 : 0}%`,
                                                               }
                                                             : windowWidth >= 1280
                                                             ? {
                                                                   position: 'absolute',
-                                                                  left: `${index !== 0 ? index * 20 : 0}% `,
+                                                                  left: `${index !== 0 ? index * 20 : 0}%`,
                                                               }
                                                             : {
                                                                   position: 'absolute',
-                                                                  left: `${index !== 0 ? index * 25 : 0}% `,
+                                                                  left: `${index !== 0 ? index * 25 : 0}%`,
                                                               }
                                                     }
                                                 >
                                                     <div className={cx('product-image')}>
-                                                        <Link href="/">
+                                                        <Link
+                                                            href={`/products/${handleSlugify(item.name)}-${
+                                                                item._id
+                                                            }.html`}
+                                                        >
                                                             <div className={cx('aspect-ratio')}>
                                                                 <img src={item.thumb} alt="image-product" />
                                                             </div>
                                                         </Link>
                                                     </div>
                                                     <div className={cx('product-info')}>
-                                                        {item.ship !== null && (
-                                                            <p className={cx('product-tag')}>{item.ship}</p>
+                                                        {item.ship !== 0 && (
+                                                            <p className={cx('product-tag')}>QUICK SHIP</p>
                                                         )}
                                                         <Link href="/">
-                                                            <h3 className={cx('product-vendor')}>
-                                                                {item.material_id.material_type_id.name}
-                                                            </h3>
+                                                            <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
                                                         </Link>
                                                         <Link href="/">
                                                             <h2 className={cx('product-name')}>{item.name}</h2>
                                                         </Link>
-
                                                         <div
                                                             className={cx(
                                                                 'product-price-wrapper',
-                                                                item.discount !== null && 'have-price-discount',
+                                                                item.price.discount !== null && 'have-price-discount',
                                                             )}
                                                         >
                                                             {item.discount !== null && (
                                                                 <p className={cx('product-price-discount')}>
-                                                                    <FormatPrice value={item.discount} />
+                                                                    <FormatPrice value={item.price.discount} />
                                                                 </p>
                                                             )}
                                                             <p className={cx('product-price-real')}>
-                                                                <FormatPrice value={item.price} />
+                                                                <FormatPrice value={item.price.original} />
                                                             </p>
                                                         </div>
 
@@ -234,8 +209,8 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                 </>
                             ) : (
                                 <>
-                                    {data.map((item: any, index: any) => (
-                                        <div className={cx('product-item')}>
+                                    {data?.map((item: any, index: any) => (
+                                        <div className={cx('product-item')} key={index}>
                                             <div className={cx('product-image')}>
                                                 <Link href="/">
                                                     <div className={cx('aspect-ratio')}>
@@ -244,11 +219,9 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                 </Link>
                                             </div>
                                             <div className={cx('product-info')}>
-                                                {item.ship !== null && <p className={cx('product-tag')}>{item.ship}</p>}
-                                                <Link href="/">
-                                                    <h3 className={cx('product-vendor')}>
-                                                        {item.material_id.material_type_id.name}
-                                                    </h3>
+                                                {item.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
+                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
+                                                    <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
                                                 </Link>
                                                 <Link href="/">
                                                     <h2 className={cx('product-name')}>{item.name}</h2>
@@ -256,16 +229,16 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                 <div
                                                     className={cx(
                                                         'product-price-wrapper',
-                                                        item.discount !== null && 'have-price-discount',
+                                                        item.price.discount !== null && 'have-price-discount',
                                                     )}
                                                 >
                                                     {item.discount !== null && (
                                                         <p className={cx('product-price-discount')}>
-                                                            <FormatPrice value={item.discount} />
+                                                            <FormatPrice value={item.price.discount} />
                                                         </p>
                                                     )}
                                                     <p className={cx('product-price-real')}>
-                                                        <FormatPrice value={item.price} />
+                                                        <FormatPrice value={item.price.original} />
                                                     </p>
                                                 </div>
 
