@@ -1,3 +1,5 @@
+import config from '@/config';
+
 export const dataMenuNavBar: IMenuPanel[] = [
     {
         id: 0,

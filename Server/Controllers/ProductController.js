@@ -1,127 +1,63 @@
-const Products = require('../Models/Products');
-const productDetails = require('../Models/ProductsDetails');
-// const ProductDescription = require('../Models/ProductDesription');
-const _ = require('lodash');
+const Product = require('../models/Product');
+const ProductType = require('../models/ProductType');
+
 class ProductController {
-    // [GET] /product ~Get All Product
-    async products(req, res) {
+    //[GET]
+    async getProductAndProductType(req, res) {
         try {
-            const data = await Products.find({});
-            res.status(200).json(data);
-        } catch (err) {}
-    }
-
-    // [GET]/product/:slug ~Get Details Product
-    async slugProducts(req, res, next) {
-        try {
-            const slug = req.params.slug; // Lấy giá trị slug từ URL params
-            const productDetail = await productDetails.findOne({ slug });
-
-            if (!productDetail) {
-                return res.status(404).json({ message: 'Tài liệu không tồn tại' });
+            const productId = req.params.id;
+            const product = await Product.findById(productId)
+                .populate('product_type_id')
+                .populate({
+                    path: 'material_id',
+                    select: 'name parent_id slug',
+                    populate: {
+                        path: 'parent_id',
+                        select: 'name slug',
+                    },
+                })
+                .populate({
+                    path: 'category_id',
+                    select: 'name parent_id slug',
+                    populate: {
+                        path: 'parent_id',
+                        select: 'name slug',
+                    },
+                })
+                .exec();
+            if (!product) {
+                return res.status(404).json({ message: 'Product not found' });
             }
-
-            res.status(200).json(productDetail);
-        } catch (err) {
-            next(err);
-        }
-    }
-
-    // [GET]/product/related/:classify  ~CHECK RELATIVE PRODUCT
-    async relatedProduct(req, res, next) {
-        try {
-            const classify = req.params.classify;
-
-            // Find related products with the same classify
-            const relatedProducts = await Products.find({ classify_slug: classify }).limit(5);
-
-            res.status(200).json(relatedProducts);
+            res.json(product);
         } catch (error) {
-            res.status(500).json({ message: 'Server error' });
+            res.status(500).json({ message: error.message });
         }
     }
-
-    // [POST]/product/add ~Create New Product (Card)
-    async createProduct(req, res, next) {
+    //[POST]
+    async addProduct(req, res) {
         try {
-            const productDetailData = req.body;
-            const newProductDetail = new Products(productDetailData);
-            const savedProductDetail = await newProductDetail.save();
-            res.status(201).json(savedProductDetail);
+            const productType = new ProductType(req.body);
+            const savedProductType = await productType.save();
+            res.status(201).json(savedProductType);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to create product detail' });
+            res.status(400).json({ message: error.message });
         }
     }
-
-    //[POST]/product/add-product-detail ~Create New Product Details (Info)
-    async createProductDetails(req, res, next) {
+    //[POST]
+    async addProductType(req, res) {
         try {
-            const newProductDetail = new productDetails(req.body);
-            const savedProductDetail = await newProductDetail.save();
-            res.status(201).json(savedProductDetail); // Gửi lại dữ liệu sản phẩm đã tạo dưới dạng JSON
+            const { product_type_id } = req.body;
+            const productType = await ProductType.findById(product_type_id);
+            if (!productType) {
+                return res.status(400).json({ message: 'ProductType with given ID not found' }); // Modify error message
+            }
+
+            const product = new Product(req.body);
+            const savedProduct = await product.save();
+            res.status(201).json(savedProduct);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to create product detail' });
-        }
-    }
-
-    // [GET] : API?q=''&type=less
-    async seachProductWithQ(req, res, next) {
-        try {
-            const { q, type } = req.query;
-            let query = {};
-            if (q) {
-                query = { name: { $regex: q, $options: 'i' } };
-            }
-            if (type === 'more') {
-                // Lấy nhiều kết quả
-                const users = await Products.find(query);
-                res.status(200).json(users);
-            } else {
-                // Lấy ít kết quả
-                const users = await Products.find(query).limit(7);
-                res.status(200).json(users);
-            }
-        } catch (err) {
-            res.status(500).json('Server error : ', err);
-        }
-    }
-
-    // [GET]/product/search-all ~FIND ALL WHEN CLICK SEARCH
-    async searchProduct(req, res, next) {
-        try {
-            const limit = parseInt(req.query.limit);
-            // GET QUERY
-            const { k } = req.query;
-            let query = {};
-            if (k) {
-                query = { name: { $regex: new RegExp(k), $options: 'i' } };
-            }
-            const data = await Products.find(query).limit(limit).sort({ price_discount: -1 });
-            if (data.length <= 0) {
-                return res.status(200).json([]);
-            }
-            // HANDLE SORT
-            let dataSort;
-            const { order } = req.query;
-            switch (order) {
-                case 'price-asc':
-                    dataSort = _.orderBy(data, ['price_discount'], ['asc']);
-                    break;
-                case 'price-desc':
-                    dataSort = _.orderBy(data, ['price_discount'], ['desc']);
-                    break;
-                case 'latest':
-                    dataSort = _.orderBy(data, ['createAt'], ['desc']);
-                    break;
-                default:
-                    break;
-            }
-
-            return res.status(200).json(order ? dataSort : data);
-        } catch (err) {
-            res.status(500).json({ error: 'Failed to Find Product' });
+            res.status(400).json({ message: error.message });
         }
     }
 }
-
 module.exports = new ProductController();

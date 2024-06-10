@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select, Upload, Image } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 
 function PageProductAdd() {
     const { messageSuccess, messageError, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
+    const [valueDes, setValueDes] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     //Image Upload
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -77,10 +81,22 @@ function PageProductAdd() {
         }
     };
 
+    const mdParser = new MarkdownIt();
+    function handleEditorChange({ html, text }: any) {
+        setValueDes(text);
+    }
+
     return (
         <>
             {contextHolder}
             {/* <ModalLoadingAdmin /> */}
+            <MdEditor
+                style={{ height: '250px', wordWrap: 'break-word' }}
+                renderHTML={(text) => mdParser.render(text)}
+                onChange={handleEditorChange}
+                name="description"
+                value={valueDes}
+            />
             <Form form={form} layout="vertical">
                 <Form.Item
                     name="contactNumber"
