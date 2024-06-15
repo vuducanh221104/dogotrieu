@@ -26,8 +26,7 @@ function ProductDetail() {
     let id = handleSplitSlug();
 
     const { data, error, isLoading } = productGetId(id);
-    console.log(data);
-    console.log(id);
+
     if (isLoading) {
         return <Loading />;
     }

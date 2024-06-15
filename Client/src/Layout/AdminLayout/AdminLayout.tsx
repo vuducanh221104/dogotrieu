@@ -67,19 +67,27 @@ const menuItems = [
                 key: 'sub6',
                 label: 'Category',
                 children: [
-                    { key: '10', label: <Link href="/">Category List</Link> },
-                    { key: '12', label: <Link href="/">Add Box Product</Link> },
+                    { key: '10', label: <Link href="/admin/category/add">Add Category</Link> },
+                    { key: '11', label: <Link href="/admin/category/list">List Category</Link> },
+                ],
+            },
+            {
+                key: 'sub7',
+                label: 'Material',
+                children: [
+                    { key: '12', label: <Link href="/admin/material/add">Add Material</Link> },
+                    { key: '13', label: <Link href="/admin/material/list">List Material</Link> },
                 ],
             },
         ],
     },
     {
-        key: 'sub7',
+        key: 'sub8',
         icon: <FolderAddOutlined />,
         label: 'Blogs/News',
         children: [
-            { key: '13', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
-            { key: '14', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
+            { key: '14', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
+            { key: '15', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
         ],
     },
 ];
@@ -88,6 +96,9 @@ const breadcrumbs = [
     { url: '/admin/dashboard', urlTile: 'Dashboard', name: 'Dashboard' },
     { url: '/admin/product/list', urlTile: 'Product', name: 'List Product' },
     { url: '/admin/product/add', urlTile: 'Product', name: 'Add Product' },
+    { url: '/admin/material/add', urlTile: 'Material', name: 'Add Material' },
+    { url: '/admin/material/list', urlTile: 'Material', name: 'List Material' },
+    //..thêm nữa
 ];
 
 const AdminLayout = ({ children }: any) => {

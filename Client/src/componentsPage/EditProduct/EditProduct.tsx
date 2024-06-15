@@ -1,25 +1,29 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Upload, Image, Space } from 'antd';
+import { Button, Form, Input, Select, Upload, Image, Space, Modal } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
-import axios from 'axios';
-import { useGenerateSKU } from '@/components/GenerateSKU/GenerateSKU';
 import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
-import { transformListSelect } from '@/utils/transformListSelect';
+import { transformListSelect, transformParentListSelect } from '@/utils/transformListSelect';
 import { productAdd } from '@/services/productServices';
+// import { DataType } from './PageListProduct'; // Adjust the import path as needed
 
-function PageProductAdd() {
+// interface EditProductModalProps {
+//     visible: boolean;
+//     onClose: () => void;
+//     product: DataType | null;
+//     onSave: (product: DataType) => void;
+// }
+
+const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
-    console.log(categories);
-    console.log(materials);
 
     const transformedCategories = transformListSelect(categories?.category_list || []);
     const transformedMaterials = transformListSelect(materials?.material_list || []);
@@ -40,42 +44,56 @@ function PageProductAdd() {
     const [previewImage, setPreviewImage] = useState('');
     const [imageUploaded, setImageUploaded] = useState(false);
 
-    const handleSubmit = async () => {
+    const handleSave = async () => {
         try {
             const values = await form.validateFields();
             setLoading(true);
             values.description = valueDes;
-            const skuGenerate = useGenerateSKU();
-            // Upload Image
-            const uploadPromises = [uploadImagesToCloudinary(fileList), uploadImagesToCloudinary(thumbnail)];
-            const [uploadedImages, uploadedThumbnail] = await Promise.all(uploadPromises);
-            values.images = uploadedImages;
-            values.thumb = uploadedThumbnail;
+
+            let uploadedThumbnail = [];
+            let uploadedImages = [];
+
+            // Upload Images only if there are changes
+            if (thumbnail.some((file: any) => !file.url) || fileList.some((file: any) => !file.url)) {
+                const uploadPromises = [
+                    uploadImagesToCloudinary(thumbnail.filter((file: any) => !file.url)),
+                    uploadImagesToCloudinary(fileList.filter((file: any) => !file.url)),
+                ];
+                [uploadedThumbnail, uploadedImages] = await Promise.all(uploadPromises);
+            }
+
+            // Update values with uploaded images
+            values.thumb = uploadedThumbnail.length > 0 ? uploadedThumbnail[0] : values.thumb;
+            values.product_type_id.images = [
+                ...fileList.filter((file: any) => file.url).map((file: any) => file.url),
+                ...uploadedImages,
+            ];
 
             const product_data = {
-                thumb: uploadedThumbnail[0],
+                thumb: uploadedThumbnail.url || values.thumb,
                 name: values.name,
                 price: values.price,
                 ship: values.ship,
                 quantity: values.quantity,
-                material_id: values.material,
-                category_id: values.category,
+                material_id: values.material_id,
+                category_id: values.category_id,
             };
             const product_type_data = {
-                sku: skuGenerate,
                 description: values.description,
-                tags: values.tags,
-                dimensions: values.dimensions,
-                images: values.images,
+                sku: values.product_type_id.sku,
+                tags: values.product_type_id.tags,
+                dimensions: values.product_type_id.dimensions,
+                images: values.product_type_id.images,
             };
+
             // Submit dữ liệu form
             console.log('Form values with images:', { product_data, product_type_data });
-            const postAddProduct = productAdd({
-                product_data,
-                product_type_data,
-            });
+            // const postAddProduct = productAdd({
+            //     product_data,
+            //     product_type_data,
+            // });
 
-            console.log('Saved Successfully', postAddProduct);
+            // console.log('Saved Successfully', postAddProduct);
             messageSuccess();
             setLoading(false);
         } catch (error) {
@@ -140,7 +158,7 @@ function PageProductAdd() {
 
         const data = await uploadCloud(formData);
         console.log(data);
-        if (data.length === 0) {
+        if (!data) {
             messageCustomError('Images upload failed');
         }
 
@@ -165,17 +183,64 @@ function PageProductAdd() {
         </button>
     );
     //Markdown
+    // Markdown
     const mdParser = new MarkdownIt();
     function handleEditorChange({ html, text }: any) {
         setValueDes(text);
     }
 
+    useEffect(() => {
+        if (product) {
+            const formattedThumbnail: any = product.thumb
+                ? [
+                      {
+                          uid: '-1',
+                          name: 'thumbnail.png',
+                          status: 'done',
+                          url: product.thumb,
+                      },
+                  ]
+                : [];
+            setThumbnail(formattedThumbnail);
+            setImageUploadedThumbnail(formattedThumbnail.length > 0);
+
+            const formattedFileList: any = product.product_type_id.images
+                ? product.product_type_id.images.map((image: string, index: number) => ({
+                      uid: `-${index + 1}`,
+                      name: `image${index + 1}.png`,
+                      status: 'done',
+                      url: image,
+                  }))
+                : [];
+            setFileList(formattedFileList);
+            setImageUploaded(formattedFileList.length > 0);
+            form.setFieldsValue({
+                ...product,
+                material_id: product.material_id.map((material: any) => material._id),
+                category_id: product.category_id.map((category: any) => category._id),
+            });
+            console.log(product);
+            setValueDes(product.product_type_id.description);
+        }
+    }, [product]);
     return (
         <>
             {contextHolder}
-            {/* <ModalLoadingAdmin /> */}
-            <div>
-                <Form form={form} layout="vertical" initialValues={{ category: [''], material: [''] }}>
+            <Modal
+                visible={visible}
+                title="Edit Product"
+                onCancel={onClose}
+                width={1100}
+                footer={[
+                    <Button key="cancel" onClick={onClose}>
+                        Cancel
+                    </Button>,
+                    <Button key="save" type="primary" onClick={handleSave}>
+                        Save
+                    </Button>,
+                ]}
+            >
+                <Form form={form} layout="vertical">
                     {/* Thumbnail upload */}
                     <Form.Item
                         name="thumb"
@@ -305,7 +370,7 @@ function PageProductAdd() {
                     {/* Category */}
                     <Form.Item label="Category">
                         <Form.List
-                            name="category"
+                            name="category_id"
                             rules={[
                                 {
                                     validator: async (_, value) => {
@@ -378,7 +443,7 @@ function PageProductAdd() {
                     {/* Material */}
                     <Form.Item label="Material">
                         <Form.List
-                            name="material"
+                            name="material_id"
                             rules={[
                                 {
                                     validator: async (_, value) => {
@@ -450,9 +515,30 @@ function PageProductAdd() {
                     </Form.Item>
 
                     {/* Product Type */}
+                    {/* SKU */}
+                    <Form.Item
+                        name={['product_type_id', 'sku']}
+                        label="SKU"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Required',
+                            },
+                            {
+                                validator(_, value) {
+                                    if (!value) {
+                                        return Promise.reject();
+                                    }
+                                    return Promise.resolve();
+                                },
+                            },
+                        ]}
+                    >
+                        <Input placeholder="SKU" />
+                    </Form.Item>
                     {/* TAG */}
                     <Form.Item
-                        name="tag"
+                        name={['product_type_id', 'tags']}
                         label="Tag"
                         rules={[
                             {
@@ -468,28 +554,28 @@ function PageProductAdd() {
                         <Space direction="vertical" style={{ width: '100%' }}>
                             <div className="pl-10">
                                 <Form.Item
-                                    name={['dimensions', 'width']}
+                                    name={['product_type_id', 'dimensions', 'width']}
                                     label="Width"
                                     rules={[{ required: false, message: 'Please input width' }]}
                                 >
                                     <Input placeholder="Width" />
                                 </Form.Item>
                                 <Form.Item
-                                    name={['dimensions', 'height']}
+                                    name={['product_type_id', 'dimensions', 'height']}
                                     label="Height"
                                     rules={[{ required: false, message: 'Please input height' }]}
                                 >
                                     <Input placeholder="Height" />
                                 </Form.Item>
                                 <Form.Item
-                                    name={['dimensions', 'length']}
+                                    name={['product_type_id', 'dimensions', 'length']}
                                     label="Length"
                                     rules={[{ required: false, message: 'Please input length' }]}
                                 >
                                     <Input placeholder="Length" />
                                 </Form.Item>
                                 <Form.Item
-                                    name={['dimensions', 'unit']}
+                                    name={['product_type_id', 'dimensions', 'unit']}
                                     label="Unit (Cm)"
                                     rules={[{ required: true, message: 'Required' }]}
                                 >
@@ -499,16 +585,17 @@ function PageProductAdd() {
                         </Space>
                     </Form.Item>
                     {/* Description */}
-                    <MdEditor
-                        style={{ height: '250px', wordWrap: 'break-word' }}
-                        renderHTML={(text) => mdParser.render(text)}
-                        onChange={handleEditorChange}
-                        name="description"
-                        value={valueDes}
-                    />
+                    <Form.Item label="Description" required>
+                        <MdEditor
+                            style={{ height: '250px', wordWrap: 'break-word' }}
+                            renderHTML={(text) => mdParser.render(text)}
+                            onChange={handleEditorChange}
+                            value={valueDes}
+                        />
+                    </Form.Item>
                     {/* Images */}
                     <Form.Item
-                        name="images"
+                        name={['product_type_id', 'images']}
                         label="Images"
                         rules={[
                             {
@@ -549,15 +636,10 @@ function PageProductAdd() {
                         )}
                     </Form.Item>
                     {/* Submit Button */}
-                    <Form.Item>
-                        <Button type="primary" onClick={handleSubmit} loading={loading}>
-                            Submit
-                        </Button>
-                    </Form.Item>
                 </Form>
-            </div>
+            </Modal>
         </>
     );
-}
+};
 
-export default PageProductAdd;
+export default EditProduct;
