@@ -274,7 +274,7 @@ function ProductDetail() {
                 </div>
                 <div className={cx('product-recommendations-wrapper')}>
                     <section className={cx('section-product-recommendations')}>
-                        <ViewListProductAuto title={'You may also like'} />
+                        {/* <ViewListProductAuto title={'You may also like'} /> */}
                     </section>
                 </div>
             </>

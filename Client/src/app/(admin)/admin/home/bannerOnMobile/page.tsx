@@ -7,7 +7,7 @@ import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
 import { homeGet, homePatch } from '@/services/homeServices';
 
-function PageBannerHome() {
+function PageBannerHomeOnMobile() {
     const { data } = homeGet();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
@@ -18,9 +18,9 @@ function PageBannerHome() {
     const [previewImage, setPreviewImage] = useState('');
 
     useEffect(() => {
-        if (data && data.length > 0 && data[0].images_banner) {
+        if (data && data.length > 0 && data[0].images_banner_under_640) {
             const initialValues = {
-                images: data[0].images_banner.map((banner: any) => ({
+                images: data[0].images_banner_under_640.map((banner: any) => ({
                     link: banner.link,
                     image: banner.url,
                 })),
@@ -28,7 +28,7 @@ function PageBannerHome() {
             form.setFieldsValue(initialValues);
 
             const initialFileLists: { [key: number]: any[] } = {};
-            data[0].images_banner.forEach((banner: any, index: number) => {
+            data[0].images_banner_under_640.forEach((banner: any, index: number) => {
                 initialFileLists[index] = [
                     {
                         uid: index,
@@ -58,7 +58,7 @@ function PageBannerHome() {
                 }),
             );
 
-            const postHome = await homePatch({ images_banner: dataImages });
+            const postHome = await homePatch({ images_banner_under_640: dataImages });
             console.log('Saved Successfully', postHome);
 
             messageCustomSuccess('Add Successfully');
@@ -217,4 +217,4 @@ function PageBannerHome() {
     );
 }
 
-export default PageBannerHome;
+export default PageBannerHomeOnMobile;

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Upload, Image, Space, Modal } from 'antd';
+import { PlusOutlined, MinusCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Select, Upload, Image, Space, Modal, Spin } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -10,8 +10,9 @@ import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
 import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
-import { transformListSelect, transformParentListSelect } from '@/utils/transformListSelect';
-import { productAdd } from '@/services/productServices';
+import { transformListSelect } from '@/utils/transformListSelect';
+import { productAdd, productPatch } from '@/services/productServices';
+import axios from 'axios';
 // import { DataType } from './PageListProduct'; // Adjust the import path as needed
 
 // interface EditProductModalProps {
@@ -27,7 +28,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
 
     const transformedCategories = transformListSelect(categories?.category_list || []);
     const transformedMaterials = transformListSelect(materials?.material_list || []);
-    const { messageSuccess, messageError, messageCustomError, contextHolder } = useMessageNotify();
+    const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueDes, setValueDes] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -85,20 +86,17 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                 dimensions: values.product_type_id.dimensions,
                 images: values.product_type_id.images,
             };
-
-            // Submit dữ liệu form
-            console.log('Form values with images:', { product_data, product_type_data });
-            // const postAddProduct = productAdd({
-            //     product_data,
-            //     product_type_data,
-            // });
-
-            // console.log('Saved Successfully', postAddProduct);
-            messageSuccess();
+            try {
+                await productPatch(product._id, product_data, product_type_data);
+                messageCustomSuccess('Edit Successfully');
+            } catch {
+                messageCustomError('Edit Error');
+            } finally {
+                setLoading(false);
+            }
             setLoading(false);
         } catch (error) {
-            console.log('Validation failed:', error);
-            messageError();
+            messageCustomError('Missing input field');
             setLoading(false);
         }
     };
@@ -157,7 +155,6 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
         });
 
         const data = await uploadCloud(formData);
-        console.log(data);
         if (!data) {
             messageCustomError('Images upload failed');
         }
@@ -219,13 +216,14 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                 material_id: product.material_id.map((material: any) => material._id),
                 category_id: product.category_id.map((category: any) => category._id),
             });
-            console.log(product);
             setValueDes(product.product_type_id.description);
         }
     }, [product]);
+
     return (
         <>
             {contextHolder}
+            {loading && <ModalLoadingAdmin />}
             <Modal
                 visible={visible}
                 title="Edit Product"
@@ -249,14 +247,14 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                             {
                                 validator: (_, value) => {
                                     if (!imageUploadedThumbnail) {
-                                        return Promise.reject(new Error('Please upload thumbnail image!'));
+                                        return Promise.reject(new Error('Required'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                         validateStatus={imageUploadedThumbnail ? 'success' : 'error'}
-                        help={!imageUploadedThumbnail && 'Please upload at least one thumbnail image!'}
+                        help={!imageUploadedThumbnail && 'Required'}
                     >
                         <Upload
                             listType="picture-card"
@@ -290,15 +288,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input name',
-                            },
-                            {
-                                validator(_, value) {
-                                    if (!value) {
-                                        return Promise.reject();
-                                    }
-                                    return Promise.resolve();
-                                },
+                                message: 'Required',
                             },
                         ]}
                     >
@@ -311,28 +301,67 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                                 <Form.Item
                                     name={['price', 'original']}
                                     label="Original Price"
-                                    rules={[{ required: true, message: 'Please input the original price' }]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input type="number" placeholder="Original Price" />
+                                    <Input type="number" min={0} placeholder="Original Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount']}
                                     label="Discount Price"
-                                    rules={[{ required: false, message: 'Please input the discount price' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Discount Price" />
+                                    <Input type="number" min={0} placeholder="Discount Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount_quantity']}
                                     label="Discount Quantity"
-                                    rules={[{ required: false, message: 'Please input the discount quantity' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Discount Quantity" />
+                                    <Input type="number" min={0} placeholder="Discount Quantity" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'currency']}
                                     label="Currency"
-                                    rules={[{ required: false, message: 'Please input the discount currency' }]}
+                                    rules={[{ required: false, message: 'Required' }]}
                                 >
                                     <Input placeholder="Currency" />
                                 </Form.Item>
@@ -353,19 +382,19 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input quantity',
+                                message: 'Required',
                             },
                             {
                                 validator(_, value) {
-                                    if (!value) {
-                                        return Promise.reject();
+                                    if (value < 0) {
+                                        return Promise.reject(new Error('Must be a non-negative number.'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                     >
-                        <Input type="number" placeholder="Quantity" />
+                        <Input type="number" min={0} placeholder="Quantity" />
                     </Form.Item>
                     {/* Category */}
                     <Form.Item label="Category">
@@ -392,7 +421,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                                                     {
                                                         required: true,
                                                         whitespace: true,
-                                                        message: 'Please select material or delete this field.',
+                                                        message: 'Required',
                                                     },
                                                 ]}
                                                 noStyle
@@ -442,18 +471,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                     </Form.Item>
                     {/* Material */}
                     <Form.Item label="Material">
-                        <Form.List
-                            name="material_id"
-                            rules={[
-                                {
-                                    validator: async (_, value) => {
-                                        if (!value) {
-                                            return Promise.reject(new Error('At least 2 passengers'));
-                                        }
-                                    },
-                                },
-                            ]}
-                        >
+                        <Form.List name="material_id">
                             {(fields, { add, remove }, { errors }) => (
                                 <>
                                     {fields.map((field, index) => (
@@ -465,7 +483,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                                                     {
                                                         required: true,
                                                         whitespace: true,
-                                                        message: 'Please select material or delete this field.',
+                                                        message: 'Required',
                                                     },
                                                 ]}
                                                 noStyle
@@ -524,14 +542,6 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                                 required: true,
                                 message: 'Required',
                             },
-                            {
-                                validator(_, value) {
-                                    if (!value) {
-                                        return Promise.reject();
-                                    }
-                                    return Promise.resolve();
-                                },
-                            },
                         ]}
                     >
                         <Input placeholder="SKU" />
@@ -539,11 +549,11 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                     {/* TAG */}
                     <Form.Item
                         name={['product_type_id', 'tags']}
-                        label="Tag"
+                        label="Tags"
                         rules={[
                             {
-                                required: true,
-                                message: 'Please input tags',
+                                required: false,
+                                message: 'Required',
                             },
                         ]}
                     >
@@ -556,23 +566,62 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                                 <Form.Item
                                     name={['product_type_id', 'dimensions', 'width']}
                                     label="Width"
-                                    rules={[{ required: false, message: 'Please input width' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Width" />
+                                    <Input type="number" min={0} placeholder="Width" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['product_type_id', 'dimensions', 'height']}
                                     label="Height"
-                                    rules={[{ required: false, message: 'Please input height' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Height" />
+                                    <Input type="number" min={0} placeholder="Height" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['product_type_id', 'dimensions', 'length']}
                                     label="Length"
-                                    rules={[{ required: false, message: 'Please input length' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Length" />
+                                    <Input type="number" min={0} placeholder="Length" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['product_type_id', 'dimensions', 'unit']}
@@ -601,14 +650,14 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                             {
                                 validator: (_, value) => {
                                     if (!imageUploaded) {
-                                        return Promise.reject(new Error('Please upload at least one image!'));
+                                        return Promise.reject(new Error('Required'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                         validateStatus={imageUploaded ? 'success' : 'error'}
-                        help={!imageUploaded && 'Please upload at least one image!'}
+                        help={!imageUploaded && 'Required'}
                     >
                         <Upload
                             listType="picture-card"

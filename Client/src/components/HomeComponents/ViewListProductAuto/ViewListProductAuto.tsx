@@ -11,7 +11,7 @@ import FormatPrice from '@/components/FormatPrice';
 import { Archivo } from 'next/font/google';
 import Link from 'next/link';
 import slugify from 'slugify';
-import { productGetAll } from '@/services/productServices';
+import { CldImage } from 'next-cloudinary';
 
 const archivo = Archivo({
     subsets: ['latin'],
@@ -21,13 +21,13 @@ const archivo = Archivo({
 const cx = classNames.bind(styles);
 
 interface IProps {
+    data: [];
+    isLoading: boolean;
     title: string;
-    nextBtn?: boolean;
     nextBtnLink?: string;
 }
 
-function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
-    const { data, error, isLoading } = productGetAll();
+function ViewListProductAuto({ data, isLoading, title, nextBtnLink }: IProps) {
     const productRef = useRef<any>(null);
     const scrollRef = useRef<any>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
@@ -35,7 +35,7 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
     const [currentTransform, setCurrentTransform] = useState<number>(0);
 
     useEffect(() => {
-        if (!isLoading && data && data.length > 0) {
+        if (!isLoading && data) {
             setCurrentHeight(scrollRef.current.offsetHeight);
             const handleResize = () => {
                 if (productRef.current) {
@@ -91,7 +91,7 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                 <div className={cx('product-inner')}>
                     <div className={cx('product-heading')}>
                         <h3 className={`${cx('product-heading-title')} ${archivo.className}`}>{title}</h3>
-                        {nextBtn && (
+                        {nextBtnLink !== '' && (
                             <div className={cx('product-heading-view-all')}>
                                 <a href={nextBtnLink}>
                                     View All
@@ -147,7 +147,14 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                             }.html`}
                                                         >
                                                             <div className={cx('aspect-ratio')}>
-                                                                <img src={item.thumb} alt="image-product" />
+                                                                <CldImage
+                                                                    width="400"
+                                                                    height="600"
+                                                                    alt="image"
+                                                                    src={item.thumb}
+                                                                    sizes={'(min-width: 0px) 100vw'}
+                                                                    loading="lazy"
+                                                                />
                                                             </div>
                                                         </Link>
                                                     </div>
@@ -155,10 +162,18 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                         {item.ship !== 0 && (
                                                             <p className={cx('product-tag')}>QUICK SHIP</p>
                                                         )}
-                                                        <Link href="/">
+                                                        <Link
+                                                            href={`/products/${handleSlugify(item.name)}-${
+                                                                item._id
+                                                            }.html`}
+                                                        >
                                                             <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
                                                         </Link>
-                                                        <Link href="/">
+                                                        <Link
+                                                            href={`/products/${handleSlugify(item.name)}-${
+                                                                item._id
+                                                            }.html`}
+                                                        >
                                                             <h2 className={cx('product-name')}>{item.name}</h2>
                                                         </Link>
                                                         <div
@@ -212,9 +227,16 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                     {data?.map((item: any, index: any) => (
                                         <div className={cx('product-item')} key={index}>
                                             <div className={cx('product-image')}>
-                                                <Link href="/">
+                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
-                                                        <img src={item.thumb} alt="image-product" />
+                                                        <CldImage
+                                                            width="400"
+                                                            height="600"
+                                                            alt="image"
+                                                            src={item.thumb}
+                                                            sizes={'(min-width: 0px) 100vw'}
+                                                            loading="lazy"
+                                                        />
                                                     </div>
                                                 </Link>
                                             </div>
@@ -223,7 +245,7 @@ function ViewListProductAuto({ title, nextBtn = false, nextBtnLink }: IProps) {
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
                                                 </Link>
-                                                <Link href="/">
+                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <h2 className={cx('product-name')}>{item.name}</h2>
                                                 </Link>
                                                 <div

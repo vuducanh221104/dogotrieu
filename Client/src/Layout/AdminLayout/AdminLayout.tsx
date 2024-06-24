@@ -23,15 +23,15 @@ const menuItems = [
     {
         key: '1',
         icon: <UserOutlined />,
-        label: <Link href="/admin/dashboard">Dashboard</Link>,
+        label: <Link href={config.routesAdmin.dashboard}>Dashboard</Link>,
     },
     {
         key: 'sub1',
         icon: <FolderAddOutlined />,
         label: 'Products',
         children: [
-            { key: '2', label: <Link href="/admin/product/list">List Product</Link> },
-            { key: '3', label: <Link href="/admin/product/add">Add Product</Link> },
+            { key: '2', label: <Link href={config.routesAdmin.productList}>List Product</Link> },
+            { key: '3', label: <Link href={config.routesAdmin.productAdd}>Add Product</Link> },
         ],
     },
     // {
@@ -59,24 +59,28 @@ const menuItems = [
                 label: 'Home',
                 children: [
                     { key: '7', label: <Link href={config.routesAdmin.imageHomeBanner}>Image Banner</Link> },
-                    { key: '8', label: <Link href={config.routesAdmin.imageHomeCustomer}>Image Customer</Link> },
-                    { key: '9', label: <Link href={config.routesAdmin.featuredProduct}>Featured Products</Link> },
+                    {
+                        key: '8',
+                        label: <Link href={config.routesAdmin.imageHomeBannerMoblie}>Image Banner Mobile</Link>,
+                    },
+                    { key: '9', label: <Link href={config.routesAdmin.imageHomeCustomer}>Image Customer</Link> },
+                    { key: '10', label: <Link href={config.routesAdmin.featuredProduct}>Featured Products</Link> },
                 ],
             },
             {
                 key: 'sub6',
                 label: 'Category',
                 children: [
-                    { key: '10', label: <Link href="/admin/category/add">Add Category</Link> },
-                    { key: '11', label: <Link href="/admin/category/list">List Category</Link> },
+                    { key: '11', label: <Link href={config.routesAdmin.categoryAdd}>Add Category</Link> },
+                    { key: '12', label: <Link href={config.routesAdmin.categoryList}>List Category</Link> },
                 ],
             },
             {
                 key: 'sub7',
                 label: 'Material',
                 children: [
-                    { key: '12', label: <Link href="/admin/material/add">Add Material</Link> },
-                    { key: '13', label: <Link href="/admin/material/list">List Material</Link> },
+                    { key: '13', label: <Link href={config.routesAdmin.materialAdd}>Add Material</Link> },
+                    { key: '14', label: <Link href={config.routesAdmin.materialList}>List Material</Link> },
                 ],
             },
         ],
@@ -86,19 +90,10 @@ const menuItems = [
         icon: <FolderAddOutlined />,
         label: 'Blogs/News',
         children: [
-            { key: '14', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
-            { key: '15', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
+            { key: '15', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
+            { key: '16', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
         ],
     },
-];
-
-const breadcrumbs = [
-    { url: '/admin/dashboard', urlTile: 'Dashboard', name: 'Dashboard' },
-    { url: '/admin/product/list', urlTile: 'Product', name: 'List Product' },
-    { url: '/admin/product/add', urlTile: 'Product', name: 'Add Product' },
-    { url: '/admin/material/add', urlTile: 'Material', name: 'Add Material' },
-    { url: '/admin/material/list', urlTile: 'Material', name: 'List Material' },
-    //..thêm nữa
 ];
 
 const AdminLayout = ({ children }: any) => {
@@ -168,7 +163,7 @@ const AdminLayout = ({ children }: any) => {
                         </Col>
                         <Col span={24} xs={17} sm={16} md={15} xl={21}>
                             <div className="ant-page-header-heading  md:ml-0 max-md:ml-0 max-sm:!ml-7 ">
-                                <BreadcrumbAdmin breadcrumbs={breadcrumbs} />
+                                <BreadcrumbAdmin />
                             </div>
                         </Col>
                         <Col span={24} xs={0} sm={4} md={6} xl={3} className="max-md:!hidden">

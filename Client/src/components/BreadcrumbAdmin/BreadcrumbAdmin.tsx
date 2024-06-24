@@ -2,8 +2,9 @@ import React from 'react';
 import { Breadcrumb } from 'antd';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-const BreadcrumbAdmin = ({ breadcrumbs }: any) => {
+import { adminBreadCumbs } from '@/services/menuData/breadCrumbData';
+const breadcrumbs = adminBreadCumbs;
+const BreadcrumbAdmin = () => {
     const pathname = usePathname();
 
     const breadcrumbTrail = breadcrumbs.filter((crumb: any) => pathname.startsWith(crumb.url));
