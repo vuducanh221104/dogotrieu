@@ -24,7 +24,6 @@ const ProductSchema = new Schema(
         thumb: { type: String, required: true },
         ship: { type: Number, required: true },
         quantity: { type: Number, required: true },
-        slug: { type: String, slug: 'name', unique: true },
         material_id: [{ type: Schema.Types.ObjectId, ref: 'Material' }],
         category_id: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
         created_at: { type: Date, default: Date.now },

@@ -14,16 +14,6 @@ const DimensionsSchema = new Schema(
     },
 );
 
-const ImagesSchema = new Schema(
-    {
-        url: { type: String, required: true },
-    },
-    {
-        _id: false,
-        timestamps: false,
-    },
-);
-
 const ProductTypeSchema = new Schema(
     {
         sku: { type: String, required: true, unique: true },

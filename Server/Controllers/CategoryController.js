@@ -78,11 +78,13 @@ class CategoryController {
             // Nếu có queryGfMaterial, lọc theo vật liệu
             if (queryGfMaterial.length > 0) {
                 dataOrig = dataOrig.filter((product) => {
-                    return product.category_id.some(
-                        (category) =>
-                            category.slug === queryGfMaterial ||
-                            (category.parent_id && category.parent_id.slug === queryGfMaterial),
-                    );
+                    const materialSlugs = product.material_id.map((material) => material.slug);
+                    const parentMaterialSlugs = product.material_id
+                        .map((material) => material.parent_id?.slug)
+                        .filter(Boolean);
+                    const allSlugs = [...materialSlugs, ...parentMaterialSlugs];
+
+                    return queryGfMaterial.every((material) => allSlugs.includes(material));
                 });
             }
 
