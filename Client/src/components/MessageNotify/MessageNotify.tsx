@@ -16,14 +16,6 @@ export const useMessageNotify = () => {
             content: 'Submit error',
         });
     };
-
-    const messageMissingInput = () => {
-        messageApi.open({
-            type: 'error',
-            content: 'Please Input Enter Missing Fields',
-        });
-    };
-
     const messageCustomSuccess = (message: string) => {
         messageApi.open({
             type: 'success',
@@ -48,7 +40,6 @@ export const useMessageNotify = () => {
     return {
         messageSuccess,
         messageError,
-        messageMissingInput,
         messageCustomSuccess,
         messageCustomError,
         messageCustom,

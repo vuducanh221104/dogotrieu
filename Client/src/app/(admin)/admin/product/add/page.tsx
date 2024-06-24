@@ -8,22 +8,21 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
-import axios from 'axios';
 import { useGenerateSKU } from '@/components/GenerateSKU/GenerateSKU';
 import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
 import { productAdd } from '@/services/productServices';
+import Link from 'next/link';
+import config from '@/config';
 
 function PageProductAdd() {
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
-    console.log(categories);
-    console.log(materials);
 
     const transformedCategories = transformListSelect(categories?.category_list || []);
     const transformedMaterials = transformListSelect(materials?.material_list || []);
-    const { messageSuccess, messageError, messageCustomError, contextHolder } = useMessageNotify();
+    const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueDes, setValueDes] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -45,10 +44,14 @@ function PageProductAdd() {
             const values = await form.validateFields();
             setLoading(true);
             values.description = valueDes;
+
             const skuGenerate = useGenerateSKU();
             // Upload Image
             const uploadPromises = [uploadImagesToCloudinary(fileList), uploadImagesToCloudinary(thumbnail)];
             const [uploadedImages, uploadedThumbnail] = await Promise.all(uploadPromises);
+            if (!uploadedImages || !uploadedThumbnail) {
+                messageCustomError('Upload Image Error');
+            }
             values.images = uploadedImages;
             values.thumb = uploadedThumbnail;
 
@@ -76,11 +79,10 @@ function PageProductAdd() {
             });
 
             console.log('Saved Successfully', postAddProduct);
-            messageSuccess();
+            messageCustomSuccess('Add Successfully');
             setLoading(false);
         } catch (error) {
-            console.log('Validation failed:', error);
-            messageError();
+            messageCustomError('Missing input field');
             setLoading(false);
         }
     };
@@ -169,13 +171,32 @@ function PageProductAdd() {
     function handleEditorChange({ html, text }: any) {
         setValueDes(text);
     }
-
     return (
         <>
             {contextHolder}
-            {/* <ModalLoadingAdmin /> */}
+            {loading && <ModalLoadingAdmin />}
             <div>
-                <Form form={form} layout="vertical" initialValues={{ category: [''], material: [''] }}>
+                <div className="flex justify-end items-center mr-6 mb-2">
+                    <Link href={config.routesAdmin.productList}>
+                        <Button type="primary">List Product</Button>
+                    </Link>
+                </div>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    initialValues={{
+                        quantity: 1,
+                        ship: 0,
+                        price: {
+                            currency: 'VND',
+                        },
+                        dimensions: {
+                            unit: 'cm',
+                        },
+                        category: [''],
+                        material: [''],
+                    }}
+                >
                     {/* Thumbnail upload */}
                     <Form.Item
                         name="thumb"
@@ -184,14 +205,14 @@ function PageProductAdd() {
                             {
                                 validator: (_, value) => {
                                     if (!imageUploadedThumbnail) {
-                                        return Promise.reject(new Error('Please upload thumbnail image!'));
+                                        return Promise.reject(new Error('Required'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                         validateStatus={imageUploadedThumbnail ? 'success' : 'error'}
-                        help={!imageUploadedThumbnail && 'Please upload at least one thumbnail image!'}
+                        help={!imageUploadedThumbnail && 'Required'}
                     >
                         <Upload
                             listType="picture-card"
@@ -225,7 +246,7 @@ function PageProductAdd() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input name',
+                                message: 'Required',
                             },
                             {
                                 validator(_, value) {
@@ -246,39 +267,94 @@ function PageProductAdd() {
                                 <Form.Item
                                     name={['price', 'original']}
                                     label="Original Price"
-                                    rules={[{ required: true, message: 'Please input the original price' }]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input type="number" placeholder="Original Price" />
+                                    <Input type="number" min={0} placeholder="Original Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount']}
                                     label="Discount Price"
-                                    rules={[{ required: false, message: 'Please input the discount price' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Discount Price" />
+                                    <Input type="number" min={0} placeholder="Discount Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount_quantity']}
                                     label="Discount Quantity"
-                                    rules={[{ required: false, message: 'Please input the discount quantity' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Discount Quantity" />
+                                    <Input type="number" min={0} placeholder="Discount Quantity" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'currency']}
                                     label="Currency"
-                                    rules={[{ required: false, message: 'Please input the discount currency' }]}
+                                    rules={[{ required: true, message: 'Please input the discount currency' }]}
                                 >
-                                    <Input placeholder="Currency" />
+                                    <Select
+                                        defaultValue="VND"
+                                        style={{ width: 120 }}
+                                        options={[
+                                            { value: 'VND', label: 'VND' },
+                                            { value: 'USD', label: 'USD' },
+                                        ]}
+                                    />
                                 </Form.Item>
                             </div>
                         </Space>
                     </Form.Item>
                     {/* Ship */}
-                    <Form.Item label="Ship" name="ship">
+                    <Form.Item
+                        label="Ship"
+                        name="ship"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Required',
+                            },
+                        ]}
+                    >
                         <Select style={{ width: 400 }}>
                             <Select.Option value={0}>null</Select.Option>
-                            <Select.Option value={1}>Ship-Fast</Select.Option>
+                            <Select.Option value={1}>QUICK-SHIP</Select.Option>
                         </Select>
                     </Form.Item>
                     {/* Quantity */}
@@ -288,34 +364,23 @@ function PageProductAdd() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input quantity',
+                                message: 'Required',
                             },
                             {
                                 validator(_, value) {
-                                    if (!value) {
-                                        return Promise.reject();
+                                    if (value < 0) {
+                                        return Promise.reject(new Error('Must be a non-negative number.'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                     >
-                        <Input type="number" placeholder="Quantity" />
+                        <Input type="number" min={0} placeholder="Quantity" />
                     </Form.Item>
                     {/* Category */}
                     <Form.Item label="Category">
-                        <Form.List
-                            name="category"
-                            rules={[
-                                {
-                                    validator: async (_, value) => {
-                                        if (!value) {
-                                            return Promise.reject(new Error('Required'));
-                                        }
-                                    },
-                                },
-                            ]}
-                        >
+                        <Form.List name="category">
                             {(fields, { add, remove }, { errors }) => (
                                 <>
                                     {fields.map((field, index) => (
@@ -327,7 +392,7 @@ function PageProductAdd() {
                                                     {
                                                         required: true,
                                                         whitespace: true,
-                                                        message: 'Please select material or delete this field.',
+                                                        message: 'Required',
                                                     },
                                                 ]}
                                                 noStyle
@@ -346,7 +411,7 @@ function PageProductAdd() {
                                                             .toLowerCase()
                                                             .localeCompare((optionB?.value ?? '').toLowerCase())
                                                     }
-                                                    placeholder="Select your category"
+                                                    placeholder="Select category"
                                                     options={transformedCategories}
                                                 />
                                             </Form.Item>
@@ -377,18 +442,7 @@ function PageProductAdd() {
                     </Form.Item>
                     {/* Material */}
                     <Form.Item label="Material">
-                        <Form.List
-                            name="material"
-                            rules={[
-                                {
-                                    validator: async (_, value) => {
-                                        if (!value) {
-                                            return Promise.reject(new Error('At least 2 passengers'));
-                                        }
-                                    },
-                                },
-                            ]}
-                        >
+                        <Form.List name="material">
                             {(fields, { add, remove }, { errors }) => (
                                 <>
                                     {fields.map((field, index) => (
@@ -400,7 +454,7 @@ function PageProductAdd() {
                                                     {
                                                         required: true,
                                                         whitespace: true,
-                                                        message: 'Please select material or delete this field.',
+                                                        message: 'Required',
                                                     },
                                                 ]}
                                                 noStyle
@@ -419,7 +473,7 @@ function PageProductAdd() {
                                                             .toLowerCase()
                                                             .localeCompare((optionB?.value ?? '').toLowerCase())
                                                     }
-                                                    placeholder="Select your material"
+                                                    placeholder="Select material"
                                                     options={transformedMaterials}
                                                 />
                                             </Form.Item>
@@ -452,12 +506,12 @@ function PageProductAdd() {
                     {/* Product Type */}
                     {/* TAG */}
                     <Form.Item
-                        name="tag"
-                        label="Tag"
+                        name="tags"
+                        label="Tags"
                         rules={[
                             {
-                                required: true,
-                                message: 'Please input tags',
+                                required: false,
+                                message: 'Required',
                             },
                         ]}
                     >
@@ -470,30 +524,72 @@ function PageProductAdd() {
                                 <Form.Item
                                     name={['dimensions', 'width']}
                                     label="Width"
-                                    rules={[{ required: false, message: 'Please input width' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Width" />
+                                    <Input type="number" min={0} placeholder="Width" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['dimensions', 'height']}
                                     label="Height"
-                                    rules={[{ required: false, message: 'Please input height' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Height" />
+                                    <Input type="number" min={0} placeholder="Height" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['dimensions', 'length']}
                                     label="Length"
-                                    rules={[{ required: false, message: 'Please input length' }]}
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message: 'Required',
+                                        },
+                                        {
+                                            validator(_, value) {
+                                                if (value < 0) {
+                                                    return Promise.reject(new Error('Must be a non-negative number.'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
                                 >
-                                    <Input placeholder="Length" />
+                                    <Input type="number" min={0} placeholder="Length" />
                                 </Form.Item>
-                                <Form.Item
-                                    name={['dimensions', 'unit']}
-                                    label="Unit (Cm)"
-                                    rules={[{ required: true, message: 'Required' }]}
-                                >
-                                    <Input placeholder="Unit (Cm)" defaultValue={'cm'} />
+                                <Form.Item name={['dimensions', 'unit']} label="Unit (Cm)">
+                                    <Select
+                                        defaultValue="cm"
+                                        style={{ width: 120 }}
+                                        options={[
+                                            { value: 'cm', label: 'cm' },
+                                            { value: 'm', label: 'm' },
+                                        ]}
+                                    />
                                 </Form.Item>
                             </div>
                         </Space>
@@ -514,14 +610,14 @@ function PageProductAdd() {
                             {
                                 validator: (_, value) => {
                                     if (!imageUploaded) {
-                                        return Promise.reject(new Error('Please upload at least one image!'));
+                                        return Promise.reject(new Error('Required'));
                                     }
                                     return Promise.resolve();
                                 },
                             },
                         ]}
                         validateStatus={imageUploaded ? 'success' : 'error'}
-                        help={!imageUploaded && 'Please upload at least one image!'}
+                        help={!imageUploaded && 'Required'}
                     >
                         <Upload
                             listType="picture-card"
