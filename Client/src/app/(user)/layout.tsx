@@ -7,6 +7,7 @@ import Footer from '@/Layout/components/Footer';
 import AnouBar from '@/Layout/components/AnouBar';
 import Chat from '@/Layout/components/Chat';
 import Header from '@/Layout/components/Header';
+import ProviderRedux from '@/redux/ProviderRedux';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -28,11 +29,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
             <body className={poppins.className}>
                 <main>
-                    <AnouBar />
-                    <Header />
-                    {children}
-                    <Footer />
-                    <Chat />
+                    <ProviderRedux>
+                        <AnouBar />
+                        <Header />
+                        {children}
+                        <Footer />
+                        <Chat />
+                    </ProviderRedux>
                 </main>
             </body>
         </html>

@@ -1,19 +1,31 @@
 import classNames from 'classnames/bind';
 import styles from './CartTippy.module.scss';
-import { CartIcon, DecreaseIcon, IncreaseIcon } from '@/components/Icons';
+import { CartIcon, ChervonMenu, DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import useWindowWidth from '@/hooks/useWindowWidth';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/redux/store';
+import ProviderRedux from '@/redux/ProviderRedux';
+import { CldImage } from 'next-cloudinary';
+import slugify from 'slugify';
+import FormatPrice from '@/components/FormatPrice';
+import { removeProduct, updateQuantity, updateTotalPrice } from '@/redux/cartSlice'; // Import the updateTotalPrice action
+import routes from '@/config/routes';
+import config from '@/config';
 
 const cx = classNames.bind(styles);
+
 function CartTippy() {
+    const dispatch = useDispatch();
+    const productsAddToCart = useSelector((state: RootState) => state.cart);
     const scrollRef = useRef<any>(null);
     const [currentHeightRef, setCurrentHeightRef] = useState<number>(0);
     const [classActive, setClassActive] = useState<any>('');
     const [showMenu, setShowMenu] = useState<any>(false);
     const windowWidth = useWindowWidth();
-    console.log(currentHeightRef);
+
     useLayoutEffect(() => {
         if (scrollRef.current) {
             setCurrentHeightRef(scrollRef.current.clientHeight);
@@ -32,185 +44,187 @@ function CartTippy() {
         };
     }, []);
 
-    const cartQuanity = 1;
+    const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
+
+    //Handle Add To Cart
+    const handleQuantityChange = (id: any, value: any) => {
+        const quantity = value === '' ? '' : parseInt(value);
+        dispatch(updateQuantity({ id, quantity }));
+    };
+
+    const handleIncrease = (item: any, quantity: any) => {
+        const itemId = item._id;
+        if (item.quantity > quantity) {
+            dispatch(updateQuantity({ id: itemId, quantity: quantity + 1 }));
+            dispatch(updateTotalPrice());
+        } else {
+            return;
+        }
+    };
+
+    const handleDecrease = (id: any, quantity: any) => {
+        if (quantity > 1) {
+            dispatch(updateQuantity({ id, quantity: quantity - 1 }));
+            dispatch(updateTotalPrice());
+        } else {
+            dispatch(removeProduct({ id }));
+            dispatch(updateTotalPrice());
+        }
+    };
+
+    const handleBlur = (e: any, item: any) => {
+        if (e.target.value === '') {
+            handleQuantityChange(item._id, '1');
+        } else if (e.target.value === '0') {
+            dispatch(removeProduct({ id: item._id }));
+        } else if (e.target.value > item.quantity) {
+            handleQuantityChange(item._id, '1');
+        }
+        dispatch(updateTotalPrice());
+    };
+    const handleRemove = (item: any) => {
+        dispatch(removeProduct({ id: item._id }));
+        dispatch(updateTotalPrice());
+    };
+
     return (
         <Tippy
             interactive
             visible={showMenu}
             placement="bottom"
-            offset={windowWidth <= 641 ? [-500, 17] : [0, 0]}
+            offset={windowWidth <= 641 ? [-500, 17] : [0, 15]}
             onClickOutside={() => setShowMenu(!showMenu)}
             onShow={() => setClassActive('active')}
             onHide={() => setClassActive('')}
             animation={' transition: opacity 0.7s cubic-bezier(0, 1, 0.4, 1), transform;'}
             render={(attrs: any) => (
                 <div className={cx('popperover')} tabIndex="-1" {...attrs} style={!showMenu ? { display: 'none' } : {}}>
-                    {cartQuanity > 0 ? (
+                    <ChervonMenu className={cx('icon-chervon-menu')} />
+                    {productsAddToCart.products?.length > 0 ? (
                         <div className={cx('wrapper-tippy-have-product', classActive)}>
                             <div className={cx('mini-cart-content')}>
                                 <div className={cx('inner')}>
                                     <div className={cx('mini-cart-title-wrapper')}>
                                         <p className={cx('title')}>Get free shipping!</p>
                                     </div>
-                                    <ul
-                                        className={cx('mini-cart-list')}
-
-                                        // style={{ maxHeight: `${currentHeightRef}px` }}
-                                    >
-                                        <li className={cx('mini-cart-item')}>
-                                            <div className={cx('mini-cart-image-wrapper')}>
-                                                <div className={cx('aspect-ratio')}>
-                                                    <Link href="/">
-                                                        <img
-                                                            src="https://woodfurniture.com/cdn/shop/files/BLA02-091-01_3980797_5d0c21f1-8818-48ae-b471-e2f418eed312_180x.png?v=1712575660"
-                                                            alt="image-product"
-                                                            className={cx('image-product')}
+                                    <ul className={cx('mini-cart-list')}>
+                                        {productsAddToCart.products.map((item: any) => (
+                                            <li className={cx('mini-cart-item')} key={item._id}>
+                                                <div className={cx('mini-cart-image-wrapper')}>
+                                                    <div className={cx('aspect-ratio')}>
+                                                        <Link
+                                                            href={`/products/${handleSlugify(item.name)}-${
+                                                                item._id
+                                                            }.html`}
+                                                        >
+                                                            <div className={cx('aspect-ratio')}>
+                                                                <CldImage
+                                                                    width="80"
+                                                                    height="80"
+                                                                    alt="image"
+                                                                    src={item.thumb}
+                                                                    loading="lazy"
+                                                                    className={cx('image-cloudinary')}
+                                                                />
+                                                            </div>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                                <div className={cx('mini-cart-item-wrapper')}>
+                                                    <div className={cx('mini-cart-product-info')}>
+                                                        <h4 className={cx('mini-cart-product-info-vendor')}>
+                                                            {item.material_id &&
+                                                                item.material_id?.map(
+                                                                    (material: any, index: number) => (
+                                                                        <Link
+                                                                            href={`/products/${handleSlugify(
+                                                                                item.name,
+                                                                            )}-${item._id}.html`}
+                                                                        >
+                                                                            {index !== 0 && ', '}
+                                                                            {material.name}
+                                                                        </Link>
+                                                                    ),
+                                                                )}
+                                                        </h4>
+                                                        <Link
+                                                            href={`/products/${handleSlugify(item.name)}-${
+                                                                item._id
+                                                            }.html`}
+                                                            className={cx('mini-cart-product-info-name')}
+                                                        >
+                                                            {item.name}
+                                                        </Link>
+                                                        <div
+                                                            className={cx(
+                                                                'product-price-wrapper',
+                                                                item.price.discount !== null &&
+                                                                    item.price.discount !== 0 &&
+                                                                    'have-price-discount',
+                                                            )}
+                                                        >
+                                                            {item.discount !== null && item.price.discount !== 0 && (
+                                                                <p className={cx('product-price-discount')}>
+                                                                    <FormatPrice value={item.price.discount} />
+                                                                </p>
+                                                            )}
+                                                            <p className={cx('product-price-real')}>
+                                                                <FormatPrice value={item.price.original} />
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className={cx('mini-cart-item-quantity')}>
+                                                    <div className={cx('quantity-selector')}>
+                                                        <button
+                                                            className={cx('quantity-selector-button')}
+                                                            onClick={() =>
+                                                                handleDecrease(item._id, item.quantityAddToCart)
+                                                            }
+                                                        >
+                                                            <DecreaseIcon className={cx('icon-decrease')} />
+                                                        </button>
+                                                        <input
+                                                            className={cx('quantity-selector-value')}
+                                                            value={item.quantityAddToCart}
+                                                            onChange={(e) =>
+                                                                handleQuantityChange(item._id, e.target.value)
+                                                            }
+                                                            onBlur={(e) => handleBlur(e, item)}
                                                         />
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-wrapper')}>
-                                                <div className={cx('mini-cart-product-info')}>
-                                                    <a className={cx('mini-cart-product-info-vendor')}>Bolia</a>
-                                                    <Link href="/" className={cx('mini-cart-product-info-name')}>
-                                                        Flat Woven Swivel Armchair | Bolia Saga - Satin lacquered steel
-                                                        / Light beige
-                                                    </Link>
-
-                                                    <div className={cx('mini-cart-price')}>
-                                                        <span>$3,255.00</span>
+                                                        <button
+                                                            className={cx('quantity-selector-button')}
+                                                            onClick={() => handleIncrease(item, item.quantityAddToCart)}
+                                                        >
+                                                            <IncreaseIcon className={cx('icon-increase')} />
+                                                        </button>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-quantity')}>
-                                                <div className={cx('quantity-selector')}>
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <DecreaseIcon className={cx('icon-decrease')} />
-                                                    </button>
-                                                    <input className={cx('quantity-selector-value')} value={'2'} />
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <IncreaseIcon className={cx('icon-increase')} />
+                                                    <button
+                                                        className={cx('btn-remove')}
+                                                        onClick={() => handleRemove(item)}
+                                                    >
+                                                        Remove
                                                     </button>
                                                 </div>
-                                                <button className={cx('btn-remove')}>Remove</button>
-                                            </div>
-                                        </li>
-                                        <li className={cx('mini-cart-item')}>
-                                            <div className={cx('mini-cart-image-wrapper')}>
-                                                <div className={cx('aspect-ratio')}>
-                                                    <img
-                                                        src="https://woodfurniture.com/cdn/shop/files/BLA02-091-01_3980797_5d0c21f1-8818-48ae-b471-e2f418eed312_180x.png?v=1712575660"
-                                                        alt="image-product"
-                                                        className={cx('image-product')}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-wrapper')}>
-                                                <div className={cx('mini-cart-product-info')}>
-                                                    <a className={cx('mini-cart-product-info-vendor')}>Bolia</a>
-                                                    <a className={cx('mini-cart-product-info-name')}>
-                                                        Flat Woven Swivel Armchair | Bolia Saga - Satin lacquered steel
-                                                        / Light beige
-                                                    </a>
-                                                    <div className={cx('mini-cart-price')}>
-                                                        <span>$3,255.00</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-quantity')}>
-                                                <div className={cx('quantity-selector')}>
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <DecreaseIcon className={cx('icon-decrease')} />
-                                                    </button>
-                                                    <input className={cx('quantity-selector-value')} value={'2'} />
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <IncreaseIcon className={cx('icon-increase')} />
-                                                    </button>
-                                                </div>
-                                                <button className={cx('btn-remove')}>Remove</button>
-                                            </div>
-                                        </li>
-                                        <li className={cx('mini-cart-item')}>
-                                            <div className={cx('mini-cart-image-wrapper')}>
-                                                <div className={cx('aspect-ratio')}>
-                                                    <img
-                                                        src="https://woodfurniture.com/cdn/shop/files/BLA02-091-01_3980797_5d0c21f1-8818-48ae-b471-e2f418eed312_180x.png?v=1712575660"
-                                                        alt="image-product"
-                                                        className={cx('image-product')}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-wrapper')}>
-                                                <div className={cx('mini-cart-product-info')}>
-                                                    <a className={cx('mini-cart-product-info-vendor')}>Bolia</a>
-                                                    <a className={cx('mini-cart-product-info-name')}>
-                                                        Flat Woven Swivel Armchair | Bolia Saga - Satin lacquered steel
-                                                        / Light beige
-                                                    </a>
-                                                    <div className={cx('mini-cart-price')}>
-                                                        <span>$3,255.00</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-quantity')}>
-                                                <div className={cx('quantity-selector')}>
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <DecreaseIcon className={cx('icon-decrease')} />
-                                                    </button>
-                                                    <input className={cx('quantity-selector-value')} value={'2'} />
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <IncreaseIcon className={cx('icon-increase')} />
-                                                    </button>
-                                                </div>
-                                                <button className={cx('btn-remove')}>Remove</button>
-                                            </div>
-                                        </li>
-                                        <li className={cx('mini-cart-item')}>
-                                            <div className={cx('mini-cart-image-wrapper')}>
-                                                <div className={cx('aspect-ratio')}>
-                                                    <img
-                                                        src="https://woodfurniture.com/cdn/shop/files/BLA02-091-01_3980797_5d0c21f1-8818-48ae-b471-e2f418eed312_180x.png?v=1712575660"
-                                                        alt="image-product"
-                                                        className={cx('image-product')}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-wrapper')}>
-                                                <div className={cx('mini-cart-product-info')}>
-                                                    <a className={cx('mini-cart-product-info-vendor')}>Bolia</a>
-                                                    <a className={cx('mini-cart-product-info-name')}>
-                                                        Flat Woven Swivel Armchair | Bolia Saga - Satin lacquered steel
-                                                        / Light beige
-                                                    </a>
-                                                    <div className={cx('mini-cart-price')}>
-                                                        <span>$3,255.00</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={cx('mini-cart-item-quantity')}>
-                                                <div className={cx('quantity-selector')}>
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <DecreaseIcon className={cx('icon-decrease')} />
-                                                    </button>
-                                                    <input className={cx('quantity-selector-value')} value={'2'} />
-                                                    <button className={cx('quantity-selector-button')}>
-                                                        <IncreaseIcon className={cx('icon-increase')} />
-                                                    </button>
-                                                </div>
-                                                <button className={cx('btn-remove')}>Remove</button>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                                 <div className={cx('mini-cart-item-footer')}>
                                     <div className={cx('mini-cart-item-total-price')}>
                                         <span>Total</span>
-                                        <span>$14,590.00</span>
+                                        <span>
+                                            <FormatPrice value={productsAddToCart.totalPrice} />
+                                        </span>
                                     </div>
                                     <div className={cx('mini-cart-item-button-container')}>
                                         <div className={cx('mini-cart-item-button-action')}>
-                                            <a className={cx('button-view-cart')}>View cart</a>
-                                            <a className={cx('button-check-out')}>Checkout</a>
+                                            <Link href={config.routes.cart} className={cx('button-view-cart')}>
+                                                View cart
+                                            </Link>
+                                            <a href={config.routes.cart} className={cx('button-check-out')}>
+                                                Checkout
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +249,7 @@ function CartTippy() {
         >
             <div onClick={() => setShowMenu(!showMenu)}>
                 <CartIcon style={{ height: '24px', width: '27px', cursor: 'pointer' }} />
-                <span className={cx('header-count')}>0</span>
+                <span className={cx('header-count')}>{productsAddToCart.quantity}</span>
             </div>
         </Tippy>
     );

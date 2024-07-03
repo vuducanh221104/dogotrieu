@@ -12,11 +12,17 @@ import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
 import MarkdownRender from '@/components/MarkdownRender';
 import { productGetId } from '@/services/productServices';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProductToCart } from '@/redux/cartSlice';
+import FormatPrice from '@/components/FormatPrice';
+import { useState, useEffect } from 'react';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
+    const dispatch = useDispatch();
     const { slug }: any = useParams();
-
+    const [currentQuantity, setCurrentQuantity] = useState('1'); // Khởi tạo với giá trị '1'
+    console.log(currentQuantity);
     const handleSplitSlug = () => {
         const temp = slug.split('.html') ?? [];
         const temp2 = temp[0]?.split('-');
@@ -26,6 +32,50 @@ function ProductDetail() {
     let id = handleSplitSlug();
 
     const { data, error, isLoading } = productGetId(id);
+
+    const productInCart = useSelector((state: any) => state.cart.products?.find((p: any) => p._id === data?._id));
+
+    //Handle Add To Cart
+    const handleAddToCart = () => {
+        if (!data) return;
+
+        const totalQuantity = productInCart
+            ? productInCart.quantityAddToCart + Number(currentQuantity)
+            : Number(currentQuantity);
+
+        if (totalQuantity <= data.quantity) {
+            dispatch(addProductToCart({ ...data, quantityAddToCart: Number(currentQuantity) }));
+        }
+    };
+
+    const handleIncreaseQuantity = () => {
+        if (Number(currentQuantity) < data.quantity) {
+            setCurrentQuantity(String(Number(currentQuantity) + 1));
+        } else {
+            return;
+        }
+    };
+
+    const handleDecreaseQuantity = () => {
+        if (Number(currentQuantity) > 1) {
+            setCurrentQuantity(String(Number(currentQuantity) - 1));
+        } else {
+            setCurrentQuantity('1');
+        }
+    };
+
+    const handleInputChange = (event: any) => {
+        const value = event.target.value;
+        if (value === '') {
+            setCurrentQuantity('');
+        } else if (!isNaN(value) && Number(value) > 0 && Number(value) <= data.quantity) {
+            setCurrentQuantity(value);
+        } else if (Number(value) > data.quantity) {
+            setCurrentQuantity('1');
+        } else {
+            setCurrentQuantity('1');
+        }
+    };
 
     if (isLoading) {
         return <Loading />;
@@ -37,7 +87,6 @@ function ProductDetail() {
         return (
             <>
                 <Breadcrumb />
-
                 <div className={cx('product-template-wrapper')}>
                     <section className={cx('section-product-template')}>
                         <Container className="container-flush">
@@ -75,13 +124,22 @@ function ProductDetail() {
                                                                 <div
                                                                     className={cx(
                                                                         'price-wrapper',
-                                                                        data.price?.discount != null && 'discount-on',
+                                                                        data.price?.discount != null &&
+                                                                            data.price?.discount !== 0 &&
+                                                                            'discount-on',
                                                                     )}
                                                                 >
-                                                                    <h4>22,000,000đ</h4>
-                                                                    {data.price?.discount != null && (
-                                                                        <span>21.000.000</span>
-                                                                    )}
+                                                                    <h4>
+                                                                        <FormatPrice value={data.price?.original} />
+                                                                    </h4>
+                                                                    {data.price?.discount != null &&
+                                                                        data.price?.discount !== 0 && (
+                                                                            <span>
+                                                                                <FormatPrice
+                                                                                    value={data.price?.discount}
+                                                                                />
+                                                                            </span>
+                                                                        )}
                                                                 </div>
                                                             </div>
                                                             <div className={cx('product-meta-info-item')}>
@@ -116,6 +174,7 @@ function ProductDetail() {
                                                                                 className={cx(
                                                                                     'quantity-selector-button',
                                                                                 )}
+                                                                                onClick={handleDecreaseQuantity}
                                                                             >
                                                                                 <DecreaseIcon
                                                                                     className={cx('icon-decrease')}
@@ -125,12 +184,14 @@ function ProductDetail() {
                                                                                 className={cx(
                                                                                     'quantity-selector-value',
                                                                                 )}
-                                                                                value={'0'}
+                                                                                value={currentQuantity}
+                                                                                onChange={(e) => handleInputChange(e)}
                                                                             />
                                                                             <button
                                                                                 className={cx(
                                                                                     'quantity-selector-button',
                                                                                 )}
+                                                                                onClick={handleIncreaseQuantity}
                                                                             >
                                                                                 <IncreaseIcon
                                                                                     className={cx('icon-increase')}
@@ -141,7 +202,10 @@ function ProductDetail() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className={cx('product-meta-info-add-to-cart')}>
+                                                        <div
+                                                            className={cx('product-meta-info-add-to-cart')}
+                                                            onClick={handleAddToCart}
+                                                        >
                                                             <button>Thêm Vào Giỏ</button>
                                                         </div>
                                                     </div>
@@ -274,7 +338,11 @@ function ProductDetail() {
                 </div>
                 <div className={cx('product-recommendations-wrapper')}>
                     <section className={cx('section-product-recommendations')}>
-                        {/* <ViewListProductAuto title={'You may also like'} /> */}
+                        <ViewListProductAuto
+                            query={'?category_id=666557e3c3a93469c8e5a597'}
+                            nextBtnLink={'123'}
+                            title={'You may also like'}
+                        />
                     </section>
                 </div>
             </>

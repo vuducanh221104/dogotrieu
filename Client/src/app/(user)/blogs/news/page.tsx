@@ -8,10 +8,17 @@ import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { dataNews } from '@/services/mockApi';
 import { archivo, poppins } from '@/assets/FontNext';
 import config from '@/config';
+import Loading from '@/components/Loading';
 
 const cx = classNames.bind(styles);
 function NewsHome() {
     const data = dataNews;
+    // if(isLoading){
+    //     return <Loading/>
+    // }
+    // else{
+
+    // }
     return (
         <>
             <div className={cx('news-wrapper')}>

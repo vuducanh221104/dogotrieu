@@ -1,9 +1,10 @@
 'use client';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { FacebookLoginIcon, GoogleLoginIcon, UserIcon } from '@/components/Icons';
+import { ChervonMenu, FacebookLoginIcon, GoogleLoginIcon, UserIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
 import { useState } from 'react';
+
 const cx = classNames.bind(styles);
 function Login() {
     const [classActive, setClassActive] = useState<any>('');
@@ -15,11 +16,11 @@ function Login() {
             <Tippy
                 interactive
                 visible={showMenu}
-                placement="bottom"
+                placement="bottom-start"
                 onClickOutside={() => setShowMenu(!showMenu)}
                 onShow={() => setClassActive('active')}
                 onHide={() => setClassActive('')}
-                offset={[0, 0]}
+                offset={[10, 15]}
                 animation={' transition: opacity 0.7s cubic-bezier(0, 1, 0.4, 1), transform;'}
                 render={(attrs: any) => (
                     <div className={cx('wrapper')} style={!showMenu ? { display: 'none' } : {}}>
@@ -29,8 +30,11 @@ function Login() {
                             {...attrs}
                             style={showRegister ? { height: '590px' } : { height: '490px' }}
                         >
+                            <ChervonMenu className={cx('icon-chervon-menu')} />
                             <div className={cx('wrapper-tippy', classActive)}>
                                 <div className={cx('form-wrapper')}>
+                                    {/* Don't hide , delete only div  */}
+                                    <div className={cx('modal-overlay')}>Chức Năng Này Chưa Hoàn Thiện</div>
                                     <div className={cx('login-panel', showRegister && 'active-login')}>
                                         <header className={cx('popper-header')}>
                                             <h2 className={cx('popper-title')}>Login to my account</h2>

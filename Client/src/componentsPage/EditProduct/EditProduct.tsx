@@ -22,7 +22,7 @@ import axios from 'axios';
 //     onSave: (product: DataType) => void;
 // }
 
-const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
+const EditProduct: React.FC<any> = ({ visible, onClose, product, mutate }) => {
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
 
@@ -88,6 +88,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
             };
             try {
                 await productPatch(product._id, product_data, product_type_data);
+                mutate();
                 messageCustomSuccess('Edit Successfully');
             } catch {
                 messageCustomError('Edit Error');
@@ -228,7 +229,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                 visible={visible}
                 title="Edit Product"
                 onCancel={onClose}
-                width={1100}
+                width={800}
                 footer={[
                     <Button key="cancel" onClick={onClose}>
                         Cancel
@@ -541,6 +542,17 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product }) => {
                             {
                                 required: true,
                                 message: 'Required',
+                            },
+                            {
+                                validator(_, value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (value.length < 5) {
+                                        return Promise.reject(new Error('Must 5 character'));
+                                    }
+                                    return Promise.resolve();
+                                },
                             },
                         ]}
                     >

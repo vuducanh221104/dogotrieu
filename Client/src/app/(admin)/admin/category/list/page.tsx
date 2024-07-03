@@ -2,20 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Col, Row, Tag, Tooltip, Modal, Form, Input, Space } from 'antd';
 import { PlusOutlined, EditOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import { materialAdd, materialDelete, materialGet, materialUpdate } from '@/services/materialServices';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
+import { categoryAdd, categoryDelete, categoryGet, categoryUpdate } from '@/services/categoryServices';
 
 interface Material {
     _id: string;
     name: string;
     slug: string;
+    parent_id?: string | null;
     children: Material[];
 }
 
 const PageListCategory: React.FC = () => {
-    const { data, isLoading, mutate } = materialGet();
-    const materials = data?.material_list;
+    const { data, isLoading, mutate } = categoryGet();
+    const categories = data?.category_list;
     const [editForm] = Form.useForm();
     const [addForm] = Form.useForm();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
@@ -23,10 +24,10 @@ const PageListCategory: React.FC = () => {
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-    const [currentMaterial, setCurrentMaterial] = useState<Material | null>(null);
+    const [currentCategory, setCurrentCategory] = useState<Material | null>(null);
 
     const showEditModal = (material: Material | null = null) => {
-        setCurrentMaterial(material);
+        setCurrentCategory(material);
         setIsEditModalVisible(true);
     };
 
@@ -35,13 +36,13 @@ const PageListCategory: React.FC = () => {
     };
 
     const showDeleteModal = (material: Material) => {
-        setCurrentMaterial(material);
+        setCurrentCategory(material);
         setIsDeleteModalVisible(true);
     };
 
     const handleEditCancel = () => {
         setIsEditModalVisible(false);
-        setCurrentMaterial(null);
+        setCurrentCategory(null);
         editForm.resetFields();
     };
 
@@ -61,15 +62,15 @@ const PageListCategory: React.FC = () => {
             const newData = [
                 ...values.children,
                 {
-                    _id: currentMaterial?._id,
+                    _id: currentCategory?._id,
                     name: values.name,
                     slug: values.slug,
                 },
             ];
             try {
-                await materialUpdate(newData);
+                await categoryUpdate(newData);
 
-                const initialChildren = currentMaterial ? currentMaterial.children : [];
+                const initialChildren = currentCategory ? currentCategory.children : [];
                 const updatedChildren = values.children;
 
                 const childrenToDelete = initialChildren
@@ -80,7 +81,7 @@ const PageListCategory: React.FC = () => {
                     .map((child) => child._id);
 
                 if (childrenToDelete.length > 0) {
-                    await materialDelete(childrenToDelete);
+                    await categoryDelete(childrenToDelete);
                 }
 
                 const childrenToAdd = updatedChildren
@@ -90,17 +91,17 @@ const PageListCategory: React.FC = () => {
                     )
                     .map((child: any) => ({
                         ...child,
-                        parent_id: currentMaterial?._id,
+                        parent_id: currentCategory?._id,
                     }));
 
                 if (childrenToAdd.length > 0) {
-                    await materialAdd(childrenToAdd);
+                    await categoryAdd(childrenToAdd);
                 }
 
                 mutate();
                 messageCustomSuccess('Update success!');
                 setIsEditModalVisible(false);
-                setCurrentMaterial(null);
+                setCurrentCategory(null);
                 editForm.resetFields();
             } catch (error) {
                 console.error('Edit failed:', error);
@@ -119,7 +120,7 @@ const PageListCategory: React.FC = () => {
         try {
             const values = await addForm.validateFields();
             try {
-                await materialAdd([values]);
+                await categoryAdd([values]);
                 mutate();
                 messageCustomSuccess('Add success!');
                 setIsAddModalVisible(false);
@@ -138,11 +139,11 @@ const PageListCategory: React.FC = () => {
     const handleDeleteOk = async () => {
         setLoading(true);
         try {
-            if (currentMaterial) {
-                const childrenToDelete = currentMaterial.children.map((child) => child._id);
-                childrenToDelete.push(currentMaterial._id);
+            if (currentCategory) {
+                const childrenToDelete = currentCategory.children.map((child) => child._id);
+                childrenToDelete.push(currentCategory._id);
                 try {
-                    await materialDelete(childrenToDelete);
+                    await categoryDelete(childrenToDelete);
                     mutate();
                     messageCustomSuccess('Delete success!');
                     setIsDeleteModalVisible(false);
@@ -159,12 +160,12 @@ const PageListCategory: React.FC = () => {
     };
 
     useEffect(() => {
-        if (currentMaterial) {
-            editForm.setFieldsValue(currentMaterial);
+        if (currentCategory) {
+            editForm.setFieldsValue(currentCategory);
         } else {
             editForm.resetFields();
         }
-    }, [currentMaterial, editForm]);
+    }, [currentCategory, editForm]);
 
     const renderChildren = (children: Material[]) => {
         return children.map((child) => (
@@ -182,14 +183,14 @@ const PageListCategory: React.FC = () => {
                 Add
             </Button>
             <Row gutter={[16, 16]}>
-                {materials?.map((material: any) => (
-                    <Col key={material._id} xs={24} sm={12} md={8} lg={8} xl={8}>
+                {categories?.map((category: any) => (
+                    <Col key={category._id} xs={24} sm={12} md={8} lg={8} xl={8}>
                         <Card
                             title={
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Tooltip title={material.name}>
+                                    <Tooltip title={category.name}>
                                         <span className="block overflow-hidden truncate whitespace-nowrap max-w-[150px] mr-3">
-                                            {material.name}
+                                            {category.name}
                                         </span>
                                     </Tooltip>
                                     <div>
@@ -205,7 +206,7 @@ const PageListCategory: React.FC = () => {
                                                     />
                                                 }
                                                 size="small"
-                                                onClick={() => showEditModal(material)}
+                                                onClick={() => showEditModal(category)}
                                                 className="!mr-1 !border-sky-400"
                                             />
                                         </Tooltip>
@@ -221,7 +222,7 @@ const PageListCategory: React.FC = () => {
                                                     />
                                                 }
                                                 size="small"
-                                                onClick={() => showDeleteModal(material)}
+                                                onClick={() => showDeleteModal(category)}
                                                 danger
                                             />
                                         </Tooltip>
@@ -230,8 +231,8 @@ const PageListCategory: React.FC = () => {
                             }
                         >
                             <div>
-                                <strong>Sub-materials:</strong>
-                                <div>{renderChildren(material.children)}</div>
+                                <strong>Sub-categories:</strong>
+                                <div>{renderChildren(category.children)}</div>
                             </div>
                         </Card>
                     </Col>
@@ -354,7 +355,7 @@ const PageListCategory: React.FC = () => {
                     </Button>,
                 ]}
             >
-                <div>Are you sure you want to delete "{currentMaterial?.name}"?</div>
+                <div>Are you sure you want to delete "{currentCategory?.name}"?</div>
             </Modal>
         </>
     );

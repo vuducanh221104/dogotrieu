@@ -22,7 +22,7 @@
     &.static {
         position: static !important;
     }
-    &:hover:nth-child(2) {
+    &:hover:nth-child(1) {
         .mega-menu {
             visibility: visible;
             opacity: 1;
@@ -73,7 +73,7 @@
 .mega-menu-column {
     display: block;
     flex: 0 1 auto;
-    margin: 0 40px 30px 40px;
+    margin: 0 0px 30px 25px;
     &:first-child {
         margin-left: 0;
     }

@@ -29,10 +29,8 @@ const routes = {
         imageHomeCustomer: '/admin/home/customer',
         featuredProduct: '/admin/home/featuredProduct',
         //Category
-        categoryAdd: '/admin/category/add',
         categoryList: '/admin/category/list',
         //Material
-        materialAdd: '/admin/material/add',
         materialList: '/admin/material/list',
         //Order
         orderList: '/admin/order/list',

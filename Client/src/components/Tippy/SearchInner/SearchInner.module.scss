@@ -206,3 +206,32 @@
         font-size: 1.2rem;
     }
 }
+
+.product-price-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    .product-price-real {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    .product-price-discount {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    &.have-price-discount {
+        justify-content: unset;
+        .product-price-discount {
+            margin-right: 10px;
+        }
+        .product-price-real {
+            text-decoration: line-through;
+            margin: 2px 0 0 0;
+            font-size: 1.1rem;
+        }
+    }
+}

@@ -140,7 +140,7 @@ function PageAboutUs() {
                     </div>
                 </div>
                 <div className={`${cx('footer')} ${lato.className}`}>
-                    <a href="mailto:vuducanh22112004@gmail.com">vuducanh22112004@gmail.com</a>| 0348483612 (em Lan)
+                    <a href="mailto:vuducanh22112004@gmail.com">dogotrieu@gmail.com</a>| 0348483612 (em Lan)
                 </div>
             </div>
         </div>

@@ -99,9 +99,7 @@
 }
 
 .mini-cart-title-wrapper {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 20px;
+    padding: 20px 20px 0 20px;
     .title {
         font-weight: 600;
         font-size: 1.4rem;
@@ -123,7 +121,7 @@
 .mini-cart-item {
     display: flex;
     align-items: flex-start;
-    padding: 20px 0;
+    padding: 20px 0 20px 0;
     border-top: 1px solid var(--border-color);
     &:nth-child(1) {
         border-top: none;
@@ -137,7 +135,7 @@
         position: relative;
         margin-left: auto;
         margin-right: auto;
-        padding-bottom: 100% !important;
+        // padding-bottom: 100% !important;
     }
     .image-product {
         max-width: 100%;
@@ -323,4 +321,48 @@
     .header-count {
         right: -5px;
     }
+}
+
+.image-cloudinary {
+    max-height: 80px !important;
+    max-width: 70px !important;
+}
+
+.product-price-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    .product-price-real {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    .product-price-discount {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    &.have-price-discount {
+        justify-content: unset;
+        .product-price-discount {
+            margin-right: 10px;
+        }
+        .product-price-real {
+            text-decoration: line-through;
+            margin: 2px 0 0 0;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+.icon-chervon-menu {
+    position: absolute;
+    width: 18px;
+    height: 8px;
+    right: 27px;
+    bottom: 100%;
+    z-index: 2;
+    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.12));
 }

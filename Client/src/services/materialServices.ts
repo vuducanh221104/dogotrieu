@@ -13,7 +13,7 @@ export const materialAdd = async (data: {}) => {
 //[GET]
 export const materialGet = () => {
     const url = `api/v1/material`;
-    const { data, error, isLoading } = useSWR(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -22,5 +22,26 @@ export const materialGet = () => {
     if (error) {
         console.log(error);
     }
-    return { data, error, isLoading };
+    return { data, error, isLoading, mutate };
+};
+
+//[PATCH]
+export const materialUpdate = async (data: any) => {
+    try {
+        const res = await httpRequest.patch(`api/v1/material`, data);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+//[DELETE]
+export const materialDelete = async (ids: {}) => {
+    try {
+        const res = await httpRequest.deleted(`api/v1/material`, {
+            data: { ids },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
 };

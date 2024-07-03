@@ -1,4 +1,5 @@
 'use client';
+import { archivo } from '@/assets/FontNext';
 import {
     ApplePayment,
     ATMPayment,
@@ -12,6 +13,7 @@ import {
     YoutubeIcon,
 } from '@/components/Icons';
 import config from '@/config';
+import { footerMenuItems } from '@/services/menuData/menuData';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
 import React from 'react';
@@ -30,43 +32,7 @@ function Footer() {
         setToggleIndex((prevIndex) => (prevIndex === index ? null : index));
     };
     // DATA FOOTER ROW
-    const footerItems = [
-        {
-            id: 0,
-            title: 'Về Chúng Tôi',
-            content:
-                'Đồ Gỗ Triệu Cam Kết tự hào cam kết với bạn rằng mọi sản phẩm gỗ mà chúng tôi cung cấp đều được xây dựng trên nền tảng uy tín và chất lượng tối đa. Chúng tôi không chỉ là một cửa hàng, mà còn là một niềm tin, một sự đảm bảo về sự an tâm và hài lòng cho quý khách hàng.',
-            classNameChild: 'text',
-            height: '140px',
-        },
-        {
-            id: 1,
-            title: 'GIỚI THIỆU',
-            links: [
-                { label: 'Về Chúng Tôi', url: config.routesCompany.aboutUs },
-                { label: 'Liên Hệ', url: config.routesCompany.contact },
-            ],
-            classNameChild: 'link',
-            height: '181px',
-        },
-        {
-            id: 2,
-            title: 'KHÁM PHÁ',
-            links: [
-                { label: 'GIAO DỊCH', url: config.routesCompany.tradeIn },
-                { label: 'TIN TỨC', url: config.routes.news },
-            ],
-            classNameChild: 'link',
-            height: '60px',
-        },
-        {
-            id: 3,
-            title: 'ĐĂNG KÝ NHẬN TIN',
-            content: 'Đăng ký nhận tin để nhận các ưu đãi độc quyền, bộ sưu tập mới, mẹo và nhiều hơn nữa',
-            classNameChild: 'newsletter',
-            height: '40px',
-        },
-    ];
+    const footerItems = footerMenuItems;
     // HANDLE REPOSIVE
     const updateDimensions = () => {
         setWitdh(window.innerWidth);
@@ -104,7 +70,10 @@ function Footer() {
                     <div className={cx('footer-block-list')}>
                         {footerItems.map((item, index) => (
                             <div key={item.id} className={cx('footer-block-item', item.classNameChild)}>
-                                <h3 className={cx('footer-block-item-heading')} onClick={() => handleToggle(item.id)}>
+                                <h3
+                                    className={`${cx('footer-block-item-heading')} ${archivo.className}`}
+                                    onClick={() => handleToggle(item.id)}
+                                >
                                     <p>{item.title}</p>
                                     <ChervonDonwIcon
                                         className={cx('icon-chervon-down', toggleIndex === index && 'active')}
