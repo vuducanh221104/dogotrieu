@@ -21,31 +21,39 @@ function createCategoryList(categories, parent_id = null) {
 }
 
 class CategoryController {
-    //[GET] ~ Get To Slug
+    //[GET]
     async categoryAndQueryMaterial(req, res) {
-        const categorySlug = req.params.slug;
+        const categorySlug = req.params.slug || 'all';
         let queryGfMaterial = req.query.gf_material;
+        let queryGfAvailab = req.query.gf_availab;
+        const sortBy = req.query.sort_by || '';
 
-        // Lấy tham số limit và page từ query, đặt giá trị mặc định nếu không có
         const limit = parseInt(req.query.limit) || 48;
         const page = parseInt(req.query.page) || 1;
         const skip = (page - 1) * limit;
 
-        // Nếu không có queryGfMaterial, đặt nó là một mảng rỗng
         if (!queryGfMaterial) {
             queryGfMaterial = [];
         }
 
-        // Nếu queryGfMaterial không phải là một mảng, đặt nó vào một mảng
         if (!Array.isArray(queryGfMaterial)) {
             queryGfMaterial = [queryGfMaterial];
         }
 
-        // Lọc ra các giá trị không hợp lệ (undefined hoặc null) trong queryGfMaterial
         queryGfMaterial = queryGfMaterial.filter(Boolean);
 
+        if (!queryGfAvailab) {
+            queryGfAvailab = [];
+        }
+
+        if (!Array.isArray(queryGfAvailab)) {
+            queryGfAvailab = [queryGfAvailab];
+        }
+
+        queryGfAvailab = queryGfAvailab.filter(Boolean);
+
         try {
-            const products = await Product.find({})
+            let products = await Product.find({})
                 .populate({
                     path: 'material_id',
                     select: 'name parent_id slug',
@@ -64,20 +72,27 @@ class CategoryController {
                 })
                 .exec();
 
-            // Hàm kiểm tra sản phẩm có khớp với categorySlug hay không
-            const matchesCategory = (product) => {
-                return product.category_id.some(
-                    (category) =>
-                        category.slug === categorySlug ||
-                        (category.parent_id && category.parent_id.slug === categorySlug),
-                );
-            };
+            let category = null;
 
-            let dataOrig = products.filter(matchesCategory);
+            if (categorySlug !== 'all') {
+                category = await Category.findOne({ slug: categorySlug }).exec();
+                if (!category) {
+                    return res.status(404).json({ message: 'Category not found' });
+                }
 
-            // Nếu có queryGfMaterial, lọc theo vật liệu
+                const matchesCategory = (product) => {
+                    return product.category_id.some(
+                        (category) =>
+                            category.slug === categorySlug ||
+                            (category.parent_id && category.parent_id.slug === categorySlug),
+                    );
+                };
+
+                products = products.filter(matchesCategory);
+            }
+
             if (queryGfMaterial.length > 0) {
-                dataOrig = dataOrig.filter((product) => {
+                products = products.filter((product) => {
                     const materialSlugs = product.material_id.map((material) => material.slug);
                     const parentMaterialSlugs = product.material_id
                         .map((material) => material.parent_id?.slug)
@@ -88,14 +103,42 @@ class CategoryController {
                 });
             }
 
-            // Tính toán tổng số sản phẩm và số trang
-            const totalItems = dataOrig.length;
-            const totalPages = Math.ceil(totalItems / limit);
+            if (queryGfAvailab.includes('1')) {
+                products = products.filter((product) => product.ship === 1);
+            }
 
-            // Áp dụng phân trang và giới hạn
-            const paginatedData = dataOrig.slice(skip, skip + limit);
+            switch (sortBy) {
+                case 'availability':
+                    products.sort((a, b) => b.quantity - a.quantity);
+                    break;
+                case 'title-asc':
+                    products.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'title-desc':
+                    products.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                case 'price-asc':
+                    products.sort((a, b) => a.price.original - b.price.original);
+                    break;
+                case 'price-desc':
+                    products.sort((a, b) => b.price.original - a.price.original);
+                    break;
+                case 'date-asc':
+                    products.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'date-desc':
+                    products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+                default:
+                    break;
+            }
+
+            const totalItems = products.length;
+            const totalPages = Math.ceil(totalItems / limit);
+            const paginatedData = products.slice(skip, skip + limit);
 
             res.status(200).json({
+                nameCategory: categorySlug === 'all' ? 'All Products' : category.name,
                 totalItems,
                 totalPages,
                 currentPage: page,
@@ -106,6 +149,7 @@ class CategoryController {
             res.status(500).json({ message: error.message });
         }
     }
+
     //[GET]
     async categoryList(req, res) {
         try {
@@ -120,10 +164,43 @@ class CategoryController {
     }
     //[POST]
     async categoryAdd(req, res) {
+        const categories = req.body;
+        const savedMaterials = [];
         try {
-            const categooryCreate = new Category(req.body);
-            const data = await categooryCreate.save();
-            res.status(200).json(data);
+            for (const material of categories) {
+                const materialCreate = new Category(material);
+                const data = await materialCreate.save();
+                savedMaterials.push(data);
+            }
+
+            res.status(200).json(savedMaterials);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+    //[PATCH]
+    async categoryUpdate(req, res) {
+        const updatedCategory = req.body;
+        try {
+            // Use Promise.all to handle multiple updates
+            const updatePromises = updatedCategory.map((category) => {
+                return Category.findByIdAndUpdate(category._id, category, { new: true });
+            });
+
+            // Wait for all updates to complete
+            const results = await Promise.all(updatePromises);
+
+            res.json({ message: 'Materials updated successfully', results });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating materials', error });
+        }
+    }
+    //[DELETE]
+    async categoryDelete(req, res) {
+        const { ids } = req.body;
+        try {
+            await Category.deleteMany({ _id: { $in: ids } });
+            res.status(200).json({ message: 'Materials deleted successfully' });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

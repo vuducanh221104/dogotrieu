@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const ProductController = require('../Controllers/ProductController');
+//
+router.get('/search', ProductController.searchProductByQueryAndFilter);
+router.get('/searchQuery', ProductController.seachProductByQuery);
 router.get('/only', ProductController.getOnlyProduct);
 router.get('/list', ProductController.getAllProduct);
 router.get('/type/:id', ProductController.getProductAndProductType);

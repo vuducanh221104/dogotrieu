@@ -293,5 +293,143 @@ class ProductController {
             res.status(500).json({ message: 'Error updating product', error });
         }
     }
+    // [GET] : API?q=''&type=less
+    async seachProductByQuery(req, res, next) {
+        try {
+            const { q, type } = req.query;
+            let query = {};
+            if (q) {
+                query = { name: { $regex: q, $options: 'i' } };
+            }
+            if (type === 'more') {
+                const productData = await Product.find(query);
+                res.status(200).json(productData);
+            } else {
+                const productData = await Product.find(query).limit(5);
+                res.status(200).json(productData);
+            }
+        } catch (err) {
+            res.status(500).json({ message: 'Server error' });
+        }
+    }
+
+    //[GET]
+    async searchProductByQueryAndFilter(req, res) {
+        const searchTerm = req.query.q;
+        let queryGfMaterial = req.query.gf_material;
+        let queryGfAvailab = req.query.gf_availab;
+        const sortBy = req.query.sort_by || '';
+
+        const limit = parseInt(req.query.limit) || 48;
+        const page = parseInt(req.query.page) || 1;
+        const skip = (page - 1) * limit;
+
+        if (!queryGfMaterial) {
+            queryGfMaterial = [];
+        }
+
+        if (!Array.isArray(queryGfMaterial)) {
+            queryGfMaterial = [queryGfMaterial];
+        }
+
+        queryGfMaterial = queryGfMaterial.filter(Boolean);
+
+        if (!queryGfAvailab) {
+            queryGfAvailab = [];
+        }
+
+        if (!Array.isArray(queryGfAvailab)) {
+            queryGfAvailab = [queryGfAvailab];
+        }
+
+        queryGfAvailab = queryGfAvailab.filter(Boolean);
+
+        try {
+            let productsQuery = { name: { $regex: searchTerm, $options: 'i' } };
+
+            let products = await Product.find(productsQuery)
+                .populate({
+                    path: 'material_id',
+                    select: 'name parent_id slug',
+                    populate: {
+                        path: 'parent_id',
+                        select: 'name slug',
+                    },
+                })
+                .populate({
+                    path: 'category_id',
+                    select: 'name parent_id slug',
+                    populate: {
+                        path: 'parent_id',
+                        select: 'name slug',
+                    },
+                })
+                .exec();
+
+            let dataOrig = [...products]; // Copy array to avoid modifying the original data
+
+            if (queryGfMaterial.length > 0) {
+                dataOrig = dataOrig.filter((product) => {
+                    const materialSlugs = product.material_id.map((material) => material.slug);
+                    const parentMaterialSlugs = product.material_id
+                        .map((material) => material.parent_id?.slug)
+                        .filter(Boolean);
+                    const allSlugs = [...materialSlugs, ...parentMaterialSlugs];
+
+                    return queryGfMaterial.every((material) => allSlugs.includes(material));
+                });
+            }
+
+            if (queryGfAvailab.includes('1')) {
+                dataOrig = dataOrig.filter((product) => product.ship === 1);
+            }
+
+            if (queryGfMaterial.length === 0 && dataOrig.length === 0) {
+                return res.status(404).json({ message: 'No products found' });
+            }
+
+            switch (sortBy) {
+                case 'availability':
+                    dataOrig.sort((a, b) => b.quantity - a.quantity);
+                    break;
+                case 'title-asc':
+                    dataOrig.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'title-desc':
+                    dataOrig.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                case 'price-asc':
+                    dataOrig.sort((a, b) => a.price.original - b.price.original);
+                    break;
+                case 'price-desc':
+                    dataOrig.sort((a, b) => b.price.original - a.price.original);
+                    break;
+                case 'date-asc':
+                    dataOrig.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'date-desc':
+                    dataOrig.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+                default:
+                    break;
+            }
+
+            const totalItems = dataOrig.length;
+            const totalPages = Math.ceil(totalItems / limit);
+
+            const paginatedData = dataOrig.slice(skip, skip + limit);
+
+            res.status(200).json({
+                searchTerm,
+                totalItems,
+                totalPages,
+                currentPage: page,
+                itemsPerPage: limit,
+                data: paginatedData,
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 module.exports = new ProductController();

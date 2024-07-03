@@ -36,9 +36,45 @@ class MaterialController {
     //[POST]
     async materialAdd(req, res) {
         try {
-            const materialCreate = new Material(req.body);
-            const data = await materialCreate.save();
-            res.status(200).json(data);
+            const materials = req.body; // Expecting an array of materials
+            const savedMaterials = [];
+
+            for (const material of materials) {
+                const materialCreate = new Material(material);
+                const data = await materialCreate.save();
+                savedMaterials.push(data);
+            }
+
+            res.status(200).json(savedMaterials);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    //[PATCH]
+    async materialUpdate(req, res) {
+        const updatedMaterials = req.body;
+
+        try {
+            // Use Promise.all to handle multiple updates
+            const updatePromises = updatedMaterials.map((material) => {
+                return Material.findByIdAndUpdate(material._id, material, { new: true });
+            });
+
+            // Wait for all updates to complete
+            const results = await Promise.all(updatePromises);
+
+            res.json({ message: 'Materials updated successfully', results });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating materials', error });
+        }
+    }
+    //[DELETE]
+    async materialDelete(req, res) {
+        const { ids } = req.body;
+        try {
+            await Material.deleteMany({ _id: { $in: ids } });
+            res.status(200).json({ message: 'Materials deleted successfully' });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
