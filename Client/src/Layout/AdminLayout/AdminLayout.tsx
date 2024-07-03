@@ -69,19 +69,11 @@ const menuItems = [
             },
             {
                 key: 'sub6',
-                label: 'Category',
-                children: [
-                    { key: '11', label: <Link href={config.routesAdmin.categoryAdd}>Add Category</Link> },
-                    { key: '12', label: <Link href={config.routesAdmin.categoryList}>List Category</Link> },
-                ],
+                label: <Link href={config.routesAdmin.categoryList}>List Category</Link>,
             },
             {
                 key: 'sub7',
-                label: 'Material',
-                children: [
-                    { key: '13', label: <Link href={config.routesAdmin.materialAdd}>Add Material</Link> },
-                    { key: '14', label: <Link href={config.routesAdmin.materialList}>List Material</Link> },
-                ],
+                label: <Link href={config.routesAdmin.materialList}>List Material</Link>,
             },
         ],
     },

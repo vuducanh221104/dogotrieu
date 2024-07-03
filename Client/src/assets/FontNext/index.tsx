@@ -2,7 +2,7 @@ import { Archivo, Poppins, Lato, Playfair_Display, Open_Sans } from 'next/font/g
 
 export const archivo = Archivo({
     subsets: ['latin'],
-    weight: ['400', '500', '600'],
+    weight: ['400', '500', '600', '700'],
     style: ['italic', 'normal'],
 });
 export const poppins = Poppins({

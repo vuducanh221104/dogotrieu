@@ -17,12 +17,15 @@
     font-weight: 600;
     margin-bottom: 11px;
     text-transform: uppercase;
+    & p {
+        margin-bottom: 0;
+    }
 }
 .footer-block-item-content {
     word-break: break-word;
 }
 .footer-block-item-content-p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 2.6rem;
 }
 .footer-block-item-p-highlight {
@@ -40,7 +43,7 @@
         display: block;
         padding: 5px 0;
         transition: color 0.2s ease-in-out;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         &:hover {
             color: #6a8057;
             outline: 0;
@@ -53,12 +56,12 @@
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 .footer-aside-signature {
     margin-bottom: 20px;
     & a {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
 }
 .footer-aside-socical-and-payment {
@@ -150,7 +153,26 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 0;
-        padding: 19px 0;
+        padding: 17.2px 0;
+        font-size: 1.1rem;
+    }
+    .footer-block-item-content-p {
+        font-size: 1.1rem;
+    }
+    .footer-block-content-link-item {
+        & a {
+            font-size: 1.1rem;
+        }
+    }
+    .footer-aside-social {
+        & h4 {
+            font-size: 1.1rem;
+        }
+    }
+    .footer-aside-signature {
+        & a {
+            font-size: 1.1rem;
+        }
     }
     .icon-chervon-down {
         display: block;
@@ -167,6 +189,20 @@
     }
     .footer-block-item {
         border-bottom: 1px solid var(--border-color);
+    }
+    .footer-aside {
+        padding-top: 12px;
+        flex-direction: column-reverse;
+    }
+    .footer-aside-socical-and-payment {
+        display: inline-block;
+    }
+    .footer-inner {
+        padding: 10px 0 30px 0;
+    }
+    .footer-aside-signature {
+        margin-bottom: 0;
+        margin-top: 20px;
     }
 }
 

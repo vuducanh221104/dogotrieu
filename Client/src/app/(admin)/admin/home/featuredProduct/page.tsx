@@ -502,7 +502,7 @@ function PageListMaterial() {
             )}
             {/*  */}
             <Modal
-                title="Confirm Deletion"
+                title="You Sure Delete ?"
                 visible={!!isModalVisibleDelete}
                 onOk={() => handleDeleteClickOk(isModalVisibleDelete)}
                 onCancel={() => setIsModalVisibleDelete(null)}

@@ -12,6 +12,7 @@ import {
     BarsIcon,
     ChervonDonwIcon,
     ChervonLeft,
+    ChervonMenu,
     ChervonRight,
     FacebookIcon,
     InstaIcon,
@@ -26,6 +27,9 @@ import Tippy from '@tippyjs/react/headless';
 import Login from '@/components/Auth/Login';
 import CartTippy from '@/components/Tippy/CartTippy';
 import { dataMenuNavBar } from '@/services/menuData/menuData';
+import config from '@/config';
+import { archivo } from '@/assets/FontNext';
+import Link from 'next/link';
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +39,7 @@ function Header() {
     const [showBars, setShowBars] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showTippyLang, setShowTippyLang] = useState<boolean>(false);
+    const [anoubarHidden, setAnoubarHidden] = useState(false);
 
     const [classActive, setClassActive] = useState<any>('');
     const [toggleIndex, setToggleIndex] = useState(null);
@@ -46,9 +51,21 @@ function Header() {
         setWidth(window.innerWidth);
     };
 
+    const handleScroll = () => {
+        if (window.scrollY > 40) {
+            setAnoubarHidden(true);
+        } else {
+            setAnoubarHidden(false);
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
-        return () => window.removeEventListener('resize', updateDimensions);
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('resize', updateDimensions);
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [showBars]);
 
     const dataMenuPanel = dataMenuNavBar;
@@ -70,13 +87,22 @@ function Header() {
         };
     }, []);
 
+    //Handle Calc Max Height
+    const calculateMobileMenuHeight = () => {
+        if (width <= 396) {
+            return anoubarHidden ? `${height - 85}px` : `${height - 112}px`;
+        } else if (width <= 641) {
+            return anoubarHidden ? `${height - 60}px` : `${height - 87}px`;
+        } else if (width <= 999) {
+            return anoubarHidden ? `${height - 78}px` : `${height - 117}px`;
+        }
+    };
     return (
         <div className={cx('header-wrapper', showSearch && 'header--search-expanded')}>
             <header className={cx('header')}>
                 <Container>
                     <div className={cx('header-inner')}>
                         {/* Menu Bars */}
-
                         <nav className={cx('header-bars')}>
                             {showBars ? (
                                 <button className={cx('btn-bars')}>
@@ -105,7 +131,7 @@ function Header() {
                                               opacity: '1',
                                               transition:
                                                   'opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),visibility 0.4s linear',
-                                              maxHeight: width < 386 ? height - 117 : height - 93,
+                                              maxHeight: calculateMobileMenuHeight(),
                                           }
                                         : {}
                                 }
@@ -114,45 +140,66 @@ function Header() {
                                     <div className={cx('mobile-menu-panel')}>
                                         <div className={cx('mobile-menu-section')}>
                                             <ul className={cx('mobile-menu-section-list')}>
-                                                <li className={cx('mobile-menu-section-item')}>
+                                                {/* <li className={cx('mobile-menu-section-item')}>
                                                     <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        IN STOCK
+                                                        NGOÀI TRỜI
                                                     </a>
-                                                </li>
-                                                <li className={cx('mobile-menu-section-item')}>
-                                                    <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        OUDOOR
-                                                    </a>
-                                                </li>
+                                                </li> */}
                                                 <li className={cx('mobile-menu-section-item')}>
                                                     <button
-                                                        className={cx('mobile-menu-section-item-button')}
+                                                        className={`${cx('mobile-menu-section-item-button')} ${
+                                                            archivo.className
+                                                        }`}
                                                         onClick={() => setShowShop(!showShop)}
                                                     >
-                                                        SHOP
+                                                        CỬA HÀNG
                                                         <ChervonRight />
                                                     </button>
                                                 </li>
 
                                                 <li className={cx('mobile-menu-section-item')}>
-                                                    <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        NEW
-                                                    </a>
+                                                    <Link
+                                                        href={config.routes.news}
+                                                        className={`${cx('mobile-menu-section-item-link')} ${
+                                                            archivo.className
+                                                        }`}
+                                                        onClick={() => setShowBars(!showBars)}
+                                                    >
+                                                        TIN TỨC
+                                                    </Link>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-item')}>
-                                                    <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        BLOG
-                                                    </a>
+                                                    <Link
+                                                        href={config.routesCompany.tradeIn}
+                                                        className={`${cx('mobile-menu-section-item-link')} ${
+                                                            archivo.className
+                                                        }`}
+                                                        onClick={() => setShowBars(!showBars)}
+                                                    >
+                                                        GIAO DỊCH
+                                                    </Link>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-item')}>
-                                                    <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        TRADE
-                                                    </a>
+                                                    <Link
+                                                        href={config.routesCompany.contact}
+                                                        className={`${cx('mobile-menu-section-item-link')} ${
+                                                            archivo.className
+                                                        }`}
+                                                        onClick={() => setShowBars(!showBars)}
+                                                    >
+                                                        LIÊN HỆ
+                                                    </Link>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-item')}>
-                                                    <a href="/" className={cx('mobile-menu-section-item-link')}>
-                                                        CONTACT
-                                                    </a>
+                                                    <Link
+                                                        href={config.routesCompany.aboutUs}
+                                                        className={`${cx('mobile-menu-section-item-link')} ${
+                                                            archivo.className
+                                                        }`}
+                                                        onClick={() => setShowBars(!showBars)}
+                                                    >
+                                                        VỀ CHÚNG TÔI
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -237,7 +284,7 @@ function Header() {
                                                             className={cx('mobile-menu-panel-shop-item-toggle')}
                                                             onClick={() => handleToggle(index)}
                                                         >
-                                                            <b>{item.title}</b>
+                                                            <b className={archivo.className}>{item.title}</b>
                                                             <ChervonDonwIcon
                                                                 className={cx(
                                                                     'icon-mobile-menu-panel-shop-chervondown',
@@ -299,7 +346,7 @@ function Header() {
                         </nav>
 
                         <div className={cx('header-logo')}>
-                            <a href="/" className={cx('header-logo-link')}>
+                            <a href={config.routes.home} className={cx('header-logo-link')}>
                                 <Image
                                     src={images.logo}
                                     alt="logo"
@@ -335,22 +382,24 @@ function Header() {
                                         {...attrs}
                                         style={!showTippyLang ? { display: 'none' } : {}}
                                     >
+                                        <ChervonMenu className={cx('icon-chervon-menu')} />
+
                                         <div className={cx('wrapper-tippy', 'no-padding', classActive)}>
                                             <ul className={cx('language-change-list')}>
                                                 <li className={cx('language-change-item')}>
                                                     <button>Vietnam</button>
                                                 </li>
-                                                <li className={cx('language-change-item')}>
+                                                {/* <li className={cx('language-change-item')}>
                                                     <button>English</button>
-                                                </li>
+                                                </li> */}
                                             </ul>
                                         </div>
                                     </div>
                                 )}
-                                offset={[0, 0]}
+                                offset={[-17, 5]}
                             >
                                 <div className={cx('header-icon-map')} onClick={() => setShowTippyLang(!showTippyLang)}>
-                                    <span style={{ fontSize: '1.4rem' }}>🇺🇸</span>
+                                    <span style={{ fontSize: '1.4rem' }}>🇻🇳</span>
                                     <ChervonDonwIcon
                                         style={{
                                             height: '15px',

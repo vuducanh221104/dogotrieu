@@ -11,6 +11,7 @@ import 'swiper/css/scrollbar';
 import ViewCustomer from '@/components/ViewCustomer';
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
+import { CldImage } from 'next-cloudinary';
 const cx = classNames.bind(styles);
 function SwiperCustomer({ data, navigation = true }: any) {
     const sliderRef = useRef<any>(null);
@@ -82,11 +83,14 @@ function SwiperCustomer({ data, navigation = true }: any) {
                             {data.concat(data).map((item: any, index: any) => (
                                 <SwiperSlide key={index}>
                                     <>
-                                        <img
+                                        <CldImage
+                                            width={'500'}
+                                            height={'500'}
                                             src={item}
                                             key={index}
                                             className={cx('image-home', 'lazyload')}
                                             onClick={() => handleImageClick(index)}
+                                            alt={''}
                                         />
                                     </>
                                 </SwiperSlide>

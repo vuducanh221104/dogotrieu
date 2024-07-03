@@ -7,6 +7,9 @@ import { usePathname } from 'next/navigation';
 import { Container } from 'react-bootstrap';
 import { ChervonRight } from '../Icons';
 import { userBreadCumbs } from '@/services/menuData/breadCrumbData';
+interface IProps {
+    nameSlug?: string;
+}
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +25,7 @@ const convertSlugToText = (slug: any) => {
         .join(' ');
 };
 
-const Breadcrumb = () => {
+const Breadcrumb = ({ nameSlug }: IProps) => {
     const router = usePathname();
     const value = router.toLowerCase().split('/');
     const routesFilter = value.filter((item) => item !== 'products' && item !== 'category' && item !== '');
@@ -50,20 +53,26 @@ const Breadcrumb = () => {
                             </Link>
                             <ChervonRight className={cx('breadcrumb-icon')} />
                         </li>
-                        {breadcrumbItems.map((item, index) => (
-                            <li key={index} className={cx('breadcrumb-item')}>
-                                {item.link ? (
-                                    <Link href={item.link} className={cx('breadcrumb-link')}>
-                                        {limitedText(item.name, 35)}
-                                    </Link>
-                                ) : (
-                                    <span className={cx('breadcrumb-link')}>{limitedText(item.name, 35)}</span>
-                                )}
-                                {index !== breadcrumbItems.length - 1 && (
-                                    <ChervonRight className={cx('breadcrumb-icon')} />
-                                )}
-                            </li>
-                        ))}
+                        {nameSlug ? (
+                            <span className={cx('breadcrumb-link')}>{nameSlug}</span>
+                        ) : (
+                            <>
+                                {breadcrumbItems.map((item, index) => (
+                                    <li key={index} className={cx('breadcrumb-item')}>
+                                        {item.link ? (
+                                            <Link href={item.link} className={cx('breadcrumb-link')}>
+                                                {limitedText(item.name, 35)}
+                                            </Link>
+                                        ) : (
+                                            <span className={cx('breadcrumb-link')}>{limitedText(item.name, 35)}</span>
+                                        )}
+                                        {index !== breadcrumbItems.length - 1 && (
+                                            <ChervonRight className={cx('breadcrumb-icon')} />
+                                        )}
+                                    </li>
+                                ))}
+                            </>
+                        )}
                     </ol>
                 </nav>
             </div>

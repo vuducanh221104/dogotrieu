@@ -2,13 +2,6 @@
     position: relative;
 }
 
-.image-home {
-    display: block;
-    // object-fit: contain !important;
-    width: 100%;
-    height: auto;
-}
-
 .icon-next,
 .icon-prev {
     position: absolute;
@@ -62,4 +55,22 @@
 
 .swiper-slide {
     margin: 0 !important;
+}
+
+.aspect-ratio {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 40.90909090909091%;
+}
+.image-home {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
 }

@@ -92,6 +92,23 @@
         text-decoration: underline;
     }
 }
+
+.button-clear {
+    position: absolute;
+    content: '';
+    top: 2px;
+    right: 10px;
+    width: 19px;
+    height: 44px;
+    background: transparent;
+}
+
+.icon-xmark {
+    width: 19px;
+    height: 19px;
+    font-size: 1.8rem;
+    color: #979797dd;
+}
 @media screen and (min-width: 641px) {
     .empty-state {
         margin: 170px 0;

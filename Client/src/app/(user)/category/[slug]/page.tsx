@@ -9,17 +9,23 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
 import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import { dataProduct } from '@/services/mockApi';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
-import FilterModal from '@/components/FilterModal';
 import { archivo } from '@/assets/FontNext';
+import { categoryFilterGet } from '@/services/categoryServices';
+import NotFound from '@/components/NotFound';
+import Loading from '@/components/Loading';
+import { dataFilterCategory } from '@/services/menuData/menuData';
+import FilterModal from '@/components/FilterModal';
 
 type FilterItem = {
     id: string;
     title: string;
-    content: string[];
+    content: {
+        name: string;
+        slug: string;
+    }[];
 };
 
 type ShowFilterContent = {
@@ -31,18 +37,20 @@ const cx = classNames.bind(styles);
 function prioritizeQuery(url: URL): string {
     const params = url.searchParams;
     const gfMaterial = params.getAll('gf_material');
+    const gfAvailab = params.getAll('gf_availab');
     const sortBy = params.get('sort_by');
 
     const reorderedParams = new URLSearchParams();
 
     gfMaterial.forEach((material: string) => reorderedParams.append('gf_material', material));
+    gfAvailab.forEach((availab: string) => reorderedParams.append('gf_availab', availab));
 
     if (sortBy) {
         reorderedParams.append('sort_by', sortBy);
     }
 
     params.forEach((value: string, key: string) => {
-        if (key !== 'gf_material' && key !== 'sort_by') {
+        if (key !== 'gf_material' && key !== 'gf_availab' && key !== 'sort_by') {
             reorderedParams.append(key, value);
         }
     });
@@ -58,11 +66,43 @@ function PageCategory() {
     const [showSort, setShowSort] = useState<boolean>(false);
     const [showFilterMobile, setShowFilterMobile] = useState<boolean>(false);
     const [showFilterContent, setShowFilterContent] = useState<ShowFilterContent>({});
-    const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+    const [selectedMaterials, setSelectedMaterials] = useState<{ slug: string; name: string }[]>([]);
+    const [selectedAvailability, setSelectedAvailability] = useState<{ slug: string; name: string }[]>([]);
+
+    const getCategoryUrl = () => {
+        const url = new URL(window.location.href);
+        const pathname = url.pathname.split('/category/')[1];
+        const search = url.search;
+        return `${pathname}${search}`;
+    };
+
+    const { data: originalData, error, isLoading } = categoryFilterGet(getCategoryUrl());
+    const dataNameCategory = originalData?.nameCategory;
+    const data = originalData?.data;
+    const dataTotalPage = originalData?.totalPages;
+    const dataTotalProduct = originalData?.totalItems;
 
     useEffect(() => {
-        setSelectedMaterials(searchParams.getAll('gf_material'));
-    }, [searchParams]);
+        const materials = searchParams.getAll('gf_material');
+        const availab = searchParams.getAll('gf_availab');
+        setSelectedMaterials(
+            materials.map((slug) => {
+                const filter = dataFilterCategory
+                    .flatMap((f: any) => f.content)
+                    .find((item: any) => item.slug === slug);
+                return { slug, name: filter ? filter.name : slug };
+            }),
+        );
+        setSelectedAvailability(
+            availab.map((slug) => {
+                const filter = dataFilterCategory
+                    .flatMap((f: any) => f.content)
+                    .find((item: any) => item.slug === slug);
+                return { slug, name: filter ? filter.name : slug };
+            }),
+        );
+        getCategoryUrl();
+    }, [searchParams, error]);
 
     const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const limit = event.target.value;
@@ -74,15 +114,17 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
-    const handleMaterialChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const material = event.target.value;
+    const handleMaterialChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+        const slug = event.target.value;
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
 
-        if (event.target.checked && !materials.has(material)) {
-            materials.add(material);
+        if (event.target.checked) {
+            setSelectedMaterials([...selectedMaterials, { slug, name }]);
+            materials.add(slug);
         } else {
-            materials.delete(material);
+            setSelectedMaterials(selectedMaterials.filter((filter) => filter.slug !== slug));
+            materials.delete(slug);
         }
 
         url.searchParams.delete('gf_material');
@@ -92,14 +134,49 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
-    const handleRemoveMaterial = (material: string) => {
+    const handleAvailabityChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+        const slug = event.target.value;
+        const url = new URL(window.location.href);
+        const availabs = new Set(url.searchParams.getAll('gf_availab'));
+
+        if (event.target.checked) {
+            setSelectedAvailability([...selectedAvailability, { slug, name }]);
+            availabs.add(slug);
+        } else {
+            setSelectedAvailability(selectedAvailability.filter((filter) => filter.slug !== slug));
+            availabs.delete(slug);
+        }
+
+        url.searchParams.delete('gf_availab');
+        availabs.forEach((mat) => url.searchParams.append('gf_availab', mat));
+        const prioritizedUrl = prioritizeQuery(url);
+        window.history.pushState({}, '', prioritizedUrl);
+        router.replace(prioritizedUrl);
+    };
+
+    const handleRemoveMaterial = (slug: string) => {
+        setSelectedMaterials(selectedMaterials.filter((filter) => filter.slug !== slug));
+
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
-
-        materials.delete(material);
+        materials.delete(slug);
 
         url.searchParams.delete('gf_material');
         materials.forEach((mat) => url.searchParams.append('gf_material', mat));
+        const prioritizedUrl = prioritizeQuery(url);
+        window.history.pushState({}, '', prioritizedUrl);
+        router.replace(prioritizedUrl);
+    };
+
+    const handleRemoveAvailability = (slug: string) => {
+        setSelectedAvailability(selectedAvailability.filter((filter) => filter.slug !== slug));
+
+        const url = new URL(window.location.href);
+        const availabs = new Set(url.searchParams.getAll('gf_availab'));
+        availabs.delete(slug);
+
+        url.searchParams.delete('gf_availab');
+        availabs.forEach((mat) => url.searchParams.append('gf_availab', mat));
         const prioritizedUrl = prioritizeQuery(url);
         window.history.pushState({}, '', prioritizedUrl);
         router.replace(prioritizedUrl);
@@ -113,7 +190,6 @@ function PageCategory() {
     };
 
     const onChangeSort = (value: string) => {
-        console.log(value);
         const url = new URL(window.location.href);
         url.searchParams.set('sort_by', value);
         const newUrl = url.toString();
@@ -122,28 +198,31 @@ function PageCategory() {
     };
 
     const windowWidth = useWindowWidth();
-    const totalPages = 73;
-    const data = dataProduct;
-    const dataFilter: FilterItem[] = [
-        {
-            id: '1',
-            title: 'AVAILABILITY',
-            content: ['QUICK-SHIP'],
-        },
-        {
-            id: '2',
-            title: 'MATERIAL',
-            content: ['Wood', 'Glass', 'Stone', 'Metal', 'Rattan'],
-        },
-    ];
+    const dataFilter = dataFilterCategory;
+
+    if (isLoading) {
+        return (
+            <>
+                <Loading />
+                <FilterModal
+                    dataFilter={dataFilter}
+                    showFilterMobile={showFilterMobile}
+                    setShowFilterMobile={setShowFilterMobile}
+                    toggleContent={toggleContent}
+                    showFilterContent={showFilterContent}
+                    dataLength={dataTotalProduct}
+                />
+            </>
+        );
+    }
+
+    if (error) {
+        return <NotFound />;
+    }
 
     return (
-        // Nếu không có product thì thêm thẻ này
-        //<div className={cx('no-product-in-category')}>
-        // Sorry, there are no products in this collection
-        // </div>
         <>
-            <Breadcrumb />
+            <Breadcrumb nameSlug={dataNameCategory} />
             <Container className="container-flush">
                 <div className={cx('layout')}>
                     <div className={cx('layout-section', 'layout-filter')}>
@@ -153,30 +232,49 @@ function PageCategory() {
                                     <div className={cx('title-block')}>
                                         <span>Filter</span>
                                     </div>
-                                    <p
-                                        onClick={() => {
-                                            const url = new URL(window.location.href);
-                                            url.searchParams.delete('gf_material');
-                                            const prioritizedUrl = prioritizeQuery(url);
-                                            window.history.pushState({}, '', prioritizedUrl);
-                                            router.replace(prioritizedUrl);
-                                        }}
-                                    >
-                                        Clear All
-                                    </p>
+                                    {(selectedMaterials.length > 0 || selectedAvailability.length > 0) && (
+                                        <p
+                                            onClick={() => {
+                                                const url = new URL(window.location.href);
+                                                url.searchParams.delete('gf_material');
+                                                url.searchParams.delete('gf_availab');
+                                                const prioritizedUrl = prioritizeQuery(url);
+                                                window.history.pushState({}, '', prioritizedUrl);
+                                                router.replace(prioritizedUrl);
+                                            }}
+                                        >
+                                            Clear All
+                                        </p>
+                                    )}
                                 </div>
                                 <div className={cx('filter-selected-items')}>
-                                    {selectedMaterials.map((material: string, index: number) => (
-                                        <div className={cx('selected-item-option-label')} key={material}>
+                                    {selectedMaterials.map((filter, index) => (
+                                        <div className={cx('selected-item-option-label')} key={filter.slug}>
                                             <span className={cx('selected-item')}>
                                                 <span className={cx('hidden-xs')}>Material</span>:
                                                 <strong>
-                                                    <span className={cx('gf-label')}>{material}</span>
+                                                    <span className={cx('gf-label')}>{filter.name}</span>
                                                 </strong>
                                             </span>
                                             <span
                                                 className={cx('icon-clear')}
-                                                onClick={() => handleRemoveMaterial(material)}
+                                                onClick={() => handleRemoveMaterial(filter.slug)}
+                                            >
+                                                x
+                                            </span>
+                                        </div>
+                                    ))}
+                                    {selectedAvailability.map((filter, index) => (
+                                        <div className={cx('selected-item-option-label')} key={filter.slug}>
+                                            <span className={cx('selected-item')}>
+                                                <span className={cx('hidden-xs')}>Availability</span>:
+                                                <strong>
+                                                    <span className={cx('gf-label')}>{filter.name}</span>
+                                                </strong>
+                                            </span>
+                                            <span
+                                                className={cx('icon-clear')}
+                                                onClick={() => handleRemoveAvailability(filter.slug)}
                                             >
                                                 x
                                             </span>
@@ -194,25 +292,46 @@ function PageCategory() {
                                                 className={cx('filter-checkbox-wrapper')}
                                                 style={
                                                     showFilterContent[index]
-                                                        ? { height: 'auto', overflow: 'visible', visibility: 'visible' }
+                                                        ? {
+                                                              height: 'auto',
+                                                              overflow: 'visible',
+                                                              visibility: 'visible',
+                                                          }
                                                         : { height: '0' }
                                                 }
                                             >
                                                 <ul className={cx('filter-checkbox-list')}>
-                                                    {item?.content.map((contentItem: string, indexItem: number) => (
+                                                    {item.content.map((contentItem, indexItem) => (
                                                         <li className={cx('filter-checkbox-item')} key={indexItem}>
                                                             <div className={cx('checkbox-content')}>
                                                                 <input
                                                                     type="checkbox"
                                                                     className={cx('input-checkbox')}
-                                                                    value={contentItem}
-                                                                    onChange={handleMaterialChange}
-                                                                    checked={selectedMaterials.includes(contentItem)}
+                                                                    value={contentItem.slug}
+                                                                    onChange={(e) =>
+                                                                        item.title === 'AVAILABILITY'
+                                                                            ? handleAvailabityChange(
+                                                                                  e,
+                                                                                  contentItem.name,
+                                                                              )
+                                                                            : handleMaterialChange(e, contentItem.name)
+                                                                    }
+                                                                    checked={
+                                                                        item.title === 'AVAILABILITY'
+                                                                            ? selectedAvailability.some(
+                                                                                  (filter) =>
+                                                                                      filter.slug === contentItem.slug,
+                                                                              )
+                                                                            : selectedMaterials.some(
+                                                                                  (filter) =>
+                                                                                      filter.slug === contentItem.slug,
+                                                                              )
+                                                                    }
                                                                 />
                                                                 <CheckIcon className={cx('icon-check')} />
                                                             </div>
                                                             <label className={cx('checkbox-name-label')}>
-                                                                {contentItem}
+                                                                {contentItem.name}
                                                             </label>
                                                         </li>
                                                     ))}
@@ -236,10 +355,10 @@ function PageCategory() {
                                                         className={`${cx('category-meta-title')} h1 heading ${
                                                             archivo.className
                                                         }`}
+                                                        style={!dataNameCategory ? { height: '34px' } : {}}
                                                     >
-                                                        Coffee Tables
+                                                        {dataNameCategory || ''}
                                                     </h1>
-                                                    <p className={cx('category-meta-product-count')}>312 products</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -264,7 +383,7 @@ function PageCategory() {
                                                     </div>
                                                 </div>
                                                 <span className={cx('gf-summary')}>
-                                                    <b>312</b> Products
+                                                    <b>{dataTotalProduct}</b> Products
                                                 </span>
                                                 <div className={cx('gf-filter-selection')}>
                                                     <div className={cx('sort-limit')}>
@@ -326,13 +445,33 @@ function PageCategory() {
                                                 </div>
                                                 <div className={cx('gf-filter-seleted-on-mobile')}>
                                                     <ul>
-                                                        {selectedMaterials.map((material: string) => (
-                                                            <li onClick={() => handleRemoveMaterial(material)}>
+                                                        {selectedMaterials.map((filter) => (
+                                                            <li
+                                                                key={filter.slug}
+                                                                onClick={() => handleRemoveMaterial(filter.slug)}
+                                                            >
                                                                 <div>
                                                                     <span className={cx('selected-item-on-mobile')}>
                                                                         <strong>
                                                                             <span className={cx('gf-label')}>
-                                                                                {material}
+                                                                                {filter.name}
+                                                                            </span>
+                                                                        </strong>
+                                                                    </span>
+                                                                    <span className={cx('icon-clear')}></span>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                        {selectedAvailability.map((filter) => (
+                                                            <li
+                                                                key={filter.slug}
+                                                                onClick={() => handleRemoveAvailability(filter.slug)}
+                                                            >
+                                                                <div>
+                                                                    <span className={cx('selected-item-on-mobile')}>
+                                                                        <strong>
+                                                                            <span className={cx('gf-label')}>
+                                                                                {filter.name}
                                                                             </span>
                                                                         </strong>
                                                                     </span>
@@ -344,12 +483,16 @@ function PageCategory() {
                                                 </div>
                                             </div>
                                         </div>
-                                        {/* Product Card  */}
+
+                                        {/* Product Cards */}
                                         <div className={cx('category-product-item')}>
-                                            {/* <div className={cx('no-product-in-category')}>
-                                                Sorry, there are no products in this collection
-                                            </div> */}
-                                            {data.map((item, index) => {
+                                            {dataTotalProduct === 0 && (
+                                                <div className={cx('no-product-in-category')}>
+                                                    Sorry, there are no products in this collection
+                                                </div>
+                                            )}
+
+                                            {data?.map((item: any, index: number) => {
                                                 const isSpecialIndex =
                                                     windowWidth <= 641 ? index % 2 !== 0 : (index + 1) % 3 === 0;
                                                 return (
@@ -361,8 +504,9 @@ function PageCategory() {
                                                 );
                                             })}
                                         </div>
+
                                         {/* Pagination */}
-                                        <Pagination totalPages={totalPages} />
+                                        {dataTotalProduct > 0 && <Pagination totalPages={dataTotalPage} />}
                                     </div>
                                 </div>
                             </div>
@@ -370,12 +514,15 @@ function PageCategory() {
                     </div>
                 </div>
             </Container>
+
+            {/* Filter Modal */}
             <FilterModal
                 dataFilter={dataFilter}
                 showFilterMobile={showFilterMobile}
                 setShowFilterMobile={setShowFilterMobile}
                 toggleContent={toggleContent}
                 showFilterContent={showFilterContent}
+                dataLength={dataTotalProduct}
             />
         </>
     );

@@ -13,6 +13,13 @@ interface FilterModalProps {
     setShowFilterMobile: React.Dispatch<React.SetStateAction<boolean>>;
     showFilterContent: { [key: number]: boolean };
     toggleContent: (index: number) => void;
+    dataLength: number;
+}
+
+interface FilterItem {
+    id: string;
+    title: string;
+    content: { name: string; slug: string }[] | string[];
 }
 
 function prioritizeQuery(url: URL): string {
@@ -45,23 +52,39 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setShowFilterMobile,
     showFilterContent,
     toggleContent,
+    dataLength,
 }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+    const [slugNameMap, setSlugNameMap] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
         setSelectedMaterials(searchParams.getAll('gf_material'));
     }, [searchParams]);
 
-    const handleMaterialChange = (material: string) => {
+    useEffect(() => {
+        const map: { [key: string]: string } = {};
+        dataFilter.forEach((item: FilterItem) => {
+            if (Array.isArray(item.content)) {
+                item.content.forEach((contentItem: any) => {
+                    if (typeof contentItem === 'object' && contentItem.slug) {
+                        map[contentItem.slug] = contentItem.name;
+                    }
+                });
+            }
+        });
+        setSlugNameMap(map);
+    }, [dataFilter]);
+
+    const handleMaterialChange = (materialSlug: string) => {
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
 
-        if (!materials.has(material)) {
-            materials.add(material);
+        if (!materials.has(materialSlug)) {
+            materials.add(materialSlug);
         } else {
-            materials.delete(material);
+            materials.delete(materialSlug);
         }
 
         url.searchParams.delete('gf_material');
@@ -71,11 +94,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
         router.replace(prioritizedUrl);
     };
 
-    const handleRemoveMaterial = (material: string) => {
+    const handleRemoveMaterial = (materialSlug: string) => {
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
 
-        materials.delete(material);
+        materials.delete(materialSlug);
 
         url.searchParams.delete('gf_material');
         materials.forEach((mat: string) => url.searchParams.append('gf_material', mat));
@@ -101,27 +124,32 @@ const FilterModal: React.FC<FilterModalProps> = ({
                         <XmarkIcon className={cx('icon-xmark')} onClick={() => setShowFilterMobile(false)} />
                     </span>
                 </div>
-                <div className={cx('globo-selected-items-wrapper')}>
-                    <div className={cx('gf-block-content')}>
-                        <button type="button" onClick={handleClearAll}>
-                            Clear All
-                        </button>
-                        {selectedMaterials.map((material: string) => (
-                            <div className={cx('gf-option-label')} key={material}>
-                                <div className={cx('gf-lable-wrapper')}>
-                                    <span className={cx('selected-item')}>
-                                        <strong>
-                                            <span className={cx('gf-label')}>{material}</span>
-                                        </strong>
-                                    </span>
-                                    <span className={cx('icon-clear')} onClick={() => handleRemoveMaterial(material)}>
-                                        x
-                                    </span>
+                {selectedMaterials.length > 0 && (
+                    <div className={cx('globo-selected-items-wrapper')}>
+                        <div className={cx('gf-block-content')}>
+                            <button type="button" onClick={handleClearAll}>
+                                Clear All
+                            </button>
+                            {selectedMaterials.map((materialSlug: string) => (
+                                <div className={cx('gf-option-label')} key={materialSlug}>
+                                    <div className={cx('gf-lable-wrapper')}>
+                                        <span className={cx('selected-item')}>
+                                            <strong>
+                                                <span className={cx('gf-label')}>{slugNameMap[materialSlug]}</span>
+                                            </strong>
+                                        </span>
+                                        <span
+                                            className={cx('icon-clear')}
+                                            onClick={() => handleRemoveMaterial(materialSlug)}
+                                        >
+                                            x
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className={cx('gf-filter-contents-wrapper')}>
                     {dataFilter.map((item: FilterItem, index: number) => (
                         <div className={cx('gf-filter-contents')} key={item.id}>
@@ -142,22 +170,24 @@ const FilterModal: React.FC<FilterModalProps> = ({
                                 >
                                     <div className={cx('gf-scroll')}>
                                         <ul className={cx('gf-option-box')}>
-                                            {item.content.map((contentItem: string, indexCheckBox: number) => (
+                                            {item.content.map((contentItem: any, indexCheckBox: number) => (
                                                 <li
                                                     key={indexCheckBox}
-                                                    onClick={() => handleMaterialChange(contentItem)}
+                                                    onClick={() => handleMaterialChange(contentItem.slug)}
                                                 >
                                                     <button className={cx('btn-check-box')}>
                                                         <span className={cx('gf-check-box')}>
                                                             <input
                                                                 type="checkbox"
-                                                                value={contentItem}
-                                                                onChange={() => handleMaterialChange(contentItem)}
-                                                                checked={selectedMaterials.includes(contentItem)}
-                                                                onClick={() => handleMaterialChange(contentItem)}
+                                                                value={contentItem.slug}
+                                                                onChange={() => handleMaterialChange(contentItem.slug)}
+                                                                checked={selectedMaterials.includes(contentItem.slug)}
+                                                                onClick={() => handleMaterialChange(contentItem.slug)}
                                                             />
                                                         </span>
-                                                        <span className={cx('gf-label')}>{contentItem}</span>
+                                                        <span className={cx('gf-label')}>
+                                                            {contentItem.name || contentItem}
+                                                        </span>
                                                     </button>
                                                 </li>
                                             ))}
@@ -168,10 +198,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
                         </div>
                     ))}
                 </div>
-                <div className={cx('gf-footer')}>
+                <div className={cx('gf-footer')} onClick={() => setShowFilterMobile(false)}>
                     <button>
                         View
-                        <b>130</b>
+                        <b>{dataLength}</b>
                         Products
                     </button>
                 </div>

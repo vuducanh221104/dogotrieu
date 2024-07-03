@@ -1,3 +1,6 @@
+// .wrapper {
+//     position: relative;
+// }
 .popperover {
     width: 100%;
 }
@@ -177,4 +180,29 @@
             }
         }
     }
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999;
+    opacity: 0.8;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+}
+
+.icon-chervon-menu {
+    position: absolute;
+    width: 18px;
+    height: 8px;
+    right: 9px;
+    bottom: 100%;
+    z-index: 2;
+    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.12));
 }

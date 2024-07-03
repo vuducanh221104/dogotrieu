@@ -24,11 +24,6 @@ function Navbar() {
                 <div className={cx('navbar-inner')}>
                     <Container>
                         <ul className={cx('navbar-list')}>
-                            <li className={cx('navbar-item')}>
-                                <Link href={config.routes.categoryInStock} className={cx('navbar-item-link')}>
-                                    CÒN HÀNG
-                                </Link>
-                            </li>
                             <li className={cx('navbar-item', 'static')}>
                                 <a href={config.routes.categoryAll} className={cx('navbar-item-link')}>
                                     CỬA HÀNG
@@ -72,29 +67,24 @@ function Navbar() {
                                 </div>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href={config.routes.news} className={cx('navbar-item-link')}>
+                                <Link href={config.routes.news} className={cx('navbar-item-link')}>
                                     TIN TỨC
-                                </a>
+                                </Link>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href={config.routes.news} className={cx('navbar-item-link')}>
-                                    BLOG
-                                </a>
-                            </li>
-                            <li className={cx('navbar-item')}>
-                                <a href={config.routesCompany.tradeIn} className={cx('navbar-item-link')}>
+                                <Link href={config.routesCompany.tradeIn} className={cx('navbar-item-link')}>
                                     GIAO DỊCH
-                                </a>
+                                </Link>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href={config.routesCompany.contact} className={cx('navbar-item-link')}>
+                                <Link href={config.routesCompany.contact} className={cx('navbar-item-link')}>
                                     LIÊN HỆ
-                                </a>
+                                </Link>
                             </li>
                             <li className={cx('navbar-item')}>
-                                <a href={config.routesCompany.aboutUs} className={cx('navbar-item-link')}>
+                                <Link href={config.routesCompany.aboutUs} className={cx('navbar-item-link')}>
                                     VỀ CHÚNG TÔI
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </Container>

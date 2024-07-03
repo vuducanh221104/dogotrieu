@@ -706,3 +706,12 @@ export const MessageChatXmark: React.FC<IconsType> = ({ width = '36px', height =
         ></path>
     </svg>
 );
+
+export const ChervonMenu: React.FC<IconsType> = ({ width = '36px', height = '22px', className, style }) => (
+    <svg className={className} style={style} viewBox="0 0 20 9" role="presentation" width={width} height={height}>
+        <path
+            d="M.47108938 9c.2694725-.26871321.57077721-.56867841.90388257-.89986354C3.12384116 6.36134886 5.74788116 3.76338565 9.2467995.30653888c.4145057-.4095171 1.0844277-.40860098 1.4977971.00205122L19.4935156 9H.47108938z"
+            fill="#ffffff"
+        ></path>
+    </svg>
+);

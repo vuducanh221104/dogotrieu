@@ -73,3 +73,18 @@ export const productPatch = async (id: string, product_data: any, product_type_d
         console.log(error);
     }
 };
+
+//[GET]~Get Featured Product
+export const featuredProductGet = (query: string) => {
+    const url = `api/v1/product/category/featured/byCate${query}`;
+    const { data, error, isLoading } = useSWR(url, httpRequest.fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+    if (error) {
+        console.log(error);
+    }
+    return { data, error, isLoading };
+};

@@ -12,6 +12,8 @@ import { Archivo } from 'next/font/google';
 import Link from 'next/link';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
+import { featuredProductGet } from '@/services/productServices';
+import CardFeaturedProduct from '@/components/CardFeaturedProduct';
 
 const archivo = Archivo({
     subsets: ['latin'],
@@ -21,13 +23,14 @@ const archivo = Archivo({
 const cx = classNames.bind(styles);
 
 interface IProps {
-    data: [];
-    isLoading: boolean;
+    query: any;
+    isLoading?: boolean;
     title: string;
     nextBtnLink?: string;
 }
 
-function ViewListProductAuto({ data, isLoading, title, nextBtnLink }: IProps) {
+function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
+    const { data } = featuredProductGet(query);
     const productRef = useRef<any>(null);
     const scrollRef = useRef<any>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
@@ -162,13 +165,21 @@ function ViewListProductAuto({ data, isLoading, title, nextBtnLink }: IProps) {
                                                         {item.ship !== 0 && (
                                                             <p className={cx('product-tag')}>QUICK SHIP</p>
                                                         )}
-                                                        <Link
-                                                            href={`/products/${handleSlugify(item.name)}-${
-                                                                item._id
-                                                            }.html`}
-                                                        >
-                                                            <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
-                                                        </Link>
+                                                        <h3 className={cx('product-vendor')}>
+                                                            {item.material_id &&
+                                                                item.material_id?.map(
+                                                                    (material: any, index: number) => (
+                                                                        <Link
+                                                                            href={`/products/${handleSlugify(
+                                                                                item.name,
+                                                                            )}-${item._id}.html`}
+                                                                        >
+                                                                            {index !== 0 && ', '}
+                                                                            {material.name}
+                                                                        </Link>
+                                                                    ),
+                                                                )}
+                                                        </h3>
                                                         <Link
                                                             href={`/products/${handleSlugify(item.name)}-${
                                                                 item._id
@@ -179,10 +190,12 @@ function ViewListProductAuto({ data, isLoading, title, nextBtnLink }: IProps) {
                                                         <div
                                                             className={cx(
                                                                 'product-price-wrapper',
-                                                                item.price.discount !== null && 'have-price-discount',
+                                                                item.price.discount !== null &&
+                                                                    item.price.discount !== 0 &&
+                                                                    'have-price-discount',
                                                             )}
                                                         >
-                                                            {item.discount !== null && (
+                                                            {item.discount !== null && item.price.discount !== 0 && (
                                                                 <p className={cx('product-price-discount')}>
                                                                     <FormatPrice value={item.price.discount} />
                                                                 </p>
@@ -242,19 +255,31 @@ function ViewListProductAuto({ data, isLoading, title, nextBtnLink }: IProps) {
                                             </div>
                                             <div className={cx('product-info')}>
                                                 {item.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
-                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
-                                                    <h3 className={cx('product-vendor')}>Gỗ Sồi</h3>
-                                                </Link>
+                                                <h3 className={cx('product-vendor')}>
+                                                    {item.material_id &&
+                                                        item.material_id?.map((material: any, index: number) => (
+                                                            <Link
+                                                                href={`/products/${handleSlugify(item.name)}-${
+                                                                    item._id
+                                                                }.html`}
+                                                            >
+                                                                {index !== 0 && ', '}
+                                                                {material.name}
+                                                            </Link>
+                                                        ))}
+                                                </h3>
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <h2 className={cx('product-name')}>{item.name}</h2>
                                                 </Link>
                                                 <div
                                                     className={cx(
                                                         'product-price-wrapper',
-                                                        item.price.discount !== null && 'have-price-discount',
+                                                        item.price.discount !== null &&
+                                                            item.price.discount !== 0 &&
+                                                            'have-price-discount',
                                                     )}
                                                 >
-                                                    {item.discount !== null && (
+                                                    {item.discount !== null && item.price.discount !== 0 && (
                                                         <p className={cx('product-price-discount')}>
                                                             <FormatPrice value={item.price.discount} />
                                                         </p>

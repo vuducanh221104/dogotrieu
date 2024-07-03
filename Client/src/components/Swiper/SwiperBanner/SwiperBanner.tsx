@@ -8,9 +8,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { CldImage } from 'next-cloudinary';
+import Loading from '@/components/Loading';
 
 const cx = classNames.bind(styles);
-function SwiperBanner({ data, backgroundColor, navigation = true }: any) {
+function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: any) {
     const sliderRef = useRef<any>(null);
 
     const [bannerImages, setBannerImages] = useState<any>([]);
@@ -18,9 +20,9 @@ function SwiperBanner({ data, backgroundColor, navigation = true }: any) {
     useEffect(() => {
         function handleResize() {
             if (window.innerWidth <= 640) {
-                setBannerImages(data.images_banner_under_640);
+                setBannerImages(data?.images_banner_under_640);
             } else {
-                setBannerImages(data.images_banner);
+                setBannerImages(data?.images_banner);
             }
         }
 
@@ -39,7 +41,13 @@ function SwiperBanner({ data, backgroundColor, navigation = true }: any) {
             spaceBetween: 10,
         },
     };
-
+    // if (isLoading) {
+    //     return (
+    //         <div className={cx('aspect-ratio', 'hidden-mobile')}>
+    //             <Loading />
+    //         </div>
+    //     );
+    // } else {
     return (
         <>
             <div className={cx('images-banner-background')} style={{ backgroundColor: backgroundColor }}>
@@ -59,35 +67,47 @@ function SwiperBanner({ data, backgroundColor, navigation = true }: any) {
                     breakpoints={{ ...dataBreakpoints }}
                 >
                     {bannerImages?.map((item: any, index: any) => (
-                        <SwiperSlide key={index}>
-                            <a href="/">
-                                <img src={item} key={index} className={cx('image-home', 'lazyload')} />
-                            </a>
+                        <SwiperSlide key={item._id}>
+                            <div className={cx('aspect-ratio', 'hidden-mobile')}>
+                                <a href={`/${item.link}`}>
+                                    <CldImage
+                                        width="2200"
+                                        height="900"
+                                        alt="image"
+                                        src={item.url}
+                                        sizes={'(min-width: 0px) 100vw'}
+                                        loading="lazy"
+                                        className={cx('image-home')}
+                                    />
+                                    {/* <img src={item.url} key={index}  /> */}
+                                </a>
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
                 {/* NEXT-PREV */}
                 {/* {navigation && (
-                    <>
-                        <div className="prev-arrow-customer" onClick={handlePrev}>
-                            <FontAwesomeIcon
-                                icon={faArrowLeft}
-                                className={cx('icon-prev-customer')}
-                                style={{ color: propsColorBtn }}
-                            />
-                        </div>
-                        <div className="next-arrow-customer" onClick={handleNext}>
-                            <FontAwesomeIcon
-                                icon={faArrowRight}
-                                className={cx('icon-next-customer')}
-                                style={{ color: propsColorBtn }}
-                            />
-                        </div>
-                    </>
-                )} */}
+                        <>
+                            <div className="prev-arrow-customer" onClick={handlePrev}>
+                                <FontAwesomeIcon
+                                    icon={faArrowLeft}
+                                    className={cx('icon-prev-customer')}
+                                    style={{ color: propsColorBtn }}
+                                />
+                            </div>
+                            <div className="next-arrow-customer" onClick={handleNext}>
+                                <FontAwesomeIcon
+                                    icon={faArrowRight}
+                                    className={cx('icon-next-customer')}
+                                    style={{ color: propsColorBtn }}
+                                />
+                            </div>
+                        </>
+                    )} */}
             </div>
         </>
     );
 }
+// }
 
 export default SwiperBanner;
