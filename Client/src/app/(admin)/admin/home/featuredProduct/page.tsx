@@ -19,6 +19,7 @@ import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
 import EditFeatProduct from '@/components/EditFeatProduct';
+import EditFeatProductById from '@/Layout/AdminLayout/Home/EditFeatProductById';
 
 interface DataType {
     title: string;
@@ -37,6 +38,12 @@ function PageListMaterial() {
     const transformedCategories = transformListSelect(categories?.category_list || []);
     const transformedMaterials = transformListSelect(materials?.material_list || []);
     const [form] = Form.useForm();
+    const [formById] = Form.useForm();
+
+    const hasCategoryOrMaterial = (query: any) => {
+        const queryCheck = query?.includes('category_id') || query?.includes('material_id');
+        return queryCheck;
+    };
 
     const indexedData =
         data && data[0] && data[0].featured_product
@@ -52,9 +59,41 @@ function PageListMaterial() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
     const [isModalVisibleDelete, setIsModalVisibleDelete] = useState<any>(null);
+    const [isModalVisibleAddById, setIsModalVisibleAddById] = useState<any>(false);
     const [editingFeatured, setEditingFeatured] = useState<DataType | null>(null);
     const searchInput = useRef<InputRef>(null);
-
+    //
+    const handleSaveById = async () => {
+        try {
+            const values = await formById.validateFields();
+            console.log(values);
+            const queryIds = Object.keys(values)
+                .filter((key) => key.startsWith('id'))
+                .map((key) => values[key])
+                .filter(Boolean)
+                .join('&');
+            const newData = {
+                query: `?${queryIds}`,
+                title: values.title,
+                link_view_all: values.linkViewAll,
+            };
+            console.log(queryIds);
+            const add = await homePatch({ featured_product: [...data[0].featured_product, newData] });
+            if (add) {
+                formById.resetFields();
+                mutate();
+                messageCustomSuccess('Add Successfully');
+                setLoading(false);
+                onClose();
+            } else {
+                messageCustomError('Add Error');
+                setLoading(false);
+            }
+        } catch (error) {
+            messageCustomError('Missing input field');
+            setLoading(false);
+        }
+    };
     // Handle Modal Add
     const handleSave = async () => {
         try {
@@ -84,18 +123,15 @@ function PageListMaterial() {
     const showModal = () => {
         setIsModalVisible(true);
     };
-
     const onClose = () => {
         setIsModalVisible(false);
     };
-
     const handleEdit = (product: DataType) => {
         setEditingFeatured(product);
         setIsModalVisibleEdit(true);
     };
 
     //Handle Delete
-
     const handleDeleteClickOk = async (product_id: string) => {
         setLoading(true);
         const newData = data.filter((product: any) => product._id !== product_id);
@@ -120,12 +156,10 @@ function PageListMaterial() {
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
     };
-
     const handleReset = (clearFilters: () => void) => {
         clearFilters();
         setSearchText('');
     };
-
     const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<DataType> => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -311,11 +345,70 @@ function PageListMaterial() {
             {contextHolder}
             {loading && <ModalLoadingAdmin />}
             <div className="flex justify-end items-center mr-6 mb-3">
+                <Button type="primary" onClick={() => setIsModalVisibleAddById(true)} className="mr-3">
+                    Add By Id
+                </Button>
                 <Button type="primary" onClick={showModal}>
                     Add
                 </Button>
             </div>
             <Table columns={columns} dataSource={indexedData} scroll={{ x: 550 }} />;
+            <Modal
+                title="Add New Products by ID"
+                visible={isModalVisibleAddById}
+                width={1100}
+                onCancel={() => setIsModalVisibleAddById(false)}
+                footer={[
+                    <Button key="cancel" onClick={() => setIsModalVisibleAddById(false)}>
+                        Cancel
+                    </Button>,
+                    <Button key="save" type="primary" onClick={handleSaveById}>
+                        Save
+                    </Button>,
+                ]}
+            >
+                <Form form={formById} layout="vertical">
+                    <Form.Item
+                        name="title"
+                        label="Title"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Required',
+                            },
+                        ]}
+                    >
+                        <Input type="name" placeholder="Title" />
+                    </Form.Item>
+                    {[...Array(12)].map((_, index) => (
+                        <Form.Item
+                            key={index}
+                            name={`id${index + 1}`}
+                            label={`Product ID ${index + 1}`}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Required',
+                                },
+                            ]}
+                        >
+                            <Input type="text" placeholder={`Enter Product ID ${index + 1}`} />
+                        </Form.Item>
+                    ))}
+                    <Form.Item
+                        name="linkViewAll"
+                        label="Link View All"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Required',
+                            },
+                        ]}
+                    >
+                        <Input type="name" placeholder="ex:(/category/tat-ca-ban-ghe)" />
+                    </Form.Item>
+                </Form>
+            </Modal>
             <Modal
                 title="Add New Material"
                 visible={isModalVisible}
@@ -493,11 +586,18 @@ function PageListMaterial() {
                 </Form>
             </Modal>
             {/*  */}
-            {editingFeatured && (
+            {hasCategoryOrMaterial(editingFeatured?.query) ? (
                 <EditFeatProduct
                     visible={isModalVisibleEdit}
                     onClose={() => setIsModalVisibleEdit(false)}
                     featuredProduct={editingFeatured}
+                />
+            ) : (
+                <EditFeatProductById
+                    visible={isModalVisibleEdit}
+                    onClose={() => setIsModalVisibleEdit(false)}
+                    editingFeatured={editingFeatured}
+                    mutate={mutate}
                 />
             )}
             {/*  */}

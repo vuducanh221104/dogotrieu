@@ -112,7 +112,7 @@ function Footer() {
                                         <div className={cx('footer-collapsible-content')}>
                                             <ul className={cx('footer-block-content-link-list')}>
                                                 {item.links.map((link, index) => (
-                                                    <li key={index} className={cx('footer-block-content-link-item')}>
+                                                    <li className={cx('footer-block-content-link-item')} key={link.url}>
                                                         <Link href={link.url}>{link.label}</Link>
                                                     </li>
                                                 ))}

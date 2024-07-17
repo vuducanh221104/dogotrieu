@@ -121,7 +121,7 @@ function CartTippy() {
                                                                 <CldImage
                                                                     width="80"
                                                                     height="80"
-                                                                    alt="image"
+                                                                    alt={item.name}
                                                                     src={item.thumb}
                                                                     loading="lazy"
                                                                     className={cx('image-cloudinary')}
@@ -140,6 +140,7 @@ function CartTippy() {
                                                                             href={`/products/${handleSlugify(
                                                                                 item.name,
                                                                             )}-${item._id}.html`}
+                                                                            key={index}
                                                                         >
                                                                             {index !== 0 && ', '}
                                                                             {material.name}

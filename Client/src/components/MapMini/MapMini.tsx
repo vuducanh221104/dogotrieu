@@ -3,7 +3,7 @@ import styles from './MapMini.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapLocation, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -73,7 +73,7 @@ function MapMini() {
             <ul className={cx('map-list')}>
                 {/* MAP */}
                 {filteredLocations.map((location: Location, index: number) => (
-                    <>
+                    <Fragment key={index}>
                         <div className={cx('map-description')}>
                             <h4>{location.descripton}</h4>
                         </div>
@@ -81,7 +81,7 @@ function MapMini() {
                             <FontAwesomeIcon icon={faLocationDot} className={cx('map-icon')} />
                             <span>{location.address}</span>
                         </li>
-                    </>
+                    </Fragment>
                 ))}
             </ul>
         </div>

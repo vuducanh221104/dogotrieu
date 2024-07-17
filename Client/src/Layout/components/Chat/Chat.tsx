@@ -9,7 +9,6 @@ const cx = classNames.bind(styles);
 
 function Chat() {
     const [onShow, setOnShow] = useState<any>(false);
-    console.log(onShow);
     return (
         <>
             <Tippy

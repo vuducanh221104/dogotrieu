@@ -44,5 +44,7 @@ export const adminBreadCumbs = [
     { url: '/admin/home/customer', urlTile: 'Home', name: 'Image Customer' },
     { url: '/admin/home/featuredProduct', urlTile: 'Home', name: 'Featured Product' },
     { url: '/admin/home/bannerOnMobile', urlTile: 'Home', name: 'Image Banner On Mobile' },
+    { url: '/admin/news/list', urlTile: 'News', name: 'List News' },
+    { url: '/admin/home/featuredNews', urlTile: 'Home', name: 'Featured News' },
     //..thêm nữa
 ];

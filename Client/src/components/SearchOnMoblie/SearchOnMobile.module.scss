@@ -231,6 +231,17 @@
 }
 
 // LOADING
+.search-bar-container {
+    flex: none;
+    width: 60px;
+    margin-right: 20px;
+}
+.aspect-ratio {
+    padding-bottom: 100% !important;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
 .search-inner-loading-list {
     padding: 0;
     margin: 0;
@@ -248,23 +259,24 @@
         outline: none;
     }
     .search-inner-loading-wrapper-image {
-        width: 60px;
-        height: 60px;
-        margin-right: 20px;
-        padding: 5px;
-        background: #dfcc8e;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: var(--border-color);
         .search-inner-image {
             width: 60px;
             height: 60px;
         }
     }
     .search-inner-loading-name {
-        width: 250px;
+        width: 200px;
         height: 10px;
         background-color: #dfcc8e;
     }
     .search-inner-loading-price {
-        width: 150px;
+        width: 120px;
         height: 10px;
         background-color: #dfcc8e;
         margin-top: 20px;

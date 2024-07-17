@@ -59,13 +59,14 @@ function PageBannerHomeOnMobile() {
             );
 
             const postHome = await homePatch({ images_banner_under_640: dataImages });
-            console.log('Saved Successfully', postHome);
-
-            messageCustomSuccess('Add Successfully');
-            setLoading(false);
+            if (!postHome) {
+                messageCustomError('Add Error');
+            } else {
+                messageCustomSuccess('Add Successfully');
+                setLoading(false);
+            }
         } catch (error) {
             messageCustomError('Missing input field');
-            console.log('Validate fields error:', error);
             setLoading(false);
         }
     };

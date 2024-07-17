@@ -70,7 +70,7 @@ const CardFeaturedProduct: React.FC<IProps> = ({
                         <CldImage
                             width="400"
                             height="600"
-                            alt="image"
+                            alt={item.name}
                             src={item.thumb}
                             sizes={'(min-width: 0px) 100vw'}
                             loading="lazy"

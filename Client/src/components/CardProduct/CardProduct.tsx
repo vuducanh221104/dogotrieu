@@ -33,7 +33,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                         <CldImage
                             width="400"
                             height="600"
-                            alt="image"
+                            alt={`${data.name} | Dogotrieu.com`}
                             src={data.thumb}
                             sizes={'(min-width: 0px) 100vw'}
                             loading="lazy"
@@ -46,7 +46,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                 <h3 className={cx('product-vendor')}>
                     {data.material_id &&
                         data.material_id?.map((material: any, index: number) => (
-                            <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`}>
+                            <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`} key={index}>
                                 {index !== 0 && ', '}
                                 {material.name}
                             </Link>

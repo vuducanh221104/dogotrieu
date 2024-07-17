@@ -66,20 +66,19 @@ function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: a
                     speed={800}
                     breakpoints={{ ...dataBreakpoints }}
                 >
-                    {bannerImages?.map((item: any, index: any) => (
+                    {bannerImages?.map((item: any) => (
                         <SwiperSlide key={item._id}>
                             <div className={cx('aspect-ratio', 'hidden-mobile')}>
                                 <a href={`/${item.link}`}>
                                     <CldImage
-                                        width="2200"
-                                        height="900"
-                                        alt="image"
+                                        width="200"
+                                        height="891"
+                                        alt=""
                                         src={item.url}
                                         sizes={'(min-width: 0px) 100vw'}
-                                        loading="lazy"
                                         className={cx('image-home')}
+                                        priority
                                     />
-                                    {/* <img src={item.url} key={index}  /> */}
                                 </a>
                             </div>
                         </SwiperSlide>

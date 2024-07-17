@@ -42,7 +42,7 @@ export const dataMenuNavBar: IMenuPanel[] = [
         height: 150,
     },
     {
-        id: 2,
+        id: 3,
         title: 'GIƯỜNG',
         subMenu: [
             { title: 'Tất Cả Giường', link: '/category/giuong' },
@@ -52,7 +52,7 @@ export const dataMenuNavBar: IMenuPanel[] = [
         height: 70,
     },
     {
-        id: 3,
+        id: 4,
         title: 'TƯỢNG & TRANH',
         subMenu: [
             { title: 'Tất Cả Tượng & Tranh', link: '/category/tuong-&-tranh' },
@@ -67,7 +67,7 @@ export const dataMenuNavBar: IMenuPanel[] = [
         height: 150,
     },
     {
-        id: 4,
+        id: 5,
         title: 'TRANG TRÍ & KHÁC',
         subMenu: [
             { title: 'Tất Cả Trang Trí & Khác', link: '/category/trang-tri-&-khac' },
@@ -78,10 +78,11 @@ export const dataMenuNavBar: IMenuPanel[] = [
         height: 70,
     },
 ];
+
 export const dataFilterCategory: any = [
     {
-        id: '1',
-        title: 'AVAILABILITY',
+        id: 1,
+        title: 'KHẢ DỤNG',
         content: [
             {
                 name: 'Quick Ship',
@@ -90,8 +91,8 @@ export const dataFilterCategory: any = [
         ],
     },
     {
-        id: '2',
-        title: 'MATERIAL',
+        id: 2,
+        title: 'CHẤT LIỆU',
         content: [
             {
                 name: 'Gỗ',

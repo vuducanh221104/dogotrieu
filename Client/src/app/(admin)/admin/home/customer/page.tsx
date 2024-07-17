@@ -55,13 +55,15 @@ function PageImageCustomer() {
                 }),
             );
 
-            await homePatch({ images_customer: dataImages });
-
-            messageCustomSuccess('Add Successfully');
-            setLoading(false);
+            const postCustomer = await homePatch({ images_customer: dataImages });
+            if (!postCustomer) {
+                messageCustomError('Add Error');
+            } else {
+                messageCustomSuccess('Add Successfully');
+                setLoading(false);
+            }
         } catch (error) {
             messageCustomError('Missing input field');
-            console.log('Validate fields error:', error);
             setLoading(false);
         }
     };

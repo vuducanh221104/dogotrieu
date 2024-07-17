@@ -2,6 +2,8 @@ import classNames from 'classnames/bind';
 import styles from '@/styles/Trade.module.scss';
 import { DividerSymbol } from '@/components/Icons';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
+import Image from 'next/image';
+import imagesPage from '@/assets/images-pages';
 const cx = classNames.bind(styles);
 function PageTrade() {
     return (
@@ -21,10 +23,7 @@ function PageTrade() {
                             </div>
                         </div>
                         <div className={cx('trade-image-gobal')}>
-                            <img
-                                src="https://cdn.shopify.com/s/files/1/0285/8683/6027/files/graceful-swing-kari-fluire-forma-rheolog-una-1.jpg?v=1713525266"
-                                alt="image"
-                            />
+                            <Image src={imagesPage.transaction} alt="image" />
                         </div>
                         <div className={cx('trade-des-1')}>
                             <div className={cx('trade-des-1-inner')}>

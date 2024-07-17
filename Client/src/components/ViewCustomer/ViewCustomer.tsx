@@ -14,6 +14,7 @@ import 'swiper/scss/thumbs';
 
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
 
@@ -53,10 +54,10 @@ function ViewCustomer({ data, setShowOverlay, indexImage }: any) {
                             modules={[FreeMode, Navigation, Thumbs]}
                             className={cx('mySwiper2')}
                         >
-                            {data.concat(data).map((item: any, index: any) => (
+                            {data?.concat(data).map((item: any, index: any) => (
                                 <SwiperSlide key={index}>
                                     <div className={cx('img-container')}>
-                                        <img src={item} alt="anh-customer" />
+                                        <CldImage width={'500'} height={'500'} src={item} alt="" />
                                     </div>
                                 </SwiperSlide>
                             ))}
@@ -107,7 +108,7 @@ function ViewCustomer({ data, setShowOverlay, indexImage }: any) {
                                 {data.concat(data).map((item: any, index: any) => (
                                     <SwiperSlide key={index}>
                                         <div className={cx('footer-swiper-img')}>
-                                            <img src={item} alt="anh-customer" />
+                                            <CldImage width={'500'} height={'500'} src={item} alt="" />
                                         </div>
                                     </SwiperSlide>
                                 ))}

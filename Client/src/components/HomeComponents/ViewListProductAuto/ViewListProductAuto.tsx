@@ -12,8 +12,7 @@ import { Archivo } from 'next/font/google';
 import Link from 'next/link';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
-import { featuredProductGet } from '@/services/productServices';
-import CardFeaturedProduct from '@/components/CardFeaturedProduct';
+import { featuredProductGet, featuredProductGetById } from '@/services/productServices';
 
 const archivo = Archivo({
     subsets: ['latin'],
@@ -30,7 +29,9 @@ interface IProps {
 }
 
 function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
-    const { data } = featuredProductGet(query);
+    const hasCategoryOrMaterial = query.includes('category_id') || query.includes('material_id');
+    const { data } = hasCategoryOrMaterial ? featuredProductGet(query) : featuredProductGetById(query);
+    // const { data } = featuredProductGet(query);
     const productRef = useRef<any>(null);
     const scrollRef = useRef<any>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
@@ -124,6 +125,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                         >
                                             {data?.map((item: any, index: any) => (
                                                 <div
+                                                    key={item._id}
                                                     ref={index === 0 ? productRef : null}
                                                     className={cx('product-item')}
                                                     style={
@@ -153,7 +155,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                                 <CldImage
                                                                     width="400"
                                                                     height="600"
-                                                                    alt="image"
+                                                                    alt={`${item.name} | Dogotrieu.com`}
                                                                     src={item.thumb}
                                                                     sizes={'(min-width: 0px) 100vw'}
                                                                     loading="lazy"
@@ -168,13 +170,14 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         <h3 className={cx('product-vendor')}>
                                                             {item.material_id &&
                                                                 item.material_id?.map(
-                                                                    (material: any, index: number) => (
+                                                                    (material: any, indexMaterial: number) => (
                                                                         <Link
                                                                             href={`/products/${handleSlugify(
                                                                                 item.name,
                                                                             )}-${item._id}.html`}
+                                                                            key={material.name}
                                                                         >
-                                                                            {index !== 0 && ', '}
+                                                                            {indexMaterial !== 0 && ', '}
                                                                             {material.name}
                                                                         </Link>
                                                                     ),
@@ -237,16 +240,16 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                 </>
                             ) : (
                                 <>
-                                    {data?.map((item: any, index: any) => (
-                                        <div className={cx('product-item')} key={index}>
+                                    {data?.map((item: any) => (
+                                        <div className={cx('product-item')} key={item._id}>
                                             <div className={cx('product-image')}>
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
                                                             width="400"
                                                             height="600"
-                                                            alt="image"
                                                             src={item.thumb}
+                                                            alt={`${item.name} | Dogotrieu.com`}
                                                             sizes={'(min-width: 0px) 100vw'}
                                                             loading="lazy"
                                                         />
@@ -257,16 +260,19 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                 {item.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
                                                 <h3 className={cx('product-vendor')}>
                                                     {item.material_id &&
-                                                        item.material_id?.map((material: any, index: number) => (
-                                                            <Link
-                                                                href={`/products/${handleSlugify(item.name)}-${
-                                                                    item._id
-                                                                }.html`}
-                                                            >
-                                                                {index !== 0 && ', '}
-                                                                {material.name}
-                                                            </Link>
-                                                        ))}
+                                                        item.material_id?.map(
+                                                            (material: any, indexMaterial: number) => (
+                                                                <Link
+                                                                    key={material.name}
+                                                                    href={`/products/${handleSlugify(item.name)}-${
+                                                                        item._id
+                                                                    }.html`}
+                                                                >
+                                                                    {indexMaterial !== 0 && ', '}
+                                                                    {material.name}
+                                                                </Link>
+                                                            ),
+                                                        )}
                                                 </h3>
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <h2 className={cx('product-name')}>{item.name}</h2>

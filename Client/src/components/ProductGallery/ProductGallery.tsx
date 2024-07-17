@@ -12,7 +12,7 @@ import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
-function ProductGallery({ data }: any) {
+function ProductGallery({ data, name }: any) {
     const sliderRef = useRef<any>(null);
     const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -46,14 +46,14 @@ function ProductGallery({ data }: any) {
                             modules={[FreeMode, Thumbs]}
                             className={cx('swiper-gallery-main')}
                         >
-                            {data.map((img: string, index: number) => (
-                                <SwiperSlide>
+                            {data?.map((img: string, index: number) => (
+                                <SwiperSlide key={index}>
                                     <div className={cx('aspect-ratio')}>
                                         <CldImage
-                                            width="800"
-                                            height="1200"
-                                            alt="123"
+                                            width="500"
+                                            height="750"
                                             src={img}
+                                            alt={`${name} | Dogotrieu.com`}
                                             sizes={'(min-width: 0px) 100vw'}
                                         />
                                     </div>
@@ -108,16 +108,17 @@ function ProductGallery({ data }: any) {
                                         }}
                                         className={cx('swiper-thumbnail')}
                                     >
-                                        {data.map((img: string, index: number) => (
+                                        {data?.map((img: string, index: number) => (
                                             <SwiperSlide
+                                                key={index}
                                                 className={currentIndex === index ? 'active' : ''}
                                                 onClick={() => handleClickThumb(index)}
                                             >
                                                 <div className={cx('aspect-ratio')}>
                                                     <CldImage
-                                                        width="135"
-                                                        height="105"
-                                                        alt="image"
+                                                        width="130"
+                                                        height="195"
+                                                        alt={`${name} | Dogotrieu.com`}
                                                         src={img}
                                                         loading="lazy"
                                                     />

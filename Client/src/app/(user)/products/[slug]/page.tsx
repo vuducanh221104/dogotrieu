@@ -15,15 +15,15 @@ import { productGetId } from '@/services/productServices';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '@/redux/cartSlice';
 import FormatPrice from '@/components/FormatPrice';
-import { useState, useEffect } from 'react';
+import { useState, Fragment, ChangeEvent } from 'react';
+import { RootState } from '@/redux/store';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
     const dispatch = useDispatch();
-    const { slug }: any = useParams();
-    const [currentQuantity, setCurrentQuantity] = useState('1'); // Khởi tạo với giá trị '1'
-    console.log(currentQuantity);
-    const handleSplitSlug = () => {
+    const { slug } = useParams() as { slug: string };
+    const [currentQuantity, setCurrentQuantity] = useState<string>('1');
+    const handleSplitSlug = (): string => {
         const temp = slug.split('.html') ?? [];
         const temp2 = temp[0]?.split('-');
         const id = temp2[temp2.length - 1];
@@ -33,7 +33,7 @@ function ProductDetail() {
 
     const { data, error, isLoading } = productGetId(id);
 
-    const productInCart = useSelector((state: any) => state.cart.products?.find((p: any) => p._id === data?._id));
+    const productInCart = useSelector((state: RootState) => state.cart.products?.find((p: any) => p._id === data?._id));
 
     //Handle Add To Cart
     const handleAddToCart = () => {
@@ -64,11 +64,11 @@ function ProductDetail() {
         }
     };
 
-    const handleInputChange = (event: any) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         if (value === '') {
             setCurrentQuantity('');
-        } else if (!isNaN(value) && Number(value) > 0 && Number(value) <= data.quantity) {
+        } else if (!isNaN(Number(value)) && Number(value) > 0 && Number(value) <= data.quantity) {
             setCurrentQuantity(value);
         } else if (Number(value) > data.quantity) {
             setCurrentQuantity('1');
@@ -93,7 +93,10 @@ function ProductDetail() {
                             <div className={cx('product-cover')}>
                                 <div className={cx('product-inner')}>
                                     <div className={cx('product-block-list')}>
-                                        <ProductGallery data={[data.thumb, ...data.product_type_id.images]} />
+                                        <ProductGallery
+                                            data={[data.thumb, ...data.product_type_id.images]}
+                                            name={data.name}
+                                        />
                                         <div className={cx('product-info-item')}>
                                             <div className={cx('card', 'card-info')}>
                                                 <div className={cx('card-section')}>
@@ -107,11 +110,28 @@ function ProductDetail() {
                                                         </h1>
 
                                                         <div className={cx('product-meta-reference')}>
-                                                            <a className={cx('product-meta-vendor')}>Gỗ Sồi</a>
                                                             <span className={cx('product-meta-sku')}>
                                                                 SKU:
                                                                 <span>{data.product_type_id.sku}</span>
                                                             </span>
+                                                            <div className={cx('product-sparate')}></div>
+                                                            <div className={cx('product-meta-material-list')}>
+                                                                {data.material_id &&
+                                                                    data.material_id?.map(
+                                                                        (material: any, index: number) => (
+                                                                            <Fragment key={index}>
+                                                                                <span
+                                                                                    className={cx(
+                                                                                        'product-meta-vendor',
+                                                                                    )}
+                                                                                >
+                                                                                    {index !== 0 && ', '}
+                                                                                    {material.name}
+                                                                                </span>
+                                                                            </Fragment>
+                                                                        ),
+                                                                    )}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr className={cx('card-separator')} />

@@ -16,7 +16,7 @@ import { transformListSelect, transformParentListSelect } from '@/utils/transfor
 import { mutate } from 'swr';
 
 function pageAddMaterial() {
-    const { messageSuccess, messageError, messageCustomError, contextHolder } = useMessageNotify();
+    const { messageCustomSuccess, messageError, messageCustomError, contextHolder } = useMessageNotify();
     const { data: materials } = materialGet();
     const transformedMaterials = transformParentListSelect(materials?.material_list || []);
     const [loading, setLoading] = useState<boolean>(false);
@@ -32,16 +32,16 @@ function pageAddMaterial() {
                 values.parent_id = values.parent_id[0];
             }
             // Submit dữ liệu form
-            console.log('Form values with images:', values);
 
             const postAddProduct = await materialAdd(values);
-            console.log('Saved Successfully', postAddProduct);
-
-            messageSuccess();
-            setLoading(false);
+            if (!postAddProduct) {
+                messageCustomError('Add Error');
+            } else {
+                messageCustomSuccess('Add Successfully');
+                setLoading(false);
+            }
         } catch (error) {
-            console.log('Validation failed:', error);
-            messageError();
+            messageCustomError('Missing Input Field');
             setLoading(false);
         }
     };

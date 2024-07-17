@@ -19,7 +19,7 @@ const cx = classNames.bind(styles);
 
 function PageCart() {
     const dispatch = useDispatch();
-    const productsAddToCart = useSelector((state: RootState) => state.cart);
+    const productsAddToCart: any = useSelector((state: RootState) => state.cart);
     const [localQuantities, setLocalQuantities] = useState<{ [key: string]: number | string }>({});
 
     useEffect(() => {
@@ -94,7 +94,7 @@ function PageCart() {
                             <Container className={'container-flush'}>
                                 <div className={cx('card')}>
                                     <div className={cx('table-wrapper')}>
-                                        <div className={cx('line-item-table')}>
+                                        <table className={cx('line-item-table')}>
                                             <thead className={cx('thead', 'hidden-phone')}>
                                                 <tr>
                                                     <th>Product</th>
@@ -112,7 +112,7 @@ function PageCart() {
                                                                         <CldImage
                                                                             width="80"
                                                                             height="80"
-                                                                            alt="image"
+                                                                            alt={item.name}
                                                                             src={item.thumb}
                                                                             loading="lazy"
                                                                             className={cx('image-cloudinary')}
@@ -244,7 +244,7 @@ function PageCart() {
                                                     </tr>
                                                 ))}
                                             </tbody>
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
                                 <div className={cx('cart-recap')}>
