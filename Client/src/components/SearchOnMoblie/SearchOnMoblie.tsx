@@ -29,7 +29,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
     const [loading, setLoading] = useState(false);
     const debounced = useDebounce(searchValue, 500);
     const [trigger, setTrigger] = useState(0);
-    console.log(searchValue);
     //Hanle Input
     const onChangeInput = (e: any) => {
         const value = e.target.value;
@@ -150,17 +149,18 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                     <>
                                         <p className={cx('search-inner-title')}>products</p>
                                         <div className={cx('search-inner-list')}>
-                                            {searchResult.map((item: any) => (
+                                            {searchResult.map((item: any, index: number) => (
                                                 <Link
                                                     href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
                                                     className={cx('search-inner-item')}
+                                                    key={index}
                                                 >
                                                     <div className={cx('search-inner-wrapper-image')}>
                                                         <CldImage
                                                             width={'50'}
                                                             height={'60'}
                                                             src={item.thumb}
-                                                            alt="image"
+                                                            alt={item.name}
                                                             className={cx('search-inner-image')}
                                                         />
                                                     </div>
@@ -211,29 +211,47 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                             </>
                         )
                     ) : (
-                        <div className={cx('search-inner-loading-list')}>
-                            <div className={cx('search-inner-loading-item')}>
-                                <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                <div className={cx('search-inner-loading-info')}>
-                                    <div className={cx('search-inner-loading-name')}></div>
-                                    <div className={cx('search-inner-loading-price')}></div>
+                        <>
+                            <div className={cx('search-inner-loading-list')}>
+                                <div className={cx('search-inner-loading-item')}>
+                                    <div className={cx('search-bar-container')}>
+                                        <div className={cx('aspect-ratio')}>
+                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                        </div>
+                                    </div>
+                                    <div className={cx('search-inner-loading-info')}>
+                                        <div className={cx('search-inner-loading-name')}></div>
+                                        <div className={cx('search-inner-loading-price')}></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={cx('search-inner-loading-item')}>
-                                <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                <div className={cx('search-inner-loading-info')}>
-                                    <div className={cx('search-inner-loading-name')}></div>
-                                    <div className={cx('search-inner-loading-price')}></div>
+                            <div className={cx('search-inner-loading-list')}>
+                                <div className={cx('search-inner-loading-item')}>
+                                    <div className={cx('search-bar-container')}>
+                                        <div className={cx('aspect-ratio')}>
+                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                        </div>
+                                    </div>
+                                    <div className={cx('search-inner-loading-info')}>
+                                        <div className={cx('search-inner-loading-name')}></div>
+                                        <div className={cx('search-inner-loading-price')}></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={cx('search-inner-loading-item')}>
-                                <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                <div className={cx('search-inner-loading-info')}>
-                                    <div className={cx('search-inner-loading-name')}></div>
-                                    <div className={cx('search-inner-loading-price')}></div>
+                            <div className={cx('search-inner-loading-list')}>
+                                <div className={cx('search-inner-loading-item')}>
+                                    <div className={cx('search-bar-container')}>
+                                        <div className={cx('aspect-ratio')}>
+                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                        </div>
+                                    </div>
+                                    <div className={cx('search-inner-loading-info')}>
+                                        <div className={cx('search-inner-loading-name')}></div>
+                                        <div className={cx('search-inner-loading-price')}></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </>
                     )}
                 </div>
             </div>

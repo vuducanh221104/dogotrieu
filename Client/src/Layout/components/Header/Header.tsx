@@ -43,8 +43,8 @@ function Header() {
 
     const [classActive, setClassActive] = useState<any>('');
     const [toggleIndex, setToggleIndex] = useState(null);
-    const [height, setHeight] = useState(window.innerHeight);
-    const [width, setWidth] = useState(window.innerWidth);
+    const [height, setHeight] = useState<number | null>(null);
+    const [width, setWidth] = useState<number | null>(null);
 
     const updateDimensions = () => {
         setHeight(window.innerHeight);
@@ -89,14 +89,17 @@ function Header() {
 
     //Handle Calc Max Height
     const calculateMobileMenuHeight = () => {
-        if (width <= 396) {
-            return anoubarHidden ? `${height - 85}px` : `${height - 112}px`;
-        } else if (width <= 641) {
-            return anoubarHidden ? `${height - 60}px` : `${height - 87}px`;
-        } else if (width <= 999) {
-            return anoubarHidden ? `${height - 78}px` : `${height - 117}px`;
+        if (width !== null && height !== null) {
+            if (width <= 396) {
+                return anoubarHidden ? `${height - 85}px` : `${height - 112}px`;
+            } else if (width <= 641) {
+                return anoubarHidden ? `${height - 60}px` : `${height - 87}px`;
+            } else if (width <= 999) {
+                return anoubarHidden ? `${height - 78}px` : `${height - 117}px`;
+            }
         }
     };
+
     return (
         <div className={cx('header-wrapper', showSearch && 'header--search-expanded')}>
             <header className={cx('header')}>
@@ -279,7 +282,7 @@ function Header() {
                                         <div className={cx('mobile-menu-panel-shop-section')}>
                                             <div className={cx('mobile-menu-panel-shop-list')}>
                                                 {dataMenuPanel.map((item, index) => (
-                                                    <div className={cx('mobile-menu-panel-shop-item')}>
+                                                    <div className={cx('mobile-menu-panel-shop-item')} key={item.id}>
                                                         <button
                                                             className={cx('mobile-menu-panel-shop-item-toggle')}
                                                             onClick={() => handleToggle(index)}
@@ -309,6 +312,7 @@ function Header() {
                                                                             className={cx(
                                                                                 'mobile-menu-panel-shop-toggle-item',
                                                                             )}
+                                                                            key={subMenuItem.link}
                                                                         >
                                                                             <a
                                                                                 href={subMenuItem.link}
@@ -346,7 +350,7 @@ function Header() {
                         </nav>
 
                         <div className={cx('header-logo')}>
-                            <a href={config.routes.home} className={cx('header-logo-link')}>
+                            <Link href={config.routes.home} className={cx('header-logo-link')}>
                                 <Image
                                     src={images.logo}
                                     alt="logo"
@@ -358,7 +362,7 @@ function Header() {
                                         maxHeight: '100px',
                                     }}
                                 />
-                            </a>
+                            </Link>
                         </div>
 
                         <div className={cx('header-search')}>

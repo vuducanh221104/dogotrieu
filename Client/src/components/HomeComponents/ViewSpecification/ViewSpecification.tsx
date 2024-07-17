@@ -10,7 +10,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
-import images from '@/assets';
+import icons from '@/assets/images-icon';
+import Image from 'next/image';
 const cx = classNames.bind(styles);
 
 function ViewSpecification() {
@@ -21,23 +22,23 @@ function ViewSpecification() {
     const data = [
         {
             title: 'Quick Ship',
-            img: 'https://woodfurniture.com/cdn/shop/files/icons-04_1_60x.png?v=1699958109',
+            img: icons.iconCartPlus,
             description: 'In stock & ready*',
             link: '/',
         },
         {
             title: 'Customer Care',
-            img: 'https://woodfurniture.com/cdn/shop/files/icons-02_1_60x.png?v=1699958109',
+            img: icons.iconUserChat,
             description: 'Customer Care',
         },
         {
             title: 'Free Delivery over $999',
-            img: 'https://woodfurniture.com/cdn/shop/files/icons-01_1_60x.png?v=1699958108',
+            img: icons.iconShipping,
             description: 'In-Room Delivery Available',
         },
         {
             title: 'Return Policy',
-            img: 'https://woodfurniture.com/cdn/shop/files/icons-03_1_60x.png?v=1699958108',
+            img: icons.iconGuarantee,
             description: '7 Days Easy Return*',
         },
     ];
@@ -78,10 +79,10 @@ function ViewSpecification() {
                             speed={400}
                         >
                             {data.map((item, index) => (
-                                <SwiperSlide>
+                                <SwiperSlide key={index}>
                                     <li className={cx('specification-item-scroll')}>
                                         <div className={cx('specification-item-scroll-icon')}>
-                                            <img src={item.img} alt={item.title} />
+                                            <Image src={item.img} alt={item.title} />
                                         </div>
                                         <div className={cx('specification-item-scroll-info')}>
                                             <p>{item.title}</p>
@@ -110,7 +111,7 @@ function ViewSpecification() {
                         {data.map((item, index) => (
                             <li className={cx('specification-item')} key={index}>
                                 <div className={cx('specification-item-icon')}>
-                                    <img src={item.img} alt={item.title} />
+                                    <Image src={item.img} alt={item.title} />
                                 </div>
                                 <div className={cx('specification-item-info')}>
                                     <p>{item.title}</p>

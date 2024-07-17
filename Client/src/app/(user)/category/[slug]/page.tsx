@@ -64,6 +64,7 @@ function PageCategory() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showSort, setShowSort] = useState<boolean>(false);
+    const [currentSort, setCurrentSort] = useState<string>('Giá, thấp đến cao');
     const [showFilterMobile, setShowFilterMobile] = useState<boolean>(false);
     const [showFilterContent, setShowFilterContent] = useState<ShowFilterContent>({});
     const [selectedMaterials, setSelectedMaterials] = useState<{ slug: string; name: string }[]>([]);
@@ -114,17 +115,15 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
-    const handleMaterialChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
-        const slug = event.target.value;
+    const handleMaterialChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const material = event.target.value;
         const url = new URL(window.location.href);
         const materials = new Set(url.searchParams.getAll('gf_material'));
 
-        if (event.target.checked) {
-            setSelectedMaterials([...selectedMaterials, { slug, name }]);
-            materials.add(slug);
+        if (event.target.checked && !materials.has(material)) {
+            materials.add(material);
         } else {
-            setSelectedMaterials(selectedMaterials.filter((filter) => filter.slug !== slug));
-            materials.delete(slug);
+            materials.delete(material);
         }
 
         url.searchParams.delete('gf_material');
@@ -134,21 +133,19 @@ function PageCategory() {
         router.replace(prioritizedUrl);
     };
 
-    const handleAvailabityChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
-        const slug = event.target.value;
+    const handleAvailabilityChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const availability = event.target.value;
         const url = new URL(window.location.href);
-        const availabs = new Set(url.searchParams.getAll('gf_availab'));
+        const availabilities = new Set(url.searchParams.getAll('gf_availab'));
 
-        if (event.target.checked) {
-            setSelectedAvailability([...selectedAvailability, { slug, name }]);
-            availabs.add(slug);
+        if (event.target.checked && !availabilities.has(availability)) {
+            availabilities.add(availability);
         } else {
-            setSelectedAvailability(selectedAvailability.filter((filter) => filter.slug !== slug));
-            availabs.delete(slug);
+            availabilities.delete(availability);
         }
 
         url.searchParams.delete('gf_availab');
-        availabs.forEach((mat) => url.searchParams.append('gf_availab', mat));
+        availabilities.forEach((availab) => url.searchParams.append('gf_availab', availab));
         const prioritizedUrl = prioritizeQuery(url);
         window.history.pushState({}, '', prioritizedUrl);
         router.replace(prioritizedUrl);
@@ -189,12 +186,13 @@ function PageCategory() {
         }));
     };
 
-    const onChangeSort = (value: string) => {
+    const onChangeSort = async (value: string, nameSort: string) => {
+        setCurrentSort(nameSort);
         const url = new URL(window.location.href);
         url.searchParams.set('sort_by', value);
         const newUrl = url.toString();
         window.history.pushState({}, '', newUrl);
-        router.replace(newUrl);
+        await router.replace(newUrl);
     };
 
     const windowWidth = useWindowWidth();
@@ -230,7 +228,7 @@ function PageCategory() {
                             <div className={cx('card-section', 'card-section-tight')}>
                                 <div className={cx('filter-title')}>
                                     <div className={cx('title-block')}>
-                                        <span>Filter</span>
+                                        <span>Lọc Sản Phẩm</span>
                                     </div>
                                     {(selectedMaterials.length > 0 || selectedAvailability.length > 0) && (
                                         <p
@@ -284,7 +282,10 @@ function PageCategory() {
                                 <div className={cx('filter-group-list')}>
                                     {dataFilter.map((item: FilterItem, index: number) => (
                                         <div className={cx('filter-group-item')} key={item.id}>
-                                            <button className={cx('filter-name')} onClick={() => toggleContent(index)}>
+                                            <button
+                                                className={`${cx('filter-name')} ${archivo.className}`}
+                                                onClick={() => toggleContent(index)}
+                                            >
                                                 {item.title}
                                                 <ChervonUpIcon className={cx('icon-chervonup')} />
                                             </button>
@@ -301,30 +302,30 @@ function PageCategory() {
                                                 }
                                             >
                                                 <ul className={cx('filter-checkbox-list')}>
-                                                    {item.content.map((contentItem, indexItem) => (
-                                                        <li className={cx('filter-checkbox-item')} key={indexItem}>
+                                                    {item.content.map((contentItem: any) => (
+                                                        <li
+                                                            className={cx('filter-checkbox-item')}
+                                                            key={contentItem.slug}
+                                                        >
                                                             <div className={cx('checkbox-content')}>
                                                                 <input
                                                                     type="checkbox"
                                                                     className={cx('input-checkbox')}
                                                                     value={contentItem.slug}
-                                                                    onChange={(e) =>
-                                                                        item.title === 'AVAILABILITY'
-                                                                            ? handleAvailabityChange(
-                                                                                  e,
-                                                                                  contentItem.name,
-                                                                              )
-                                                                            : handleMaterialChange(e, contentItem.name)
+                                                                    onChange={
+                                                                        item.title === 'KHẢ DỤNG'
+                                                                            ? handleAvailabilityChange
+                                                                            : handleMaterialChange
                                                                     }
                                                                     checked={
-                                                                        item.title === 'AVAILABILITY'
+                                                                        item.title === 'KHẢ DỤNG'
                                                                             ? selectedAvailability.some(
-                                                                                  (filter) =>
-                                                                                      filter.slug === contentItem.slug,
+                                                                                  (avail) =>
+                                                                                      avail.slug === contentItem.slug,
                                                                               )
                                                                             : selectedMaterials.some(
-                                                                                  (filter) =>
-                                                                                      filter.slug === contentItem.slug,
+                                                                                  (mat) =>
+                                                                                      mat.slug === contentItem.slug,
                                                                               )
                                                                     }
                                                                 />
@@ -378,16 +379,16 @@ function PageCategory() {
                                                                 icon={faBarsProgress}
                                                                 className={cx('icon-toglle-mobile')}
                                                             />
-                                                            Filter By
+                                                            Lọc Sản Phẩm
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <span className={cx('gf-summary')}>
-                                                    <b>{dataTotalProduct}</b> Products
+                                                    <b>{dataTotalProduct}</b> Sản Phẩm
                                                 </span>
                                                 <div className={cx('gf-filter-selection')}>
                                                     <div className={cx('sort-limit')}>
-                                                        <label>Show</label>
+                                                        <label>Hiển Thị</label>
                                                         <select
                                                             onChange={handleLimitChange}
                                                             defaultValue={searchParams.get('limit') || '48'}
@@ -410,26 +411,61 @@ function PageCategory() {
                                                                     tabIndex="-1"
                                                                     {...attrs}
                                                                 >
-                                                                    <span onClick={() => onChangeSort('availability')}>
-                                                                        Availability
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort('availability', 'Có Sẵn')
+                                                                        }
+                                                                    >
+                                                                        Có Sẵn
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('title-asc')}>
+                                                                    <span
+                                                                        onClick={() => onChangeSort('title-asc', 'A-Z')}
+                                                                    >
                                                                         A-Z
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('title-desc')}>
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort('title-desc', 'Z-A')
+                                                                        }
+                                                                    >
                                                                         Z-A
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('price-asc')}>
-                                                                        Price, low to high
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort(
+                                                                                'price-asc',
+                                                                                'Giá, thấp đến cao',
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Giá, thấp đến cao
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('price-desc')}>
-                                                                        Price, high to low
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort(
+                                                                                'price-desc',
+                                                                                'Giá, cao đến thấp ',
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Giá, cao đến thấp
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('date-desc')}>
-                                                                        Date, new to old
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort(
+                                                                                'date-desc',
+                                                                                'Ngày, Mới đến cũ',
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Ngày, mới đến cũ
                                                                     </span>
-                                                                    <span onClick={() => onChangeSort('date-asc')}>
-                                                                        Date, old to new
+                                                                    <span
+                                                                        onClick={() =>
+                                                                            onChangeSort('date-asc', 'Ngày, cũ đến mới')
+                                                                        }
+                                                                    >
+                                                                        Ngày, cũ đến mới
                                                                     </span>
                                                                 </div>
                                                             )}
@@ -438,7 +474,7 @@ function PageCategory() {
                                                                 className={cx('globo-sort-options')}
                                                                 onClick={() => setShowSort(!showSort)}
                                                             >
-                                                                <span>Featured</span>
+                                                                <span>{currentSort}</span>
                                                             </label>
                                                         </Tippy>
                                                     </div>
@@ -488,7 +524,8 @@ function PageCategory() {
                                         <div className={cx('category-product-item')}>
                                             {dataTotalProduct === 0 && (
                                                 <div className={cx('no-product-in-category')}>
-                                                    Sorry, there are no products in this collection
+                                                    {/* Sorry, there are no products in this collection */}
+                                                    Xin lỗi , không có sản phẩm nào ở danh mục này
                                                 </div>
                                             )}
 
@@ -497,7 +534,7 @@ function PageCategory() {
                                                     windowWidth <= 641 ? index % 2 !== 0 : (index + 1) % 3 === 0;
                                                 return (
                                                     <CardProduct
-                                                        key={item.id}
+                                                        key={item._id}
                                                         data={item}
                                                         isSpecialIndex={isSpecialIndex}
                                                     />

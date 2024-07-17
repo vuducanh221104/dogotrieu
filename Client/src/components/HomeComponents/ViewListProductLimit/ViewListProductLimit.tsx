@@ -2,35 +2,35 @@
 import styles from './ViewListProductLimit.module.scss';
 import classNames from 'classnames/bind';
 import React from 'react';
-import { useEffect, useState } from 'react';
-import SwiperBanner from '@/components/Swiper/SwiperBanner';
-import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
-import { Col, Container, Row } from 'react-bootstrap';
-const cx = classNames.bind(styles);
+// import { useEffect, useState } from 'react';
+// import SwiperBanner from '@/components/Swiper/SwiperBanner';
+// import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
+// import { Col, Container, Row } from 'react-bootstrap';
+// const cx = classNames.bind(styles);
 
 // 6 Product View
 function ViewListProductLimit() {
-    const data = {
-        images_banner: [
-            'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Rooted-in-Nature_4fa3ddde-6916-48cf-89c6-2301ce4211e1_1200x.jpg?v=1712742370',
-            'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Earth-Day_2000x.jpg?v=1713773127',
-            'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Outdoor-2024_1200x.jpg?v=1709652074',
-        ],
+    // const data = {
+    //     images_banner: [
+    //         'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Rooted-in-Nature_4fa3ddde-6916-48cf-89c6-2301ce4211e1_1200x.jpg?v=1712742370',
+    //         'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Earth-Day_2000x.jpg?v=1713773127',
+    //         'https://woodfurniture.com/cdn/shop/files/Wood-Furniture-Outdoor-2024_1200x.jpg?v=1709652074',
+    //     ],
 
-        images_customer: [
-            'https://minhtuanmobile.com/uploads/slide/231117042652-tienlinh.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042652-tienluat.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-tolam.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-truonggiang.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-truongloc.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-truongloc.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-truongthaonhi.jpg',
-            'https://minhtuanmobile.com/uploads/slide/231117042653-vominhkhai.jpg',
-        ],
-    };
+    //     images_customer: [
+    //         'https://minhtuanmobile.com/uploads/slide/231117042652-tienlinh.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042652-tienluat.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-tolam.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-truonggiang.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-truongloc.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-truongloc.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-truongthaonhi.jpg',
+    //         'https://minhtuanmobile.com/uploads/slide/231117042653-vominhkhai.jpg',
+    //     ],
+    // };
     return (
         <>
-            <div className={cx('product-wrapper')}>
+            {/* <div className={cx('product-wrapper')}>
                 <Container>
                     <div className={cx('product-inner')}>
                         <h3 className={cx('product-heading')}>Best Sellers</h3>
@@ -70,7 +70,7 @@ function ViewListProductLimit() {
                         </div>
                     </div>
                 </Container>
-            </div>
+            </div> */}
         </>
     );
 }

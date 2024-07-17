@@ -27,13 +27,12 @@
 .product-meta-reference {
     margin-bottom: 3px;
     font-size: 1.2rem;
+    display: flex;
 }
-.product-meta-vendor {
-    text-transform: uppercase;
-    color: var(--accent-color);
-    transition: color 0.2s ease-in-out;
+.product-meta-material-list {
+    max-width: 210px;
 }
-.product-meta-sku {
+.product-sparate {
     &::before {
         display: inline-block;
         position: relative;
@@ -46,6 +45,12 @@
         vertical-align: middle;
     }
 }
+.product-meta-vendor {
+    text-transform: uppercase;
+    color: var(--accent-color);
+    transition: color 0.2s ease-in-out;
+}
+
 .card-separator {
     width: 20px;
     margin: 20px 0;
@@ -155,7 +160,6 @@
                 height: 10px;
             }
             .quantity-selector-value {
-                webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
                 padding: 0 5px;

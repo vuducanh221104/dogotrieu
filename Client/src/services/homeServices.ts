@@ -11,7 +11,7 @@ export const homeGet = () => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
     return { data, error, isLoading, mutate };
 };
@@ -24,7 +24,7 @@ export const homePatch = async (data: any) => {
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -36,14 +36,16 @@ export const homePatchFeatProduct = async (idFeatProduct: string, data: any) => 
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
+//[DELETE]
+
 export const homeDeleteFeatProduct = async (idFeatProduct: string) => {
     try {
         const res = await httpRequest.deleted(`api/v1/home/featProduct/${idFeatProduct}`);
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };

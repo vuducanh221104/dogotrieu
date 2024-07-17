@@ -4,6 +4,8 @@ import styles from '@/styles/Contact.module.scss';
 import { DividerSymbol, InstaIcon } from '@/components/Icons';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { archivo } from '@/assets/FontNext';
+import imagesPage from '@/assets/images-pages';
+import Image from 'next/image';
 const cx = classNames.bind(styles);
 
 function PageContact() {
@@ -15,10 +17,7 @@ function PageContact() {
                     <div className={cx('page-description')}>
                         <div className={cx('page-img-wrapper')}>
                             <center>
-                                <img
-                                    src="https://cdn.shopify.com/s/files/1/0285/8683/6027/files/11111_4fd5de6b-a245-41f7-8cc7-3a74da1a940e_2048x2048.jpg?v=1626441718"
-                                    alt=""
-                                />
+                                <Image src={imagesPage.contact} alt="123" />
                             </center>
                         </div>
                         <p>

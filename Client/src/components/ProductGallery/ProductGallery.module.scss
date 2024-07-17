@@ -50,7 +50,7 @@
 }
 .swiper-gallery-main {
     position: relative;
-    width: 100%;
+    // width: 100%;
     margin-bottom: 25px;
     cursor: pointer;
     &:hover {
@@ -64,7 +64,7 @@
 }
 .swiper-thumbnail {
     min-width: 96px !important;
-    max-height: 450px;
+    max-height: 419px !important;
 }
 // Navigation
 .swiper-gallery-main {
@@ -145,7 +145,8 @@
         margin-bottom: 0;
     }
     .swiper-gallery-main {
-        width: 100%;
+        width: 200px;
+        flex: 1 0 auto;
         margin: 10px 5px 0 42px;
     }
     .product-gallery-thumbnail {

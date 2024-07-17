@@ -59,13 +59,14 @@ function PageBannerHome() {
             );
 
             const postHome = await homePatch({ images_banner: dataImages });
-            console.log('Saved Successfully', postHome);
-
-            messageCustomSuccess('Add Successfully');
-            setLoading(false);
+            if (!postHome) {
+                messageCustomError('Add Error');
+            } else {
+                messageCustomSuccess('Add Successfully');
+                setLoading(false);
+            }
         } catch (error) {
-            messageCustomError('Missing input field');
-            console.log('Validate fields error:', error);
+            messageCustomError('Missing Input Field');
             setLoading(false);
         }
     };

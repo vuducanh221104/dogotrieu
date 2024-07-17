@@ -15,6 +15,10 @@ import useSWR, { mutate } from 'swr';
 // };
 
 export const uploadCloud = async (arrayImage: any) => {
-    const res = await httpRequest.post('api/v1/upload', arrayImage);
-    return res.data;
+    try {
+        const res = await httpRequest.post('api/v1/upload', arrayImage);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
 };

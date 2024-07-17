@@ -1,6 +1,6 @@
 export const transformListSelect = (data: any) => {
-    return data.map((item: any) => ({
-        label: <span>{item.name}</span>,
+    return data.map((item: any, index: number) => ({
+        label: <span key={index}>{item.name}</span>,
         title: item.name,
         options: [
             {
@@ -16,8 +16,8 @@ export const transformListSelect = (data: any) => {
 };
 
 export const transformListSelectDefault = (data: any) => {
-    return data.map((item: any) => ({
-        label: <span>{item.name}</span>,
+    return data.map((item: any, index: number) => ({
+        label: <span key={index}>{item.name}</span>,
         title: item.name,
         options: [
             {
@@ -40,7 +40,7 @@ export const transformParentListSelect = (data: any) => {
     options = [
         ...options,
         ...data.map((item: any, index: number) => ({
-            label: <span>{item.name}</span>,
+            label: <span key={index}>{item.name}</span>,
             value: item._id,
         })),
     ];

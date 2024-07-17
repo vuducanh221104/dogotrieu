@@ -52,6 +52,7 @@ function PageSearch() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showSort, setShowSort] = useState<boolean>(false);
+    const [currentSort, setCurrentSort] = useState<string>('Giá, thấp đến cao');
     const [showFilterMobile, setShowFilterMobile] = useState<boolean>(false);
     const [showFilterContent, setShowFilterContent] = useState<any>({});
     const [selectedMaterials, setSelectedMaterials] = useState<{ slug: string; name: string }[]>([]);
@@ -180,7 +181,8 @@ function PageSearch() {
         }));
     };
 
-    const onChangeSort = async (value: string) => {
+    const onChangeSort = async (value: string, nameSort: string) => {
+        setCurrentSort(nameSort);
         const url = new URL(window.location.href);
         url.searchParams.set('sort_by', value);
         const newUrl = url.toString();
@@ -212,7 +214,7 @@ function PageSearch() {
     } else if (!error) {
         return (
             <>
-                <Breadcrumb nameSlug={`Search results for "${valueSearch}"`} />
+                <Breadcrumb nameSlug={`Kết quả tìm kiếm: "${valueSearch}"`} />
                 <FilterModal
                     dataFilter={dataFilter}
                     showFilterMobile={showFilterMobile}
@@ -234,7 +236,7 @@ function PageSearch() {
                                                         archivo.className
                                                     }`}
                                                 >
-                                                    Products for "{valueSearch}"
+                                                    Tìm Kiếm : "{valueSearch}"
                                                 </h1>
                                             </div>
                                         </div>
@@ -247,7 +249,7 @@ function PageSearch() {
                                         <div className={cx('card-section', 'card-section-tight')}>
                                             <div className={cx('filter-title')}>
                                                 <div className={cx('title-block')}>
-                                                    <span>Filter</span>
+                                                    <span>Lọc Sản Phẩm</span>
                                                 </div>
                                                 {(selectedMaterials.length > 0 || selectedAvailability.length) > 0 && (
                                                     <p
@@ -302,7 +304,7 @@ function PageSearch() {
                                                 {dataFilter.map((item: any, index: number) => (
                                                     <div className={cx('filter-group-item')} key={item.id}>
                                                         <button
-                                                            className={cx('filter-name')}
+                                                            className={`${cx('filter-name')} ${archivo.className}`}
                                                             onClick={() => toggleContent(index)}
                                                         >
                                                             {item.title}
@@ -332,12 +334,12 @@ function PageSearch() {
                                                                                 className={cx('input-checkbox')}
                                                                                 value={contentItem.slug}
                                                                                 onChange={
-                                                                                    item.title === 'AVAILABILITY'
+                                                                                    item.title === 'KHẢ DỤNG'
                                                                                         ? handleAvailabilityChange
                                                                                         : handleMaterialChange
                                                                                 }
                                                                                 checked={
-                                                                                    item.title === 'AVAILABILITY'
+                                                                                    item.title === 'KHẢ DỤNG'
                                                                                         ? selectedAvailability.some(
                                                                                               (avail) =>
                                                                                                   avail.slug ===
@@ -384,16 +386,16 @@ function PageSearch() {
                                                                             icon={faBarsProgress}
                                                                             className={cx('icon-toglle-mobile')}
                                                                         />
-                                                                        Filter By
+                                                                        Lọc Sản Phẩm
                                                                     </span>
                                                                 </div>
                                                             </div>
                                                             <span className={cx('gf-summary')}>
-                                                                <b>{dataTotalProduct}</b> Products
+                                                                <b>{dataTotalProduct}</b> Sản Phẩm
                                                             </span>
                                                             <div className={cx('gf-filter-selection')}>
                                                                 <div className={cx('sort-limit')}>
-                                                                    <label>Show</label>
+                                                                    <label>Hiển Thị</label>
                                                                     <select
                                                                         onChange={handleLimitChange}
                                                                         defaultValue={searchParams.get('limit') || '48'}
@@ -418,52 +420,70 @@ function PageSearch() {
                                                                             >
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('availability')
+                                                                                        onChangeSort(
+                                                                                            'availability',
+                                                                                            'Có Sẵn',
+                                                                                        )
                                                                                     }
                                                                                 >
-                                                                                    Availability
+                                                                                    Có Sẵn
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('title-asc')
+                                                                                        onChangeSort('title-asc', 'A-Z')
                                                                                     }
                                                                                 >
                                                                                     A-Z
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('title-desc')
+                                                                                        onChangeSort(
+                                                                                            'title-desc',
+                                                                                            'Z-A',
+                                                                                        )
                                                                                     }
                                                                                 >
                                                                                     Z-A
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('price-asc')
+                                                                                        onChangeSort(
+                                                                                            'price-asc',
+                                                                                            'Giá, thấp đến cao',
+                                                                                        )
                                                                                     }
                                                                                 >
-                                                                                    Price, low to high
+                                                                                    Giá, thấp đến cao
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('price-desc')
+                                                                                        onChangeSort(
+                                                                                            'price-desc',
+                                                                                            'Giá, cao đến thấp ',
+                                                                                        )
                                                                                     }
                                                                                 >
-                                                                                    Price, high to low
+                                                                                    Giá, cao đến thấp
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('date-desc')
+                                                                                        onChangeSort(
+                                                                                            'date-desc',
+                                                                                            'Ngày, Mới đến cũ',
+                                                                                        )
                                                                                     }
                                                                                 >
-                                                                                    Date, new to old
+                                                                                    Ngày, mới đến cũ
                                                                                 </span>
                                                                                 <span
                                                                                     onClick={() =>
-                                                                                        onChangeSort('date-asc')
+                                                                                        onChangeSort(
+                                                                                            'date-asc',
+                                                                                            'Ngày, cũ đến mới',
+                                                                                        )
                                                                                     }
                                                                                 >
-                                                                                    Date, old to new
+                                                                                    Ngày, cũ đến mới
                                                                                 </span>
                                                                             </div>
                                                                         )}
@@ -472,7 +492,7 @@ function PageSearch() {
                                                                             className={cx('globo-sort-options')}
                                                                             onClick={() => setShowSort(!showSort)}
                                                                         >
-                                                                            <span>Featured</span>
+                                                                            <span>{currentSort}</span>
                                                                         </label>
                                                                     </Tippy>
                                                                 </div>
@@ -540,7 +560,8 @@ function PageSearch() {
                                                     <div className={cx('category-product-item')}>
                                                         {dataTotalProduct <= 0 && (
                                                             <div className={cx('no-product-in-category')}>
-                                                                Sorry, there are no products in this collection
+                                                                {/* Sorry, there are no products in this collection */}
+                                                                Xin lỗi , không có sản phẩm nào ở danh mục này
                                                             </div>
                                                         )}
 
@@ -551,7 +572,7 @@ function PageSearch() {
                                                                     : (index + 1) % 3 === 0;
                                                             return (
                                                                 <CardProduct
-                                                                    key={item.id}
+                                                                    key={item._id}
                                                                     data={item}
                                                                     isSpecialIndex={isSpecialIndex}
                                                                 />

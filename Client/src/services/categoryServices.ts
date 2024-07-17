@@ -4,7 +4,7 @@ import useSWR from 'swr';
 //[GET] ~ Dynamic filter
 export const categoryFilterGet = (query: any) => {
     const url = `api/v1/category/${query}`;
-    console.log(url);
+
     // Sử dụng SWR để lấy dữ liệu
     const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
         revalidateIfStale: false,
@@ -13,7 +13,7 @@ export const categoryFilterGet = (query: any) => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
 
     return { data, error, isLoading, mutate };
@@ -25,7 +25,7 @@ export const categoryAdd = async (data: {}) => {
 
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -39,7 +39,7 @@ export const categoryGet = () => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
     return { data, error, isLoading, mutate };
 };
@@ -50,7 +50,7 @@ export const categoryUpdate = async (data: any) => {
         const res = await httpRequest.patch(`api/v1/category`, data);
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 //[DELETE]
@@ -61,6 +61,6 @@ export const categoryDelete = async (ids: {}) => {
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };

@@ -12,6 +12,9 @@ import ViewCustomer from '@/components/ViewCustomer';
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { CldImage } from 'next-cloudinary';
+import icons from '@/assets/images-icon';
+import Image from 'next/image';
+
 const cx = classNames.bind(styles);
 function SwiperCustomer({ data, navigation = true }: any) {
     const sliderRef = useRef<any>(null);
@@ -61,10 +64,7 @@ function SwiperCustomer({ data, navigation = true }: any) {
             {showOverlay && <ViewCustomer data={data} setShowOverlay={setShowOverlay} indexImage={selectIndexImage} />}
             <div className={cx('wrapper')}>
                 <Container>
-                    <img
-                        src="https://lh3.googleusercontent.com/pw/AIL4fc_xW5iBF182Ojzi9prbjThb8sWWP2qxRwpXD5uUgKCcDx6G5RKYH00iE1JFGA0vF3I2B5TNaNBMuhk5PYdYNvBN6bZ7x0TfbRmgNTDCFslA4Y83MjX7R7PTZsLYAUiSK4jiZPFrNf2ZWIhUAp1ppeHG=w1380-h74-s-no?authuser=1"
-                        className={cx('image-customer-header')}
-                    />
+                    <Image alt="banner-customer" src={icons.bannerCustomer} className={cx('image-customer-header')} />
                     <div className={cx('customer-background')}>
                         <Swiper
                             ref={sliderRef}
@@ -80,17 +80,16 @@ function SwiperCustomer({ data, navigation = true }: any) {
                             speed={400}
                             breakpoints={{ ...dataBreakpoints }}
                         >
-                            {data.concat(data).map((item: any, index: any) => (
+                            {data?.concat(data).map((item: any, index: any) => (
                                 <SwiperSlide key={index}>
                                     <>
                                         <CldImage
                                             width={'500'}
                                             height={'500'}
                                             src={item}
-                                            key={index}
+                                            alt=""
                                             className={cx('image-home', 'lazyload')}
                                             onClick={() => handleImageClick(index)}
-                                            alt={''}
                                         />
                                     </>
                                 </SwiperSlide>

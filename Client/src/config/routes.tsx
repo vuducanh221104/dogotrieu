@@ -20,14 +20,14 @@ const routes = {
         //Product
         productList: '/admin/product/list',
         productAdd: '/admin/product/add',
-        // Blogs
-        blogsList: '/admin/blogs/list',
-        blogsAdd: '/admin/blogs/add',
+        // News
+        blogsList: '/admin/news/list',
         // Home
         imageHomeBanner: '/admin/home/banner',
         imageHomeBannerMoblie: '/admin/home/bannerOnMobile',
         imageHomeCustomer: '/admin/home/customer',
         featuredProduct: '/admin/home/featuredProduct',
+        featuredNews: '/admin/home/featuredNews',
         //Category
         categoryList: '/admin/category/list',
         //Material

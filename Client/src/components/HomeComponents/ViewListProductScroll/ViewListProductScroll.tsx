@@ -2,97 +2,98 @@
 import styles from './ViewListProductScroll.module.scss';
 import classNames from 'classnames/bind';
 import React, { useEffect } from 'react';
-import { useRef, useCallback, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import { Container } from 'react-bootstrap';
-import { ChervonLeft, ChervonRight } from '@/components/Icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { dataProduct } from '@/services/mockApi';
-import FormatPrice from '@/components/FormatPrice';
+// import { useRef, useCallback, useState } from 'react';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation, Autoplay } from 'swiper/modules';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
+// import { Container } from 'react-bootstrap';
+// import { ChervonLeft, ChervonRight } from '@/components/Icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+// import { dataProduct } from '@/services/mockApi';
+// import FormatPrice from '@/components/FormatPrice';
 
 const cx = classNames.bind(styles);
 
 // 6 Product View
 function ViewListProductScroll() {
-    const sliderRef = useRef<any>(null);
-    const [isFirstSlide, setIsFirstSlide] = useState<boolean>(true);
-    const [isLastSlide, setIsLastSlide] = useState<boolean>(false);
-    const [currentSlidesPerView, setCurrentSlidesPerView] = useState<number>(() => {
-        return window.innerWidth <= 992 ? 2 : 4;
-    });
+    // const sliderRef = useRef<any>(null);
+    // const [isFirstSlide, setIsFirstSlide] = useState<boolean>(true);
+    // const [isLastSlide, setIsLastSlide] = useState<boolean>(false);
+    // const [currentSlidesPerView, setCurrentSlidesPerView] = useState<number>(() => {
+    //     return window.innerWidth <= 992 ? 2 : 4;
+    // });
 
-    const data = dataProduct;
+    // const data = dataProduct;
 
-    // LOGIC
-    useEffect(() => {
-        function handleResize() {
-            setCurrentSlidesPerView(window.innerWidth <= 992 ? 2 : 4);
-        }
+    // // LOGIC
+    // useEffect(() => {
+    //     function handleResize() {
+    //         setCurrentSlidesPerView(window.innerWidth <= 992 ? 2 : 4);
+    //     }
 
-        handleResize();
+    //     handleResize();
 
-        const swiperInstance = sliderRef.current.swiper;
-        swiperInstance.on('slideChange', () => {
-            const activeIndex = swiperInstance.activeIndex;
-            setIsFirstSlide(activeIndex === 0);
-            setIsLastSlide(activeIndex + currentSlidesPerView >= swiperInstance.slides.length);
-        });
+    //     const swiperInstance = sliderRef.current.swiper;
+    //     swiperInstance.on('slideChange', () => {
+    //         const activeIndex = swiperInstance.activeIndex;
+    //         setIsFirstSlide(activeIndex === 0);
+    //         setIsLastSlide(activeIndex + currentSlidesPerView >= swiperInstance.slides.length);
+    //     });
 
-        window.addEventListener('resize', handleResize);
+    //     window.addEventListener('resize', handleResize);
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [currentSlidesPerView]);
+    //     return () => {
+    //         window.removeEventListener('resize', handleResize);
+    //     };
+    // }, [currentSlidesPerView]);
 
-    // HANDLE PREV-NEXT
-    const handlePrev = useCallback(() => {
-        if (!sliderRef.current) return;
-        const swiperInstance = sliderRef.current.swiper;
-        const currentIndex = swiperInstance.activeIndex;
-        const newIndex = currentIndex - currentSlidesPerView;
-        swiperInstance.slideTo(newIndex, 800);
-    }, [currentSlidesPerView]);
+    // // HANDLE PREV-NEXT
+    // const handlePrev = useCallback(() => {
+    //     if (!sliderRef.current) return;
+    //     const swiperInstance = sliderRef.current.swiper;
+    //     const currentIndex = swiperInstance.activeIndex;
+    //     const newIndex = currentIndex - currentSlidesPerView;
+    //     swiperInstance.slideTo(newIndex, 800);
+    // }, [currentSlidesPerView]);
 
-    const handleNext = useCallback(() => {
-        if (!sliderRef.current) return;
-        const swiperInstance = sliderRef.current.swiper;
-        const currentIndex = swiperInstance.activeIndex;
-        const newIndex = currentIndex + currentSlidesPerView;
-        swiperInstance.slideTo(newIndex, 800);
-    }, [currentSlidesPerView]);
+    // const handleNext = useCallback(() => {
+    //     if (!sliderRef.current) return;
+    //     const swiperInstance = sliderRef.current.swiper;
+    //     const currentIndex = swiperInstance.activeIndex;
+    //     const newIndex = currentIndex + currentSlidesPerView;
+    //     swiperInstance.slideTo(newIndex, 800);
+    // }, [currentSlidesPerView]);
 
-    // BREAKPOINT
-    const dataBreakpoints = {
-        0: {
-            slidesPerView: 1,
-            spaceBetween: 5,
-        },
-        300: {
-            slidesPerView: 2,
-            spaceBetween: 5,
-        },
-        765: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-        },
-        995: {
-            slidesPerView: 4,
-            spaceBetween: 10,
-        },
-        1200: {
-            slidesPerView: 4,
-            spaceBetween: 10,
-        },
-    };
+    // // BREAKPOINT
+    // const dataBreakpoints = {
+    //     0: {
+    //         slidesPerView: 1,
+    //         spaceBetween: 5,
+    //     },
+    //     300: {
+    //         slidesPerView: 2,
+    //         spaceBetween: 5,
+    //     },
+    //     765: {
+    //         slidesPerView: 3,
+    //         spaceBetween: 10,
+    //     },
+    //     995: {
+    //         slidesPerView: 4,
+    //         spaceBetween: 10,
+    //     },
+    //     1200: {
+    //         slidesPerView: 4,
+    //         spaceBetween: 10,
+    //     },
+    // };
     return (
-        <div className={cx('product-wrapper')}>
+        <>
+            {/* <div className={cx('product-wrapper')}>
             <Container>
                 <div className={cx('product-inner')}>
                     <h3 className={cx('product-heading')}>
@@ -182,7 +183,8 @@ function ViewListProductScroll() {
                     )}
                 </div>
             </Container>
-        </div>
+        </div> */}
+        </>
     );
 }
 

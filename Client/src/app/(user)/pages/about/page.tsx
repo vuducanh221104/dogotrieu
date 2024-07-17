@@ -2,6 +2,8 @@ import classNames from 'classnames/bind';
 import styles from '@/styles/About.module.scss';
 import { lato, playFairDisplay } from '@/assets/FontNext';
 import Link from 'next/link';
+import imagesPage from '@/assets/images-pages';
+import Image from 'next/image';
 const cx = classNames.bind(styles);
 
 function PageAboutUs() {
@@ -31,10 +33,7 @@ function PageAboutUs() {
                 <div className={cx('wrapper-content', 'second')}>
                     <div className={cx('wrapper-content-bonus')}>
                         <div className={cx('column')}>
-                            <img
-                                src="https://cdn.shopify.com/s/files/1/0285/8683/6027/t/12/assets/woodf-1673283754975.jpg?v=1673283756"
-                                alt="?"
-                            />
+                            <Image src={imagesPage.aboutUs1} alt="?" />
                         </div>
                     </div>
                 </div>
@@ -43,10 +42,7 @@ function PageAboutUs() {
                         <div className={cx('wrapper-image-right')}>
                             <div className={cx('wrapper-image-right-content')}>
                                 <div className={cx('column')}>
-                                    <img
-                                        src="https://cdn.shopify.com/s/files/1/0285/8683/6027/t/12/assets/wood-furniture-1673524804364.png?v=1673524808"
-                                        alt=""
-                                    />
+                                    <Image src={imagesPage.aboutUs2} alt="" />
                                 </div>
                             </div>
                         </div>
@@ -99,10 +95,7 @@ function PageAboutUs() {
                             <div className={cx('wrapper-image-right')}>
                                 <div className={cx('wrapper-image-right-content')}>
                                     <div className={cx('column-padding')}>
-                                        <img
-                                            src="https://cdn.shopify.com/s/files/1/0285/8683/6027/t/12/assets/wood-dining-1673524934922.png?v=1673524939"
-                                            alt=""
-                                        />
+                                        <Image src={imagesPage.aboutUs3} alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -132,10 +125,7 @@ function PageAboutUs() {
                 <div className={cx('wrapper-content', 'five')}>
                     <div className={cx('wrapper-content-bonus')}>
                         <div className={cx('column')}>
-                            <img
-                                src="https://cdn.shopify.com/s/files/1/0285/8683/6027/t/12/assets/ethnicraft-copia-1673282645219_1000x.jpg?v=1673282646"
-                                alt="?"
-                            />
+                            <Image src={imagesPage.aboutUs4} alt="?" />
                         </div>
                     </div>
                 </div>

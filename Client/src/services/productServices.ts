@@ -1,12 +1,14 @@
+import { Product } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import useSWR from 'swr';
+
 //[POST]
-export const productAdd = async (data: {}) => {
+export const productAdd = async (data: Product) => {
     try {
         const res = await httpRequest.post(`api/v1/product`, data);
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -20,7 +22,7 @@ export const productGetId = (id: string) => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
     return { data, error, isLoading };
 };
@@ -34,7 +36,7 @@ export const productGetOnly = () => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
     return { data, error, isLoading, mutate };
 };
@@ -48,7 +50,7 @@ export const productGetAll = () => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
     }
     return { data, error, isLoading, mutate };
 };
@@ -58,11 +60,11 @@ export const productDelete = async (product_id: string, product_type_id: string)
         const res = await httpRequest.deleted(`api/v1/product`, { data: { product_id, product_type_id } });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 //[PATCH]
-export const productPatch = async (id: string, product_data: any, product_type_data: any) => {
+export const productPatch = async (id: string, product_data: Partial<Product>, product_type_data: Partial<Product>) => {
     try {
         const res = await httpRequest.patch(`api/v1/product/${id}`, {
             ...product_data,
@@ -70,7 +72,7 @@ export const productPatch = async (id: string, product_data: any, product_type_d
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -84,7 +86,21 @@ export const featuredProductGet = (query: string) => {
     });
 
     if (error) {
-        console.log(error);
+        console.error(error);
+    }
+    return { data, error, isLoading };
+};
+//[GET]
+export const featuredProductGetById = (query: string) => {
+    const url = `api/v1/product/category/featured/byId${query}`;
+    const { data, error, isLoading } = useSWR(url, httpRequest.fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+    if (error) {
+        console.error(error);
     }
     return { data, error, isLoading };
 };

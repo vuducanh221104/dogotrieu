@@ -1,10 +1,11 @@
 import React from 'react';
-import { Modal, Descriptions, Image, Tag, Card, Tooltip } from 'antd';
+import { Modal, Descriptions, Image, Tag, Tooltip } from 'antd';
+import MarkdownRender from '@/components/MarkdownRender';
 
 interface InfoProductProps {
     visible: boolean;
     onClose: () => void;
-    product: any; // Bạn có thể thay đổi thành bất kỳ loại dữ liệu nào phù hợp với sản phẩm của bạn
+    product: any;
 }
 
 const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) => {
@@ -34,7 +35,9 @@ const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) 
                         </Tag>
                     ))}
                 </Descriptions.Item>
-                <Descriptions.Item label="Description">{product.product_type_id.description}</Descriptions.Item>
+                <Descriptions.Item label="Description">
+                    {<MarkdownRender content={product.product_type_id.description} />}
+                </Descriptions.Item>
                 <Descriptions.Item label="Dimensions">
                     Width: {product.product_type_id.dimensions.width} {product.product_type_id.dimensions.unit}
                     <br />

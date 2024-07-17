@@ -6,13 +6,14 @@ import { Button, Input, Space, Table } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import transformTime from '@/utils/transformTime';
-import EditProduct from '@/componentsPage/EditProduct';
 import { productDelete, productGetAll } from '@/services/productServices';
 import Link from 'next/link';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { useMessageNotify } from '@/components/MessageNotify';
 import config from '@/config';
-import InfoProduct from '@/Layout/AdminLayout/InfoProduct';
+import InfoProduct from '@/Layout/AdminLayout/Product/InfoProduct';
+import { CldImage } from 'next-cloudinary';
+import EditProduct from '@/Layout/AdminLayout/Product/EditProduct';
 
 interface DataType {
     key: string;
@@ -27,12 +28,12 @@ function PageListProduct() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
 
     let { data, isLoading, error, mutate } = productGetAll();
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isModalDelete, setIsModalDelete] = useState(null);
+    const [searchText, setSearchText] = useState<string>('');
+    const [searchedColumn, setSearchedColumn] = useState<string>('');
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isModalDelete, setIsModalDelete] = useState<string | null>(null);
     const [infoProduct, setInfoProduct] = useState<DataType | null>(null);
-    const [isInfoModalVisible, setIsInfoModalVisible] = useState(false);
+    const [isInfoModalVisible, setIsInfoModalVisible] = useState<boolean>(false);
     const [editingProduct, setEditingProduct] = useState<DataType | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const searchInput = useRef<InputRef>(null);
@@ -170,20 +171,6 @@ function PageListProduct() {
 
     //Columns Render
     const columns: any = [
-        // {
-        //     title: 'ID',
-        //     dataIndex: '_id',
-        //     key: '_id',
-        //     width: 80,
-        //     ...getColumnSearchProps('_id'),
-        //     render: (text: any) => (
-        //         <Tooltip title={text}>
-        //             <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 50 }}>
-        //                 {text}
-        //             </div>
-        //         </Tooltip>
-        //     ),
-        // },
         {
             title: '#',
             dataIndex: 'index',
@@ -191,6 +178,20 @@ function PageListProduct() {
             width: 50,
             sorter: (a: any, b: any) => a.index - b.index,
             sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'ID',
+            dataIndex: '_id',
+            key: '_id',
+            width: 80,
+            ...getColumnSearchProps('_id'),
+            render: (text: any) => (
+                <Tooltip title={text}>
+                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 50 }}>
+                        {text}
+                    </div>
+                </Tooltip>
+            ),
         },
         {
             title: 'SKU',
@@ -206,7 +207,13 @@ function PageListProduct() {
             width: 110,
             render: (thumb: string) => (
                 <div className="flex justify-center">
-                    <img src={thumb} alt="thumbnail" style={{ width: '50px', height: '50px' }} />
+                    <CldImage
+                        width={'50'}
+                        height={'50'}
+                        src={thumb}
+                        alt="thumbnail"
+                        style={{ width: '50px', height: '50px' }}
+                    />
                 </div>
             ),
         },

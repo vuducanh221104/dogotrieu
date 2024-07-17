@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './CardProductHome.module.scss';
 import FormatPrice from '@/components/FormatPrice';
 import Link from 'next/link';
+import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +26,12 @@ const CardProductHome = ({ data, windowWidth, productRef }: any) => {
                     <div className={cx('product-image')}>
                         <Link href="/">
                             <div className={cx('aspect-ratio')}>
-                                <img src={item.thumb} alt="image-product" />
+                                <CldImage
+                                    width={'500'}
+                                    height="500"
+                                    src={item.thumb}
+                                    alt={`${data.name} | Dogotrieu.com`}
+                                />
                             </div>
                         </Link>
                     </div>

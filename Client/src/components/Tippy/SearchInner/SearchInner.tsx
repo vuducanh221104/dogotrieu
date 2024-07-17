@@ -6,7 +6,7 @@ import styles from './SearchInner.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { SearchIcon, XmarkIcon } from '@/components/Icons';
 import useDebounce from '@/hooks/useDebouce';
 import { search } from '@/services/searchServices';
@@ -91,30 +91,46 @@ function SearchInner() {
             interactive
             visible={showResult || loading}
             placement="bottom"
-            className={'search-custom'}
+            // className={'search-custom'}
             render={(attrs: any) => (
-                <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+                <div className={`${cx('search-result')} search-custom`} tabIndex="-1" {...attrs}>
                     {searchValue.length > 0 && (
                         <div className={cx('wrapper-tippy')}>
                             {loading ? (
                                 <>
                                     <div className={cx('search-inner-loading-list')}>
                                         <div className={cx('search-inner-loading-item')}>
-                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                            <div className={cx('search-bar-container')}>
+                                                <div className={cx('aspect-ratio')}>
+                                                    <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                                </div>
+                                            </div>
                                             <div className={cx('search-inner-loading-info')}>
                                                 <div className={cx('search-inner-loading-name')}></div>
                                                 <div className={cx('search-inner-loading-price')}></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className={cx('search-inner-loading-list')}>
                                         <div className={cx('search-inner-loading-item')}>
-                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                            <div className={cx('search-bar-container')}>
+                                                <div className={cx('aspect-ratio')}>
+                                                    <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                                </div>
+                                            </div>
                                             <div className={cx('search-inner-loading-info')}>
                                                 <div className={cx('search-inner-loading-name')}></div>
                                                 <div className={cx('search-inner-loading-price')}></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className={cx('search-inner-loading-list')}>
                                         <div className={cx('search-inner-loading-item')}>
-                                            <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                            <div className={cx('search-bar-container')}>
+                                                <div className={cx('aspect-ratio')}>
+                                                    <div className={cx('search-inner-loading-wrapper-image')}></div>
+                                                </div>
+                                            </div>
                                             <div className={cx('search-inner-loading-info')}>
                                                 <div className={cx('search-inner-loading-name')}></div>
                                                 <div className={cx('search-inner-loading-price')}></div>
@@ -129,16 +145,18 @@ function SearchInner() {
                                         <>
                                             <div className={cx('search-inner-list')}>
                                                 {searchResult.map((item: any) => (
+                                                    // <Fragment key={item._id}></Fragment>
                                                     <Link
                                                         href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
                                                         className={cx('search-inner-item')}
+                                                        key={item._id}
                                                     >
                                                         <div className={cx('search-inner-wrapper-image')}>
                                                             <CldImage
                                                                 width={'50'}
                                                                 height={'60'}
                                                                 src={item.thumb}
-                                                                alt="image"
+                                                                alt={item.name}
                                                                 className={cx('search-inner-image')}
                                                             />
                                                         </div>

@@ -14,8 +14,7 @@ const cx = classNames.bind(styles);
 
 function Home() {
     const { data, error, isLoading } = homeGet();
-    console.log(data);
-    // Kiểm tra nếu data tồn tại và có ít nhất một phần tử
+
     const dataHome = data && data.length > 0 ? data[0] : null;
     if (isLoading) {
         return <Loading />;
@@ -23,12 +22,15 @@ function Home() {
         return (
             <>
                 <>
+                    {/* Image Banner */}
                     <div className={cx('slide-show-banner')}>
                         <SwiperBanner data={dataHome} isLoading={isLoading} />
                     </div>
+
+                    {/* Image Customer */}
                     <div className={cx('slide-show-banner')}>
                         <SwiperCustomer
-                            data={dataHome.images_customer}
+                            data={dataHome?.images_customer}
                             showImageCustomer={true}
                             propsColorBtn={'var(--color-hover)'}
                             backgroundColor={'#f9eae9'}
@@ -36,16 +38,19 @@ function Home() {
                     </div>
 
                     {/* Product List */}
-                    {dataHome?.featured_product.map((item: any) => (
+                    {dataHome?.featured_product.map((item: any, index: number) => (
                         <ViewListProductAuto
+                            key={index}
                             query={item.query}
                             isLoading={isLoading}
                             title={item.title}
                             nextBtnLink={item.link_view_all}
                         />
                     ))}
+
                     {/* NEWS */}
                     <News />
+
                     {/* Specification */}
                     <ViewSpecification />
                 </>

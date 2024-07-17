@@ -72,13 +72,10 @@ function PageProductAdd() {
                 images: values.images,
             };
             // Submit dữ liệu form
-            console.log('Form values with images:', { product_data, product_type_data });
             const postAddProduct = productAdd({
                 product_data,
                 product_type_data,
             });
-
-            console.log('Saved Successfully', postAddProduct);
             messageCustomSuccess('Add Successfully');
             setLoading(false);
         } catch (error) {
@@ -141,7 +138,6 @@ function PageProductAdd() {
         });
 
         const data = await uploadCloud(formData);
-        console.log(data);
         if (data.length === 0) {
             messageCustomError('Images upload failed');
         }

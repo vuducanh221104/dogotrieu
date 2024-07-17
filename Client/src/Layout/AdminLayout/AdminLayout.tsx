@@ -8,7 +8,7 @@ import {
     FolderAddOutlined,
     MessageOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer, Breadcrumb, Switch, Divider } from 'antd';
+import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer } from 'antd';
 import Link from 'next/link';
 import config from '@/config';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
@@ -65,6 +65,7 @@ const menuItems = [
                     },
                     { key: '9', label: <Link href={config.routesAdmin.imageHomeCustomer}>Image Customer</Link> },
                     { key: '10', label: <Link href={config.routesAdmin.featuredProduct}>Featured Products</Link> },
+                    { key: '11', label: <Link href={config.routesAdmin.featuredNews}>Featured News</Link> },
                 ],
             },
             {
@@ -81,14 +82,11 @@ const menuItems = [
         key: 'sub8',
         icon: <FolderAddOutlined />,
         label: 'Blogs/News',
-        children: [
-            { key: '15', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> },
-            { key: '16', label: <Link href={config.routesAdmin.blogsAdd}>Add Blogs/News</Link> },
-        ],
+        children: [{ key: '12', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> }],
     },
 ];
 
-const AdminLayout = ({ children }: any) => {
+function AdminLayout({ children }: any) {
     const [visible, setVisible] = useState(false);
 
     const {
@@ -172,6 +170,6 @@ const AdminLayout = ({ children }: any) => {
             </Layout>
         </Layout>
     );
-};
+}
 
 export default AdminLayout;

@@ -11,9 +11,8 @@ import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
 
 function EditFeatProduct({ visible, onClose, featuredProduct }: any) {
-    console.log(featuredProduct);
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
-    const { data, mutate }: any = homeGet();
+    const { mutate }: any = homeGet();
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
     const transformedCategories = transformListSelect(categories?.category_list || []);
