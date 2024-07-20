@@ -5,28 +5,21 @@ import { PlusOutlined, EditOutlined, MinusCircleOutlined, DeleteOutlined } from 
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { categoryAdd, categoryDelete, categoryGet, categoryUpdate } from '@/services/categoryServices';
-
-interface Material {
-    _id: string;
-    name: string;
-    slug: string;
-    parent_id?: string | null;
-    children: Material[];
-}
+import { Category } from '@/types/client';
 
 const PageListCategory: React.FC = () => {
     const { data, isLoading, mutate } = categoryGet();
     const categories = data?.category_list;
-    const [editForm] = Form.useForm();
-    const [addForm] = Form.useForm();
+    const [editForm] = Form.useForm<Category>();
+    const [addForm] = Form.useForm<Category>();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
-    const [loading, setLoading] = useState(false);
-    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-    const [currentCategory, setCurrentCategory] = useState<Material | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+    const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
+    const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
 
-    const showEditModal = (material: Material | null = null) => {
+    const showEditModal = (material: Category | null = null) => {
         setCurrentCategory(material);
         setIsEditModalVisible(true);
     };
@@ -35,7 +28,7 @@ const PageListCategory: React.FC = () => {
         setIsAddModalVisible(true);
     };
 
-    const showDeleteModal = (material: Material) => {
+    const showDeleteModal = (material: Category) => {
         setCurrentCategory(material);
         setIsDeleteModalVisible(true);
     };
@@ -167,7 +160,7 @@ const PageListCategory: React.FC = () => {
         }
     }, [currentCategory, editForm]);
 
-    const renderChildren = (children: Material[]) => {
+    const renderChildren = (children: Category[]) => {
         return children.map((child) => (
             <Tag key={child._id} color="blue" style={{ marginBottom: 5 }}>
                 {child.name}
@@ -239,9 +232,9 @@ const PageListCategory: React.FC = () => {
                 ))}
             </Row>
 
-            {/* Edit Material Modal */}
+            {/* Edit Category Modal */}
             <Modal
-                title="Edit Material"
+                title="Edit Category"
                 visible={isEditModalVisible}
                 onCancel={handleEditCancel}
                 footer={[
@@ -260,7 +253,7 @@ const PageListCategory: React.FC = () => {
                 >
                     <Form.Item
                         name="name"
-                        label="Material Name"
+                        label="Category Name"
                         rules={[{ required: true, message: 'Please input the material name!' }]}
                     >
                         <Input />
@@ -309,9 +302,9 @@ const PageListCategory: React.FC = () => {
                 </Form>
             </Modal>
 
-            {/* Add Material Modal */}
+            {/* Add Category Modal */}
             <Modal
-                title="Add Material"
+                title="Add Category"
                 visible={isAddModalVisible}
                 onCancel={handleAddCancel}
                 footer={[
@@ -330,7 +323,7 @@ const PageListCategory: React.FC = () => {
                 >
                     <Form.Item
                         name="name"
-                        label="Material Name"
+                        label="Category Name"
                         rules={[{ required: true, message: 'Please input the material name!' }]}
                     >
                         <Input />
@@ -341,9 +334,9 @@ const PageListCategory: React.FC = () => {
                 </Form>
             </Modal>
 
-            {/* Delete Material Modal */}
+            {/* Delete Category Modal */}
             <Modal
-                title="Delete Material"
+                title="Delete Category"
                 visible={isDeleteModalVisible}
                 onCancel={handleDeleteCancel}
                 footer={[

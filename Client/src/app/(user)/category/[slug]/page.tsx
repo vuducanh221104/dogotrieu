@@ -280,7 +280,7 @@ function PageCategory() {
                                     ))}
                                 </div>
                                 <div className={cx('filter-group-list')}>
-                                    {dataFilter.map((item: FilterItem, index: number) => (
+                                    {dataFilter.map((item: any, index: number) => (
                                         <div className={cx('filter-group-item')} key={item.id}>
                                             <button
                                                 className={`${cx('filter-name')} ${archivo.className}`}

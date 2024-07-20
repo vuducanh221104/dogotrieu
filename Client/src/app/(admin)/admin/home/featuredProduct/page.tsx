@@ -54,10 +54,10 @@ function PageListMaterial() {
             : [];
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [loading, setLoading] = useState<boolean>(false);
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
+    const [searchText, setSearchText] = useState<string>('');
+    const [searchedColumn, setSearchedColumn] = useState<string>('');
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isModalVisibleEdit, setIsModalVisibleEdit] = useState<boolean>(false);
     const [isModalVisibleDelete, setIsModalVisibleDelete] = useState<any>(null);
     const [isModalVisibleAddById, setIsModalVisibleAddById] = useState<any>(false);
     const [editingFeatured, setEditingFeatured] = useState<DataType | null>(null);

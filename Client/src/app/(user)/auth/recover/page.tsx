@@ -1,7 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
 import styles from '@/styles/Auth.module.scss';
-import { Container } from 'react-bootstrap';
 import Link from 'next/link';
 import { archivo } from '@/assets/FontNext';
 import config from '@/config';

@@ -4,7 +4,12 @@ import styles from './DiscountCalculation.module.scss';
 
 const cx = classNames.bind(styles);
 
-const DiscountCalculation = ({ price, discountPrice }: any) => {
+interface PropsCalulation {
+    price: number;
+    discountPrice: number;
+}
+
+const DiscountCalculation = ({ price, discountPrice }: PropsCalulation) => {
     // Kiểm tra nếu có giá khuyến mãi
     const hasDiscount = discountPrice !== undefined && discountPrice !== null;
     // Tính phần trăm giảm giá

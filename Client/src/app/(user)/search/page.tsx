@@ -18,6 +18,7 @@ import NotFound from '@/components/NotFound';
 import Loading from '@/components/Loading';
 import { searchFilter } from '@/services/searchServices';
 import { dataFilterCategory } from '@/services/menuData/menuData';
+import { Product } from '@/types/client';
 
 const cx = classNames.bind(styles);
 
@@ -48,9 +49,9 @@ function prioritizeQuery(url: URL): string {
 }
 
 function PageSearch() {
-    const [valueSearch, setValueSearch] = useState<any>('');
     const router = useRouter();
     const searchParams = useSearchParams();
+    const [valueSearch, setValueSearch] = useState<any>('');
     const [showSort, setShowSort] = useState<boolean>(false);
     const [currentSort, setCurrentSort] = useState<string>('Giá, thấp đến cao');
     const [showFilterMobile, setShowFilterMobile] = useState<boolean>(false);
@@ -301,7 +302,7 @@ function PageSearch() {
                                                 ))}
                                             </div>
                                             <div className={cx('filter-group-list')}>
-                                                {dataFilter.map((item: any, index: number) => (
+                                                {dataFilter.map((item, index) => (
                                                     <div className={cx('filter-group-item')} key={item.id}>
                                                         <button
                                                             className={`${cx('filter-name')} ${archivo.className}`}
@@ -565,7 +566,7 @@ function PageSearch() {
                                                             </div>
                                                         )}
 
-                                                        {data?.map((item: any, index: number) => {
+                                                        {data?.map((item, index) => {
                                                             const isSpecialIndex =
                                                                 windowWidth <= 641
                                                                     ? index % 2 !== 0

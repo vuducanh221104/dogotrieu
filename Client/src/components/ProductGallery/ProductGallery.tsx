@@ -12,10 +12,15 @@ import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
-function ProductGallery({ data, name }: any) {
+
+interface PropsProductGallery {
+    data: any;
+    name: string;
+}
+function ProductGallery({ data, name }: PropsProductGallery) {
     const sliderRef = useRef<any>(null);
-    const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [isTransitionEnabled, setIsTransitionEnabled] = useState<boolean>(false);
+    const [thumbsSwiper, setThumbsSwiper] = useState<null | any>(null);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const handlePrev = useCallback(() => {

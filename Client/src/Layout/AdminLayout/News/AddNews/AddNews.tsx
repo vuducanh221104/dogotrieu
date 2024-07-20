@@ -10,7 +10,12 @@ import { uploadCloud } from '@/services/uploadService';
 import { newsAdd } from '@/services/newsServices';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 
-const AddNews: React.FC<any> = ({ visible, onClose, mutate }) => {
+interface PropsAddNews {
+    visible: boolean;
+    onClose: () => void;
+    mutate: any;
+}
+const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueContent, setValueContent] = useState<string>('');
@@ -106,7 +111,7 @@ const AddNews: React.FC<any> = ({ visible, onClose, mutate }) => {
             formData.append('img', file.originFileObj);
         });
 
-        const data = await uploadCloud(formData);
+        const data: any = await uploadCloud(formData);
         if (!data) {
             messageCustomError('Images upload failed');
             return [];

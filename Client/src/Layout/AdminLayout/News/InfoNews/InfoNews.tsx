@@ -6,7 +6,13 @@ import classNames from 'classnames/bind';
 import styles from './InfoNews.module.scss';
 
 const cx = classNames.bind(styles);
-const InfoNews: React.FC<any> = ({ visible, onClose, news }) => {
+
+interface PropsInfoNews {
+    visible: boolean;
+    onClose: () => void;
+    news: any;
+}
+const InfoNews = ({ visible, onClose, news }: PropsInfoNews) => {
     return (
         <Modal visible={visible} title="News Info" onCancel={onClose} footer={null}>
             <Descriptions bordered column={1}>

@@ -5,24 +5,18 @@ import { PlusOutlined, EditOutlined, MinusCircleOutlined, DeleteOutlined } from 
 import { materialAdd, materialDelete, materialGet, materialUpdate } from '@/services/materialServices';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
-
-interface Material {
-    _id: string;
-    name: string;
-    slug: string;
-    children: Material[];
-}
+import { Material } from '@/types/client';
 
 const PageListCategory: React.FC = () => {
     const { data, isLoading, mutate } = materialGet();
     const materials = data?.material_list;
-    const [editForm] = Form.useForm();
-    const [addForm] = Form.useForm();
+    const [editForm] = Form.useForm<Material>();
+    const [addForm] = Form.useForm<Material>();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
-    const [loading, setLoading] = useState(false);
-    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+    const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
     const [currentMaterial, setCurrentMaterial] = useState<Material | null>(null);
 
     const showEditModal = (material: Material | null = null) => {

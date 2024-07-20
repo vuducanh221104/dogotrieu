@@ -39,10 +39,10 @@ function Header() {
     const [showBars, setShowBars] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showTippyLang, setShowTippyLang] = useState<boolean>(false);
-    const [anoubarHidden, setAnoubarHidden] = useState(false);
+    const [anoubarHidden, setAnoubarHidden] = useState<boolean>(false);
 
     const [classActive, setClassActive] = useState<any>('');
-    const [toggleIndex, setToggleIndex] = useState(null);
+    const [toggleIndex, setToggleIndex] = useState<number | null>(null);
     const [height, setHeight] = useState<number | null>(null);
     const [width, setWidth] = useState<number | null>(null);
 

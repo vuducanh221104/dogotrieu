@@ -1,4 +1,5 @@
 import * as httpRequest from '@/utils/httpRequest';
+import { AxiosError } from 'axios';
 import useSWR, { mutate } from 'swr';
 
 //[POST]
@@ -7,7 +8,8 @@ export const materialAdd = async (data: {}) => {
         const res = await httpRequest.post(`api/v1/material`, data);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 //[GET]
@@ -20,7 +22,8 @@ export const materialGet = () => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -31,7 +34,8 @@ export const materialUpdate = async (data: any) => {
         const res = await httpRequest.patch(`api/v1/material`, data);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 //[DELETE]
@@ -42,6 +46,7 @@ export const materialDelete = async (ids: {}) => {
         });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };

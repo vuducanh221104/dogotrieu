@@ -1,4 +1,5 @@
 import * as httpRequest from '@/utils/httpRequest';
+import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
 //[POST]
@@ -7,7 +8,8 @@ export const newsAdd = async (data: {}) => {
         const res = await httpRequest.post(`api/v1/news`, data);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 
@@ -21,7 +23,8 @@ export const newsGetAll = () => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -36,7 +39,8 @@ export const newGetAllLimit = (query: string) => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -50,7 +54,8 @@ export const newsGetById = (id: string) => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -65,7 +70,8 @@ export const newsFeaturedGet = (queryString: any) => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -77,7 +83,8 @@ export const newsPatchById = async (id: string, data: any) => {
         });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 //[DELETE]
@@ -86,6 +93,7 @@ export const newsDelete = async (idNews: string) => {
         const res = await httpRequest.deleted(`api/v1/news/${idNews}`);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };

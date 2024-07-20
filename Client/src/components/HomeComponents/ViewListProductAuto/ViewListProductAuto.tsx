@@ -32,15 +32,15 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
     const hasCategoryOrMaterial = query.includes('category_id') || query.includes('material_id');
     const { data } = hasCategoryOrMaterial ? featuredProductGet(query) : featuredProductGetById(query);
     // const { data } = featuredProductGet(query);
-    const productRef = useRef<any>(null);
-    const scrollRef = useRef<any>(null);
+    const productRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
     const [currentTransform, setCurrentTransform] = useState<number>(0);
 
     useEffect(() => {
         if (!isLoading && data) {
-            setCurrentHeight(scrollRef.current.offsetHeight);
+            setCurrentHeight(scrollRef.current?.offsetHeight || 0);
             const handleResize = () => {
                 if (productRef.current) {
                     const height = productRef.current.offsetHeight;

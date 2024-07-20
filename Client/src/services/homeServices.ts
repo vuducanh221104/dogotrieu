@@ -1,4 +1,5 @@
 import * as httpRequest from '@/utils/httpRequest';
+import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
 //[GET]
@@ -11,7 +12,8 @@ export const homeGet = () => {
     });
 
     if (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -24,7 +26,8 @@ export const homePatch = async (data: any) => {
         });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 
@@ -36,7 +39,8 @@ export const homePatchFeatProduct = async (idFeatProduct: string, data: any) => 
         });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 //[DELETE]
@@ -46,6 +50,7 @@ export const homeDeleteFeatProduct = async (idFeatProduct: string) => {
         const res = await httpRequest.deleted(`api/v1/home/featProduct/${idFeatProduct}`);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };

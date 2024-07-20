@@ -1,5 +1,3 @@
-import crypto from 'crypto';
-
 export function useGenerateSKU() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const digits = '0123456789';

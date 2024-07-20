@@ -8,7 +8,7 @@ import config from '@/config';
 const cx = classNames.bind(styles);
 
 function Chat() {
-    const [onShow, setOnShow] = useState<any>(false);
+    const [onShow, setOnShow] = useState<boolean>(false);
     return (
         <>
             <Tippy

@@ -11,7 +11,13 @@ import { uploadCloud } from '@/services/uploadService';
 import { newsPatchById } from '@/services/newsServices';
 import axios from 'axios';
 
-const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }) => {
+interface PropsEditNews {
+    visible: boolean;
+    onClose: () => void;
+    news: any;
+    mutate: any;
+}
+const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNews) => {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueContent, setValueContent] = useState<string>('');
@@ -97,7 +103,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }) => {
             formData.append('img', file.originFileObj);
         });
 
-        const data = await uploadCloud(formData);
+        const data: any = await uploadCloud(formData);
         if (!data) {
             messageCustomError('Images upload failed');
         }

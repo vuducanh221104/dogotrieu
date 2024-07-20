@@ -5,6 +5,7 @@ import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import Image from 'next/image';
 import imagesPage from '@/assets/images-pages';
 const cx = classNames.bind(styles);
+
 function PageTrade() {
     return (
         <>

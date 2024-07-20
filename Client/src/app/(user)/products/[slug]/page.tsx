@@ -16,11 +16,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '@/redux/cartSlice';
 import FormatPrice from '@/components/FormatPrice';
 import { useState, Fragment, ChangeEvent } from 'react';
-import { RootState } from '@/redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const { slug } = useParams() as { slug: string };
     const [currentQuantity, setCurrentQuantity] = useState<string>('1');
     const handleSplitSlug = (): string => {
@@ -33,7 +33,7 @@ function ProductDetail() {
 
     const { data, error, isLoading } = productGetId(id);
 
-    const productInCart = useSelector((state: RootState) => state.cart.products?.find((p: any) => p._id === data?._id));
+    const productInCart = useSelector((state: RootState) => state.cart.products?.find((p) => p._id === data?._id));
 
     //Handle Add To Cart
     const handleAddToCart = () => {

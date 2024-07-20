@@ -7,7 +7,13 @@ import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
 
-const CardProductHome = ({ data, windowWidth, productRef }: any) => {
+interface PropsCardProductHome {
+    data: any;
+    windowWidth: number;
+    productRef: any;
+}
+
+const CardProductHome = ({ data, windowWidth, productRef }: PropsCardProductHome) => {
     return (
         <>
             {data.map((item: any, index: number) => (

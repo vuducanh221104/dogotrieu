@@ -28,16 +28,16 @@ function PageProductAdd() {
     const [loading, setLoading] = useState<boolean>(false);
 
     // Thumbnail Upload
-    const [thumbnail, setThumbnail] = useState([]);
-    const [previewThumbnail, setPreviewThumbnail] = useState('');
-    const [thumbnailOpen, setThumbnailOpen] = useState(false);
-    const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState(false);
+    const [thumbnail, setThumbnail] = useState<[]>([]);
+    const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
+    const [thumbnailOpen, setThumbnailOpen] = useState<boolean>(false);
+    const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState<boolean>(false);
 
     // Image Upload
-    const [fileList, setFileList] = useState([]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [imageUploaded, setImageUploaded] = useState(false);
+    const [fileList, setFileList] = useState<[]>([]);
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string>('');
+    const [imageUploaded, setImageUploaded] = useState<boolean>(false);
 
     const handleSubmit = async () => {
         try {
@@ -137,7 +137,7 @@ function PageProductAdd() {
             formData.append('img', file.originFileObj);
         });
 
-        const data = await uploadCloud(formData);
+        const data: any = await uploadCloud(formData);
         if (data.length === 0) {
             messageCustomError('Images upload failed');
         }

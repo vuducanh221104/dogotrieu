@@ -6,7 +6,7 @@ import styles from './SearchInner.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { SearchIcon, XmarkIcon } from '@/components/Icons';
 import useDebounce from '@/hooks/useDebouce';
 import { search } from '@/services/searchServices';
@@ -15,20 +15,21 @@ import Link from 'next/link';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
 import FormatPrice from '@/components/FormatPrice';
+import { Product } from '@/types/client';
 const cx = classNames.bind(styles);
 
 function SearchInner() {
-    const nameRef: any = useRef();
+    const nameRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const [searchValue, setSearchValue] = useState('');
-    const [searchResult, setSearchResult] = useState([]);
-    const [showResult, setShowResult] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState<string>('');
+    const [searchResult, setSearchResult] = useState<Product[]>([]);
+    const [showResult, setShowResult] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [trigger, setTrigger] = useState<number>(0);
     const debounced = useDebounce(searchValue, 500);
-    const [trigger, setTrigger] = useState(0);
 
-    //Hanle Input
-    const onChangeInput = (e: any) => {
+    // Handle Input
+    const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
 
@@ -51,9 +52,14 @@ function SearchInner() {
 
         const fetchApi = async () => {
             setLoading(true);
-            const result = await search(debounced);
-            setSearchResult(result);
-            setLoading(false);
+            try {
+                const result = await search(debounced);
+                setSearchResult(result);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchApi();
@@ -62,8 +68,10 @@ function SearchInner() {
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
-        nameRef.current.value = '';
-        nameRef.current.focus();
+        if (nameRef.current) {
+            nameRef.current.value = '';
+            nameRef.current.focus();
+        }
         setTrigger((prev) => prev + 1);
     };
 
@@ -72,13 +80,14 @@ function SearchInner() {
     };
 
     const handleSearch = () => {
-        // window.location.href = `/search?q=${searchValue.trim()}`;
         router.replace(`/search?&q=${searchValue.trim()}`);
         setShowResult(false);
-        nameRef.current.blur();
+        if (nameRef.current) {
+            nameRef.current.blur();
+        }
     };
 
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
@@ -91,9 +100,8 @@ function SearchInner() {
             interactive
             visible={showResult || loading}
             placement="bottom"
-            // className={'search-custom'}
-            render={(attrs: any) => (
-                <div className={`${cx('search-result')} search-custom`} tabIndex="-1" {...attrs}>
+            render={(attrs) => (
+                <div className={`${cx('search-result')} search-custom`} tabIndex={-1} {...attrs}>
                     {searchValue.length > 0 && (
                         <div className={cx('wrapper-tippy')}>
                             {loading ? (
@@ -144,8 +152,7 @@ function SearchInner() {
                                     {searchResult?.length > 0 ? (
                                         <>
                                             <div className={cx('search-inner-list')}>
-                                                {searchResult.map((item: any) => (
-                                                    // <Fragment key={item._id}></Fragment>
+                                                {searchResult.map((item) => (
                                                     <Link
                                                         href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
                                                         className={cx('search-inner-item')}
@@ -162,7 +169,6 @@ function SearchInner() {
                                                         </div>
                                                         <div className={cx('search-inner-info')}>
                                                             <p className={cx('search-inner-name')}>{item.name}</p>
-                                                            {/* <span className={cx('search-inner-price')}>255$</span> */}
                                                             <div
                                                                 className={cx(
                                                                     'product-price-wrapper',
@@ -213,7 +219,7 @@ function SearchInner() {
                     )}
                 </div>
             )}
-            onClickOutside={() => handleOutside()}
+            onClickOutside={handleOutside}
             offset={[0, 0]}
         >
             <div className={cx('header-search-inner')}>
@@ -228,12 +234,12 @@ function SearchInner() {
                     />
 
                     {!loading && (
-                        <button className={cx('button-search')} onClick={() => handleSearch()}>
+                        <button className={cx('button-search')} onClick={handleSearch}>
                             <SearchIcon className={cx('icon-search')} />
                         </button>
                     )}
                     {searchValue.length > 0 && (
-                        <button className={cx('button-clear')} onClick={() => handleClear()}>
+                        <button className={cx('button-clear')} onClick={handleClear}>
                             <XmarkIcon className={cx('icon-xmark')} />
                         </button>
                     )}
