@@ -21,7 +21,7 @@ function NotFound({
     placeholderText = 'Search in store...',
     linkText = 'Click here to continue shopping',
 }: IProps) {
-    const nameRef: any = useRef();
+    const nameRef = useRef<any>();
     const router = useRouter();
     const [searchValue, setSearchValue] = useState('');
 

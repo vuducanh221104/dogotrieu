@@ -7,9 +7,9 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 function Login() {
-    const [classActive, setClassActive] = useState<any>('');
-    const [showMenu, setShowMenu] = useState<any>(false);
-    const [showRegister, setShowRegister] = useState<any>(false);
+    const [classActive, setClassActive] = useState<string>('');
+    const [showMenu, setShowMenu] = useState<boolean>(false);
+    const [showRegister, setShowRegister] = useState<boolean>(false);
 
     return (
         <div>

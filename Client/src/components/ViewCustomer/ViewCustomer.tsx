@@ -18,7 +18,12 @@ import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
 
-function ViewCustomer({ data, setShowOverlay, indexImage }: any) {
+interface PropsViewCustomer {
+    data: any;
+    setShowOverlay: any;
+    indexImage: number;
+}
+function ViewCustomer({ data, setShowOverlay, indexImage }: PropsViewCustomer) {
     // Connect 2 swiper to use
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 

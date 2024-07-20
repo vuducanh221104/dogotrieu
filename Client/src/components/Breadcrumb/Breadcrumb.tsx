@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 const slugMapping: any = userBreadCumbs;
 
-const convertSlugToText = (slug: any) => {
+const convertSlugToText = (slug: string) => {
     if (slugMapping[slug]) {
         return slugMapping[slug];
     }

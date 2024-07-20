@@ -1,10 +1,11 @@
 'use client';
+
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from './SearchOnMobile.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faXmark, faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { search } from '@/services/searchServices';
 import useDebounce from '@/hooks/useDebouce';
 import { useRouter } from 'next/navigation';
@@ -12,6 +13,7 @@ import slugify from 'slugify';
 import Link from 'next/link';
 import FormatPrice from '../FormatPrice';
 import { CldImage } from 'next-cloudinary';
+import { Product } from '@/types/client';
 
 interface SearchOnMobileProps {
     showSearch: boolean;
@@ -20,17 +22,18 @@ interface SearchOnMobileProps {
 const cx = classNames.bind(styles);
 
 function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
-    const nameRef: any = useRef();
+    const nameRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const [close, setClose] = useState<boolean>(false);
-    const [searchValue, setSearchValue] = useState('');
-    const [searchResult, setSearchResult] = useState([]);
-    const [showResult, setShowResult] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState<string>('');
+    const [searchResult, setSearchResult] = useState<Product[]>([]);
+    const [showResult, setShowResult] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const debounced = useDebounce(searchValue, 500);
-    const [trigger, setTrigger] = useState(0);
-    //Hanle Input
-    const onChangeInput = (e: any) => {
+    const [trigger, setTrigger] = useState<number>(0);
+
+    // Handle Input
+    const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
 
@@ -53,9 +56,14 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
 
         const fetchApi = async () => {
             setLoading(true);
-            const result = await search(debounced);
-            setSearchResult(result);
-            setLoading(false);
+            try {
+                const result = await search(debounced);
+                setSearchResult(result);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchApi();
@@ -64,24 +72,28 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
-        nameRef.current.value = '';
-        nameRef.current.focus();
+        if (nameRef.current) {
+            nameRef.current.value = '';
+            nameRef.current.focus();
+        }
         setTrigger((prev) => prev + 1);
     };
 
     const handleSearch = () => {
-        // window.location.href = `/search?q=${searchValue.trim()}`;
         setClose(true);
         router.replace(`/search?&q=${searchValue.trim()}`);
         setShowResult(false);
-        nameRef.current.blur();
+        if (nameRef.current) {
+            nameRef.current.blur();
+        }
     };
 
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
     };
+
     const handleViewAll = () => {
         setClose(true);
         router.push(`/search?q=${searchValue}`);
@@ -120,7 +132,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                     <FontAwesomeIcon className={cx('icon-loading')} icon={faSpinner} />
                                 </button>
                             ) : (
-                                <button className={cx('button-search')} onClick={() => handleSearch()}>
+                                <button className={cx('button-search')} onClick={handleSearch}>
                                     <FontAwesomeIcon icon={faSearch} className={cx('icon-search')} />
                                 </button>
                             )}
@@ -149,7 +161,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                     <>
                                         <p className={cx('search-inner-title')}>products</p>
                                         <div className={cx('search-inner-list')}>
-                                            {searchResult.map((item: any, index: number) => (
+                                            {searchResult.map((item, index) => (
                                                 <Link
                                                     href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
                                                     className={cx('search-inner-item')}
@@ -166,7 +178,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                                     </div>
                                                     <div className={cx('search-inner-info')}>
                                                         <p className={cx('search-inner-name')}>{item.name}</p>
-                                                        {/* <span className={cx('search-inner-price')}>255$</span> */}
                                                         <div
                                                             className={cx(
                                                                 'product-price-wrapper',
@@ -188,10 +199,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                                 </Link>
                                             ))}
                                         </div>
-                                        <div
-                                            className={cx('wrapper-search-inner-footer')}
-                                            onClick={() => handleViewAll()}
-                                        >
+                                        <div className={cx('wrapper-search-inner-footer')} onClick={handleViewAll}>
                                             <p className={cx('search-inner-footer-title')}>View all results</p>
                                             <FontAwesomeIcon
                                                 icon={faChevronRight}
@@ -255,7 +263,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                     )}
                 </div>
             </div>
-            {/* </div> */}
         </>
     );
 }

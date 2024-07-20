@@ -32,10 +32,10 @@ function PageListNews() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
 
     let { data, isLoading, error, mutate } = newsGetAll();
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [searchText, setSearchText] = useState<string>('');
+    const [searchedColumn, setSearchedColumn] = useState<string>('');
+    const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
     const [isModalDelete, setIsModalDelete] = useState<string | null>(null);
     const [infoNews, setInfoNews] = useState<DataType | null>(null);
     const [isInfoModalVisible, setIsInfoModalVisible] = useState(false);

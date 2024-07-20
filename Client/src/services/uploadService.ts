@@ -1,6 +1,7 @@
 import * as httpRequest from '@/utils/httpRequest';
-import useSWR, { mutate } from 'swr';
+import { AxiosError } from 'axios';
 
+// import useSWR, { mutate } from 'swr';
 //mutate (hiện ảnh ngay thì thêm )
 // export const uploadCloud = async (arrayImage: any) => {
 //     const url = 'http://localhost:4000/api/v1/upload/uploadCloud';
@@ -19,6 +20,7 @@ export const uploadCloud = async (arrayImage: any) => {
         const res = await httpRequest.post('api/v1/upload', arrayImage);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err);
     }
 };

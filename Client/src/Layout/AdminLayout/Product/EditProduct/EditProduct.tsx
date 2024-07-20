@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { PlusOutlined, MinusCircleOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Upload, Image, Space, Modal, Spin } from 'antd';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Select, Upload, Image, Space, Modal } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -11,18 +11,15 @@ import { uploadCloud } from '@/services/uploadService';
 import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
-import { productAdd, productPatch } from '@/services/productServices';
-import axios from 'axios';
-// import { DataType } from './PageListProduct'; // Adjust the import path as needed
+import { productPatch } from '@/services/productServices';
 
-// interface EditProductModalProps {
-//     visible: boolean;
-//     onClose: () => void;
-//     product: DataType | null;
-//     onSave: (product: DataType) => void;
-// }
-
-const EditProduct: React.FC<any> = ({ visible, onClose, product, mutate }) => {
+interface PropsEditProduct {
+    visible: boolean;
+    onClose: () => void;
+    product: any;
+    mutate: any;
+}
+const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) => {
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
 
@@ -34,16 +31,16 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product, mutate }) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     // Thumbnail Upload
-    const [thumbnail, setThumbnail] = useState([]);
-    const [previewThumbnail, setPreviewThumbnail] = useState('');
-    const [thumbnailOpen, setThumbnailOpen] = useState(false);
-    const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState(false);
+    const [thumbnail, setThumbnail] = useState<[]>([]);
+    const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
+    const [thumbnailOpen, setThumbnailOpen] = useState<boolean>(false);
+    const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState<boolean>(false);
 
     // Image Upload
-    const [fileList, setFileList] = useState([]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [imageUploaded, setImageUploaded] = useState(false);
+    const [fileList, setFileList] = useState<[]>([]);
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string>('');
+    const [imageUploaded, setImageUploaded] = useState<boolean>(false);
 
     const handleSave = async () => {
         try {
@@ -155,7 +152,7 @@ const EditProduct: React.FC<any> = ({ visible, onClose, product, mutate }) => {
             formData.append('img', file.originFileObj);
         });
 
-        const data = await uploadCloud(formData);
+        const data: any = await uploadCloud(formData);
         if (!data) {
             messageCustomError('Images upload failed');
         }

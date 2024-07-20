@@ -2,12 +2,11 @@ import classNames from 'classnames/bind';
 import styles from './CartTippy.module.scss';
 import { CartIcon, ChervonMenu, DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/redux/store';
-import ProviderRedux from '@/redux/ProviderRedux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { CldImage } from 'next-cloudinary';
 import slugify from 'slugify';
 import FormatPrice from '@/components/FormatPrice';
@@ -18,7 +17,7 @@ import config from '@/config';
 const cx = classNames.bind(styles);
 
 function CartTippy() {
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const productsAddToCart = useSelector((state: RootState) => state.cart);
     const scrollRef = useRef<any>(null);
     const [currentHeightRef, setCurrentHeightRef] = useState<number>(0);
@@ -48,7 +47,7 @@ function CartTippy() {
 
     //Handle Add To Cart
     const handleQuantityChange = (id: any, value: any) => {
-        const quantity = value === '' ? '' : parseInt(value);
+        const quantity: any = value === '' ? '' : parseInt(value);
         dispatch(updateQuantity({ id, quantity }));
     };
 

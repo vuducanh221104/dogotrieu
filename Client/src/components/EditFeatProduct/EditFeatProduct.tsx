@@ -10,9 +10,15 @@ import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
 
-function EditFeatProduct({ visible, onClose, featuredProduct }: any) {
+interface PropsEditFeatProduct {
+    visible: boolean;
+    onClose: () => void;
+    featuredProduct: any;
+}
+
+function EditFeatProduct({ visible, onClose, featuredProduct }: PropsEditFeatProduct) {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
-    const { mutate }: any = homeGet();
+    const { mutate } = homeGet();
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
     const transformedCategories = transformListSelect(categories?.category_list || []);

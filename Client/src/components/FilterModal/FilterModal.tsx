@@ -14,7 +14,7 @@ interface FilterModalProps {
     setShowFilterMobile: React.Dispatch<React.SetStateAction<boolean>>;
     showFilterContent: { [key: number]: boolean };
     toggleContent: (index: number) => void;
-    dataLength: number;
+    dataLength?: number;
 }
 
 interface FilterItem {
@@ -49,14 +49,14 @@ function prioritizeQuery(url: URL): string {
     return newUrl.toString();
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({
+function FilterModal({
     dataFilter,
     showFilterMobile,
     setShowFilterMobile,
     showFilterContent,
     toggleContent,
     dataLength,
-}) => {
+}: FilterModalProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
@@ -271,6 +271,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
             ></div>
         </>
     );
-};
+}
 
 export default FilterModal;

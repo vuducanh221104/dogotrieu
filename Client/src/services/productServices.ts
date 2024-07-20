@@ -1,14 +1,16 @@
-import { Product } from '@/types/client';
+import { Product, ProductDetail, ProductType } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
+import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
 //[POST]
-export const productAdd = async (data: Product) => {
+export const productAdd = async (data: ProductDetail | any) => {
     try {
         const res = await httpRequest.post(`api/v1/product`, data);
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 
@@ -22,7 +24,7 @@ export const productGetId = (id: string) => {
     });
 
     if (error) {
-        console.error(error);
+        console.error(error.response?.data);
     }
     return { data, error, isLoading };
 };
@@ -50,7 +52,7 @@ export const productGetAll = () => {
     });
 
     if (error) {
-        console.error(error);
+        console.error(error.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -60,11 +62,16 @@ export const productDelete = async (product_id: string, product_type_id: string)
         const res = await httpRequest.deleted(`api/v1/product`, { data: { product_id, product_type_id } });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 //[PATCH]
-export const productPatch = async (id: string, product_data: Partial<Product>, product_type_data: Partial<Product>) => {
+export const productPatch = async (
+    id: string,
+    product_data: Partial<Product>,
+    product_type_data: Partial<ProductType>,
+) => {
     try {
         const res = await httpRequest.patch(`api/v1/product/${id}`, {
             ...product_data,
@@ -72,7 +79,8 @@ export const productPatch = async (id: string, product_data: Partial<Product>, p
         });
         return res.data;
     } catch (error) {
-        console.error(error);
+        const err = error as AxiosError;
+        console.error(err.response?.data);
     }
 };
 
@@ -86,7 +94,7 @@ export const featuredProductGet = (query: string) => {
     });
 
     if (error) {
-        console.error(error);
+        console.error(error?.response.data);
     }
     return { data, error, isLoading };
 };
@@ -100,7 +108,7 @@ export const featuredProductGetById = (query: string) => {
     });
 
     if (error) {
-        console.error(error);
+        console.error(error?.response.data);
     }
     return { data, error, isLoading };
 };

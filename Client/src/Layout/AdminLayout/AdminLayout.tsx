@@ -1,13 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UserOutlined,
-    ShoppingCartOutlined,
-    FolderAddOutlined,
-    MessageOutlined,
-} from '@ant-design/icons';
+import React, { ReactNode, useState } from 'react';
+import { MenuUnfoldOutlined, UserOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer } from 'antd';
 import Link from 'next/link';
 import config from '@/config';
@@ -86,8 +79,12 @@ const menuItems = [
     },
 ];
 
-function AdminLayout({ children }: any) {
-    const [visible, setVisible] = useState(false);
+interface AdminLayoutProps {
+    children: ReactNode;
+}
+
+function AdminLayout({ children }: AdminLayoutProps) {
+    const [visible, setVisible] = useState<boolean>(false);
 
     const {
         token: { colorBgContainer },

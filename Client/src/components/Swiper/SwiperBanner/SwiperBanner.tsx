@@ -9,10 +9,15 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { CldImage } from 'next-cloudinary';
-import Loading from '@/components/Loading';
 
+interface PropsSwiperBanner {
+    data: any;
+    isLoading?: boolean;
+    backgroundColor?: string;
+    navigation?: boolean;
+}
 const cx = classNames.bind(styles);
-function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: any) {
+function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: PropsSwiperBanner) {
     const sliderRef = useRef<any>(null);
 
     const [bannerImages, setBannerImages] = useState<any>([]);

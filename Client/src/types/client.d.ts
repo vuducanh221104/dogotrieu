@@ -1,4 +1,105 @@
-interface IMenuPanel {
+export interface APIResponseSWR<T> {
+    data: T;
+    error?: string | any;
+    isLoading: boolean;
+    mutate: KeyedMutator<any>;
+}
+//Product
+export interface Price {
+    original: number;
+    discount: number;
+    discount_quantity: number;
+    currency: string;
+}
+
+export interface Dimensions {
+    width: number;
+    height: number;
+    length: number;
+    unit: string;
+}
+
+export interface ProductType {
+    _id: string;
+    sku: string;
+    description: string;
+    tags: string[];
+    dimensions: Dimensions;
+    images: string[];
+    created_at?: Date;
+    update_at?: Date;
+}
+
+export interface Product {
+    discount: null;
+    _id: string;
+    product_type_id: string;
+    name: string;
+    price: Price;
+    thumb: string;
+    ship: number;
+    quantity: number;
+    material_id: string[];
+    category_id: string[];
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+export interface ProductDetail {
+    discount: null;
+    _id: string;
+    product_type_id: ProductType;
+    name: string;
+    price: Price;
+    thumb: string;
+    ship: number;
+    quantity: number;
+    material_id: string[];
+    category_id: string[];
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+//Category (Admin/User)
+export interface Category {
+    category_list: {}[];
+    _id: string;
+    name: string;
+    slug: string;
+    parent_id?: string | null;
+    children: Material[];
+}
+
+//Material (Admin/User)
+export interface Material {
+    _id: string;
+    name: string;
+    slug: string;
+    parent_id?: string | null;
+    children: Material[] | [];
+}
+
+// Cart State
+export interface CartProduct {
+    _id: string;
+    name: string;
+    price: {
+        original: number;
+        discount: number;
+    };
+    quantity: number;
+    quantityAddToCart: number;
+    productTotalPrice: number;
+}
+
+export interface CartState {
+    quantity: number;
+    products: CartProduct[];
+    totalPrice: number;
+}
+
+//Menu Data
+export interface MenuPanel {
     id: number;
     title: string;
     subMenu: {
@@ -8,28 +109,27 @@ interface IMenuPanel {
     height: number;
 }
 
-interface IProduct {
-    id: string;
-    name: string;
-    image: string;
-    price: number;
-    price_discount: number | null;
-    material: {
-        name: string;
-        material_type_id: {
-            name: string;
-        };
-    };
-    ship?: string | null;
-    stock_quantity: number;
-    tags: string[];
-    category: string[];
-    color?: string[];
-    slug: string;
-}
-
-interface FilterItem {
-    id: string;
+export interface FilterItem {
+    id: number;
     title: string;
-    content: string[];
+    content: (
+        | {
+              name: string;
+              slug: string;
+          }
+        | undefined
+    )[];
+}
+[];
+
+export interface FooterMenu {
+    id: number;
+    title: string;
+    links?: {
+        label: string;
+        url: string;
+    }[];
+    classNameChild: string;
+    height: string;
+    content?: string;
 }

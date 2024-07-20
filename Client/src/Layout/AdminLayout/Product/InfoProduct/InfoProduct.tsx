@@ -27,7 +27,7 @@ const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) 
                 </Descriptions.Item>
                 <Descriptions.Item label="Shipping">{product.ship ? 'Yes' : 'No'}</Descriptions.Item>
                 <Descriptions.Item label="Quantity">{product.quantity}</Descriptions.Item>
-                <Descriptions.Item label="Slug">{product.slug}</Descriptions.Item>
+                {/* <Descriptions.Item label="Slug">{product.slug}</Descriptions.Item> */}
                 <Descriptions.Item label="Tags">
                     {product.product_type_id.tags.map((tag: string, index: number) => (
                         <Tag color="blue" key={index}>
@@ -61,15 +61,21 @@ const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) 
                         <div key={index}>
                             <Tooltip
                                 title={
-                                    <>
-                                        Parent: {material.parent_id.name}
-                                        <br />
-                                        Childrent: {material.name}
-                                    </>
+                                    material.parent_id ? (
+                                        <>
+                                            Parent: {material.parent_id.name}
+                                            <br />
+                                            Child: {material.name}
+                                        </>
+                                    ) : (
+                                        <>Parent: {material.name}</>
+                                    )
                                 }
                             >
                                 <Tag color="green">
-                                    {material.parent_id.name}: {material.name}
+                                    {material.parent_id
+                                        ? `${material.parent_id.name}: ${material.name}`
+                                        : material.name}
                                 </Tag>
                             </Tooltip>
                         </div>
@@ -80,15 +86,21 @@ const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) 
                         <div key={index}>
                             <Tooltip
                                 title={
-                                    <>
-                                        Parent: {category.parent_id.name}
-                                        <br />
-                                        Childrent: {category.name}
-                                    </>
+                                    category.parent_id ? (
+                                        <>
+                                            Parent: {category.parent_id.name}
+                                            <br />
+                                            Child: {category.name}
+                                        </>
+                                    ) : (
+                                        <>Parent: {category.name}</>
+                                    )
                                 }
                             >
                                 <Tag color="purple">
-                                    {category.parent_id.name}: {category.name}
+                                    {category.parent_id
+                                        ? `${category.parent_id.name}: ${category.name}`
+                                        : category.name}
                                 </Tag>
                             </Tooltip>
                         </div>

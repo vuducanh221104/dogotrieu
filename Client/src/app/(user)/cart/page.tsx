@@ -5,11 +5,10 @@ import styles from '@/styles/Cart.module.scss';
 import { archivo } from '@/assets/FontNext';
 import FormatPrice from '@/components/FormatPrice';
 import { DecreaseIcon, IncreaseIcon } from '@/components/Icons';
-
 import { useDispatch, useSelector } from 'react-redux';
 import slugify from 'slugify';
 import { removeProduct, updateQuantity, updateTotalPrice } from '@/redux/cartSlice';
-import { RootState } from '@/redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useState, useEffect } from 'react';
@@ -18,8 +17,8 @@ import CartEmpty from '@/components/CartEmpty';
 const cx = classNames.bind(styles);
 
 function PageCart() {
-    const dispatch = useDispatch();
-    const productsAddToCart: any = useSelector((state: RootState) => state.cart);
+    const dispatch: AppDispatch = useDispatch();
+    const productsAddToCart = useSelector((state: RootState) => state.cart);
     const [localQuantities, setLocalQuantities] = useState<{ [key: string]: number | string }>({});
 
     useEffect(() => {
@@ -32,7 +31,7 @@ function PageCart() {
 
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
 
-    const handleQuantityChange = (id: any, value: any) => {
+    const handleQuantityChange = (id: string, value: string | number) => {
         setLocalQuantities((prev) => ({ ...prev, [id]: value }));
     };
 

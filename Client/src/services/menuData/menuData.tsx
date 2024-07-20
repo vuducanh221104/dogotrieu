@@ -1,6 +1,7 @@
 import config from '@/config';
+import { FilterItem, FooterMenu, MenuPanel } from '@/types/client';
 
-export const dataMenuNavBar: IMenuPanel[] = [
+export const dataMenuNavBar: MenuPanel[] = [
     {
         id: 0,
         title: 'BÀN GHẾ',
@@ -79,7 +80,7 @@ export const dataMenuNavBar: IMenuPanel[] = [
     },
 ];
 
-export const dataFilterCategory: any = [
+export const dataFilterCategory: FilterItem[] = [
     {
         id: 1,
         title: 'KHẢ DỤNG',
@@ -120,7 +121,7 @@ export const dataFilterCategory: any = [
     },
 ];
 
-export const footerMenuItems = [
+export const footerMenuItems: FooterMenu[] = [
     {
         id: 0,
         title: 'Về Chúng Tôi',

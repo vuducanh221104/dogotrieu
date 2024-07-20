@@ -5,7 +5,14 @@ import { homePatchFeatProduct } from '@/services/homeServices';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 
-function EditFeatProductById({ visible, onClose, editingFeatured, mutate }: any) {
+interface PropsEditFeatProductById {
+    visible: boolean;
+    onClose: () => void;
+    editingFeatured: any;
+    mutate: any;
+}
+
+function EditFeatProductById({ visible, onClose, editingFeatured, mutate }: PropsEditFeatProductById) {
     const [form] = Form.useForm();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [loading, setLoading] = useState(false);

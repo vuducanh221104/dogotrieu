@@ -12,8 +12,9 @@ import NotFound from '@/components/NotFound';
 import MarkdownRender from '@/components/MarkdownRender';
 import { CldImage } from 'next-cloudinary';
 const cx = classNames.bind(styles);
+
 function NewsDetail() {
-    const { id }: any = useParams<any>();
+    const { id } = useParams() as { id: string };
 
     const handleSplitSlug = () => {
         const temp = id.split('.html') ?? [];

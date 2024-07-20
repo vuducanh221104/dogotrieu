@@ -13,9 +13,9 @@ function PageBannerHomeOnMobile() {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const [fileLists, setFileLists] = useState<{ [key: number]: any[] }>({});
-    const [initialDataLoaded, setInitialDataLoaded] = useState(false);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
+    const [initialDataLoaded, setInitialDataLoaded] = useState<boolean>(false);
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string>('');
 
     useEffect(() => {
         if (data && data.length > 0 && data[0].images_banner_under_640) {
@@ -105,7 +105,7 @@ function PageBannerHomeOnMobile() {
             formData.append('img', file.originFileObj);
         });
 
-        const data = await uploadCloud(formData);
+        const data: any = await uploadCloud(formData);
         if (data.length === 0) {
             messageCustomError('Images upload failed');
             return null;
