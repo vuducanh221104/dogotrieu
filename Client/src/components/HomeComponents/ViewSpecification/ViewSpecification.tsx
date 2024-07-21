@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 function ViewSpecification() {
     const sliderRef = useRef<any>(null);
 
-    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
 
     const data = [
         {

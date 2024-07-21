@@ -1,4 +1,6 @@
 'use client';
+import { Suspense } from 'react';
+
 import classNames from 'classnames/bind';
 import styles from '@/styles/Search.module.scss';
 import { useState, useEffect } from 'react';
@@ -48,7 +50,7 @@ function prioritizeQuery(url: URL): string {
     return newUrl.toString();
 }
 
-function PageSearch() {
+function SearchContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [valueSearch, setValueSearch] = useState<any>('');
@@ -212,7 +214,7 @@ function PageSearch() {
 
     if (error || valueSearch === '') {
         return <NotFound />;
-    } else if (!error) {
+    } else {
         return (
             <>
                 <Breadcrumb nameSlug={`Kết quả tìm kiếm: "${valueSearch}"`} />
@@ -252,7 +254,7 @@ function PageSearch() {
                                                 <div className={cx('title-block')}>
                                                     <span>Lọc Sản Phẩm</span>
                                                 </div>
-                                                {(selectedMaterials.length > 0 || selectedAvailability.length) > 0 && (
+                                                {(selectedMaterials.length > 0 || selectedAvailability.length > 0) && (
                                                     <p
                                                         onClick={() => {
                                                             const url = new URL(window.location.href);
@@ -598,4 +600,16 @@ function PageSearch() {
     }
 }
 
-export default PageSearch;
+export default function PageSearchWrapper() {
+    return (
+        <Suspense
+            fallback={
+                <>
+                    <Loading />
+                </>
+            }
+        >
+            <SearchContent />
+        </Suspense>
+    );
+}

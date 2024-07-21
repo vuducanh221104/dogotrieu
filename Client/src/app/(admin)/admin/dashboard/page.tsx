@@ -7,6 +7,9 @@ import EChart from '@/Layout/AdminLayout/chart/EChart';
 import LineChart from '@/Layout/AdminLayout/chart/LineChart';
 import images from '@/assets';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+// const EChart = dynamic(() => import('@/Layout/AdminLayout/chart/EChart'), { ssr: false });
+// const LineChart = dynamic(() => import('@/Layout/AdminLayout/chart/LineChart'), { ssr: false });
 
 function Dashboard() {
     const { Title, Text } = Typography;
