@@ -26,7 +26,7 @@ function SearchInner() {
     const [showResult, setShowResult] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [trigger, setTrigger] = useState<number>(0);
-    const debounced = useDebounce(searchValue, 500);
+    const debounced: any = useDebounce(searchValue, 500);
 
     // Handle Input
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {

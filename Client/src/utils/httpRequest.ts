@@ -3,6 +3,12 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 axios.defaults.withCredentials = true;
 const httpRequest = axios.create({
     baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'https://8def-115-74-32-5.ngrok-free.app',
+        'ngrok-skip-browser-warning': true,
+        'User-Agent': 'CustomUserAgent/1.0',
+    },
 });
 
 export const get = async <T>(path: string, options: AxiosRequestConfig = {}): Promise<T> => {

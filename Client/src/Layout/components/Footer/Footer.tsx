@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 
 function Footer() {
     const [toggleIndex, setToggleIndex] = useState<null | number>(null);
-    const [width, setWitdh] = useState<number>(window.innerWidth);
+    const [width, setWitdh] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
     const [contentHeights, setContentHeights] = useState<number[]>([]);
 
     const handleToggle = (index: number) => {

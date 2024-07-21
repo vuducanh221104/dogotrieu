@@ -25,7 +25,7 @@ interface PropsViewCustomer {
 }
 function ViewCustomer({ data, setShowOverlay, indexImage }: PropsViewCustomer) {
     // Connect 2 swiper to use
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
     useEffect(() => {
         // ESC TO CLOSE OVERLAY

@@ -95,7 +95,7 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                                 spaceBetween: 0,
                                                 slidesPerView: 'auto',
                                                 mousewheel: {
-                                                    enabled: true,
+                                                    // enabled: true,
                                                     sensitivity: 2,
                                                     forceToAxis: true,
                                                 },
@@ -105,7 +105,7 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                                 direction: 'vertical',
                                                 slidesPerView: 4,
                                                 mousewheel: {
-                                                    enabled: true,
+                                                    // enabled: true,
                                                     sensitivity: 2,
                                                     thresholdTime: 4,
                                                 },

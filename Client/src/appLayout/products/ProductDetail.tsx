@@ -17,8 +17,7 @@ import { addProductToCart } from '@/redux/cartSlice';
 import FormatPrice from '@/components/FormatPrice';
 import { useState, Fragment, ChangeEvent } from 'react';
 import { AppDispatch, RootState } from '@/redux/store';
-import Head from 'next/head';
-import { NextSeo } from 'next-seo';
+import { Metadata } from 'next';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
@@ -78,10 +77,6 @@ function ProductDetail() {
             setCurrentQuantity('1');
         }
     };
-
-    function cleanMarkDown(description: string) {
-        return description.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim();
-    }
 
     if (isLoading) {
         return <Loading />;

@@ -29,7 +29,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
     const [searchResult, setSearchResult] = useState<Product[]>([]);
     const [showResult, setShowResult] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const debounced = useDebounce(searchValue, 500);
+    const debounced: any = useDebounce(searchValue, 500);
     const [trigger, setTrigger] = useState<number>(0);
 
     // Handle Input

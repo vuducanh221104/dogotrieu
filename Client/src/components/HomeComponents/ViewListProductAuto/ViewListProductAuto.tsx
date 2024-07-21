@@ -35,7 +35,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
     const productRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const [currentHeight, setCurrentHeight] = useState<number>(0);
-    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
     const [currentTransform, setCurrentTransform] = useState<number>(0);
 
     useEffect(() => {

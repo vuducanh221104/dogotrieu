@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import classNames from 'classnames/bind';
 import styles from '@/styles/NewsHome.module.scss';
 import { Container } from 'react-bootstrap';
@@ -15,15 +16,22 @@ import PaginationNews from '@/components/PaginationNews';
 import { useRouter, useSearchParams } from 'next/navigation';
 import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function NewsHome() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const pageParam = searchParams.get('page') || '1';
+    const [pageParam, setPageParam] = useState('1');
     const limitParam = '5';
-    // const limitParam = searchParams.get('limit') || '5';
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const page = searchParams.get('page') || '1';
+            setPageParam(page);
+        }
+    }, [searchParams]);
 
     const { data, isLoading, error } = newGetAllLimit(`?page=${pageParam}&limit=${limitParam}`);
 
@@ -32,13 +40,13 @@ function NewsHome() {
     const handlePageChange = (page: number) => {
         const queryParams = new URLSearchParams(window.location.search);
         queryParams.set('page', page.toString());
-        // queryParams.set('limit', limitParam);
         router.push(`?${queryParams.toString()}`);
     };
 
     if (isLoading) {
         return <Loading />;
-    } else if (error || data.data.length === 0) {
+    }
+    if (error || data.data.length === 0) {
         return <NotFound />;
     } else {
         return (
@@ -139,4 +147,10 @@ function NewsHome() {
     }
 }
 
-export default NewsHome;
+export default function NewsHomeWrapper() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <NewsHome />
+        </Suspense>
+    );
+}
