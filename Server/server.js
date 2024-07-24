@@ -15,6 +15,7 @@ const server = http.createServer(app);
 // CORS
 app.use(
     cors({
+        // origin: 'https://2f8d-2402-800-631c-ccbf-f5e8-fffd-6da2-3f04.ngrok-free.app' || '*',
         origin: process.env.BASE_URL_CLIENT || '*',
         credentials: true,
     }),

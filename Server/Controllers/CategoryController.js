@@ -26,7 +26,7 @@ class CategoryController {
         const categorySlug = req.params.slug || 'all';
         let queryGfMaterial = req.query.gf_material;
         let queryGfAvailab = req.query.gf_availab;
-        const sortBy = req.query.sort_by || '';
+        const sortBy = req.query.sort_by || 'price-asc';
 
         const limit = parseInt(req.query.limit) || 48;
         const page = parseInt(req.query.page) || 1;
@@ -144,6 +144,45 @@ class CategoryController {
                 currentPage: page,
                 itemsPerPage: limit,
                 data: paginatedData,
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+    //[GET]
+    async categorySeo(req, res) {
+        const categorySlug = req.params.slug || 'all';
+
+        try {
+            let products;
+            let category = null;
+
+            // Fetch category if not 'all'
+            if (categorySlug !== 'all') {
+                category = await Category.findOne({ slug: categorySlug }).exec();
+                if (!category) {
+                    return res.status(404).json({ message: 'Category not found' });
+                }
+            }
+
+            const matchCondition = categorySlug !== 'all' ? { 'category_id.slug': categorySlug } : {};
+
+            products = await Product.find({})
+                .populate({
+                    path: 'material_id',
+                    select: 'name parent_id slug',
+                    populate: {
+                        path: 'parent_id',
+                        select: 'name slug',
+                    },
+                })
+
+                .limit(1)
+                .exec();
+
+            res.status(200).json({
+                name_category: categorySlug === 'all' ? 'Products' : category.name,
+                image: products[0].thumb,
             });
         } catch (error) {
             res.status(500).json({ message: error.message });
