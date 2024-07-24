@@ -32,6 +32,7 @@ const HomeSchema = new Schema(
                 link_view_all: { type: String, required: true },
             },
         ],
+        featured_news: { type: Array },
     },
     {
         timestamps: true,

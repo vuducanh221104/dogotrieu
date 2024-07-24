@@ -64,7 +64,7 @@ class ProductController {
             });
 
             // Giới hạn số lượng sản phẩm trả về là 12
-            products = products.slice(0, 12);
+            // products = products.slice(0, 12);
 
             res.status(200).json(products); // Trả về danh sách sản phẩm tìm được
         } catch (error) {
@@ -301,13 +301,19 @@ class ProductController {
             if (q) {
                 query = { name: { $regex: q, $options: 'i' } };
             }
+
+            let productData;
             if (type === 'more') {
-                const productData = await Product.find(query);
-                res.status(200).json(productData);
+                productData = await Product.find(query);
             } else {
-                const productData = await Product.find(query).limit(5);
-                res.status(200).json(productData);
+                productData = await Product.find(query).limit(5);
             }
+
+            if (productData.length === 0) {
+                return res.status(404).json({ message: 'No products found' });
+            }
+
+            res.status(200).json(productData);
         } catch (err) {
             res.status(500).json({ message: 'Server error' });
         }
@@ -318,7 +324,7 @@ class ProductController {
         const searchTerm = req.query.q;
         let queryGfMaterial = req.query.gf_material;
         let queryGfAvailab = req.query.gf_availab;
-        const sortBy = req.query.sort_by || '';
+        const sortBy = req.query.sort_by || 'price-asc';
 
         const limit = parseInt(req.query.limit) || 48;
         const page = parseInt(req.query.page) || 1;
@@ -426,6 +432,25 @@ class ProductController {
                 currentPage: page,
                 itemsPerPage: limit,
                 data: paginatedData,
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    //[GET]
+    async searchSeo(req, res) {
+        try {
+            const searchTerm = req.query.q;
+            let productsQuery = { name: { $regex: searchTerm, $options: 'i' } };
+
+            let products = await Product.find(productsQuery);
+            // if (products.length <= 0) {
+            //     return res.status(404).json({ message: 'Product Not Found ' });
+            // }
+            res.status(200).json({
+                name_query: searchTerm,
+                total_product: products.length,
             });
         } catch (error) {
             res.status(500).json({ message: error.message });
