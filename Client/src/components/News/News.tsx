@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 function News() {
     const { data: homeData } = homeGet();
     const windowWidth = useWindowWidth();
-    const featuredData = homeData[0].featured_news.map((id: string) => `ids=${id}`).join('&');
+    const featuredData = homeData && homeData[0]?.featured_news.map((id: string) => `ids=${id}`).join('&');
     const { data: news } = newsFeaturedGet(featuredData || []);
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
 
@@ -48,8 +48,7 @@ function News() {
                                         >
                                             <div className={cx('aspect-ratio')}>
                                                 <CldImage
-                                                    width={'900'}
-                                                    height={'900'}
+                                                    fill
                                                     src={item.thumb}
                                                     alt={item.title}
                                                     className={cx('news-item-image-cover')}
@@ -87,8 +86,7 @@ function News() {
                                                 >
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
-                                                            width={'900'}
-                                                            height={'900'}
+                                                            fill
                                                             src={item.thumb}
                                                             alt={item.title}
                                                             className={cx('news-item-image-cover')}

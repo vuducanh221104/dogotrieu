@@ -108,14 +108,18 @@ function Header() {
                         {/* Menu Bars */}
                         <nav className={cx('header-bars')}>
                             {showBars ? (
-                                <button className={cx('btn-bars')}>
+                                <button className={cx('btn-bars')} aria-label="Open Menu">
                                     <XmarkIcon
                                         style={{ width: '19px', height: '19px' }}
                                         onClick={() => setShowBars(!showBars)}
                                     />
                                 </button>
                             ) : (
-                                <button className={cx('btn-bars')} onClick={() => setShowBars(!showBars)}>
+                                <button
+                                    className={cx('btn-bars')}
+                                    onClick={() => setShowBars(!showBars)}
+                                    aria-label="Open Menu"
+                                >
                                     <BarsIcon
                                         style={{ width: '20px', height: '16px' }}
                                         onClick={() => setShowBars(!showBars)}
@@ -402,7 +406,12 @@ function Header() {
                                 )}
                                 offset={[-17, 5]}
                             >
-                                <div className={cx('header-icon-map')} onClick={() => setShowTippyLang(!showTippyLang)}>
+                                <div
+                                    className={cx('header-icon-map')}
+                                    onClick={() => setShowTippyLang(!showTippyLang)}
+                                    role="button"
+                                    aria-label="Map"
+                                >
                                     <span style={{ fontSize: '1.4rem' }}>🇻🇳</span>
                                     <ChervonDonwIcon
                                         style={{
@@ -416,7 +425,7 @@ function Header() {
                                 </div>
                             </Tippy>
                             {/* Icon Search */}
-                            <div className={cx('header-icon-search')}>
+                            <div className={cx('header-icon-search')} role="button" aria-label="Search Button">
                                 <SearchIcon
                                     className={cx('header-icon-search-wrapper')}
                                     style={{ height: '15px', width: '18px', paddingLeft: '3px', fontSize: '1.2rem' }}

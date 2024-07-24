@@ -128,7 +128,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                             </div>
 
                             {loading ? (
-                                <button className={cx('button-search')}>
+                                <button className={cx('button-search')} aria-label="Search">
                                     <FontAwesomeIcon className={cx('icon-loading')} icon={faSpinner} />
                                 </button>
                             ) : (

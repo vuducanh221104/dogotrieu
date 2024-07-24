@@ -153,8 +153,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         >
                                                             <div className={cx('aspect-ratio')}>
                                                                 <CldImage
-                                                                    width="400"
-                                                                    height="600"
+                                                                    fill
                                                                     alt={`${item.name} | Dogotrieu.com`}
                                                                     src={item.thumb}
                                                                     sizes={'(min-width: 0px) 100vw'}
@@ -246,8 +245,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
-                                                            width="400"
-                                                            height="600"
+                                                            fill
                                                             src={item.thumb}
                                                             alt={`${item.name} | Dogotrieu.com`}
                                                             sizes={'(min-width: 0px) 100vw'}

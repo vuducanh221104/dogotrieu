@@ -68,8 +68,7 @@ const CardFeaturedProduct: React.FC<IProps> = ({
                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                     <div className={cx('aspect-ratio')}>
                         <CldImage
-                            width="400"
-                            height="600"
+                            fill
                             alt={item.name}
                             src={item.thumb}
                             sizes={'(min-width: 0px) 100vw'}

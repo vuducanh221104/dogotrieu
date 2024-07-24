@@ -3,6 +3,17 @@ import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
+//GET ~ GET SSR SEO
+export const productSEOGET = async (id: string) => {
+    try {
+        const res = await httpRequest.get(`api/v1/product/type/${id}`);
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        console.error(err.response?.data);
+    }
+};
+
 //[POST]
 export const productAdd = async (data: ProductDetail | any) => {
     try {

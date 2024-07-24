@@ -28,11 +28,11 @@ function PageLogin() {
             </div>
             <button className={`${cx('btn-submit')} button`}>Login</button>
             <div className={cx('popper-social')}>
-                <a className={cx('social-link', 'facebook')}>
+                <a className={cx('social-link', 'facebook')} aria-label="Đường Dẫn Tới Facebook">
                     <span className={cx('social-title')}>Sign in with Facebook</span>
                     <FacebookLoginIcon className={cx('social-icon', 'facebook')} />
                 </a>
-                <a className={cx('social-link', 'google')}>
+                <a className={cx('social-link', 'google')} aria-label="Đường Dẫn Tới  Google">
                     <span className={cx('social-title', 'goole')}>Sign in with Google</span>
                     <GoogleLoginIcon className={cx('social-icon', 'google')} />
                 </a>

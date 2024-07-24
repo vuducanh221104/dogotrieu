@@ -84,10 +84,10 @@ function SwiperCustomer({ data, navigation = true }: any) {
                                 <SwiperSlide key={index}>
                                     <>
                                         <CldImage
-                                            width={'500'}
-                                            height={'500'}
+                                            width={200}
+                                            height={200}
                                             src={item}
-                                            alt=""
+                                            alt="BANNER|DOGOTRIEU"
                                             className={cx('image-home', 'lazyload')}
                                             onClick={() => handleImageClick(index)}
                                         />

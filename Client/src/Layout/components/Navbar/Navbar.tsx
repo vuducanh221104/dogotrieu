@@ -13,6 +13,7 @@ import images from '@/assets';
 import { dataMenuNavBar } from '@/services/menuData/menuData';
 import config from '@/config';
 import Link from 'next/link';
+import routes from '@/config/routes';
 
 const cx = classNames.bind(styles);
 function Navbar() {
@@ -25,17 +26,17 @@ function Navbar() {
                     <Container>
                         <ul className={cx('navbar-list')}>
                             <li className={cx('navbar-item', 'static')}>
-                                <a href={config.routes.categoryAll} className={cx('navbar-item-link')}>
+                                <Link href={config.routes.categoryAll} className={cx('navbar-item-link')}>
                                     CỬA HÀNG
                                     <ChervonDonwIcon style={{ height: '8px', width: '12px', marginLeft: '8px' }} />
                                     <ChervonUpMenuIcon className={cx('icon-menu-up')} />
-                                </a>
+                                </Link>
                                 <div className={cx('mega-menu')}>
                                     <Container>
                                         <div className={cx('mega-menu-inner')}>
                                             {dataMenuPanel.map((item) => (
                                                 <div className={cx('mega-menu-column')} key={item.id}>
-                                                    <a className={cx('mega-menu-title')}>
+                                                    <a className={cx('mega-menu-title')} href="#">
                                                         <b>{item.title}</b>
                                                     </a>
                                                     <ul className={cx('mega-menu-list')}>
@@ -53,7 +54,7 @@ function Navbar() {
                                                 </div>
                                             ))}
 
-                                            <a className={cx('mega-menu-promo')}>
+                                            <Link className={cx('mega-menu-promo')} href={routes.imgPromo.navbar}>
                                                 <div className={cx('mega-menu-image-wrapper')}>
                                                     <Image
                                                         src={images.imgPromo}
@@ -61,7 +62,7 @@ function Navbar() {
                                                         className={cx('mega-menu-image-promo')}
                                                     />
                                                 </div>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </Container>
                                 </div>
@@ -73,7 +74,7 @@ function Navbar() {
                             </li>
                             <li className={cx('navbar-item')}>
                                 <Link href={config.routesCompany.tradeIn} className={cx('navbar-item-link')}>
-                                    GIAO DỊCH
+                                    THƯƠNG MẠI
                                 </Link>
                             </li>
                             <li className={cx('navbar-item')}>

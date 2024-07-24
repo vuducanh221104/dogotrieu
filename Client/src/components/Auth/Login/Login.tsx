@@ -117,7 +117,7 @@ function Login() {
                     </div>
                 )}
             >
-                <div onClick={() => setShowMenu(!showMenu)}>
+                <div onClick={() => setShowMenu(!showMenu)} role="button" aria-label="User Button">
                     <UserIcon style={{ height: '22px', width: '20px', cursor: 'pointer' }} />
                 </div>
             </Tippy>

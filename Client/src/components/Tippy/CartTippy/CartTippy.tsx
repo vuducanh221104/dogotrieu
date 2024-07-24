@@ -247,7 +247,7 @@ function CartTippy() {
                 </div>
             )}
         >
-            <div onClick={() => setShowMenu(!showMenu)}>
+            <div onClick={() => setShowMenu(!showMenu)} role="button" aria-label="Cart Button">
                 <CartIcon style={{ height: '24px', width: '27px', cursor: 'pointer' }} />
                 <span className={cx('header-count')}>{productsAddToCart.quantity}</span>
             </div>

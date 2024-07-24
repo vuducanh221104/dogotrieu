@@ -5,7 +5,45 @@ import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { archivo } from '@/assets/FontNext';
 import imagesPage from '@/assets/images-pages';
 import Image from 'next/image';
+import { Metadata } from 'next';
+import routes from '@/config/routes';
 const cx = classNames.bind(styles);
+
+export const generateMetadata = (): Metadata => {
+    const title = 'LIÊN HỆ | DOGOTRIEU';
+    const description =
+        'Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ với mọi yêu cầu về sản phẩm hoặc dịch vụ được đề cập trên trang web của chúng tôi.';
+    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}${routes.pageCompany.contact}`,
+            images: [
+                {
+                    url: image,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: `${routes.domain.nameCamel}$`,
+            title: title,
+            description: description,
+            images: [
+                {
+                    url: image,
+                    alt: title,
+                },
+            ],
+        },
+    };
+};
 
 function PageContact() {
     return (
@@ -34,7 +72,9 @@ function PageContact() {
                         </p>
                         <p>Thứ hai-Chủ Nhật 8h Sáng - 5h Chiều </p>
                         <p>
-                            <a href="tel:0348483612">Tel: 0348483612</a>
+                            <a href="tel:0348483612" aria-label="Liên Hệ Qua Điện Thoại">
+                                Tel: 0348483612
+                            </a>
                         </p>
                         <p>Cửa Hàng : 24 Lương Định Của , Trần Não ,TP.Thủ Đức</p>
                         <p>Kho,Xưởng :25/4 Xuân Thủy , Thảo Điền , TP.Thủ Đức</p>

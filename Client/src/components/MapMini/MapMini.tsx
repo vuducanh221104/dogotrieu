@@ -59,25 +59,32 @@ function MapMini() {
                 <h3>Hệ Thống Cửa Hàng</h3>
             </div>
             <div className={cx('map-select')}>
-                <select className={cx('select-city')} onChange={changeCity}>
+                <label htmlFor="select-city" className={cx('map-mini-label')} style={{ display: 'none' }}>
+                    Chọn Thành Phố
+                </label>
+                <select id="select-city" className={cx('select-city')} onChange={changeCity}>
                     <option value="">Chọn thành Phố</option>
                     <option value="ho-chi-minh">Hồ Chí Minh</option>
                 </select>
-                <select className={cx('select-district', active ? '' : 'active')} onChange={changeDistrict}>
-                    <option value=""> Chọn Quận/Huyện</option>
-                    <>
-                        <option value="quan-tp-thu-duc">TP.Thủ Đức</option>
-                    </>
+                <label htmlFor="select-district" className={cx('map-mini-label')} style={{ display: 'none' }}>
+                    Chọn Quận/Huyện
+                </label>
+                <select
+                    id="select-district"
+                    className={cx('select-district', active ? '' : 'active')}
+                    onChange={changeDistrict}
+                >
+                    <option value="">Chọn Quận/Huyện</option>
+                    <option value="quan-tp-thu-duc">TP.Thủ Đức</option>
                 </select>
             </div>
             <ul className={cx('map-list')}>
-                {/* MAP */}
                 {filteredLocations.map((location: Location, index: number) => (
                     <Fragment key={index}>
-                        <div className={cx('map-description')}>
+                        <li className={cx('map-description')}>
                             <h4>{location.descripton}</h4>
-                        </div>
-                        <li className={cx('map-item')} key={index}>
+                        </li>
+                        <li className={cx('map-item')}>
                             <FontAwesomeIcon icon={faLocationDot} className={cx('map-icon')} />
                             <span>{location.address}</span>
                         </li>

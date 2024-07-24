@@ -31,8 +31,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                 <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`}>
                     <div className={cx('aspect-ratio')}>
                         <CldImage
-                            width="400"
-                            height="600"
+                            fill
                             alt={`${data.name} | Dogotrieu.com`}
                             src={data.thumb}
                             sizes={'(min-width: 0px) 100vw'}
@@ -43,7 +42,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
             </div>
             <div className={cx('product-info')}>
                 {data.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
-                <h3 className={cx('product-vendor')}>
+                <h2 className={cx('product-vendor')}>
                     {data.material_id &&
                         data.material_id?.map((material: any, index: number) => (
                             <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`} key={index}>
@@ -51,7 +50,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                                 {material.name}
                             </Link>
                         ))}
-                </h3>
+                </h2>
                 <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`}>
                     <h2 className={cx('product-name')}>{data.name}</h2>
                 </Link>

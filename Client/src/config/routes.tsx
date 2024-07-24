@@ -45,6 +45,14 @@ const routes = {
         tradeIn: '/pages/trade',
     },
 
+    domain: {
+        name: 'https://dogotrieu.com',
+        nameCamel: 'DOGOTRIEU.COM',
+    },
+
+    imgPromo: {
+        navbar: '/category/all',
+    },
     social: {
         facebook: 'https://www.facebook.com/I.Am.DucAnh123',
         instagram: 'https://www.instagram.com/daastore36',
