@@ -31,6 +31,17 @@ export const categoryFilterGet = (query: string): APIResponseSWR<any> => {
     return { data, error, isLoading, mutate };
 };
 
+//[GET] !SEO
+export const categorySEOGET = async (slug: string): Promise<any> => {
+    try {
+        const res = await httpRequest.get(`api/v1/category/seo/${slug}`);
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        console.error(err.response?.data);
+    }
+};
+
 //[GET]
 export const categoryGet = (): APIResponseSWR<Category> => {
     const url = `api/v1/category`;
@@ -68,6 +79,7 @@ export const categoryUpdate = async (data: any): Promise<any> => {
         console.error(err.response?.data);
     }
 };
+
 //[DELETE]
 export const categoryDelete = async (ids: {}): Promise<any> => {
     try {

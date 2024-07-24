@@ -62,7 +62,7 @@ function ViewCustomer({ data, setShowOverlay, indexImage }: PropsViewCustomer) {
                             {data?.concat(data).map((item: any, index: any) => (
                                 <SwiperSlide key={index}>
                                     <div className={cx('img-container')}>
-                                        <CldImage width={'500'} height={'500'} src={item} alt="" />
+                                        <CldImage width={'500'} height={'500'} src={item} alt="image-customer" />
                                     </div>
                                 </SwiperSlide>
                             ))}
@@ -113,7 +113,7 @@ function ViewCustomer({ data, setShowOverlay, indexImage }: PropsViewCustomer) {
                                 {data.concat(data).map((item: any, index: any) => (
                                     <SwiperSlide key={index}>
                                         <div className={cx('footer-swiper-img')}>
-                                            <CldImage width={'500'} height={'500'} src={item} alt="" />
+                                            <CldImage width={'500'} height={'500'} src={item} alt="image-customer" />
                                         </div>
                                     </SwiperSlide>
                                 ))}

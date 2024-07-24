@@ -2,6 +2,17 @@ import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
+//[GET]
+export const newsSEOGET = async (id: string) => {
+    try {
+        const res = await httpRequest.get(`api/v1/news/${id}`);
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        console.error(err.response?.data);
+    }
+};
+
 //[POST]
 export const newsAdd = async (data: {}) => {
     try {

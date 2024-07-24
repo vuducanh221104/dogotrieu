@@ -140,7 +140,7 @@ function Chat() {
                     </div>
                 )}
             >
-                <div className={cx('wrapper')}>
+                <div className={cx('wrapper')} role="button" aria-label="Chat Button">
                     <div className={cx('messsage-inner')}>
                         <button className={cx('button')} onClick={() => setOnShow(!onShow)}>
                             <div className={cx('icon-message-wrapper', onShow && 'active')}>

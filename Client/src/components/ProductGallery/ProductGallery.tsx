@@ -55,8 +55,7 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                 <SwiperSlide key={index}>
                                     <div className={cx('aspect-ratio')}>
                                         <CldImage
-                                            width="500"
-                                            height="750"
+                                            fill
                                             src={img}
                                             alt={`${name} | Dogotrieu.com`}
                                             sizes={'(min-width: 0px) 100vw'}
@@ -121,11 +120,10 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                             >
                                                 <div className={cx('aspect-ratio')}>
                                                     <CldImage
-                                                        width="130"
-                                                        height="195"
+                                                        fill
                                                         alt={`${name} | Dogotrieu.com`}
                                                         src={img}
-                                                        loading="lazy"
+                                                        // loading="lazy"
                                                     />
                                                 </div>
                                             </SwiperSlide>

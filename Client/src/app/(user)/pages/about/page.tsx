@@ -4,8 +4,43 @@ import { lato, playFairDisplay } from '@/assets/FontNext';
 import Link from 'next/link';
 import imagesPage from '@/assets/images-pages';
 import Image from 'next/image';
+import { Metadata } from 'next';
+import routes from '@/config/routes';
 const cx = classNames.bind(styles);
-
+export const generateMetadata = (): Metadata => {
+    const title = 'VỀ CHÚNG TÔI | DOGOTRIEU';
+    const description =
+        'Đồ Gỗ Triệu tự hào giới thiệu Nội Thất Đồ Gỗ Cũ. Những giá trị ban đầu của chúng tôi là bền vững, lâu dài, độc quyền và chất lượng.';
+    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}${routes.pageCompany.aboutUs}`,
+            images: [
+                {
+                    url: image,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: `${routes.domain.nameCamel}$`,
+            title: title,
+            description: description,
+            images: [
+                {
+                    url: image,
+                    alt: title,
+                },
+            ],
+        },
+    };
+};
 function PageAboutUs() {
     return (
         <div className={cx('wrapper')}>
@@ -130,7 +165,10 @@ function PageAboutUs() {
                     </div>
                 </div>
                 <div className={`${cx('footer')} ${lato.className}`}>
-                    <a href="mailto:vuducanh22112004@gmail.com">dogotrieu@gmail.com</a>| 0348483612 (em Lan)
+                    <a href="mailto:vuducanh22112004@gmail.com" aria-label="Liên Hệ Qua Mail">
+                        dogotrieu@gmail.com
+                    </a>
+                    | 0348483612 (em Lan)
                 </div>
             </div>
         </div>

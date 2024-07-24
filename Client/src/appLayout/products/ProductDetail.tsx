@@ -17,23 +17,12 @@ import { addProductToCart } from '@/redux/cartSlice';
 import FormatPrice from '@/components/FormatPrice';
 import { useState, Fragment, ChangeEvent } from 'react';
 import { AppDispatch, RootState } from '@/redux/store';
-import { Metadata } from 'next';
 const cx = classNames.bind(styles);
 
-function ProductDetail() {
+function ProductDetail({ productId: id }: any) {
     const dispatch: AppDispatch = useDispatch();
-    const { slug } = useParams() as { slug: string };
     const [currentQuantity, setCurrentQuantity] = useState<string>('1');
-    const handleSplitSlug = (): string => {
-        const temp = slug.split('.html') ?? [];
-        const temp2 = temp[0]?.split('-');
-        const id = temp2[temp2.length - 1];
-        return id;
-    };
-    let id = handleSplitSlug();
-
     const { data, error, isLoading } = productGetId(id);
-
     const productInCart = useSelector((state: RootState) => state.cart.products?.find((p) => p._id === data?._id));
 
     //Handle Add To Cart
@@ -149,9 +138,9 @@ function ProductDetail() {
                                                                             'discount-on',
                                                                     )}
                                                                 >
-                                                                    <h4>
+                                                                    <div>
                                                                         <FormatPrice value={data.price?.original} />
-                                                                    </h4>
+                                                                    </div>
                                                                     {data.price?.discount != null &&
                                                                         data.price?.discount !== 0 && (
                                                                             <span>
@@ -195,12 +184,14 @@ function ProductDetail() {
                                                                                     'quantity-selector-button',
                                                                                 )}
                                                                                 onClick={handleDecreaseQuantity}
+                                                                                aria-label="Giảm Sản Phẩm"
                                                                             >
                                                                                 <DecreaseIcon
                                                                                     className={cx('icon-decrease')}
                                                                                 />
                                                                             </button>
                                                                             <input
+                                                                                id="quantity-input"
                                                                                 className={cx(
                                                                                     'quantity-selector-value',
                                                                                 )}
@@ -212,6 +203,7 @@ function ProductDetail() {
                                                                                     'quantity-selector-button',
                                                                                 )}
                                                                                 onClick={handleIncreaseQuantity}
+                                                                                aria-label="Tăng Sản Phẩm"
                                                                             >
                                                                                 <IncreaseIcon
                                                                                     className={cx('icon-increase')}

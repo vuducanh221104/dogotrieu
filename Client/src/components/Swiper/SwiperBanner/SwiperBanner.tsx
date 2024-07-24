@@ -76,9 +76,8 @@ function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: P
                             <div className={cx('aspect-ratio', 'hidden-mobile')}>
                                 <a href={`/${item.link}`}>
                                     <CldImage
-                                        width="200"
-                                        height="891"
-                                        alt=""
+                                        fill
+                                        alt="BANNER-DOGOTRIEU"
                                         src={item.url}
                                         sizes={'(min-width: 0px) 100vw'}
                                         className={cx('image-home')}

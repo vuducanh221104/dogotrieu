@@ -13,6 +13,17 @@ export interface SearchData {
 }
 
 //[GET]
+export const searchSEOGET = async (q: string | any) => {
+    try {
+        const res = await httpRequest.get(`api/v1/product/searchSeo?q=${q}`);
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        console.error(err.response?.data);
+    }
+};
+
+//[GET]
 export const searchFilter = (query: string): APIResponseSWR<SearchData> => {
     const url = `api/v1/product/search/${query}`;
     const { data, error, isLoading, mutate } = useSWR<SearchData>(url, httpRequest.fetcher, {

@@ -191,13 +191,12 @@ function SearchInner() {
                                                     </Link>
                                                 ))}
                                             </div>
-                                            <div className={cx('wrapper-search-inner-footer')}>
-                                                <p
-                                                    className={cx('search-inner-footer-title')}
-                                                    onClick={() => router.push(`/search?q=${searchValue}`)}
-                                                >
-                                                    View all results
-                                                </p>
+
+                                            <div
+                                                className={cx('wrapper-search-inner-footer')}
+                                                onClick={() => router.push(`/search?q=${searchValue}`)}
+                                            >
+                                                <p className={cx('search-inner-footer-title')}>View all results</p>
                                                 <FontAwesomeIcon
                                                     icon={faChevronRight}
                                                     style={{
@@ -222,7 +221,7 @@ function SearchInner() {
             onClickOutside={handleOutside}
             offset={[0, 0]}
         >
-            <div className={cx('header-search-inner')}>
+            <div className={cx('header-search-inner')} role="search" aria-label="Search Input">
                 <div className={cx('header-search-content')}>
                     <input
                         className={cx('header-input')}
@@ -234,7 +233,7 @@ function SearchInner() {
                     />
 
                     {!loading && (
-                        <button className={cx('button-search')} onClick={handleSearch}>
+                        <button className={cx('button-search')} onClick={handleSearch} aria-label="Search Button">
                             <SearchIcon className={cx('icon-search')} />
                         </button>
                     )}

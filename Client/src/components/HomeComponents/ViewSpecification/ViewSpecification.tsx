@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 function ViewSpecification() {
     const sliderRef = useRef<any>(null);
 
-    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
+    const [windowWidth, setWindowWidth] = useState<number | null>(null);
 
     const data = [
         {
@@ -42,11 +42,13 @@ function ViewSpecification() {
             description: '7 Days Easy Return*',
         },
     ];
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
 
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -63,6 +65,10 @@ function ViewSpecification() {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slideNext();
     }, []);
+
+    if (windowWidth === null) {
+        return null; // Return nothing until windowWidth is set
+    }
 
     return (
         <div className={cx('specification-wrapper')}>

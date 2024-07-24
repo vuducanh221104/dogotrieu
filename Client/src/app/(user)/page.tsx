@@ -1,62 +1,47 @@
-'use client';
-import styles from '@/styles/Home.module.scss';
-import classNames from 'classnames/bind';
 import React from 'react';
-import SwiperBanner from '@/components/Swiper/SwiperBanner';
-import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
-import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
-import News from '@/components/News';
-import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
-import { homeGet } from '@/services/homeServices';
-import Loading from '@/components/Loading';
+import { Metadata } from 'next';
+import Home from '@/appLayout/home';
+import routes from '@/config/routes';
 
-const cx = classNames.bind(styles);
+export const generateMetadata = (): Metadata => {
+    const title = 'Đa dạng & độc đáo các sản phẩm nội thất đồ gỗ xưa cho đến hiện đại từ Châu Á và Châu Âu';
+    const description =
+        'Tìm kiếm những món đồ nội thất hiện đại, tự nhiên, mang đậm nét dân tộc và chân thực cho không gian của bạn. Khám phá bàn ghế, ghế sofa, đèn, tủ, kệ, phụ kiện trang trí ,... và nội thất bằng gỗ. Miễn phí vận chuyển tại Việt Nam. Chào mừng bạn';
+    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}`,
+            images: [
+                {
+                    url: image,
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: `${routes.domain.nameCamel}$`,
+            title: title,
+            description: description,
+            images: [
+                {
+                    url: image,
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+    };
+};
 
-function Home() {
-    const { data, error, isLoading } = homeGet();
-
-    const dataHome = data && data.length > 0 ? data[0] : null;
-    if (isLoading) {
-        return <Loading />;
-    } else {
-        return (
-            <>
-                <>
-                    {/* Image Banner */}
-                    <div className={cx('slide-show-banner')}>
-                        <SwiperBanner data={dataHome} isLoading={isLoading} />
-                    </div>
-
-                    {/* Image Customer */}
-                    <div className={cx('slide-show-banner')}>
-                        <SwiperCustomer
-                            data={dataHome?.images_customer}
-                            showImageCustomer={true}
-                            propsColorBtn={'var(--color-hover)'}
-                            backgroundColor={'#f9eae9'}
-                        />
-                    </div>
-
-                    {/* Product List */}
-                    {dataHome?.featured_product.map((item: any, index: number) => (
-                        <ViewListProductAuto
-                            key={index}
-                            query={item.query}
-                            isLoading={isLoading}
-                            title={item.title}
-                            nextBtnLink={item.link_view_all}
-                        />
-                    ))}
-
-                    {/* NEWS */}
-                    <News />
-
-                    {/* Specification */}
-                    <ViewSpecification />
-                </>
-            </>
-        );
-    }
+function PageHome() {
+    return <Home />;
 }
 
-export default Home;
+export default PageHome;

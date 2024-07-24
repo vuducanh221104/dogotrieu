@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 
 function Footer() {
     const [toggleIndex, setToggleIndex] = useState<null | number>(null);
-    const [width, setWitdh] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
+    const [width, setWitdh] = useState<number | any>(0);
     const [contentHeights, setContentHeights] = useState<number[]>([]);
 
     const handleToggle = (index: number) => {
@@ -38,6 +38,7 @@ function Footer() {
         setWitdh(window.innerWidth);
     };
     useEffect(() => {
+        updateDimensions();
         const handleContentHeights = () => {
             if (width <= 641) {
                 const heights = footerItems.map((_, index) => {
@@ -136,6 +137,7 @@ function Footer() {
                                             href={config.routesSocial.facebook}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Facebook Đồ Gỗ Triệu"
                                         >
                                             <FacebookIcon className={cx('icon-social', 'facebook')} />
                                         </a>
@@ -145,6 +147,7 @@ function Footer() {
                                             href={config.routesSocial.instagram}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Instagram Đồ Gỗ Triệu"
                                         >
                                             <InstaIcon className={cx('icon-social', 'instagram')} />
                                         </a>
@@ -154,12 +157,18 @@ function Footer() {
                                             href={config.routesSocial.printerest}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Printerest Đồ Gỗ Triệu"
                                         >
                                             <PrinterestIcon className={cx('icon-social', 'pinterest')} />
                                         </a>
                                     </li>
                                     <li className={cx('footer-aside-social-item')}>
-                                        <a href={config.routesSocial.youtube} target="_blank" rel="noopener noreferrer">
+                                        <a
+                                            href={config.routesSocial.youtube}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="Youtube Đồ Gỗ Triệu"
+                                        >
                                             <YoutubeIcon className={cx('icon-social', 'youtube')} />
                                         </a>
                                     </li>
