@@ -45,14 +45,14 @@ const PaginationNews: React.FC<PaginationNewsProps> = ({ totalPages, currentPage
 
         for (let i = startPage; i <= endPage; i++) {
             pageNumbers.push(
-                <a
+                <Link
                     key={i}
                     href={generateHref(i)}
                     className={cx('news-pagination-nav-item', { active: i === currentPage })}
                     onClick={() => handlePageClick(i)}
                 >
                     {i}
-                </a>,
+                </Link>,
             );
         }
 
@@ -64,14 +64,14 @@ const PaginationNews: React.FC<PaginationNewsProps> = ({ totalPages, currentPage
             <div className={cx('news-pagination-inner')}>
                 <div className={cx('news-pagination-nav')}>{renderPageNumbers()}</div>
                 {currentPage < totalPages && (
-                    <a
+                    <Link
                         href={generateHref(currentPage + 1)}
                         className={cx('news-pagination-next')}
                         onClick={() => handlePageClick(currentPage + 1)}
                     >
                         Next
                         <ChervonRight className={cx('news-pagination-next-icon')} />
-                    </a>
+                    </Link>
                 )}
             </div>
         </div>

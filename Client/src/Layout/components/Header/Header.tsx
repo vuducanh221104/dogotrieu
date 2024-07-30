@@ -30,6 +30,7 @@ import { dataMenuNavBar } from '@/services/menuData/menuData';
 import config from '@/config';
 import { archivo } from '@/assets/FontNext';
 import Link from 'next/link';
+import routes from '@/config/routes';
 
 const cx = classNames.bind(styles);
 
@@ -60,6 +61,7 @@ function Header() {
     };
 
     useEffect(() => {
+        updateDimensions();
         window.addEventListener('resize', updateDimensions);
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -140,7 +142,11 @@ function Header() {
                                                   'opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),visibility 0.4s linear',
                                               maxHeight: calculateMobileMenuHeight(),
                                           }
-                                        : {}
+                                        : {
+                                              opacity: '0',
+                                              visibility: 'hidden',
+                                              display: 'none',
+                                          }
                                 }
                             >
                                 <div className={cx('mobile-menu-inner')}>
@@ -216,51 +222,73 @@ function Header() {
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
                                                     <PhoneIcon className={cx('icon-iphone')} />
                                                     <a
-                                                        href="/"
+                                                        href={routes.social.phone}
                                                         className={cx('mobile-menu-section-need-help-item-link')}
                                                     >
-                                                        (844) /443-WOOD/
+                                                        0348483612 - Lan
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
                                                     <MailTextIcon className={cx('icon-mail')} />
 
                                                     <a
-                                                        href="/"
+                                                        href={routes.social.mail}
                                                         className={cx('mobile-menu-section-need-help-item-link')}
                                                     >
-                                                        info@woodfurniture.com
+                                                        dogotrieu@gmail.com
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div className={cx('mobile-menu-section-follow')}>
-                                            <p className={cx('mobile-menu-section-follow-tile')}> FOLLOW US</p>
+                                            <p className={cx('mobile-menu-section-follow-tile')}>FOLLOW US</p>
 
                                             <ul className={cx('mobile-menu-section-follow-list')}>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <FacebookIcon className={cx('icon-social')} />
-                                                    <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
+                                                    <a
+                                                        href={routes.social.facebook}
+                                                        className={cx('mobile-menu-section-follow-item-link')}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label="Facebook Đồ Gỗ Triệu"
+                                                    >
+                                                        <FacebookIcon className={cx('icon-social')} />
                                                         Facebook
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <InstaIcon className={cx('icon-social')} />
-                                                    <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
+                                                    <a
+                                                        href={routes.social.instagram}
+                                                        className={cx('mobile-menu-section-follow-item-link')}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label="Instagram Đồ Gỗ Triệu"
+                                                    >
+                                                        <InstaIcon className={cx('icon-social')} />
                                                         Instagram
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <PrinterestIcon className={cx('icon-social')} />
-
-                                                    <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
+                                                    <a
+                                                        href={routes.social.printerest}
+                                                        className={cx('mobile-menu-section-follow-item-link')}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label="Printerest Đồ Gỗ Triệu"
+                                                    >
+                                                        <PrinterestIcon className={cx('icon-social')} />
                                                         Pinterest
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
-                                                    <YoutubeIcon className={cx('icon-social')} />
-
-                                                    <a href="/" className={cx('mobile-menu-section-follow-item-link')}>
+                                                    <a
+                                                        href={routes.social.youtube}
+                                                        className={cx('mobile-menu-section-follow-item-link')}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label="Youtube Đồ Gỗ Triệu"
+                                                    >
+                                                        <YoutubeIcon className={cx('icon-social')} />
                                                         Youtube
                                                     </a>
                                                 </li>
@@ -317,15 +345,16 @@ function Header() {
                                                                                 'mobile-menu-panel-shop-toggle-item',
                                                                             )}
                                                                             key={subMenuItem.link}
+                                                                            onClick={() => setShowBars(false)}
                                                                         >
-                                                                            <a
+                                                                            <Link
                                                                                 href={subMenuItem.link}
                                                                                 className={cx(
                                                                                     'mobile-menu-panel-shop-toggle-link',
                                                                                 )}
                                                                             >
                                                                                 {subMenuItem.title}
-                                                                            </a>
+                                                                            </Link>
                                                                         </li>
                                                                     ))}
                                                                 </ul>
@@ -335,8 +364,14 @@ function Header() {
                                                 ))}
                                             </div>
                                             <div className={cx('mobile-menu-panel-shop-promo-item')}>
-                                                <a href="/" className={cx('mobile-menu-panel-shop-promo-link')}>
-                                                    <div className={cx('mobile-menu-panel-shop-promo-wrapper')}>
+                                                <Link
+                                                    href={routes.user.categoryAll}
+                                                    className={cx('mobile-menu-panel-shop-promo-link')}
+                                                >
+                                                    <div
+                                                        className={cx('mobile-menu-panel-shop-promo-wrapper')}
+                                                        onClick={() => setShowBars(false)}
+                                                    >
                                                         <div className={cx('aspect-ratio')}>
                                                             <Image
                                                                 src={images.imgPromo}
@@ -345,7 +380,7 @@ function Header() {
                                                             />
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>

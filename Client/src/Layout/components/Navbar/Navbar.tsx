@@ -36,18 +36,18 @@ function Navbar() {
                                         <div className={cx('mega-menu-inner')}>
                                             {dataMenuPanel.map((item) => (
                                                 <div className={cx('mega-menu-column')} key={item.id}>
-                                                    <a className={cx('mega-menu-title')} href="#">
+                                                    <Link className={cx('mega-menu-title')} href="#">
                                                         <b>{item.title}</b>
-                                                    </a>
+                                                    </Link>
                                                     <ul className={cx('mega-menu-list')}>
                                                         {item.subMenu.map((subMenuItem, indexSubMenuItem) => (
                                                             <li className={cx('mega-menu-item')} key={indexSubMenuItem}>
-                                                                <a
+                                                                <Link
                                                                     href={subMenuItem.link}
                                                                     className={cx('mega-menu-item-link')}
                                                                 >
                                                                     {subMenuItem.title}
-                                                                </a>
+                                                                </Link>
                                                             </li>
                                                         ))}
                                                     </ul>

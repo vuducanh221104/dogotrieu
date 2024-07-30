@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
@@ -403,86 +404,93 @@ function CategoryContent() {
                                                         </select>
                                                     </div>
                                                     <div className={cx('sort-by')}>
-                                                        <Tippy
-                                                            interactive
-                                                            visible={showSort}
-                                                            placement="bottom-start"
-                                                            onClickOutside={() => setShowSort(!showSort)}
-                                                            offset={[0, 0]}
-                                                            render={(attrs: any) => (
-                                                                <div
-                                                                    className={cx('popperover')}
-                                                                    tabIndex="-1"
-                                                                    {...attrs}
-                                                                >
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort('availability', 'Có Sẵn')
-                                                                        }
+                                                        <div className={cx('wrapper-category-tippy')}>
+                                                            <Tippy
+                                                                interactive
+                                                                visible={showSort}
+                                                                placement="bottom-start"
+                                                                onClickOutside={() => setShowSort(!showSort)}
+                                                                offset={[0, 0]}
+                                                                render={(attrs: any) => (
+                                                                    <div
+                                                                        className={cx('popperover')}
+                                                                        tabIndex="-1"
+                                                                        {...attrs}
                                                                     >
-                                                                        Có Sẵn
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() => onChangeSort('title-asc', 'A-Z')}
-                                                                    >
-                                                                        A-Z
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort('title-desc', 'Z-A')
-                                                                        }
-                                                                    >
-                                                                        Z-A
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort(
-                                                                                'price-asc',
-                                                                                'Giá, thấp đến cao',
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Giá, thấp đến cao
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort(
-                                                                                'price-desc',
-                                                                                'Giá, cao đến thấp ',
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Giá, cao đến thấp
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort(
-                                                                                'date-desc',
-                                                                                'Ngày, Mới đến cũ',
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Ngày, mới đến cũ
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={() =>
-                                                                            onChangeSort('date-asc', 'Ngày, cũ đến mới')
-                                                                        }
-                                                                    >
-                                                                        Ngày, cũ đến mới
-                                                                    </span>
-                                                                </div>
-                                                            )}
-                                                        >
-                                                            <div
-                                                                className={cx('globo-sort-options')}
-                                                                onClick={() => setShowSort(!showSort)}
-                                                                role="button"
-                                                                aria-label="Chọn Phương Thức Sắp Xếp"
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort('availability', 'Có Sẵn')
+                                                                            }
+                                                                        >
+                                                                            Có Sẵn
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort('title-asc', 'A-Z')
+                                                                            }
+                                                                        >
+                                                                            A-Z
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort('title-desc', 'Z-A')
+                                                                            }
+                                                                        >
+                                                                            Z-A
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort(
+                                                                                    'price-asc',
+                                                                                    'Giá, thấp đến cao',
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Giá, thấp đến cao
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort(
+                                                                                    'price-desc',
+                                                                                    'Giá, cao đến thấp ',
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Giá, cao đến thấp
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort(
+                                                                                    'date-desc',
+                                                                                    'Ngày, Mới đến cũ',
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Ngày, mới đến cũ
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={() =>
+                                                                                onChangeSort(
+                                                                                    'date-asc',
+                                                                                    'Ngày, cũ đến mới',
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Ngày, cũ đến mới
+                                                                        </span>
+                                                                    </div>
+                                                                )}
                                                             >
-                                                                <span>{currentSort}</span>
-                                                            </div>
-                                                        </Tippy>
+                                                                <div
+                                                                    className={cx('globo-sort-options')}
+                                                                    onClick={() => setShowSort(!showSort)}
+                                                                    role="button"
+                                                                    aria-label="Chọn Phương Thức Sắp Xếp"
+                                                                >
+                                                                    <span>{currentSort}</span>
+                                                                </div>
+                                                            </Tippy>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={cx('gf-filter-seleted-on-mobile')}>

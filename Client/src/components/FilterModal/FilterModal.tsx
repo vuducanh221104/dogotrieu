@@ -3,7 +3,8 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { ChervonDonwIcon, XmarkIcon } from '../Icons';
 import styles from './FilterModal.module.scss';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { archivo } from '@/assets/FontNext';
 
 const cx = classNames.bind(styles);

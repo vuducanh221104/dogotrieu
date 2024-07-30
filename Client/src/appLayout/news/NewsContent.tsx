@@ -13,7 +13,8 @@ import { newGetAllLimit } from '@/services/newsServices';
 import slugify from 'slugify';
 import Link from 'next/link';
 import PaginationNews from '@/components/PaginationNews';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
@@ -23,7 +24,7 @@ const cx = classNames.bind(styles);
 function NewsHome() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const [pageParam, setPageParam] = useState('1');
+    const [pageParam, setPageParam] = useState<string>('1');
     const limitParam = '5';
 
     useEffect(() => {
@@ -71,7 +72,8 @@ function NewsHome() {
                                                     >
                                                         <div className={cx('aspect-ratio')}>
                                                             <CldImage
-                                                                fill
+                                                                width={1200}
+                                                                height={678}
                                                                 src={item.thumb}
                                                                 alt={item.title}
                                                                 className={cx('news-item-image-cover')}

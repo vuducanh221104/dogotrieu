@@ -31,7 +31,8 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                 <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`}>
                     <div className={cx('aspect-ratio')}>
                         <CldImage
-                            fill
+                            width={400}
+                            height={600}
                             alt={`${data.name} | Dogotrieu.com`}
                             src={data.thumb}
                             sizes={'(min-width: 0px) 100vw'}

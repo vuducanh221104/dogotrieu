@@ -12,8 +12,8 @@ import ViewCustomer from '@/components/ViewCustomer';
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { CldImage } from 'next-cloudinary';
-import icons from '@/assets/images-icon';
 import Image from 'next/image';
+import icons from '@/assets/images-icon';
 
 const cx = classNames.bind(styles);
 function SwiperCustomer({ data, navigation = true }: any) {
@@ -59,6 +59,7 @@ function SwiperCustomer({ data, navigation = true }: any) {
             spaceBetween: 10,
         },
     };
+
     return (
         <>
             {showOverlay && <ViewCustomer data={data} setShowOverlay={setShowOverlay} indexImage={selectIndexImage} />}
@@ -81,7 +82,7 @@ function SwiperCustomer({ data, navigation = true }: any) {
                             breakpoints={{ ...dataBreakpoints }}
                         >
                             {data?.concat(data).map((item: any, index: any) => (
-                                <SwiperSlide key={index}>
+                                <SwiperSlide key={index} style={{ cursor: 'pointer' }}>
                                     <>
                                         <CldImage
                                             width={200}

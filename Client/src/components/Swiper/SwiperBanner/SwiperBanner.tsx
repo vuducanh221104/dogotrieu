@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { CldImage } from 'next-cloudinary';
+import Link from 'next/link';
 
 interface PropsSwiperBanner {
     data: any;
@@ -74,16 +75,18 @@ function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: P
                     {bannerImages?.map((item: any) => (
                         <SwiperSlide key={item._id}>
                             <div className={cx('aspect-ratio', 'hidden-mobile')}>
-                                <a href={`/${item.link}`}>
+                                <Link href={`${item.link}`}>
                                     <CldImage
-                                        fill
+                                        width={2200}
+                                        height={980}
                                         alt="BANNER-DOGOTRIEU"
                                         src={item.url}
                                         sizes={'(min-width: 0px) 100vw'}
                                         className={cx('image-home')}
+                                        loading="eager"
                                         priority
                                     />
-                                </a>
+                                </Link>
                             </div>
                         </SwiperSlide>
                     ))}

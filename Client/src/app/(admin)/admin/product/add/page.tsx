@@ -278,9 +278,10 @@ function PageProductAdd() {
                                         },
                                     ]}
                                 >
-                                    <Input type="number" min={0} placeholder="Original Price" />
+                                    <Input placeholder="Original Price" />
                                 </Form.Item>
                                 <Form.Item
+                                    initialValue={0}
                                     name={['price', 'discount']}
                                     label="Discount Price"
                                     rules={[
@@ -298,9 +299,10 @@ function PageProductAdd() {
                                         },
                                     ]}
                                 >
-                                    <Input type="number" min={0} placeholder="Discount Price" />
+                                    <Input placeholder="Discount Price" />
                                 </Form.Item>
                                 <Form.Item
+                                    initialValue={0}
                                     name={['price', 'discount_quantity']}
                                     label="Discount Quantity"
                                     rules={[

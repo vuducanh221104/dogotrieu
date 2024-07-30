@@ -55,6 +55,7 @@
 html {
     font-size: 62.5%;
     overflow-x: hidden;
+    color: var(--text-color);
 }
 body {
     // height: 100%; //CO HAY KHONG CUNG DUOC
@@ -77,24 +78,30 @@ body {
 }
 
 // TIPPY
-// Search
-#tippy-6 {
-    width: 100% !important;
-}
-// CART-ON-MOBILE
-#tippy-9 {
-    inset: -3px auto auto -9px !important;
-}
-// Filter-asc-desc
-@media screen and (max-width: 999px) {
-    #tippy-11 {
+//SEARCH
+.wrapper-search-inner {
+    [data-tippy-root] {
         width: 100% !important;
     }
 }
-//Bars
-// #tippy-7 {
-//     inset: 0px auto auto -40px !important;
-// }
+// CART-ON-MOBILE
+.wrapper-cart-tippy {
+    [data-tippy-root] {
+        inset: -3px auto auto -9px !important;
+    }
+}
+
+// Filter-asc-desc
+.wrapper-category-tippy {
+    [data-tippy-root] {
+        width: 100% !important;
+    }
+}
+.wrapper-search-tippy {
+    [data-tippy-root] {
+        width: 100% !important;
+    }
+}
 
 input,
 select {
@@ -200,7 +207,7 @@ div {
         padding: 0 40px;
     }
 }
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 640px) {
     .container-flush {
         padding: 0 !important;
     }

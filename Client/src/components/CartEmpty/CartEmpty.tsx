@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import styles from './CartEmpty.module.scss';
 import { archivo } from '@/assets/FontNext';
 import { CartIcon } from '@/components/Icons';
+import Link from 'next/link';
+import routes from '@/config/routes';
 const cx = classNames.bind(styles);
 function CartEmpty() {
     return (
@@ -14,9 +16,9 @@ function CartEmpty() {
                 <p className={`${cx('empty-state-heading')} heading h1 ${archivo.className}`}>Your cart is empty</p>
                 <p className={cx('empty-state-tile')}>Spend $500 more and get free shipping!</p>
                 <div className={cx('empty-state-button')}>
-                    <a href="/" className={`${cx('btn-sumbit-link')} button`}>
+                    <Link href={routes.user.home} className={`${cx('btn-sumbit-link')} button`}>
                         Shop our products
-                    </a>
+                    </Link>
                 </div>
             </div>
         </Container>

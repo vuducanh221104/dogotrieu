@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -17,6 +17,7 @@ interface PropsProductGallery {
     data: any;
     name: string;
 }
+
 function ProductGallery({ data, name }: PropsProductGallery) {
     const sliderRef = useRef<any>(null);
     const [isTransitionEnabled, setIsTransitionEnabled] = useState<boolean>(false);
@@ -33,11 +34,20 @@ function ProductGallery({ data, name }: PropsProductGallery) {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slideNext();
         setCurrentIndex((prevIndex) => Math.min(data.length - 1, prevIndex + 1));
-    }, []);
+    }, [data.length]);
 
     const handleClickThumb = (index: number) => {
+        if (sliderRef.current) {
+            sliderRef.current.swiper.slideTo(index);
+        }
         setCurrentIndex(index);
     };
+
+    useEffect(() => {
+        if (thumbsSwiper && sliderRef.current) {
+            sliderRef.current.swiper.thumbs.swiper = thumbsSwiper;
+        }
+    }, [thumbsSwiper]);
 
     return (
         <div className={cx('product-gallery-item')}>
@@ -55,10 +65,13 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                 <SwiperSlide key={index}>
                                     <div className={cx('aspect-ratio')}>
                                         <CldImage
-                                            fill
+                                            width={900}
+                                            height={1350}
                                             src={img}
                                             alt={`${name} | Dogotrieu.com`}
                                             sizes={'(min-width: 0px) 100vw'}
+                                            loading="eager"
+                                            priority
                                         />
                                     </div>
                                 </SwiperSlide>
@@ -88,26 +101,20 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                         freeMode={true}
                                         grabCursor={true}
                                         watchSlidesProgress={true}
+                                        mousewheel={{
+                                            sensitivity: 2,
+                                            forceToAxis: true,
+                                        }}
                                         breakpoints={{
                                             0: {
                                                 direction: 'horizontal',
                                                 spaceBetween: 0,
                                                 slidesPerView: 'auto',
-                                                mousewheel: {
-                                                    // enabled: true,
-                                                    sensitivity: 2,
-                                                    forceToAxis: true,
-                                                },
                                             },
 
                                             1000: {
                                                 direction: 'vertical',
                                                 slidesPerView: 4,
-                                                mousewheel: {
-                                                    // enabled: true,
-                                                    sensitivity: 2,
-                                                    thresholdTime: 4,
-                                                },
                                             },
                                         }}
                                         className={cx('swiper-thumbnail')}
@@ -120,10 +127,12 @@ function ProductGallery({ data, name }: PropsProductGallery) {
                                             >
                                                 <div className={cx('aspect-ratio')}>
                                                     <CldImage
-                                                        fill
+                                                        width={130}
+                                                        height={195}
                                                         alt={`${name} | Dogotrieu.com`}
                                                         src={img}
-                                                        // loading="lazy"
+                                                        loading="eager"
+                                                        priority
                                                     />
                                                 </div>
                                             </SwiperSlide>

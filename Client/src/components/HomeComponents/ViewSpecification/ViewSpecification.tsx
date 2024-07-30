@@ -12,6 +12,8 @@ import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import icons from '@/assets/images-icon';
 import Image from 'next/image';
+import routes from '@/config/routes';
+import Link from 'next/link';
 const cx = classNames.bind(styles);
 
 function ViewSpecification() {
@@ -24,7 +26,7 @@ function ViewSpecification() {
             title: 'Quick Ship',
             img: icons.iconCartPlus,
             description: 'In stock & ready*',
-            link: '/',
+            link: routes.user.home,
         },
         {
             title: 'Customer Care',
@@ -93,7 +95,7 @@ function ViewSpecification() {
                                         <div className={cx('specification-item-scroll-info')}>
                                             <p>{item.title}</p>
                                             {item.link ? (
-                                                <a href={item.link}> {item.description}</a>
+                                                <Link href={item.link}> {item.description}</Link>
                                             ) : (
                                                 <span> {item.description}</span>
                                             )}
@@ -122,7 +124,7 @@ function ViewSpecification() {
                                 <div className={cx('specification-item-info')}>
                                     <p>{item.title}</p>
                                     {item.link ? (
-                                        <a href={item.link}> {item.description}</a>
+                                        <Link href={item.link}> {item.description}</Link>
                                     ) : (
                                         <span> {item.description}</span>
                                     )}
