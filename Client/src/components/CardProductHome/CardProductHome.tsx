@@ -32,7 +32,12 @@ const CardProductHome = ({ data, windowWidth, productRef }: PropsCardProductHome
                     <div className={cx('product-image')}>
                         <Link href="/">
                             <div className={cx('aspect-ratio')}>
-                                <CldImage fill src={item.thumb} alt={`${data.name} | Dogotrieu.com`} />
+                                <CldImage
+                                    width={600}
+                                    height={400}
+                                    src={item.thumb}
+                                    alt={`${data.name} | Dogotrieu.com`}
+                                />
                             </div>
                         </Link>
                     </div>

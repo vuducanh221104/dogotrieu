@@ -37,7 +37,7 @@ function NewsDetail() {
                             {/* ROW 1 */}
                             <div className={cx('news-content')}>
                                 <div className={cx('aspect-ratio')}>
-                                    <CldImage fill src={data.thumb} alt={data.title} />
+                                    <CldImage width={1200} height={870} src={data.thumb} alt={data.title} />
                                 </div>
                                 <div className={cx('news-description')}>
                                     <MarkdownRender content={data.content} />

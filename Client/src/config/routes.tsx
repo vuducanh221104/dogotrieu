@@ -59,8 +59,9 @@ const routes = {
         youtube: 'https://www.youtube.com/channel/UCDbSfGCcaBL27p2naz3DMVg',
         printerest: 'https://www.facebook.com/I.Am.DucAnh123',
         zaloChat: 'https://www.facebook.com/I.Am.DucAnh123',
-        phoneChat: 'https://www.facebook.com/I.Am.DucAnh123',
         messagerChat: 'https://www.facebook.com/I.Am.DucAnh123',
+        phone: 'tel:0348483612',
+        mail: 'mailto:dogotrieu@gmail.com',
     },
 };
 

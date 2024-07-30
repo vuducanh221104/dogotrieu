@@ -7,7 +7,6 @@ import { DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 import Breadcrumb from '@/components/Breadcrumb';
 import { archivo } from '@/assets/FontNext';
-import { useParams } from 'next/navigation';
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
 import MarkdownRender from '@/components/MarkdownRender';
@@ -75,7 +74,7 @@ function ProductDetail({ productId: id }: any) {
     } else
         return (
             <>
-                <Breadcrumb />
+                <Breadcrumb nameSlug={data.name} />
                 <div className={cx('product-template-wrapper')}>
                     <section className={cx('section-product-template')}>
                         <Container className="container-flush">
@@ -351,9 +350,9 @@ function ProductDetail({ productId: id }: any) {
                 <div className={cx('product-recommendations-wrapper')}>
                     <section className={cx('section-product-recommendations')}>
                         <ViewListProductAuto
-                            query={'?category_id=666557e3c3a93469c8e5a597'}
-                            nextBtnLink={'123'}
-                            title={'You may also like'}
+                            query={'?category_id=66655754c3a93469c8e5a58a'}
+                            nextBtnLink={'/category/all'}
+                            title={'Bạn đang quan tâm'}
                         />
                     </section>
                 </div>

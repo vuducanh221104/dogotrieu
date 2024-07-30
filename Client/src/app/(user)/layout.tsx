@@ -10,6 +10,7 @@ import Header from '@/Layout/components/Header';
 import ProviderRedux from '@/redux/ProviderRedux';
 import Script from 'next/script';
 import { jsonLdOrganization, jsonLdStore, jsonWebsite } from '@/services/menuData/jsonLd';
+import ProgressBarUser from '@/components/ProgressBarUser';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -25,7 +26,8 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
+        <html lang="vn" suppressHydrationWarning={true}>
+            <meta name="theme-color" content="#000000" />
             <meta
                 content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
                 name="viewport"
@@ -35,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <ProviderRedux>
                         <AnouBar />
                         <Header />
-                        {children}
+                        <ProgressBarUser>{children}</ProgressBarUser>
 
                         <Footer />
                         <Chat />

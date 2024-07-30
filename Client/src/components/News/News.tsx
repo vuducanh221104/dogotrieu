@@ -48,7 +48,8 @@ function News() {
                                         >
                                             <div className={cx('aspect-ratio')}>
                                                 <CldImage
-                                                    fill
+                                                    width={600}
+                                                    height={344}
                                                     src={item.thumb}
                                                     alt={item.title}
                                                     className={cx('news-item-image-cover')}
@@ -86,7 +87,8 @@ function News() {
                                                 >
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
-                                                            fill
+                                                            width={700}
+                                                            height={400}
                                                             src={item.thumb}
                                                             alt={item.title}
                                                             className={cx('news-item-image-cover')}

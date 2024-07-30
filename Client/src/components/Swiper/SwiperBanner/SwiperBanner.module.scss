@@ -74,3 +74,9 @@
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
+
+@media screen and (max-width: 640px) {
+    .aspect-ratio {
+        padding-bottom: 146.66666666666666%;
+    }
+}

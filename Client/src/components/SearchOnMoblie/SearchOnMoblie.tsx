@@ -1,14 +1,13 @@
 'use client';
 
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import styles from './SearchOnMobile.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faXmark, faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { search } from '@/services/searchServices';
 import useDebounce from '@/hooks/useDebouce';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import slugify from 'slugify';
 import Link from 'next/link';
 import FormatPrice from '../FormatPrice';
@@ -166,6 +165,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                                     href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
                                                     className={cx('search-inner-item')}
                                                     key={index}
+                                                    onClick={() => setClose(true)}
                                                 >
                                                     <div className={cx('search-inner-wrapper-image')}>
                                                         <CldImage

@@ -66,7 +66,6 @@ function PageListMaterial() {
     const handleSaveById = async () => {
         try {
             const values = await formById.validateFields();
-            console.log(values);
             const queryIds = Object.keys(values)
                 .filter((key) => key.startsWith('id'))
                 .map((key) => values[key])
@@ -77,7 +76,6 @@ function PageListMaterial() {
                 title: values.title,
                 link_view_all: values.linkViewAll,
             };
-            console.log(queryIds);
             const add = await homePatch({ featured_product: [...data[0].featured_product, newData] });
             if (add) {
                 formById.resetFields();

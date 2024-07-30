@@ -53,7 +53,7 @@ function MapMini() {
     };
 
     return (
-        <div className={cx('wrapper-map')}>
+        <div className={cx('wrapper')}>
             <div className={cx('map-header')}>
                 <FontAwesomeIcon icon={faMapLocation} className={cx('location-icon')} />
                 <h3>Hệ Thống Cửa Hàng</h3>

@@ -97,10 +97,10 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                         <h3 className={`${cx('product-heading-title')} ${archivo.className}`}>{title}</h3>
                         {nextBtnLink !== '' && (
                             <div className={cx('product-heading-view-all')}>
-                                <a href={nextBtnLink}>
+                                <Link href={`${nextBtnLink}`}>
                                     View All
                                     <FontAwesomeIcon icon={faArrowRight} className={cx('icon-arrow-right')} />
-                                </a>
+                                </Link>
                             </div>
                         )}
                     </div>
@@ -153,7 +153,8 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         >
                                                             <div className={cx('aspect-ratio')}>
                                                                 <CldImage
-                                                                    fill
+                                                                    width={400}
+                                                                    height={600}
                                                                     alt={`${item.name} | Dogotrieu.com`}
                                                                     src={item.thumb}
                                                                     sizes={'(min-width: 0px) 100vw'}
@@ -245,7 +246,8 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
-                                                            fill
+                                                            width={600}
+                                                            height={900}
                                                             src={item.thumb}
                                                             alt={`${item.name} | Dogotrieu.com`}
                                                             sizes={'(min-width: 0px) 100vw'}

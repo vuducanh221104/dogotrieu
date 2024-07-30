@@ -72,8 +72,13 @@ function PageContact() {
                         </p>
                         <p>Thứ hai-Chủ Nhật 8h Sáng - 5h Chiều </p>
                         <p>
-                            <a href="tel:0348483612" aria-label="Liên Hệ Qua Điện Thoại">
+                            <a href={routes.social.phone} aria-label="Liên Hệ Qua Điện Thoại">
                                 Tel: 0348483612
+                            </a>
+                        </p>
+                        <p>
+                            <a href={routes.social.mail} aria-label="Liên Hệ Qua Email">
+                                Email: dogotrieu@gmail.com
                             </a>
                         </p>
                         <p>Cửa Hàng : 24 Lương Định Của , Trần Não ,TP.Thủ Đức</p>

@@ -1,3 +1,6 @@
+.news-wrapper {
+    display: block;
+}
 .news-item {
     margin-top: 10px;
     width: 100%;
@@ -27,9 +30,6 @@
     border-radius: 3px;
 }
 
-.news-wrapper {
-    display: block;
-}
 .news-header {
     display: flex;
     justify-content: space-between;
@@ -198,7 +198,7 @@
         display: block;
     }
 }
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 641px) {
     .news-header {
         margin: 35px 0;
     }
@@ -212,13 +212,13 @@
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 999px) {
     .news-content-extra {
         display: none;
     }
 }
 
-@media screen and (min-width: 641px) and (max-width: 1000px) {
+@media screen and (min-width: 641px) and (max-width: 999px) {
     .news-item {
         width: 50%;
     }

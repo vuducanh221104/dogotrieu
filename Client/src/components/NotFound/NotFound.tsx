@@ -6,7 +6,8 @@ import { SearchIcon, XmarkIcon } from '../Icons';
 import Link from 'next/link';
 import { archivo } from '@/assets/FontNext';
 import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
+
 interface IProps {
     title?: string;
     description?: string;

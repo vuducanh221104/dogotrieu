@@ -309,12 +309,13 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                                 if (value < 0) {
                                                     return Promise.reject(new Error('Must be a non-negative number.'));
                                                 }
+
                                                 return Promise.resolve();
                                             },
                                         },
                                     ]}
                                 >
-                                    <Input type="number" min={0} placeholder="Original Price" />
+                                    <Input placeholder="Original Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount']}
@@ -334,7 +335,7 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                         },
                                     ]}
                                 >
-                                    <Input type="number" min={0} placeholder="Discount Price" />
+                                    <Input placeholder="Discount Price" />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount_quantity']}
@@ -359,9 +360,16 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                 <Form.Item
                                     name={['price', 'currency']}
                                     label="Currency"
-                                    rules={[{ required: false, message: 'Required' }]}
+                                    rules={[{ required: false, message: 'Please input the discount currency' }]}
                                 >
-                                    <Input placeholder="Currency" />
+                                    <Select
+                                        defaultValue="VND"
+                                        style={{ width: 120 }}
+                                        options={[
+                                            { value: 'VND', label: 'VND' },
+                                            { value: 'USD', label: 'USD' },
+                                        ]}
+                                    />
                                 </Form.Item>
                             </div>
                         </Space>
@@ -655,16 +663,16 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                     <Form.Item
                         name={['product_type_id', 'images']}
                         label="Images"
-                        rules={[
-                            {
-                                validator: (_, value) => {
-                                    if (!imageUploaded) {
-                                        return Promise.reject(new Error('Required'));
-                                    }
-                                    return Promise.resolve();
-                                },
-                            },
-                        ]}
+                        // rules={[
+                        //     {
+                        //         validator: (_, value) => {
+                        //             if (!imageUploaded) {
+                        //                 return Promise.reject(new Error('Required'));
+                        //             }
+                        //             return Promise.resolve();
+                        //         },
+                        //     },
+                        // ]}
                         validateStatus={imageUploaded ? 'success' : 'error'}
                         help={!imageUploaded && 'Required'}
                     >
