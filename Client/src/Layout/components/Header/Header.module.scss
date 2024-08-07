@@ -159,7 +159,7 @@
     overflow-y: auto !important;
     overflow-x: hidden;
     height: 100%;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     background: var(--secondary-background);
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
@@ -169,7 +169,7 @@
 .mobile-menu-section {
     border-bottom: 1px solid var(--border-color);
     padding: 16px 20px;
-    font-weight: 300;
+    font-weight: 400;
 }
 .mobile-menu-section-list {
     list-style: none;
@@ -205,7 +205,8 @@
 }
 .mobile-menu-section-need-help-tile,
 .mobile-menu-section-follow-tile {
-    margin: 0;
+    font-size: 1.3rem;
+    margin-bottom: 0 0 13px 0;
 }
 .mobile-menu-section-need-help-list,
 .mobile-menu-section-follow-list {
@@ -216,18 +217,18 @@
 
 .mobile-menu-section-need-help-item,
 .mobile-menu-section-follow-item {
-    padding-top: 18px;
+    padding: 7px 0;
 }
 
 .icon-iphone,
 .icon-mail {
-    margin-right: 16px;
-    width: 24px;
-    height: 24px;
+    margin-right: 10px;
+    width: 22px;
+    height: 22px;
 }
 
 .icon-social {
-    margin-right: 16px;
+    margin-right: 10px;
     width: 28px;
     height: 28px;
 }
@@ -257,6 +258,7 @@
     width: 12px;
     height: 8px;
     margin-left: 12px;
+    margin-bottom: 4px;
     transition: transform 0.3s ease-in-out;
     display: inline-block;
     vertical-align: middle;

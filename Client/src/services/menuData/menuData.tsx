@@ -1,5 +1,5 @@
 import config from '@/config';
-import { FilterItem, FooterMenu, MenuPanel } from '@/types/client';
+import { FilterItem, FooterMenu, MenuPanel, TaggedItem } from '@/types/client';
 
 export const dataMenuNavBar: MenuPanel[] = [
     {
@@ -7,19 +7,21 @@ export const dataMenuNavBar: MenuPanel[] = [
         title: 'BÀN GHẾ',
         subMenu: [
             { title: 'Tất Cả Bàn Ghế', link: '/category/ban-ghe' },
-            { title: 'Bàn Ăn', link: '/category/ban-an' },
-            { title: 'Bàn Trang Điểm', link: '/category/ban-trang-diem' },
-            { title: 'Bàn Trà', link: '/category/ban-tra' },
-            { title: 'Bàn & Ghế Làm Việc', link: '/category/ban-ghe-lam-viec' },
-            { title: 'Ghế Đơn', link: '/category/ghe-don' },
-            { title: 'Bàn & Ghế Trường Kỷ Cổ', link: '/category/ban-ghe-truong-ky' },
-            { title: 'Bàn & Ghế Sofa', link: '/category/ban-ghe-sofa' },
+            { title: 'Bàn Ghế Cafe', link: '/category/ban-ghe-cafe' },
+            { title: 'Bàn Ghế Trang Điểm', link: '/category/ban-ghe-trang-diem' },
+            { title: 'Bàn Ghế Làm Việc', link: '/category/ban-ghe-lam-viec' },
+            { title: 'Bàn Ghế Ăn', link: '/category/ban-ghe-an' },
+            { title: 'Bàn Ghế Trà', link: '/category/ban-ghe-tra' },
+            { title: 'Bàn Ghế Sofa', link: '/category/ban-ghe-sofa' },
+            { title: 'Bàn Ghế Đơn', link: '/category/ban-ghe-don' },
+            { title: 'Bàn Ghế Trường Kỷ', link: '/category/ban-ghe-truong-ky' },
+            { title: 'Bàn Ghế Khác', link: '/category/ban-ghe-khac' },
         ],
-        height: 190,
+        height: 370,
     },
     {
         id: 1,
-        title: 'TỦ CŨ',
+        title: 'TỦ',
         subMenu: [
             { title: 'Tất Cả Tủ', link: '/category/tu' },
             { title: 'Tủ Thờ', link: '/category/tu-tho' },
@@ -29,18 +31,19 @@ export const dataMenuNavBar: MenuPanel[] = [
             { title: 'Tủ Sách', link: '/category/tu-sach' },
             { title: 'Tủ Loại Khác', link: '/category/tu-loai-khac' },
         ],
-        height: 190,
+        height: 210,
     },
     {
         id: 2,
         title: 'KỆ CŨ',
         subMenu: [
             { title: 'Tất Cả Kệ', link: '/category/ke' },
-            { title: 'Kệ Tivi', link: '/category/ke-tivi' },
             { title: 'Kệ Trang Trí', link: '/category/ke-trang-tri' },
+            { title: 'Kệ Sách', link: '/category/ke-sach' },
+            { title: 'Kệ Tivi', link: '/category/ke-tivi' },
             { title: 'Kệ Loại Khác', link: '/category/ke-loai-khac' },
         ],
-        height: 150,
+        height: 160,
     },
     {
         id: 3,
@@ -49,34 +52,40 @@ export const dataMenuNavBar: MenuPanel[] = [
             { title: 'Tất Cả Giường', link: '/category/giuong' },
             { title: 'Giường Cũ Xưa', link: '/category/giuong-cu-xua' },
             { title: 'Giường Hiện Đại', link: '/category/giuong-hien-dai' },
+            { title: 'Giường Loại Khác', link: '/category/giuong-loai-khac' },
         ],
-        height: 70,
+        height: 105,
     },
     {
         id: 4,
         title: 'TƯỢNG & TRANH',
         subMenu: [
-            { title: 'Tất Cả Tượng & Tranh', link: '/category/tuong-&-tranh' },
+            { title: 'Tất Cả Tượng & Tranh', link: '/category/tuong-va-tranh' },
             { title: 'Tượng Gỗ', link: '/category/tuong-go' },
             { title: 'Tượng Sứ', link: '/category/tuong-su' },
             { title: 'Tượng Đồng', link: '/category/tuong-dong' },
             { title: 'Tượng Đá', link: '/category/tuong-da' },
-            { title: 'Tranh Gỗ', link: '/category/tranh-go' },
+            { title: 'Tranh Gỗ Khảm Ốc', link: '/category/tranh-go-kham-oc' },
+            { title: 'Tranh Sơn Mài', link: '/category/tranh-son-dau' },
             { title: 'Tranh Sơn Dầu', link: '/category/tranh-son-dau' },
-            { title: 'Tranh Đá', link: '/category/tranh-da' },
+            { title: 'Tranh Điêu Khắc', link: '/category/tranh-dieu-khac' },
+            { title: 'Tượng Loại Khác', link: '/category/tuong-loai-khac' },
+            { title: 'Tranh Loại Khác', link: '/category/tranh-loai-khac' },
         ],
-        height: 150,
+        height: 355,
     },
     {
         id: 5,
         title: 'TRANG TRÍ & KHÁC',
         subMenu: [
-            { title: 'Tất Cả Trang Trí & Khác', link: '/category/trang-tri-&-khac' },
-            { title: 'Đồ Gốm', link: '/category/do-gom' },
+            { title: 'Tất Cả Trang Trí & Khác', link: '/category/trang-tri-va-khac' },
+            { title: 'Đồ Gốm Sứ', link: '/category/do-gom-su' },
             { title: 'Rương', link: '/category/ruong' },
             { title: 'Đèn Trần', link: '/category/den-tran' },
+            { title: 'Đèn Ngủ', link: '/category/den-ngu' },
+            { title: 'Khác', link: '/category/khac' },
         ],
-        height: 70,
+        height: 180,
     },
 ];
 
@@ -156,5 +165,23 @@ export const footerMenuItems: FooterMenu[] = [
         content: 'Đăng ký nhận tin để nhận các ưu đãi độc quyền, bộ sưu tập mới, mẹo và nhiều hơn nữa',
         classNameChild: 'newsletter',
         height: '40px',
+    },
+];
+
+export const dataTaggedNews: TaggedItem[] | any = [
+    {
+        id: 1,
+        title: 'Tất cả',
+        url: 'all',
+    },
+    {
+        id: 2,
+        title: 'Khám Phá',
+        url: 'kham-pha',
+    },
+    {
+        id: 3,
+        title: 'Đời Sống',
+        url: 'doi-song',
     },
 ];

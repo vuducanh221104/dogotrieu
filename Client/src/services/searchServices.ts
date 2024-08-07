@@ -1,4 +1,4 @@
-import { APIResponseSWR, Product } from '@/types/client';
+import { Product } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
@@ -15,7 +15,7 @@ export interface SearchData {
 //[GET]
 export const searchSEOGET = async (q: string | any) => {
     try {
-        const res = await httpRequest.get(`api/v1/product/searchSeo?q=${q}`);
+        const res = await httpRequest.get<any>(`api/v1/product/searchSeo?q=${q}`);
         return res;
     } catch (error) {
         const err = error as AxiosError;
@@ -24,9 +24,9 @@ export const searchSEOGET = async (q: string | any) => {
 };
 
 //[GET]
-export const searchFilter = (query: string): APIResponseSWR<SearchData> => {
+export const searchFilter = (query: string) => {
     const url = `api/v1/product/search/${query}`;
-    const { data, error, isLoading, mutate } = useSWR<SearchData>(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -34,6 +34,7 @@ export const searchFilter = (query: string): APIResponseSWR<SearchData> => {
 
     if (error) {
         console.error(error.response?.data);
+        // throw error
     }
 
     return {
@@ -44,14 +45,11 @@ export const searchFilter = (query: string): APIResponseSWR<SearchData> => {
     };
 };
 //GET
-export const search = async (q: string, type: string = 'less'): Promise<Product[]> => {
+export const search = async (q: string, type: string = 'less'): Promise<any> => {
     try {
-        const res = await httpRequest.get<Product[]>(`api/v1/product/searchQuery?q=${q}&type=${type}`);
+        const res = await httpRequest.get<any>(`api/v1/product/searchQuery?q=${q}&type=${type}`);
         return res;
     } catch (error) {
-        const err = error as AxiosError;
-        console.error(err.response?.data);
         return [];
-        // throw new Error('Failed Search Not Found');
     }
 };

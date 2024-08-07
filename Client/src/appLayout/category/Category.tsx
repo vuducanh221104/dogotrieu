@@ -545,7 +545,13 @@ function CategoryContent() {
 
                                             {data?.map((item: any, index: number) => {
                                                 const isSpecialIndex =
-                                                    windowWidth <= 641 ? index % 2 !== 0 : (index + 1) % 3 === 0;
+                                                    windowWidth <= 641
+                                                        ? index % 2 !== 0
+                                                        : windowWidth <= 1279
+                                                        ? (index + 1) % 3 === 0
+                                                        : index % 3 !== 0
+                                                        ? (index + 1) % 4 === 0
+                                                        : (index + 1) % 4 === 0;
                                                 return (
                                                     <CardProduct
                                                         key={item._id}

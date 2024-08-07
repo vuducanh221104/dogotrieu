@@ -9,23 +9,27 @@ import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { archivo, poppins } from '@/assets/FontNext';
 import config from '@/config';
 import Loading from '@/components/Loading';
-import { newGetAllLimit } from '@/services/newsServices';
+import { newGetTaggedPagination } from '@/services/newsServices';
 import slugify from 'slugify';
 import Link from 'next/link';
 import PaginationNews from '@/components/PaginationNews';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
 import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
+import { dataTaggedNews } from '@/services/menuData/menuData';
 
 const cx = classNames.bind(styles);
 
-function NewsHome() {
+function News() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const params = useParams();
     const [pageParam, setPageParam] = useState<string>('1');
     const limitParam = '5';
+    const { slug } = params;
+    const query = `?page=${pageParam}&limit=${limitParam}`;
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -34,7 +38,7 @@ function NewsHome() {
         }
     }, [searchParams]);
 
-    const { data, isLoading, error } = newGetAllLimit(`?page=${pageParam}&limit=${limitParam}`);
+    const { data, isLoading, error } = newGetTaggedPagination(slug, query);
 
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
 
@@ -44,10 +48,12 @@ function NewsHome() {
         router.push(`?${queryParams.toString()}`);
     };
 
+    const dataTagged = dataTaggedNews;
+
     if (isLoading) {
         return <Loading />;
     }
-    if (error || data.data.length === 0) {
+    if (error || data?.data.length === 0) {
         return <NotFound />;
     } else {
         return (
@@ -56,6 +62,15 @@ function NewsHome() {
                     <Container>
                         <header className={cx('news-header')}>
                             <h1 className={archivo.className}>TIN TỨC</h1>
+                            <div className={cx('new-data-list')}>
+                                <ul>
+                                    {dataTagged.map((item: any) => (
+                                        <li key={item.id} className={cx(slug === item.url && 'active')}>
+                                            <Link href={`/blogs/news/tagged/${item.url}`}>{item.title}</Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </header>
                         <div className={cx('news-body')}>
                             <section className={cx('section')} style={{ display: 'block' }}>
@@ -65,9 +80,9 @@ function NewsHome() {
                                             <div className={cx('news-item')} key={item._id}>
                                                 <div className={cx('article-item')}>
                                                     <Link
-                                                        href={`${config.routes.news}/${handleSlugify(item.title)}-${
-                                                            item._id
-                                                        }.html`}
+                                                        href={`${config.routes.newsDetail}/${handleSlugify(
+                                                            item.title,
+                                                        )}-${item._id}.html`}
                                                         className={cx('news-item-link')}
                                                     >
                                                         <div className={cx('aspect-ratio')}>
@@ -82,9 +97,9 @@ function NewsHome() {
                                                     </Link>
                                                     <h2 className={cx('news-item-title')}>
                                                         <Link
-                                                            href={`${config.routes.news}/${handleSlugify(item.title)}-${
-                                                                item._id
-                                                            }.html`}
+                                                            href={`${config.routes.newsDetail}/${handleSlugify(
+                                                                item.title,
+                                                            )}-${item._id}.html`}
                                                             className={cx(archivo.className)}
                                                         >
                                                             {item.title}
@@ -160,7 +175,7 @@ function NewsHome() {
 export default function NewsContent() {
     return (
         <Suspense fallback={<Loading />}>
-            <NewsHome />
+            <News />
         </Suspense>
     );
 }

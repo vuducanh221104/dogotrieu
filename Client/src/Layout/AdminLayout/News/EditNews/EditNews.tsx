@@ -1,7 +1,6 @@
-'use client';
 import React, { useEffect, useState } from 'react';
-import { PlusOutlined, MinusCircleOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Upload, Image, Space, Modal, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Select, Upload, Image, Modal } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -9,7 +8,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
 import { newsPatchById } from '@/services/newsServices';
-import axios from 'axios';
+import { dataTaggedNews } from '@/services/menuData/menuData';
 
 interface PropsEditNews {
     visible: boolean;
@@ -17,7 +16,8 @@ interface PropsEditNews {
     news: any;
     mutate: any;
 }
-const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNews) => {
+
+const EditNews: React.FC<PropsEditNews> = ({ visible, onClose, news, mutate }) => {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueContent, setValueContent] = useState<string>('');
@@ -28,27 +28,33 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
     const [previewThumbnail, setPreviewThumbnail] = useState('');
     const [thumbnailOpen, setThumbnailOpen] = useState(false);
     const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState(false);
+    const dataTagged = [
+        { id: '0', title: 'none', url: 'none' },
+        ...dataTaggedNews.filter((item: any) => item.title !== 'all' && item.url !== 'all'),
+    ];
 
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
             setLoading(true);
+            console.log(values);
             values.content = valueContent;
+            const selectedDescription = dataTagged.find((item: any) => item.url === values.description);
 
             let uploadedThumbnail = [];
 
-            // Upload Images only if there are changes
             if (thumbnail.some((file: any) => !file.url)) {
                 uploadedThumbnail = await uploadImagesToCloudinary(thumbnail.filter((file: any) => !file.url));
             }
 
-            // Update values with uploaded images
             values.thumb = uploadedThumbnail.length > 0 ? uploadedThumbnail[0] : values.thumb;
 
+            // Prepare data to send
             const news_data = {
-                thumb: uploadedThumbnail.url || values.thumb,
+                thumb: values.thumb,
                 title: values.title,
-                description: values.description,
+                description: selectedDescription?.title === 'none' ? null : selectedDescription?.title,
+                slug_description: selectedDescription?.url === 'none' ? null : selectedDescription?.url,
                 content: values.content,
                 tags: values.tags,
                 author: values.author,
@@ -63,7 +69,6 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
             } finally {
                 setLoading(false);
             }
-            setLoading(false);
         } catch (error) {
             messageCustomError('Missing input field');
             setLoading(false);
@@ -78,6 +83,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
             reader.onload = () => resolve(reader.result);
             reader.onerror = (error) => reject(error);
         });
+
     const handlePreviewThumbnail = async (file: any) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -85,6 +91,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
         setPreviewThumbnail(file.url || file.preview);
         setThumbnailOpen(true);
     };
+
     const handleChangeThumbnail = ({ fileList: newFileList }: any) => {
         setThumbnail(newFileList);
         setImageUploadedThumbnail(newFileList.length > 0);
@@ -97,6 +104,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
             ]);
         }
     };
+
     const uploadImagesToCloudinary = async (fileList: any) => {
         const formData = new FormData();
         fileList.forEach((file: any) => {
@@ -110,6 +118,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
 
         return data.map((file: any) => file.path);
     };
+
     const uploadButton = (
         <button
             style={{
@@ -129,7 +138,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
         </button>
     );
 
-    //Markdown
+    // Markdown Editor
     const mdParser = new MarkdownIt();
     function handleEditorChange({ html, text }: any) {
         setValueContent(text);
@@ -152,6 +161,7 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
 
             form.setFieldsValue({
                 ...news,
+                description: dataTagged.find((item: any) => item.url === news.description)?.url || news.description,
             });
             setValueContent(news.content);
         }
@@ -242,7 +252,23 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
                             },
                         ]}
                     >
-                        <Input type="description" placeholder="Description" />
+                        <Select
+                            showSearch
+                            style={{ width: '100%' }}
+                            optionFilterProp="children"
+                            filterOption={(input: any, option: any) =>
+                                (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            filterSort={(optionA: any, optionB: any) =>
+                                (optionA?.name ?? '').toLowerCase().localeCompare((optionB?.name ?? '').toLowerCase())
+                            }
+                            placeholder="Select description"
+                            options={dataTagged.map((item: any) => ({
+                                name: item.title,
+                                value: item.url,
+                                label: item.title,
+                            }))}
+                        />
                     </Form.Item>
                     {/* Author */}
                     <Form.Item
@@ -271,9 +297,9 @@ const EditNews: React.FC<any> = ({ visible, onClose, news, mutate }: PropsEditNe
                         <Select mode="tags" style={{ width: '100%' }} placeholder="Tags" tokenSeparators={[',']} />
                     </Form.Item>
                     {/* Content */}
-                    <Form.Item label="Content" required>
+                    <Form.Item label="Content">
                         <MdEditor
-                            style={{ height: '250px', wordWrap: 'break-word' }}
+                            style={{ height: '400px' }}
                             renderHTML={(text) => mdParser.render(text)}
                             onChange={handleEditorChange}
                             value={valueContent}
