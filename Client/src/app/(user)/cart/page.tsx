@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useState, useEffect } from 'react';
 import CartEmpty from '@/components/CartEmpty';
+import Loading from '@/components/Loading';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +21,11 @@ function PageCart() {
     const dispatch: AppDispatch = useDispatch();
     const productsAddToCart = useSelector((state: RootState) => state.cart);
     const [localQuantities, setLocalQuantities] = useState<{ [key: string]: number | string }>({});
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         const initialQuantities = productsAddToCart.products.reduce((acc: any, product: any) => {
@@ -74,10 +80,15 @@ function PageCart() {
         dispatch(removeProduct({ id: item._id }));
         dispatch(updateTotalPrice());
     };
-    if (productsAddToCart.products.length <= 0 || null) {
-        return <CartEmpty />;
-    } else {
+
+    if (!isMounted) {
+        return <Loading />;
     }
+
+    if (productsAddToCart.products.length <= 0) {
+        return <CartEmpty />;
+    }
+
     return (
         <div className={cx('page-cart')}>
             <section className={cx('page-cart-section')}>

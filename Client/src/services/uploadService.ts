@@ -17,7 +17,7 @@ import { AxiosError } from 'axios';
 
 export const uploadCloud = async (arrayImage: any) => {
     try {
-        const res = await httpRequest.post('api/v1/upload', arrayImage);
+        const res = await httpRequest.post<any>('api/v1/upload', arrayImage);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;

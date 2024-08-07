@@ -7,7 +7,7 @@ const routes = {
         // Routes Main
         search: '/search',
         cart: '/cart',
-        news: '/blogs/news',
+        news: '/blogs/news/tagged/all',
         categoryInStock: '/category/in-stock',
         categoryAll: '/category/all',
         category: '/category', //slug

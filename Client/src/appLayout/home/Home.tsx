@@ -5,10 +5,11 @@ import React from 'react';
 import SwiperBanner from '@/components/Swiper/SwiperBanner';
 import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
-import News from '@/components/News';
+
 import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 import { homeGet } from '@/services/homeServices';
 import Loading from '@/components/Loading';
+import NewsArticle from '@/components/News/NewsArticle';
 const cx = classNames.bind(styles);
 
 function Home() {
@@ -48,7 +49,7 @@ function Home() {
                     ))}
 
                     {/* NEWS */}
-                    <News />
+                    <NewsArticle />
 
                     {/* Specification */}
                     <ViewSpecification />

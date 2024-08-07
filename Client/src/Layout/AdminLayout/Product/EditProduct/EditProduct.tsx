@@ -437,14 +437,12 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                                     style={{ width: 200 }}
                                                     optionFilterProp="children"
                                                     filterOption={(input: any, option: any) =>
-                                                        (option?.value ?? '')
-                                                            .toLowerCase()
-                                                            .includes(input.toLowerCase())
+                                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
                                                     }
                                                     filterSort={(optionA: any, optionB: any) =>
-                                                        (optionA?.value ?? '')
+                                                        (optionA?.name ?? '')
                                                             .toLowerCase()
-                                                            .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                            .localeCompare((optionB?.name ?? '').toLowerCase())
                                                     }
                                                     placeholder="Select your category"
                                                     options={transformedCategories}
@@ -499,14 +497,12 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                                     style={{ width: 200 }}
                                                     optionFilterProp="children"
                                                     filterOption={(input: any, option: any) =>
-                                                        (option?.value ?? '')
-                                                            .toLowerCase()
-                                                            .includes(input.toLowerCase())
+                                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
                                                     }
                                                     filterSort={(optionA: any, optionB: any) =>
-                                                        (optionA?.value ?? '')
+                                                        (optionA?.name ?? '')
                                                             .toLowerCase()
-                                                            .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                            .localeCompare((optionB?.name ?? '').toLowerCase())
                                                     }
                                                     placeholder="Select your material"
                                                     options={transformedMaterials}

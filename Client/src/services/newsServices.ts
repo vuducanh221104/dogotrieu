@@ -5,7 +5,7 @@ import useSWR from 'swr';
 //[GET]
 export const newsSEOGET = async (id: string) => {
     try {
-        const res = await httpRequest.get(`api/v1/news/${id}`);
+        const res = await httpRequest.get<any>(`api/v1/news/${id}`);
         return res;
     } catch (error) {
         const err = error as AxiosError;
@@ -16,7 +16,7 @@ export const newsSEOGET = async (id: string) => {
 //[POST]
 export const newsAdd = async (data: {}) => {
     try {
-        const res = await httpRequest.post(`api/v1/news`, data);
+        const res = await httpRequest.post<any>(`api/v1/news`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -27,7 +27,7 @@ export const newsAdd = async (data: {}) => {
 //[GET]
 export const newsGetAll = () => {
     const url = `api/v1/news`;
-    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -41,9 +41,25 @@ export const newsGetAll = () => {
 };
 
 //[GET]
-export const newGetAllLimit = (query: string) => {
-    const url = `api/v1/news/all${query}`;
-    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
+// export const newGetAllLimit = (query: string) => {
+//     const url = `api/v1/news/all${query}`;
+//     const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
+//         revalidateIfStale: false,
+//         revalidateOnFocus: false,
+//         revalidateOnReconnect: false,
+//     });
+
+//     if (error) {
+//         const err = error as AxiosError;
+//         console.error(err.response?.data);
+//     }
+//     return { data, error, isLoading, mutate };
+// };
+
+//[GET]
+export const newGetTaggedPagination = (slug: any, query: string) => {
+    const url = `api/v1/news/tagged/${slug}${query}`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -58,7 +74,7 @@ export const newGetAllLimit = (query: string) => {
 //[GET]
 export const newsGetById = (id: string) => {
     const url = `api/v1/news/${id}`;
-    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -74,7 +90,7 @@ export const newsGetById = (id: string) => {
 //[GET]
 export const newsFeaturedGet = (queryString: any) => {
     const url = `/api/v1/news/featuredNews?${queryString}`;
-    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -89,7 +105,7 @@ export const newsFeaturedGet = (queryString: any) => {
 //[PATCH]
 export const newsPatchById = async (id: string, data: any) => {
     try {
-        const res = await httpRequest.patch(`api/v1/news/${id}`, {
+        const res = await httpRequest.patch<any>(`api/v1/news/${id}`, {
             ...data,
         });
         return res.data;
@@ -101,7 +117,7 @@ export const newsPatchById = async (id: string, data: any) => {
 //[DELETE]
 export const newsDelete = async (idNews: string) => {
     try {
-        const res = await httpRequest.deleted(`api/v1/news/${idNews}`);
+        const res = await httpRequest.deleted<any>(`api/v1/news/${idNews}`);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;

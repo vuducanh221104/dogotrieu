@@ -1,4 +1,4 @@
-import { APIResponseSWR, Category } from '@/types/client';
+import { Category } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
@@ -13,11 +13,11 @@ interface CategoryData {
 }
 
 //[GET] ~ Dynamic filter
-export const categoryFilterGet = (query: string): APIResponseSWR<any> => {
+export const categoryFilterGet = (query: string) => {
     const url = `api/v1/category/${query}`;
 
     // Sử dụng SWR để lấy dữ liệu
-    const { data, error, isLoading, mutate } = useSWR<CategoryData>(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -34,7 +34,7 @@ export const categoryFilterGet = (query: string): APIResponseSWR<any> => {
 //[GET] !SEO
 export const categorySEOGET = async (slug: string): Promise<any> => {
     try {
-        const res = await httpRequest.get(`api/v1/category/seo/${slug}`);
+        const res = await httpRequest.get<any>(`api/v1/category/seo/${slug}`);
         return res;
     } catch (error) {
         const err = error as AxiosError;
@@ -43,9 +43,9 @@ export const categorySEOGET = async (slug: string): Promise<any> => {
 };
 
 //[GET]
-export const categoryGet = (): APIResponseSWR<Category> => {
+export const categoryGet = () => {
     const url = `api/v1/category`;
-    const { data, error, isLoading, mutate } = useSWR(url, httpRequest.fetcher, {
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -61,7 +61,7 @@ export const categoryGet = (): APIResponseSWR<Category> => {
 //[POST]
 export const categoryAdd = async (data: any): Promise<any> => {
     try {
-        const res = await httpRequest.post(`api/v1/category`, data);
+        const res = await httpRequest.post<any>(`api/v1/category`, data);
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
@@ -72,7 +72,7 @@ export const categoryAdd = async (data: any): Promise<any> => {
 //[PATCH]
 export const categoryUpdate = async (data: any): Promise<any> => {
     try {
-        const res = await httpRequest.patch(`api/v1/category`, data);
+        const res = await httpRequest.patch<any>(`api/v1/category`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -83,7 +83,7 @@ export const categoryUpdate = async (data: any): Promise<any> => {
 //[DELETE]
 export const categoryDelete = async (ids: {}): Promise<any> => {
     try {
-        const res = await httpRequest.deleted(`api/v1/category`, {
+        const res = await httpRequest.deleted<any>(`api/v1/category`, {
             data: { ids },
         });
         return res.data;

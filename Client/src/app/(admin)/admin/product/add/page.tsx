@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select, Upload, Image, Space } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
@@ -167,6 +167,15 @@ function PageProductAdd() {
     function handleEditorChange({ html, text }: any) {
         setValueDes(text);
     }
+
+    const onChange = (value: string) => {
+        console.log(`selected ${value}`);
+    };
+
+    const onSearch = (value: string) => {
+        console.log('search:', value);
+    };
+
     return (
         <>
             {contextHolder}
@@ -400,16 +409,16 @@ function PageProductAdd() {
                                                     style={{ width: 200 }}
                                                     optionFilterProp="children"
                                                     filterOption={(input: any, option: any) =>
-                                                        (option?.value ?? '')
-                                                            .toLowerCase()
-                                                            .includes(input.toLowerCase())
+                                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
                                                     }
                                                     filterSort={(optionA: any, optionB: any) =>
-                                                        (optionA?.value ?? '')
+                                                        (optionA?.name ?? '')
                                                             .toLowerCase()
-                                                            .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                            .localeCompare((optionB?.name ?? '').toLowerCase())
                                                     }
                                                     placeholder="Select category"
+                                                    onChange={onChange}
+                                                    onSearch={onSearch}
                                                     options={transformedCategories}
                                                 />
                                             </Form.Item>
@@ -462,16 +471,14 @@ function PageProductAdd() {
                                                     style={{ width: 200 }}
                                                     optionFilterProp="children"
                                                     filterOption={(input: any, option: any) =>
-                                                        (option?.value ?? '')
-                                                            .toLowerCase()
-                                                            .includes(input.toLowerCase())
+                                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
                                                     }
                                                     filterSort={(optionA: any, optionB: any) =>
-                                                        (optionA?.value ?? '')
+                                                        (optionA?.name ?? '')
                                                             .toLowerCase()
-                                                            .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                            .localeCompare((optionB?.name ?? '').toLowerCase())
                                                     }
-                                                    placeholder="Select material"
+                                                    placeholder="Select category"
                                                     options={transformedMaterials}
                                                 />
                                             </Form.Item>

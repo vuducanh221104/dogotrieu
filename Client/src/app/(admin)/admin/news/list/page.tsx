@@ -46,7 +46,6 @@ function PageListNews() {
         ...item,
         index: index + 1,
     }));
-
     //Handle Modal Info
     const handleInfo = (news: DataType) => {
         setInfoNews(news);
@@ -217,7 +216,7 @@ function PageListNews() {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            width: 300,
+            width: 150,
             ...getColumnSearchProps('description'),
             render: (text: any) => (
                 <Tooltip title={text}>
@@ -229,6 +228,7 @@ function PageListNews() {
             sorter: (a: any, b: any) => a.description.length - b.description.length,
             sortDirections: ['descend', 'ascend'],
         },
+
         {
             title: 'Thumbnail',
             dataIndex: 'thumb',

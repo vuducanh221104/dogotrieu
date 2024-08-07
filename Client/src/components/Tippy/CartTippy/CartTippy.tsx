@@ -1,8 +1,9 @@
+'use client';
 import classNames from 'classnames/bind';
 import styles from './CartTippy.module.scss';
 import { CartIcon, ChervonMenu, DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,6 +26,11 @@ function CartTippy() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
     const windowWidth = useWindowWidth();
 
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
     useLayoutEffect(() => {
         if (scrollRef.current) {
             setCurrentHeightRef(scrollRef.current.clientHeight);
@@ -85,7 +91,14 @@ function CartTippy() {
         dispatch(removeProduct({ id: item._id }));
         dispatch(updateTotalPrice());
     };
-
+    if (!isMounted) {
+        return (
+            <div role="button" aria-label="Cart Button">
+                <CartIcon style={{ height: '24px', width: '27px', cursor: 'pointer' }} />
+                <span className={cx('header-count')}>0</span>
+            </div>
+        );
+    }
     return (
         <div className="wrapper-cart-tippy">
             <Tippy
@@ -270,7 +283,7 @@ function CartTippy() {
             >
                 <div onClick={() => setShowMenu(!showMenu)} role="button" aria-label="Cart Button">
                     <CartIcon style={{ height: '24px', width: '27px', cursor: 'pointer' }} />
-                    <span className={cx('header-count')}>{productsAddToCart.quantity}</span>
+                    <span className={cx('header-count')}>{productsAddToCart?.quantity}</span>
                 </div>
             </Tippy>
         </div>

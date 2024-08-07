@@ -467,14 +467,14 @@ function PageListMaterial() {
                                                             style={{ width: 200 }}
                                                             optionFilterProp="children"
                                                             filterOption={(input: any, option: any) =>
-                                                                (option?.value ?? '')
+                                                                (option?.name ?? '')
                                                                     .toLowerCase()
                                                                     .includes(input.toLowerCase())
                                                             }
                                                             filterSort={(optionA: any, optionB: any) =>
-                                                                (optionA?.value ?? '')
+                                                                (optionA?.name ?? '')
                                                                     .toLowerCase()
-                                                                    .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                                    .localeCompare((optionB?.name ?? '').toLowerCase())
                                                             }
                                                             placeholder="Select category"
                                                             options={transformedCategories}
@@ -529,14 +529,14 @@ function PageListMaterial() {
                                                             style={{ width: 200 }}
                                                             optionFilterProp="children"
                                                             filterOption={(input: any, option: any) =>
-                                                                (option?.value ?? '')
+                                                                (option?.name ?? '')
                                                                     .toLowerCase()
                                                                     .includes(input.toLowerCase())
                                                             }
                                                             filterSort={(optionA: any, optionB: any) =>
-                                                                (optionA?.value ?? '')
+                                                                (optionA?.name ?? '')
                                                                     .toLowerCase()
-                                                                    .localeCompare((optionB?.value ?? '').toLowerCase())
+                                                                    .localeCompare((optionB?.name ?? '').toLowerCase())
                                                             }
                                                             placeholder="Select material"
                                                             options={transformedMaterials}

@@ -1,4 +1,3 @@
-'use client';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, Image, Modal, Select } from 'antd';
@@ -9,23 +8,27 @@ import 'react-markdown-editor-lite/lib/index.css';
 import { uploadCloud } from '@/services/uploadService';
 import { newsAdd } from '@/services/newsServices';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
+import { dataTaggedNews } from '@/services/menuData/menuData';
 
 interface PropsAddNews {
     visible: boolean;
     onClose: () => void;
     mutate: any;
 }
-const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
+
+const AddNews: React.FC<PropsAddNews> = ({ visible, onClose, mutate }) => {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [valueContent, setValueContent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-
-    // Thumbnail Upload
     const [thumbnail, setThumbnail] = useState([]);
     const [previewThumbnail, setPreviewThumbnail] = useState('');
     const [thumbnailOpen, setThumbnailOpen] = useState(false);
     const [imageUploadedThumbnail, setImageUploadedThumbnail] = useState(false);
+    const dataTagged = [
+        { id: '0', title: 'none', url: 'none' },
+        ...dataTaggedNews.filter((item: any) => item.title !== 'all' && item.url !== 'all'),
+    ];
 
     useEffect(() => {
         if (visible) {
@@ -51,9 +54,19 @@ const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
             }
             values.thumb = uploadedThumbnail[0];
 
+            // Convert description values to include labels
+            const descriptionWithLabels = values.description.map((value: string) => {
+                const itemDescription = dataTagged.find((item: any) => item.url === value);
+                return {
+                    value,
+                    label: itemDescription ? itemDescription.title : '',
+                };
+            });
+
             const news_data = {
                 title: values.title,
-                description: values.description,
+                description: descriptionWithLabels[0].label === 'none' ? null : descriptionWithLabels[0].label,
+                slug_description: descriptionWithLabels[0].value === 'none' ? null : descriptionWithLabels[0].value,
                 thumb: values.thumb,
                 content: values.content,
                 tags: values.tags,
@@ -163,7 +176,7 @@ const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
                     </Button>,
                 ]}
             >
-                <Form form={form} layout="vertical">
+                <Form form={form} layout="vertical" initialValues={{ description: [''], author: 'Vũ Đức Anh' }}>
                     {/* Thumbnail upload */}
                     <Form.Item
                         name="thumb"
@@ -220,17 +233,49 @@ const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
                         <Input type="title" placeholder="Title" />
                     </Form.Item>
                     {/* Description */}
-                    <Form.Item
-                        name="description"
-                        label="Description"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Required',
-                            },
-                        ]}
-                    >
-                        <Input.TextArea rows={4} placeholder="Description" />
+                    <Form.Item label="Description">
+                        <Form.List name="description">
+                            {(fields, { add, remove }, { errors }) => (
+                                <>
+                                    {fields.map((field, index) => (
+                                        <Form.Item required={true} key={field.key}>
+                                            <Form.Item
+                                                {...field}
+                                                validateTrigger={['onChange', 'onBlur']}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        whitespace: true,
+                                                        message: 'Required',
+                                                    },
+                                                ]}
+                                                noStyle
+                                            >
+                                                <Select
+                                                    showSearch
+                                                    style={{ width: 200 }}
+                                                    optionFilterProp="children"
+                                                    filterOption={(input: any, option: any) =>
+                                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                                    }
+                                                    filterSort={(optionA: any, optionB: any) =>
+                                                        (optionA?.name ?? '')
+                                                            .toLowerCase()
+                                                            .localeCompare((optionB?.name ?? '').toLowerCase())
+                                                    }
+                                                    placeholder="Select description"
+                                                    options={dataTagged.map((item: any) => ({
+                                                        name: item.title,
+                                                        value: item.url,
+                                                        label: item.title,
+                                                    }))}
+                                                />
+                                            </Form.Item>
+                                        </Form.Item>
+                                    ))}
+                                </>
+                            )}
+                        </Form.List>
                     </Form.Item>
                     {/* Author */}
                     <Form.Item
@@ -258,6 +303,7 @@ const AddNews: React.FC<any> = ({ visible, onClose, mutate }: PropsAddNews) => {
                     >
                         <Select mode="tags" style={{ width: '100%' }} placeholder="Tags" tokenSeparators={[',']} />
                     </Form.Item>
+
                     {/* Content */}
                     <Form.Item label="Content" required>
                         <MdEditor

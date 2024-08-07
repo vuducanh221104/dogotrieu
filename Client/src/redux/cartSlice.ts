@@ -1,5 +1,4 @@
 // cartSlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartState, CartProduct } from '@/types/client';
 

@@ -1,9 +1,3 @@
-export interface APIResponseSWR<T> {
-    data: T;
-    error?: string | any;
-    isLoading: boolean;
-    mutate: KeyedMutator<any>;
-}
 //Product
 export interface Price {
     original: number;
@@ -31,7 +25,6 @@ export interface ProductType {
 }
 
 export interface Product {
-    discount: null;
     _id: string;
     product_type_id: string;
     name: string;
@@ -46,7 +39,6 @@ export interface Product {
 }
 
 export interface ProductDetail {
-    discount: null;
     _id: string;
     product_type_id: ProductType;
     name: string;
@@ -132,4 +124,10 @@ export interface FooterMenu {
     classNameChild: string;
     height: string;
     content?: string;
+}
+
+export interface TaggedItem {
+    id: number;
+    title: string | null;
+    url: string | null;
 }

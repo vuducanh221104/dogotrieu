@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import styles from './News.module.scss';
+import styles from './NewsArticle.module.scss';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +15,7 @@ import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
 
 const cx = classNames.bind(styles);
-function News() {
+function NewsArticle() {
     const { data: homeData } = homeGet();
     const windowWidth = useWindowWidth();
     const featuredData = homeData && homeData[0]?.featured_news.map((id: string) => `ids=${id}`).join('&');
@@ -43,7 +43,9 @@ function News() {
                                 <div className={cx('block-list-item')} key={item._id}>
                                     <div className={cx('news-item')}>
                                         <Link
-                                            href={`${config.routes.news}/${handleSlugify(item.title)}-${item._id}.html`}
+                                            href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
+                                                item._id
+                                            }.html`}
                                             className={cx('news-item-link')}
                                         >
                                             <div className={cx('aspect-ratio')}>
@@ -58,16 +60,16 @@ function News() {
                                         </Link>
                                         <h3 className={cx('news-item-title')}>
                                             <Link
-                                                href={`${config.routes.news}/${handleSlugify(item.title)}-${
+                                                href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
                                                     item._id
                                                 }.html`}
                                             >
                                                 {item.title}
                                             </Link>
                                         </h3>
-                                        <p className={`${cx('news-item-description')} ${poppins.className}`}>
-                                            {item.description}
-                                        </p>
+                                        {/* <p className={`${cx('news-item-description')} ${poppins.className}`}>
+                                            <MarkdownRender content={cleanMarkDown(item.content)} />
+                                        </p> */}
                                     </div>
                                 </div>
                             ))}
@@ -120,4 +122,4 @@ function News() {
     );
 }
 
-export default News;
+export default NewsArticle;
