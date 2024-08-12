@@ -131,14 +131,12 @@
     margin-right: 10px;
     padding: 0;
     cursor: pointer;
-    vertical-align: middle;
     width: 16px;
     height: 16px;
     border: 1px solid var(--form-border-color);
     background: var(--secondary-background);
     box-shadow: 0 1px rgba(var(--border-color-rgb), 0.4);
     border-radius: 2px;
-    -webkit-appearance: none;
     transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background 0.2s ease-in-out;
     &:checked {
         background: var(--accent-color);
@@ -301,8 +299,6 @@
 .sort-by {
     background: transparent;
     position: relative;
-    display: flex;
-    border-radius: 2px;
     cursor: pointer;
 }
 .globo-sort-options {
@@ -416,14 +412,17 @@
     }
     .popperover {
         width: 100%;
+        min-width: 100%;
     }
     .sort-limit {
         display: none;
     }
     .sort-by {
         width: 100%;
-        border: 1px solid rgba(0, 0, 0, 0.25);
         background: transparent;
+    }
+    .globo-sort-options {
+        border: 1px solid rgba(0, 0, 0, 0.25);
     }
     .gf-summary {
         flex: 0 0 100%;

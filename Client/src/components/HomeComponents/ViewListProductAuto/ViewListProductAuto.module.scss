@@ -177,8 +177,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         border-radius: 100%;
         background: #c8a83f;
         top: 50%;
@@ -203,7 +203,6 @@
 
 //
 //
-//
 // SWIPER custom
 .scroll-list {
     position: relative;
@@ -212,6 +211,16 @@
     overflow: hidden;
     width: 100%;
     z-index: 1;
+    &:hover {
+        .product-icon-navigate-wrapper {
+            .prev-arrow-customer,
+            .next-arrow-customer {
+                opacity: 1;
+                transform: scale(1);
+                transition: all 0.2s ease-in-out;
+            }
+        }
+    }
 }
 .flickity-viewport {
     overflow: hidden;

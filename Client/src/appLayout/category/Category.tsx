@@ -10,7 +10,6 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
 import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import useWindowWidth from '@/hooks/useWindowWidth';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
 import { archivo } from '@/assets/FontNext';
@@ -19,6 +18,7 @@ import NotFound from '@/components/NotFound';
 import Loading from '@/components/Loading';
 import { dataFilterCategory } from '@/services/menuData/menuData';
 import FilterModal from '@/components/FilterModal';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 type FilterItem = {
     id: string;
@@ -199,7 +199,7 @@ function CategoryContent() {
         await router.replace(newUrl);
     };
 
-    const windowWidth = useWindowWidth();
+    const { width: windowWidth } = useWindowSize();
     const dataFilter = dataFilterCategory;
 
     if (isLoading) {
@@ -408,7 +408,7 @@ function CategoryContent() {
                                                             <Tippy
                                                                 interactive
                                                                 visible={showSort}
-                                                                placement="bottom-start"
+                                                                placement="bottom-end"
                                                                 onClickOutside={() => setShowSort(!showSort)}
                                                                 offset={[0, 0]}
                                                                 render={(attrs: any) => (
@@ -536,30 +536,36 @@ function CategoryContent() {
 
                                         {/* Product Cards */}
                                         <div className={cx('category-product-item')}>
-                                            {dataTotalProduct === 0 && (
-                                                <div className={cx('no-product-in-category')}>
-                                                    {/* Sorry, there are no products in this collection */}
-                                                    Xin lỗi , không có sản phẩm nào ở danh mục này
-                                                </div>
-                                            )}
+                                            {isLoading ? (
+                                                <Loading />
+                                            ) : (
+                                                <>
+                                                    {dataTotalProduct === 0 && (
+                                                        <div className={cx('no-product-in-category')}>
+                                                            {/* Sorry, there are no products in this collection */}
+                                                            Xin lỗi , không có sản phẩm nào ở danh mục này
+                                                        </div>
+                                                    )}
 
-                                            {data?.map((item: any, index: number) => {
-                                                const isSpecialIndex =
-                                                    windowWidth <= 641
-                                                        ? index % 2 !== 0
-                                                        : windowWidth <= 1279
-                                                        ? (index + 1) % 3 === 0
-                                                        : index % 3 !== 0
-                                                        ? (index + 1) % 4 === 0
-                                                        : (index + 1) % 4 === 0;
-                                                return (
-                                                    <CardProduct
-                                                        key={item._id}
-                                                        data={item}
-                                                        isSpecialIndex={isSpecialIndex}
-                                                    />
-                                                );
-                                            })}
+                                                    {data?.map((item: any, index: number) => {
+                                                        const isSpecialIndex =
+                                                            windowWidth <= 641
+                                                                ? index % 2 !== 0
+                                                                : windowWidth <= 1279
+                                                                ? (index + 1) % 3 === 0
+                                                                : index % 3 !== 0
+                                                                ? (index + 1) % 4 === 0
+                                                                : (index + 1) % 4 === 0;
+                                                        return (
+                                                            <CardProduct
+                                                                key={item._id}
+                                                                data={item}
+                                                                isSpecialIndex={isSpecialIndex}
+                                                            />
+                                                        );
+                                                    })}
+                                                </>
+                                            )}
                                         </div>
 
                                         {/* Pagination */}
@@ -585,7 +591,6 @@ function CategoryContent() {
     );
 }
 
-// export default CategoryContent;
 export default function PageSearchWrapper() {
     return (
         <Suspense

@@ -117,13 +117,15 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                     onChange={onChangeInput}
                                     onKeyDown={handleKeyDown}
                                 />
-                                <button className={cx('button-clear')}>
-                                    <FontAwesomeIcon
-                                        icon={faXmark}
-                                        className={cx('icon-xmark')}
-                                        onClick={handleClear}
-                                    />
-                                </button>
+                                {searchValue.length !== 0 && (
+                                    <button className={cx('button-clear')}>
+                                        <FontAwesomeIcon
+                                            icon={faXmark}
+                                            className={cx('icon-xmark')}
+                                            onClick={handleClear}
+                                        />
+                                    </button>
+                                )}
                             </div>
 
                             {loading ? (
@@ -186,11 +188,12 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                                                     'have-price-discount',
                                                             )}
                                                         >
-                                                            {item.discount !== null && item.price.discount !== 0 && (
-                                                                <p className={cx('product-price-discount')}>
-                                                                    <FormatPrice value={item.price.discount} />
-                                                                </p>
-                                                            )}
+                                                            {item.price.discount !== null &&
+                                                                item.price.discount !== 0 && (
+                                                                    <p className={cx('product-price-discount')}>
+                                                                        <FormatPrice value={item.price.discount} />
+                                                                    </p>
+                                                                )}
                                                             <p className={cx('product-price-real')}>
                                                                 <FormatPrice value={item.price.original} />
                                                             </p>

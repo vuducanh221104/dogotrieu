@@ -57,11 +57,11 @@ html {
     overflow-x: hidden;
     color: var(--text-color);
 }
-body {
-    // height: 100%; //CO HAY KHONG CUNG DUOC
-    // overflow-y: hidden;
-    // overflow-x: hidden;
-}
+// body {
+//     // height: 100%;
+//     // overflow-y: hidden;
+//     // overflow-x: hidden;
+// }
 html,
 body {
     margin: 0;
@@ -92,14 +92,16 @@ body {
 }
 
 // Filter-asc-desc
-.wrapper-category-tippy {
-    [data-tippy-root] {
-        width: 100% !important;
+@media screen and (max-width: 999px) {
+    .wrapper-category-tippy {
+        [data-tippy-root] {
+            width: 100% !important;
+        }
     }
-}
-.wrapper-search-tippy {
-    [data-tippy-root] {
-        width: 100% !important;
+    .wrapper-search-tippy {
+        [data-tippy-root] {
+            width: 100% !important;
+        }
     }
 }
 

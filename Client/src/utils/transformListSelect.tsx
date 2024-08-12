@@ -1,17 +1,23 @@
 export const transformListSelect = (data: any) => {
-    return data.flatMap((item: any) => [
-        {
-            name: item.name, // Category name for searching
-            label: item.name, // Category name for displaying
-            value: item._id, // Category ID as value
-        },
-        ...item.children.map((child: any) => ({
-            name: child.name, // Child category name for searching
-            label: child.name, // Child category name for displaying
-            value: child._id, // Child category ID as value
-        })),
-    ]);
+    return data.map((item: any, index: number) => ({
+        name: item.name,
+        label: <span key={index}>{item.name}</span>,
+        title: item.name,
+        options: [
+            {
+                name: item.name,
+                label: <span>{item.name}</span>,
+                value: item._id,
+            },
+            ...item.children.map((child: any) => ({
+                name: child.name.name,
+                label: <span>{child.name}</span>,
+                value: child._id,
+            })),
+        ],
+    }));
 };
+
 // export const transformListSelectDefault = (data: any) => {
 //     return data.map((item: any, index: number) => ({
 //         label: <span key={index}>{item.name}</span>,

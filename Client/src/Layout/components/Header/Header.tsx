@@ -31,6 +31,7 @@ import config from '@/config';
 import { archivo } from '@/assets/FontNext';
 import Link from 'next/link';
 import routes from '@/config/routes';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
@@ -41,16 +42,9 @@ function Header() {
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showTippyLang, setShowTippyLang] = useState<boolean>(false);
     const [anoubarHidden, setAnoubarHidden] = useState<boolean>(false);
-
     const [classActive, setClassActive] = useState<any>('');
     const [toggleIndex, setToggleIndex] = useState<number | null>(null);
-    const [height, setHeight] = useState<number | null>(null);
-    const [width, setWidth] = useState<number | null>(null);
-
-    const updateDimensions = () => {
-        setHeight(window.innerHeight);
-        setWidth(window.innerWidth);
-    };
+    const { width, height } = useWindowSize();
 
     const handleScroll = () => {
         if (window.scrollY > 40) {
@@ -61,11 +55,8 @@ function Header() {
     };
 
     useEffect(() => {
-        updateDimensions();
-        window.addEventListener('resize', updateDimensions);
         window.addEventListener('scroll', handleScroll);
         return () => {
-            window.removeEventListener('resize', updateDimensions);
             window.removeEventListener('scroll', handleScroll);
         };
     }, [showBars]);

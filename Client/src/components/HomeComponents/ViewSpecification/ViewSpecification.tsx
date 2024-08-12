@@ -1,7 +1,7 @@
 'use client';
 import styles from './ViewSpecification.module.scss';
 import classNames from 'classnames/bind';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay, Mousewheel } from 'swiper/modules';
 import 'swiper/css';
@@ -14,12 +14,13 @@ import icons from '@/assets/images-icon';
 import Image from 'next/image';
 import routes from '@/config/routes';
 import Link from 'next/link';
+import useWindowSize from '@/hooks/useWIndowSize';
 const cx = classNames.bind(styles);
 
 function ViewSpecification() {
     const sliderRef = useRef<any>(null);
 
-    const [windowWidth, setWindowWidth] = useState<number | null>(null);
+    const { width: windowWidth } = useWindowSize();
 
     const data = [
         {
@@ -45,19 +46,6 @@ function ViewSpecification() {
         },
     ];
 
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const handlePrev = useCallback(() => {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slidePrev();
@@ -67,10 +55,6 @@ function ViewSpecification() {
         if (!sliderRef.current) return;
         sliderRef.current.swiper.slideNext();
     }, []);
-
-    if (windowWidth === null) {
-        return null; // Return nothing until windowWidth is set
-    }
 
     return (
         <div className={cx('specification-wrapper')}>

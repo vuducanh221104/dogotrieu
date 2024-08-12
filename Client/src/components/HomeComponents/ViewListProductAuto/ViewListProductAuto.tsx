@@ -1,24 +1,21 @@
 'use client';
 import styles from './ViewListProductAuto.module.scss';
 import classNames from 'classnames/bind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import FormatPrice from '@/components/FormatPrice';
-import { Archivo } from 'next/font/google';
 import Link from 'next/link';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
 import { featuredProductGet, featuredProductGetById } from '@/services/productServices';
+import useWindowSize from '@/hooks/useWIndowSize';
+import { useMeasure } from '@uidotdev/usehooks';
+import { archivo } from '@/assets/FontNext';
 
-const archivo = Archivo({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    style: ['italic', 'normal'],
-});
 const cx = classNames.bind(styles);
 
 interface IProps {
@@ -29,34 +26,11 @@ interface IProps {
 }
 
 function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
+    const { width: windowWidth } = useWindowSize();
+    const [productRef, { height: productHeight }] = useMeasure();
     const hasCategoryOrMaterial = query.includes('category_id') || query.includes('material_id');
     const { data } = hasCategoryOrMaterial ? featuredProductGet(query) : featuredProductGetById(query);
-    // const { data } = featuredProductGet(query);
-    const productRef = useRef<HTMLDivElement>(null);
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [currentHeight, setCurrentHeight] = useState<number>(0);
-    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
     const [currentTransform, setCurrentTransform] = useState<number>(0);
-
-    useEffect(() => {
-        if (!isLoading && data) {
-            setCurrentHeight(scrollRef.current?.offsetHeight || 0);
-            const handleResize = () => {
-                if (productRef.current) {
-                    const height = productRef.current.offsetHeight;
-                    setCurrentHeight(height);
-                }
-                setWindowWidth(window.innerWidth);
-            };
-
-            window.addEventListener('resize', handleResize);
-            handleResize();
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
-        }
-    }, [data, isLoading]);
 
     useEffect(() => {
         if (windowWidth >= 1440) {
@@ -87,6 +61,14 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
         }
     };
 
+    const arrowOpacity = useMemo(
+        () => ({
+            prev: currentTransform === 0 ? 0 : 1,
+            next: currentTransform === (windowWidth >= 1440 ? -100 : windowWidth >= 1280 ? -140 : -200) ? 0 : 1,
+        }),
+        [currentTransform, windowWidth],
+    );
+
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
 
     return (
@@ -110,15 +92,12 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
             <Container>
                 <div className={cx('scroll')}>
                     <div className={cx('scroll-inner')}>
-                        <div className={cx('scroll-list')} ref={scrollRef}>
+                        <div className={cx('scroll-list')}>
                             {isLoading ? (
                                 <p>Loading...</p>
                             ) : windowWidth >= 1000 ? (
                                 <>
-                                    <div
-                                        className={cx('flickity-viewport')}
-                                        style={{ height: `${currentHeight || productRef.current?.offsetHeight}px` }}
-                                    >
+                                    <div className={cx('flickity-viewport')} style={{ height: `${productHeight}px` }}>
                                         <div
                                             className={cx('flickity-slider')}
                                             style={{ transform: `translateX(${currentTransform}%)` }}
@@ -224,7 +203,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                         <div
                                             className={cx('prev-arrow-customer')}
                                             onClick={() => handleNavigation('prev')}
-                                            style={{ opacity: 1 }}
+                                            style={arrowOpacity.prev === 0 ? { display: 'none' } : {}}
                                         >
                                             <ChervonLeft className={cx('icon-prev-customer')} />
                                         </div>
@@ -232,7 +211,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                         <div
                                             className={cx('next-arrow-customer')}
                                             onClick={() => handleNavigation('next')}
-                                            style={{ opacity: 1 }}
+                                            style={arrowOpacity.next === 0 ? { display: 'none' } : {}}
                                         >
                                             <ChervonRight className={cx('icon-next-customer')} />
                                         </div>

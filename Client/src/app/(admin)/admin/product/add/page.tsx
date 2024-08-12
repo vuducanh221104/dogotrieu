@@ -46,11 +46,25 @@ function PageProductAdd() {
             values.description = valueDes;
 
             const skuGenerate = useGenerateSKU();
+
             // Upload Image
-            const uploadPromises = [uploadImagesToCloudinary(fileList), uploadImagesToCloudinary(thumbnail)];
-            const [uploadedImages, uploadedThumbnail] = await Promise.all(uploadPromises);
-            if (!uploadedImages || !uploadedThumbnail) {
+            const uploadPromises = [];
+            if (thumbnail.length > 0) {
+                uploadPromises.push(uploadImagesToCloudinary(thumbnail));
+            } else {
+                uploadPromises.push(Promise.resolve([]));
+            }
+            if (fileList.length > 0) {
+                uploadPromises.push(uploadImagesToCloudinary(fileList));
+            } else {
+                uploadPromises.push(Promise.resolve([]));
+            }
+
+            const [uploadedThumbnail, uploadedImages] = await Promise.all(uploadPromises);
+
+            if (uploadedThumbnail.length === 0 && uploadedImages.length === 0) {
                 messageCustomError('Upload Image Error');
+                return;
             }
             values.images = uploadedImages;
             values.thumb = uploadedThumbnail;
@@ -167,14 +181,6 @@ function PageProductAdd() {
     function handleEditorChange({ html, text }: any) {
         setValueDes(text);
     }
-
-    const onChange = (value: string) => {
-        console.log(`selected ${value}`);
-    };
-
-    const onSearch = (value: string) => {
-        console.log('search:', value);
-    };
 
     return (
         <>
@@ -417,8 +423,6 @@ function PageProductAdd() {
                                                             .localeCompare((optionB?.name ?? '').toLowerCase())
                                                     }
                                                     placeholder="Select category"
-                                                    onChange={onChange}
-                                                    onSearch={onSearch}
                                                     options={transformedCategories}
                                                 />
                                             </Form.Item>
@@ -608,22 +612,7 @@ function PageProductAdd() {
                         value={valueDes}
                     />
                     {/* Images */}
-                    <Form.Item
-                        name="images"
-                        label="Images"
-                        rules={[
-                            {
-                                validator: (_, value) => {
-                                    if (!imageUploaded) {
-                                        return Promise.reject(new Error('Required'));
-                                    }
-                                    return Promise.resolve();
-                                },
-                            },
-                        ]}
-                        validateStatus={imageUploaded ? 'success' : 'error'}
-                        help={!imageUploaded && 'Required'}
-                    >
+                    <Form.Item name="images" label="Images">
                         <Upload
                             listType="picture-card"
                             fileList={fileList}

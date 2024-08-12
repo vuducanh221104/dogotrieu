@@ -19,10 +19,11 @@ import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
 import { dataTaggedNews } from '@/services/menuData/menuData';
-
+import Tippy from '@tippyjs/react/headless';
 const cx = classNames.bind(styles);
 
 function News() {
+    const [showOption, setShowOption] = useState<boolean>(false);
     const searchParams = useSearchParams();
     const router = useRouter();
     const params = useParams();
@@ -49,6 +50,7 @@ function News() {
     };
 
     const dataTagged = dataTaggedNews;
+    const taggedItem = dataTaggedNews.find((item: any) => item.url === slug);
 
     if (isLoading) {
         return <Loading />;
@@ -62,6 +64,37 @@ function News() {
                     <Container>
                         <header className={cx('news-header')}>
                             <h1 className={archivo.className}>TIN TỨC</h1>
+                            <div className={cx('sort-by')}>
+                                <div className={cx('wrapper-category-tippy')}>
+                                    <Tippy
+                                        interactive
+                                        visible={showOption}
+                                        placement="auto-end"
+                                        offset={[30, 55]}
+                                        onClickOutside={() => setShowOption(!showOption)}
+                                        render={(attrs: any) => (
+                                            <div className={cx('popperover')} tabIndex="-1" {...attrs}>
+                                                {dataTagged.map((item: any) => (
+                                                    <span key={item.id} className={cx(slug === item.url && 'active')}>
+                                                        <Link href={`/blogs/news/tagged/${item.url}`}>
+                                                            {item.title}
+                                                        </Link>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    >
+                                        <div
+                                            className={cx('globo-sort-options')}
+                                            onClick={() => setShowOption(!showOption)}
+                                            role="button"
+                                            aria-label="Chọn Phương Thức Sắp Xếp"
+                                        >
+                                            <span> {taggedItem.title}</span>
+                                        </div>
+                                    </Tippy>
+                                </div>
+                            </div>
                             <div className={cx('new-data-list')}>
                                 <ul>
                                     {dataTagged.map((item: any) => (
@@ -132,6 +165,8 @@ function News() {
                                         <ul className={cx('news-content-extra-list')}>
                                             <li className={cx('news-content-extra-item')}>
                                                 <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     href={config.routesSocial.facebook}
                                                     aria-label="Facebook Đồ Gỗ Triệu"
                                                 >
@@ -140,6 +175,8 @@ function News() {
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
                                                 <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     href={config.routesSocial.instagram}
                                                     aria-label="Instagram Đồ Gỗ Triệu"
                                                 >
@@ -148,6 +185,8 @@ function News() {
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
                                                 <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     href={config.routesSocial.printerest}
                                                     aria-label="Printerest Đồ Gỗ Triệu"
                                                 >
@@ -155,7 +194,12 @@ function News() {
                                                 </a>
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
-                                                <a href={config.routesSocial.youtube} aria-label="Youtube Đồ Gỗ Triệu">
+                                                <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    href={config.routesSocial.youtube}
+                                                    aria-label="Youtube Đồ Gỗ Triệu"
+                                                >
                                                     <YoutubeIcon className={cx('icon-social', 'youtube')} />
                                                 </a>
                                             </li>

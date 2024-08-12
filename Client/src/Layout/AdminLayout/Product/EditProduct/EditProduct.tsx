@@ -669,8 +669,8 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                         //         },
                         //     },
                         // ]}
-                        validateStatus={imageUploaded ? 'success' : 'error'}
-                        help={!imageUploaded && 'Required'}
+                        // validateStatus={imageUploaded ? 'success' : 'error'}
+                        // help={!imageUploaded && 'Required'}
                     >
                         <Upload
                             listType="picture-card"

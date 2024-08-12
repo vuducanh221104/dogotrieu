@@ -3,9 +3,8 @@ import classNames from 'classnames/bind';
 import styles from './CartTippy.module.scss';
 import { CartIcon, ChervonMenu, DecreaseIcon, IncreaseIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import useWindowWidth from '@/hooks/useWindowWidth';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { CldImage } from 'next-cloudinary';
@@ -14,39 +13,21 @@ import FormatPrice from '@/components/FormatPrice';
 import { removeProduct, updateQuantity, updateTotalPrice } from '@/redux/cartSlice'; // Import the updateTotalPrice action
 import routes from '@/config/routes';
 import config from '@/config';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
 function CartTippy() {
     const dispatch: AppDispatch = useDispatch();
     const productsAddToCart = useSelector((state: RootState) => state.cart);
-    const scrollRef = useRef<any>(null);
-    const [currentHeightRef, setCurrentHeightRef] = useState<number>(0);
     const [classActive, setClassActive] = useState<any>('');
     const [showMenu, setShowMenu] = useState<boolean>(false);
-    const windowWidth = useWindowWidth();
+    const { width: windowWidth } = useWindowSize();
 
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
-    }, []);
-    useLayoutEffect(() => {
-        if (scrollRef.current) {
-            setCurrentHeightRef(scrollRef.current.clientHeight);
-        }
-
-        const updateHeight = () => {
-            if (scrollRef.current) {
-                setCurrentHeightRef(scrollRef.current.clientHeight);
-            }
-        };
-
-        window.addEventListener('resize', updateHeight);
-
-        return () => {
-            window.removeEventListener('resize', updateHeight);
-        };
     }, []);
 
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');

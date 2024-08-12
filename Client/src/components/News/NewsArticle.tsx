@@ -7,17 +7,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { newsFeaturedGet } from '@/services/newsServices';
 import config from '@/config';
-import useWindowWidth from '@/hooks/useWindowWidth';
 import { archivo, poppins } from '@/assets/FontNext';
 import { homeGet } from '@/services/homeServices';
 import Link from 'next/link';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 function NewsArticle() {
     const { data: homeData } = homeGet();
-    const windowWidth = useWindowWidth();
+    const { width: windowWidth } = useWindowSize();
     const featuredData = homeData && homeData[0]?.featured_news.map((id: string) => `ids=${id}`).join('&');
     const { data: news } = newsFeaturedGet(featuredData || []);
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
@@ -82,7 +82,7 @@ function NewsArticle() {
                                         <div className={cx('block-list-item')} key={item._id}>
                                             <div className={cx('news-item')}>
                                                 <Link
-                                                    href={`${config.routes.news}/${handleSlugify(item.title)}-${
+                                                    href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
                                                         item._id
                                                     }.html`}
                                                     className={cx('news-item-link')}
@@ -99,9 +99,9 @@ function NewsArticle() {
                                                 </Link>
                                                 <h3 className={cx('news-item-title')}>
                                                     <Link
-                                                        href={`${config.routes.news}/${handleSlugify(item.title)}-${
-                                                            item._id
-                                                        }.html`}
+                                                        href={`${config.routes.newsDetail}/${handleSlugify(
+                                                            item.title,
+                                                        )}-${item._id}.html`}
                                                     >
                                                         {item.title}
                                                     </Link>

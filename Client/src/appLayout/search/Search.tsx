@@ -12,7 +12,6 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
 import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
-import useWindowWidth from '@/hooks/useWindowWidth';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
 import FilterModal from '@/components/FilterModal';
@@ -21,6 +20,7 @@ import NotFound from '@/components/NotFound';
 import Loading from '@/components/Loading';
 import { searchFilter } from '@/services/searchServices';
 import { dataFilterCategory } from '@/services/menuData/menuData';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
@@ -51,8 +51,10 @@ function prioritizeQuery(url: URL): string {
 }
 
 function SearchContent() {
+    const dataFilter = dataFilterCategory;
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { width: windowWidth } = useWindowSize();
     const [valueSearch, setValueSearch] = useState<any>('');
     const [showSort, setShowSort] = useState<boolean>(false);
     const [currentSort, setCurrentSort] = useState<string>('Giá, thấp đến cao');
@@ -192,9 +194,6 @@ function SearchContent() {
         window.history.pushState({}, '', newUrl);
         await router.replace(newUrl);
     };
-
-    const windowWidth = useWindowWidth();
-    const dataFilter = dataFilterCategory;
 
     if (isLoading) {
         return (
@@ -414,7 +413,7 @@ function SearchContent() {
                                                                         <Tippy
                                                                             interactive
                                                                             visible={showSort}
-                                                                            placement="bottom-start"
+                                                                            placement="bottom-end"
                                                                             onClickOutside={() =>
                                                                                 setShowSort(!showSort)
                                                                             }
@@ -571,30 +570,36 @@ function SearchContent() {
 
                                                     {/* Product Card  */}
                                                     <div className={cx('category-product-item')}>
-                                                        {dataTotalProduct <= 0 && (
-                                                            <div className={cx('no-product-in-category')}>
-                                                                {/* Sorry, there are no products in this collection */}
-                                                                Xin lỗi , không có sản phẩm nào ở danh mục này
-                                                            </div>
-                                                        )}
+                                                        {isLoading ? (
+                                                            <Loading />
+                                                        ) : (
+                                                            <>
+                                                                {dataTotalProduct <= 0 && (
+                                                                    <div className={cx('no-product-in-category')}>
+                                                                        {/* Sorry, there are no products in this collection */}
+                                                                        Xin lỗi , không có sản phẩm nào ở danh mục này
+                                                                    </div>
+                                                                )}
 
-                                                        {data?.map((item: any, index: number) => {
-                                                            const isSpecialIndex =
-                                                                windowWidth <= 641
-                                                                    ? index % 2 !== 0
-                                                                    : windowWidth <= 1279
-                                                                    ? (index + 1) % 3 === 0
-                                                                    : index % 3 !== 0
-                                                                    ? (index + 1) % 4 === 0
-                                                                    : (index + 1) % 4 === 0;
-                                                            return (
-                                                                <CardProduct
-                                                                    key={item._id}
-                                                                    data={item}
-                                                                    isSpecialIndex={isSpecialIndex}
-                                                                />
-                                                            );
-                                                        })}
+                                                                {data?.map((item: any, index: number) => {
+                                                                    const isSpecialIndex =
+                                                                        windowWidth <= 641
+                                                                            ? index % 2 !== 0
+                                                                            : windowWidth <= 1279
+                                                                            ? (index + 1) % 3 === 0
+                                                                            : index % 3 !== 0
+                                                                            ? (index + 1) % 4 === 0
+                                                                            : (index + 1) % 4 === 0;
+                                                                    return (
+                                                                        <CardProduct
+                                                                            key={item._id}
+                                                                            data={item}
+                                                                            isSpecialIndex={isSpecialIndex}
+                                                                        />
+                                                                    );
+                                                                })}
+                                                            </>
+                                                        )}
                                                     </div>
                                                     {/* Pagination */}
                                                     {dataTotalProduct !== 0 && (

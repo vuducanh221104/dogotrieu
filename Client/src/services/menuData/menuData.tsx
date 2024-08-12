@@ -66,7 +66,7 @@ export const dataMenuNavBar: MenuPanel[] = [
             { title: 'Tượng Đồng', link: '/category/tuong-dong' },
             { title: 'Tượng Đá', link: '/category/tuong-da' },
             { title: 'Tranh Gỗ Khảm Ốc', link: '/category/tranh-go-kham-oc' },
-            { title: 'Tranh Sơn Mài', link: '/category/tranh-son-dau' },
+            { title: 'Tranh Sơn Mài', link: '/category/tranh-son-mai' },
             { title: 'Tranh Sơn Dầu', link: '/category/tranh-son-dau' },
             { title: 'Tranh Điêu Khắc', link: '/category/tranh-dieu-khac' },
             { title: 'Tượng Loại Khác', link: '/category/tuong-loai-khac' },

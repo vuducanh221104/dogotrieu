@@ -1,7 +1,7 @@
 'use client';
 import styles from './SwiperBanner.module.scss';
 import classNames from 'classnames/bind';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useLayoutEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -10,6 +10,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 interface PropsSwiperBanner {
     data: any;
@@ -20,33 +21,23 @@ interface PropsSwiperBanner {
 const cx = classNames.bind(styles);
 function SwiperBanner({ data, isLoading, backgroundColor, navigation = true }: PropsSwiperBanner) {
     const sliderRef = useRef<any>(null);
-
     const [bannerImages, setBannerImages] = useState<any>([]);
+    const { width: windowWidth } = useWindowSize();
 
-    useEffect(() => {
-        function handleResize() {
-            if (window.innerWidth <= 640) {
-                setBannerImages(data?.images_banner_under_640);
-            } else {
-                setBannerImages(data?.images_banner);
-            }
+    useLayoutEffect(() => {
+        if (windowWidth <= 640) {
+            setBannerImages(data?.images_banner_under_640);
+        } else {
+            setBannerImages(data?.images_banner);
         }
-
-        handleResize();
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [data]);
-
+    }, [windowWidth, data]);
     const dataBreakpoints = {
         0: {
             slidesPerView: 1,
             spaceBetween: 10,
         },
     };
+
     // if (isLoading) {
     //     return (
     //         <div className={cx('aspect-ratio', 'hidden-mobile')}>
