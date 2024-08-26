@@ -1,4 +1,4 @@
-const Home = require('../models/Home');
+const Home = require('../Models/Home');
 
 class HomeController {
     //[GET]

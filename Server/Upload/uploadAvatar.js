@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../Models/Users');
-const userController = require('../Controllers/UserController');
+// const User = require('../Models/Users');
+// const userController = require('../Controllers/UserController');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../Config/cloudinary/cloudinary');
 const multer = require('multer');

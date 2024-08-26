@@ -1,6 +1,6 @@
+const categoryRoutes = require('./category');
 const productRoutes = require('./products');
 const materialRoutes = require('./material');
-const categoryRoutes = require('./category');
 const homeRoutes = require('./home');
 const newsRoutes = require('./news');
 const uploadRoutes = require('../Upload/uploadCloudinary');

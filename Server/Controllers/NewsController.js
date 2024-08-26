@@ -1,4 +1,4 @@
-const NewsSchema = require('../models/News');
+const NewsSchema = require('../Models/News');
 
 class NewsController {
     // [POST] /news
@@ -59,14 +59,17 @@ class NewsController {
         }
     }
     //[GET]
-    async newsGetAllLimit(req, res) {
+    async newsGetTagged(req, res) {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 5;
             const skip = (page - 1) * limit;
+            const slug = req.params.slug;
 
-            const totalItems = await NewsSchema.countDocuments();
-            const news = await NewsSchema.find().skip(skip).limit(limit);
+            const query = slug !== 'all' ? { slug_description: { $regex: slug, $options: 'i' } } : {};
+
+            const totalItems = await NewsSchema.countDocuments(query);
+            const news = await NewsSchema.find(query).skip(skip).limit(limit);
 
             const totalPages = Math.ceil(totalItems / limit);
 

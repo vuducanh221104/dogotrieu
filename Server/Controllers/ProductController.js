@@ -1,5 +1,5 @@
-const Product = require('../models/Product');
-const ProductType = require('../models/ProductType');
+const Product = require('../Models/Product');
+const ProductType = require('../Models/ProductType');
 
 class ProductController {
     //[GET]
@@ -220,6 +220,12 @@ class ProductController {
     async addProductWithType(req, res) {
         try {
             const { product_type_data, product_data } = req.body;
+            if (product_data.price.discount === null || product_data.price.discount === 0) {
+                product_data.price.discount = 0;
+            }
+            if (product_data.price.discount_quantity === null || product_data.price.discount_quantity === 0) {
+                product_data.price.discount = 0;
+            }
             // SKU
             // Tạo ProductType trước
             const productType = new ProductType(product_type_data);
@@ -283,6 +289,13 @@ class ProductController {
                 } else {
                     return res.status(404).json({ message: 'ProductType not found' });
                 }
+            }
+
+            if (updateData.price.discount === null || updateData.price.discount === 0) {
+                updateData.price.discount = 0;
+            }
+            if (updateData.price.discount_quantity === null || updateData.price.discount_quantity === 0) {
+                updateData.price.discount = 0;
             }
 
             // Save the updated product

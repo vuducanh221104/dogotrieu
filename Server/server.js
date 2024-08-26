@@ -11,12 +11,11 @@ const routes = require('./routes');
 const methodOverride = require('method-override');
 const http = require('http');
 const server = http.createServer(app);
-
 // CORS
+
 app.use(
     cors({
-        // origin: 'https://2f8d-2402-800-631c-ccbf-f5e8-fffd-6da2-3f04.ngrok-free.app' || '*',
-        origin: process.env.BASE_URL_CLIENT || '*',
+        origin: [process.env.BASE_URL_CLIENT, process.env.BASE_URL_CLIENT_2],
         credentials: true,
     }),
 );

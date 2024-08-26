@@ -1,6 +1,6 @@
-const Product = require('../models/Product');
-const ProductType = require('../models/ProductType');
-const Category = require('../models/Category');
+const Product = require('../Models/Product');
+const ProductType = require('../Models/ProductType');
+const Category = require('../Models/Category');
 function createCategoryList(categories, parent_id = null) {
     const categoryList = [];
     let category;

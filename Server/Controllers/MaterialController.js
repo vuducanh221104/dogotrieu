@@ -1,4 +1,4 @@
-const Material = require('../models/Material');
+const Material = require('../Models/Material');
 
 function createMaterialList(categories, parent_id = null) {
     const categoryList = [];
