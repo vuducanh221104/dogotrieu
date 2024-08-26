@@ -382,7 +382,7 @@ function Header() {
                         <div className={cx('header-logo')}>
                             <Link href={config.routes.home} className={cx('header-logo-link')}>
                                 <Image
-                                    src={images.logo}
+                                    src={images.logo2}
                                     alt="logo"
                                     style={{
                                         maxWidth: '120px',
