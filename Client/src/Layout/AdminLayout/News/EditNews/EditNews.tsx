@@ -37,7 +37,6 @@ const EditNews: React.FC<PropsEditNews> = ({ visible, onClose, news, mutate }) =
         try {
             const values = await form.validateFields();
             setLoading(true);
-            console.log(values);
             values.content = valueContent;
             const selectedDescription = dataTagged.find((item: any) => item.url === values.description);
 

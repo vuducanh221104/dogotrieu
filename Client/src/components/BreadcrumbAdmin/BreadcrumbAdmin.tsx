@@ -3,12 +3,18 @@ import { Breadcrumb } from 'antd';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { adminBreadCumbs } from '@/services/menuData/breadCrumbData';
+import config from '@/config';
 const breadcrumbs = adminBreadCumbs;
 const BreadcrumbAdmin = () => {
     const pathname = usePathname();
 
+    const urlAuth: string[] = [config.routesAdmin.login, config.routesAdmin.logout];
+    const isAuthUrl = urlAuth.some((url: string) => pathname.startsWith(url));
     const breadcrumbTrail = breadcrumbs.filter((crumb: any) => pathname.startsWith(crumb.url));
 
+    if (isAuthUrl) {
+        return null;
+    }
     return (
         <>
             <Breadcrumb>

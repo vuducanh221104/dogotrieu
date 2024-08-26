@@ -1,7 +1,7 @@
+import useSWR from 'swr';
 import { Product, ProductDetail, ProductType } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
-import useSWR from 'swr';
 
 //GET ~ GET SSR SEO
 export const productSEOGET = async (id: string): Promise<ProductDetail | undefined> => {
@@ -10,7 +10,7 @@ export const productSEOGET = async (id: string): Promise<ProductDetail | undefin
         return res;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -21,7 +21,7 @@ export const productAdd = async (data: any): Promise<ProductDetail | undefined> 
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 //[GET]
@@ -34,7 +34,7 @@ export const productGetId = (id: string) => {
     });
 
     if (error) {
-        console.error(error.response?.data);
+        // console.error(error.response?.data);
     }
     return { data, error, isLoading };
 };
@@ -48,7 +48,7 @@ export const productGetOnly = () => {
     });
 
     if (error) {
-        console.error(error);
+        // console.error(error);
     }
     return { data, error, isLoading, mutate };
 };
@@ -62,7 +62,7 @@ export const productGetAll = () => {
     });
 
     if (error) {
-        console.error(error.response?.data);
+        // console.error(error.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -91,7 +91,7 @@ export const productPatch = async (
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -105,7 +105,7 @@ export const featuredProductGet = (query: string) => {
     });
 
     if (error) {
-        throw error;
+        // throw error;
     }
     return { data, error, isLoading };
 };
@@ -119,7 +119,7 @@ export const featuredProductGetById = (query: string) => {
     });
 
     if (error) {
-        throw error;
+        // throw error;
     }
     return { data, error, isLoading };
 };

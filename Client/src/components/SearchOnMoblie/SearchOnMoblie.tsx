@@ -109,7 +109,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                             <div className={cx('input-wrapper')}>
                                 <input
                                     className={cx('header-input')}
-                                    placeholder="Search..."
+                                    placeholder="Tìm Kiếm..."
                                     onFocus={() => {
                                         setClose(false), setShowResult(true);
                                     }}
@@ -203,7 +203,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                             ))}
                                         </div>
                                         <div className={cx('wrapper-search-inner-footer')} onClick={handleViewAll}>
-                                            <p className={cx('search-inner-footer-title')}>View all results</p>
+                                            <p className={cx('search-inner-footer-title')}>Xem tất cả sản phẩm</p>
                                             <FontAwesomeIcon
                                                 icon={faChevronRight}
                                                 style={{

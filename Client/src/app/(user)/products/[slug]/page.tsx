@@ -1,7 +1,6 @@
 import ProductDetail from '@/appLayout/products';
 import routes from '@/config/routes';
 import { productSEOGET } from '@/services/productServices';
-import { handleSlugify } from '@/utils/handleSlutify';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import type { Metadata } from 'next';
 

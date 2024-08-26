@@ -22,7 +22,10 @@ function ProductDetail({ productId: id }: any) {
     const dispatch: AppDispatch = useDispatch();
     const [currentQuantity, setCurrentQuantity] = useState<string>('1');
     const { data, error, isLoading } = productGetId(id);
-    const productInCart = useSelector((state: RootState) => state.cart.products?.find((p) => p._id === data?._id));
+
+    const productInCart = useSelector((state: RootState) =>
+        data ? state.cart.products?.find((p) => p._id === id) : null,
+    );
 
     //Handle Add To Cart
     const handleAddToCart = () => {

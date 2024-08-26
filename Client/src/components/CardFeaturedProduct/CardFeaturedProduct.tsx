@@ -87,7 +87,7 @@ const CardFeaturedProduct: React.FC<IProps> = ({
                     <h2 className={cx('product-name')}>{item.name}</h2>
                 </Link>
                 <div className={cx('product-price-wrapper', item.price.discount !== null && 'have-price-discount')}>
-                    {item.discount !== null && (
+                    {item.price.discount !== null && (
                         <p className={cx('product-price-discount')}>
                             <FormatPrice value={item.price.discount} />
                         </p>

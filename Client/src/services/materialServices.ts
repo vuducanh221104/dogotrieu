@@ -9,7 +9,7 @@ export const materialAdd = async (data: {}) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 //[GET]
@@ -23,7 +23,7 @@ export const materialGet = () => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -35,7 +35,7 @@ export const materialUpdate = async (data: any) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 //[DELETE]
@@ -47,6 +47,6 @@ export const materialDelete = async (ids: {}) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };

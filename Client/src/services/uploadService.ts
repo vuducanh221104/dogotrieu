@@ -21,6 +21,6 @@ export const uploadCloud = async (arrayImage: any) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err);
+        // console.error(err);
     }
 };

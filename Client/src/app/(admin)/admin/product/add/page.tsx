@@ -92,6 +92,7 @@ function PageProductAdd() {
             });
             messageCustomSuccess('Add Successfully');
             setLoading(false);
+            form.resetFields();
         } catch (error) {
             messageCustomError('Missing input field');
             setLoading(false);

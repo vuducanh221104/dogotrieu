@@ -179,7 +179,7 @@ function SearchInner() {
                                                                             'have-price-discount',
                                                                     )}
                                                                 >
-                                                                    {item.discount !== null &&
+                                                                    {item.price.discount !== null &&
                                                                         item.price.discount !== 0 && (
                                                                             <p className={cx('product-price-discount')}>
                                                                                 <FormatPrice
@@ -235,7 +235,7 @@ function SearchInner() {
                             onFocus={() => setShowResult(true)}
                             onChange={onChangeInput}
                             onKeyDown={handleKeyDown}
-                            placeholder="Search..."
+                            placeholder="Tìm Kiếm..."
                         />
 
                         {!loading && (

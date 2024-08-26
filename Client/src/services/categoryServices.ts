@@ -25,7 +25,7 @@ export const categoryFilterGet = (query: string) => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 
     return { data, error, isLoading, mutate };
@@ -38,7 +38,7 @@ export const categorySEOGET = async (slug: string): Promise<any> => {
         return res;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -53,7 +53,7 @@ export const categoryGet = () => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -65,7 +65,7 @@ export const categoryAdd = async (data: any): Promise<any> => {
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -76,7 +76,7 @@ export const categoryUpdate = async (data: any): Promise<any> => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -89,6 +89,6 @@ export const categoryDelete = async (ids: {}): Promise<any> => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };

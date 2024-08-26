@@ -80,7 +80,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                         {nextBtnLink !== '' && (
                             <div className={cx('product-heading-view-all')}>
                                 <Link href={`${nextBtnLink}`}>
-                                    View All
+                                    Xem Tất Cả
                                     <FontAwesomeIcon icon={faArrowRight} className={cx('icon-arrow-right')} />
                                 </Link>
                             </div>
@@ -177,11 +177,12 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                                     'have-price-discount',
                                                             )}
                                                         >
-                                                            {item.discount !== null && item.price.discount !== 0 && (
-                                                                <p className={cx('product-price-discount')}>
-                                                                    <FormatPrice value={item.price.discount} />
-                                                                </p>
-                                                            )}
+                                                            {item.price.discount !== null &&
+                                                                item.price.discount !== 0 && (
+                                                                    <p className={cx('product-price-discount')}>
+                                                                        <FormatPrice value={item.price.discount} />
+                                                                    </p>
+                                                                )}
                                                             <p className={cx('product-price-real')}>
                                                                 <FormatPrice value={item.price.original} />
                                                             </p>
@@ -264,7 +265,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                             'have-price-discount',
                                                     )}
                                                 >
-                                                    {item.discount !== null && item.price.discount !== 0 && (
+                                                    {item.price.discount !== null && item.price.discount !== 0 && (
                                                         <p className={cx('product-price-discount')}>
                                                             <FormatPrice value={item.price.discount} />
                                                         </p>

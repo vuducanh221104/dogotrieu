@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Container } from 'react-bootstrap';
 import { ChervonRight } from '../Icons';
 import { userBreadCumbs } from '@/services/menuData/breadCrumbData';
+import config from '@/config';
 
 interface IProps {
     nameSlug?: string;
@@ -49,8 +50,8 @@ const Breadcrumb = ({ nameSlug }: IProps) => {
                 <nav className={cx('breadcrumb')}>
                     <ol className={cx('breadcrumb-list')}>
                         <li className={cx('breadcrumb-item')}>
-                            <Link href="/" className={cx('breadcrumb-link')}>
-                                Home
+                            <Link href={config.routes.home} className={cx('breadcrumb-link')}>
+                                Trang Chủ
                             </Link>
                             <ChervonRight className={cx('breadcrumb-icon')} />
                         </li>

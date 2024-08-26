@@ -24,25 +24,25 @@ function ViewSpecification() {
 
     const data = [
         {
-            title: 'Quick Ship',
+            title: 'Vận chuyển nhanh',
             img: icons.iconCartPlus,
-            description: 'In stock & ready*',
+            description: 'Còn hàng & sẵn sàng*',
             link: routes.user.home,
         },
         {
-            title: 'Customer Care',
+            title: 'Chăm sóc khách hàng',
             img: icons.iconUserChat,
-            description: 'Customer Care',
+            description: 'Qua Trò chuyện, Email hoặc Gọi điện',
         },
         {
-            title: 'Free Delivery over $999',
+            title: 'Giao hàng toàn quốc',
             img: icons.iconShipping,
-            description: 'In-Room Delivery Available',
+            description: 'Vận chuyển đến mọi tỉnh thành trên cả nước',
         },
         {
-            title: 'Return Policy',
+            title: 'Đổi trả miễn phí',
             img: icons.iconGuarantee,
-            description: '7 Days Easy Return*',
+            description: 'Đổi trả hàng miễn phí trong vòng 7 ngày',
         },
     ];
 

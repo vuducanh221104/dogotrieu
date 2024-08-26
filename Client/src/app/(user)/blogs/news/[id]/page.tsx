@@ -14,12 +14,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { id }: any = params;
 
     const idNews = handleSplitSlug(id);
-
     const news: any = await newsSEOGET(idNews);
 
-    const title = news?.title;
-    const description = cleanMarkDownLimit(news?.content);
-    const image = news?.thumb;
+    if (!news || !news.title || !news.content || !news.thumb) {
+        return {};
+    }
+
+    const title = news.title;
+    const description = cleanMarkDownLimit(news.content);
+    const image = news.thumb;
     return {
         title: title,
         description: description,

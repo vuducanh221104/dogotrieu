@@ -104,7 +104,7 @@ function CartTippy() {
                                 <div className={cx('mini-cart-content')}>
                                     <div className={cx('inner')}>
                                         <div className={cx('mini-cart-title-wrapper')}>
-                                            <p className={cx('title')}>Get free shipping!</p>
+                                            <p className={cx('title')}>Vận chuyển miễn phí!</p>
                                         </div>
                                         <ul className={cx('mini-cart-list')}>
                                             {productsAddToCart.products.map((item: any) => (
@@ -163,7 +163,7 @@ function CartTippy() {
                                                                         'have-price-discount',
                                                                 )}
                                                             >
-                                                                {item.discount !== null &&
+                                                                {item.price.discount !== null &&
                                                                     item.price.discount !== 0 && (
                                                                         <p className={cx('product-price-discount')}>
                                                                             <FormatPrice value={item.price.discount} />
@@ -206,7 +206,7 @@ function CartTippy() {
                                                             className={cx('btn-remove')}
                                                             onClick={() => handleRemove(item)}
                                                         >
-                                                            Remove
+                                                            Xóa
                                                         </button>
                                                     </div>
                                                 </li>
@@ -244,7 +244,7 @@ function CartTippy() {
                         ) : (
                             <div className={cx('wrapper-tippy', classActive)}>
                                 <div className={cx('mini-cart')}>
-                                    <p className={cx('mini-cart-tile')}>Get free shipping!</p>
+                                    <p className={cx('mini-cart-tile')}>Nhận vận chuyển miễn phí!</p>
                                     <div className={cx('mini-cart-empty')}>
                                         <CartIcon className={cx('mini-cart-empty-icon')} />
                                         <p className={cx('mini-cart-empty-heading')}>Giỏ hàng của bạn đang trống</p>

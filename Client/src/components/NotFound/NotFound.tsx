@@ -17,10 +17,10 @@ interface IProps {
 
 const cx = classNames.bind(styles);
 function NotFound({
-    title = 'Page not found',
-    description = 'The page you are looking for cannot be found.',
-    placeholderText = 'Search in store...',
-    linkText = 'Click here to continue shopping',
+    title = 'Không tìm thấy trang ',
+    description = 'Trang bạn đang tìm kiếm không thể được tìm thấy.',
+    placeholderText = 'Tìm kiếm trong cửa hàng...',
+    linkText = 'Bấm vào đây để tiếp tục mua sắm',
 }: IProps) {
     const nameRef = useRef<any>();
     const router = useRouter();

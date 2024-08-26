@@ -94,8 +94,8 @@ function PageCart() {
             <section className={cx('page-cart-section')}>
                 <Container>
                     <header className={cx('page-cart-header')}>
-                        <h1 className={`${cx('page-cart-title')} heading h1 ${archivo.className}`}>My cart</h1>
-                        <p className={cx('page-cart-description')}>You are eligible for free shipping!</p>
+                        <h1 className={`${cx('page-cart-title')} heading h1 ${archivo.className}`}>Giỏ hàng của tôi</h1>
+                        <p className={cx('page-cart-description')}>Bạn đủ điều kiện để được miễn phí vận chuyển!</p>
                     </header>
                 </Container>
                 <div className={cx('cart-wrapper')}>
@@ -107,9 +107,9 @@ function PageCart() {
                                         <table className={cx('line-item-table')}>
                                             <thead className={cx('thead', 'hidden-phone')}>
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th className={cx('table-cell-center')}>Quantity</th>
-                                                    <th className={cx('table-cell-right')}>Total</th>
+                                                    <th>Sản Phẩm</th>
+                                                    <th className={cx('table-cell-center')}>Số Lượng</th>
+                                                    <th className={cx('table-cell-right')}>Tổng Cộng</th>
                                                 </tr>
                                             </thead>
                                             <tbody className={cx('tbody')}>
@@ -167,7 +167,7 @@ function PageCart() {
                                                                                     'have-price-discount',
                                                                             )}
                                                                         >
-                                                                            {item.discount !== null &&
+                                                                            {item.price.discount !== null &&
                                                                                 item.price.discount !== 0 && (
                                                                                     <p
                                                                                         className={cx(
@@ -236,7 +236,7 @@ function PageCart() {
                                                                     className={cx('btn-remove')}
                                                                     onClick={() => handleRemove(item)}
                                                                 >
-                                                                    Remove
+                                                                    Xóa
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -262,7 +262,7 @@ function PageCart() {
                                         <div className={cx('card')}>
                                             <div className={cx('card-section')}>
                                                 <div className={cx('cart-recap-price-line-list')}>
-                                                    <div className={cx('cart-recap-price-label')}>Total</div>
+                                                    <div className={cx('cart-recap-price-label')}>Tổng Cộng</div>
                                                     <div className={cx('cart-recap-price-line')}>
                                                         <FormatPrice value={productsAddToCart.totalPrice} />
                                                     </div>

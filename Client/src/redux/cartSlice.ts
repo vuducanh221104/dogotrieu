@@ -25,6 +25,11 @@ const cartSlice = createSlice({
         },
         addProductToCart: (state, action: PayloadAction<CartProduct>) => {
             const product = action.payload;
+
+            if (!state.products) {
+                state.products = [];
+            }
+
             const existingProduct = state.products.find((p) => p._id === product._id);
             const productPrice = product.price.discount || product.price.original;
 

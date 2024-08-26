@@ -6,6 +6,7 @@ import imagesPage from '@/assets/images-pages';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import routes from '@/config/routes';
+import config from '@/config';
 const cx = classNames.bind(styles);
 export const generateMetadata = (): Metadata => {
     const title = 'VỀ CHÚNG TÔI | DOGOTRIEU';
@@ -165,7 +166,12 @@ function PageAboutUs() {
                     </div>
                 </div>
                 <div className={`${cx('footer')} ${lato.className}`}>
-                    <a href="mailto:vuducanh22112004@gmail.com" aria-label="Liên Hệ Qua Mail">
+                    <a
+                        href={config.routesSocial.mail}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Liên Hệ Qua Mail"
+                    >
                         dogotrieu@gmail.com
                     </a>
                     | 0348483612 (em Lan)

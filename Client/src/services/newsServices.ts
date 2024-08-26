@@ -9,7 +9,7 @@ export const newsSEOGET = async (id: string) => {
         return res;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -20,7 +20,7 @@ export const newsAdd = async (data: {}) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -35,7 +35,7 @@ export const newsGetAll = () => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -67,7 +67,7 @@ export const newGetTaggedPagination = (slug: any, query: string) => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -82,7 +82,7 @@ export const newsGetById = (id: string) => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -98,7 +98,7 @@ export const newsFeaturedGet = (queryString: any) => {
 
     if (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };
@@ -111,7 +111,7 @@ export const newsPatchById = async (id: string, data: any) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 //[DELETE]
@@ -121,6 +121,6 @@ export const newsDelete = async (idNews: string) => {
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };

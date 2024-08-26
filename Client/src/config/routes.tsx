@@ -37,6 +37,9 @@ const routes = {
         //User
         userList: '/admin/user/list',
         userAdd: '/admin/user/add',
+        //Auth
+        login: '/admin/auth/login',
+        logout: '/admin/auth/logout',
     },
 
     pageCompany: {

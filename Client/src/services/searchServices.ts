@@ -19,7 +19,7 @@ export const searchSEOGET = async (q: string | any) => {
         return res;
     } catch (error) {
         const err = error as AxiosError;
-        console.error(err.response?.data);
+        // console.error(err.response?.data);
     }
 };
 
@@ -33,7 +33,7 @@ export const searchFilter = (query: string) => {
     });
 
     if (error) {
-        console.error(error.response?.data);
+        // console.error(error.response?.data);
         // throw error
     }
 

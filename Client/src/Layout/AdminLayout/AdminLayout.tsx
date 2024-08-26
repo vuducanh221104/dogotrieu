@@ -1,7 +1,7 @@
 'use client';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { MenuUnfoldOutlined, UserOutlined, FolderAddOutlined } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer } from 'antd';
+import { Layout, Menu, Button, theme, Row, Col, Avatar, Drawer, Space, Popover } from 'antd';
 import Link from 'next/link';
 import config from '@/config';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
@@ -9,6 +9,9 @@ import BreadcrumbAdmin from '@/components/BreadcrumbAdmin';
 import images from '@/assets';
 import Image from 'next/image';
 import { openSans } from '@/assets/FontNext';
+import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next-nprogress-bar';
 
 const { Header, Sider, Content } = Layout;
 
@@ -84,12 +87,26 @@ interface AdminLayoutProps {
 }
 
 function AdminLayout({ children }: AdminLayoutProps) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const urlAuth: string[] = [config.routesAdmin.login, config.routesAdmin.logout];
+    const authPage = urlAuth.some((url: string) => pathname.startsWith(url));
+    const dataUser = useSelector((state: any) => state.auth.login.currentUser);
     const [visible, setVisible] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!dataUser && !authPage) {
+            router.push(config.routesAdmin.login);
+        }
+    }, [dataUser, pathname]);
 
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    if (authPage) {
+        return <ProgressBar>{children}</ProgressBar>;
+    }
     return (
         <Layout>
             <Drawer
@@ -104,10 +121,12 @@ function AdminLayout({ children }: AdminLayoutProps) {
                 <Layout>
                     <Sider trigger={null} width={210} className={'sider-primary ant-layout-sider-primarys '}>
                         <div className="brand flex items-center justify-center pt-0 pb-7 px-14 bg-[#ffffff]">
-                            <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
-                            <span className={`text-[#000] align-middle ml-5 font-bold ${openSans.className}`}>
-                                Đồ Gỗ Triệu Dashboard
-                            </span>
+                            <Link href={config.routesAdmin.dashboard} className="contents">
+                                <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
+                                <span className={`text-[#000] align-middle ml-5 font-bold ${openSans.className}`}>
+                                    Đồ Gỗ Triệu Dashboard
+                                </span>
+                            </Link>
                         </div>
                         <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
                     </Sider>
@@ -123,10 +142,12 @@ function AdminLayout({ children }: AdminLayoutProps) {
                 style={{ minHeight: '100vh' }}
             >
                 <div className="brand flex items-center justify-center  pt-14 pb-7 px-14">
-                    <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
-                    <span className={`text-[#ffffff] align-middle ml-5 font-bold ${openSans.className}`}>
-                        Đồ Gỗ Triệu Dashboard
-                    </span>
+                    <Link href={config.routesAdmin.dashboard} className="contents">
+                        <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
+                        <span className={`text-[#ffffff] align-middle ml-5 font-bold ${openSans.className}`}>
+                            Đồ Gỗ Triệu Dashboard
+                        </span>
+                    </Link>
                 </div>
 
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={menuItems} className="mt-6" />
@@ -154,7 +175,15 @@ function AdminLayout({ children }: AdminLayoutProps) {
                             </div>
                         </Col>
                         <Col span={24} xs={0} sm={4} md={6} xl={3} className="max-md:!hidden">
-                            <Avatar size={'default'} icon={<UserOutlined />} /> Admin
+                            <Space wrap className="cursor-pointer">
+                                <Popover
+                                    content={<Link href={config.routesAdmin.logout}>Logout</Link>}
+                                    trigger="click"
+                                    className="w-100 cursor-pointer	"
+                                >
+                                    <Avatar size={'default'} icon={<UserOutlined />} /> Admin
+                                </Popover>
+                            </Space>
                         </Col>
                     </Row>
                 </Header>

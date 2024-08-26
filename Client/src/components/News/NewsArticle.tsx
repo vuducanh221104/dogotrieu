@@ -28,10 +28,10 @@ function NewsArticle() {
             <Container>
                 <div className={cx('news-inner')}>
                     <h3 className={cx('news-heading')}>
-                        <div className={cx('news-heading-title')}>NEWS & VIEWS</div>
+                        <div className={cx('news-heading-title')}>TIN TỨC</div>
                         <div className={cx('news-heading-view-all')}>
                             <Link href={config.routes.news} className={`${poppins.className}`}>
-                                View All
+                                Xem Tất Cả
                                 <FontAwesomeIcon icon={faArrowRight} className={cx('icon-arrow-right')} />
                             </Link>
                         </div>
