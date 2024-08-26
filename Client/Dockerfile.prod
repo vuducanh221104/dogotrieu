@@ -1,18 +1,32 @@
-FROM node:lts
+
+FROM node:20-alpine as builder
 
 WORKDIR /app
 
-COPY package*.json .
+COPY package*.json ./
 
-COPY . .
+RUN npm install --force -g npm@latest
 
 RUN npm install --force
 
+COPY . .
+
 RUN npm run build
+
+RUN ls -la /app/.next
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
+
+RUN npm install --production
 
 ENV PORT=80
 
 EXPOSE 80
 
-CMD ["npm","run","build"]
-CMD ["npm","run","start"]
+
+CMD ["npm", "start"]
