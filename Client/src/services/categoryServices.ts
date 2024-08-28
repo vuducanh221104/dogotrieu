@@ -1,3 +1,4 @@
+'use client';
 import { Category } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';

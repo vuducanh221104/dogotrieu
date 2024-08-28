@@ -1,14 +1,21 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = nextConfig;
-
 const path = require('path');
+
 module.exports = {
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
     },
     images: {
-        domains: ['res.cloudinary.com', 'fonts.googleapis.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'fonts.googleapis.com',
+                pathname: '/**',
+            },
+        ],
     },
 };
