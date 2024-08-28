@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 app.use(
     cors({
-        origin: [process.env.BASE_URL_CLIENT, process.env.BASE_URL_CLIENT_2],
+        origin: [process.env.BASE_URL_CLIENT, process.env.BASE_URL_CLIENT_VPS, process.env.BASE_URL_CLIENT_VPS_2],
         credentials: true,
     }),
 );
