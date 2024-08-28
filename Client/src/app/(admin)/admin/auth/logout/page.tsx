@@ -12,11 +12,14 @@ function Logout() {
     useEffect(() => {
         const handleLogOut = () => {
             dispatch(logOutSuccess());
+            if (typeof window !== 'undefined') {
+                router.push(config.routesAdmin.login);
+            }
         };
         handleLogOut();
-    }, []);
+    }, [dispatch, router]);
 
-    return router.push(config.routesAdmin.login);
+    return null;
 }
 
 export default Logout;
