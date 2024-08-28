@@ -9,7 +9,6 @@ module.exports = {
         includePaths: [path.join(__dirname, 'styles')],
     },
     images: {
-        domains: ['res.cloudinary.com'],
-        domains: ['fonts.googleapis.com'],
+        domains: ['res.cloudinary.com', 'fonts.googleapis.com'],
     },
 };
