@@ -70,7 +70,10 @@ function PageContact() {
                             hỏi hoặc quan tâm của bạn là ưu tiên hàng đầu tại Đồ Gỗ Triệu của chúng tôi. Hãy liên hệ với
                             chúng tôi ngay hôm nay với bất kỳ câu hỏi, lo ngại hoặc yêu cầu nào.
                         </p>
-                        <p>Thứ hai-Chủ Nhật 8h Sáng - 5h Chiều </p>
+                        <p className={cx('text-bold')}>Thời Gian Mở/Đóng Cửa Hàng </p>
+                        <p className={cx('margin-top-time-work')}>Thứ hai-Chủ Nhật</p>
+                        <p className={cx('margin-top-time-work')}>8h Sáng - 5h Chiều </p>
+                        <p className={cx('margin-bottom-contact', 'text-bold')}>Thông Tin Liên Hệ </p>
                         <p>
                             <a href={routes.social.phone} aria-label="Liên Hệ Qua Điện Thoại">
                                 Tel: 0348483612
@@ -81,8 +84,8 @@ function PageContact() {
                                 Email: dogotrieu@gmail.com
                             </a>
                         </p>
-                        <p>Cửa Hàng : 24 Lương Định Của , Trần Não ,TP.Thủ Đức</p>
-                        <p>Kho,Xưởng :25/4 Xuân Thủy , Thảo Điền , TP.Thủ Đức</p>
+                        <p className={cx('text-bold')}>Cửa Hàng : 24 Lương Định Của , Trần Não ,TP.Thủ Đức</p>
+                        <p className={cx('text-bold')}>Kho,Xưởng :25/4 Xuân Thủy , Thảo Điền , TP.Thủ Đức</p>
                     </div>
                 </div>
             </Container>

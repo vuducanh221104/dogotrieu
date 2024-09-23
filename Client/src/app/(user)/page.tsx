@@ -4,9 +4,9 @@ import Home from '@/appLayout/home';
 import routes from '@/config/routes';
 
 export const generateMetadata = (): Metadata => {
-    const title = 'Đa dạng & độc đáo các sản phẩm nội thất đồ gỗ xưa cho đến hiện đại từ Châu Á và Châu Âu';
+    const title = 'Dogotrieu';
     const description =
-        'Tìm kiếm những món đồ nội thất hiện đại, tự nhiên, mang đậm nét dân tộc và chân thực cho không gian của bạn. Khám phá bàn ghế, ghế sofa, đèn, tủ, kệ, phụ kiện trang trí ,... và nội thất bằng gỗ. Miễn phí vận chuyển tại Việt Nam. Chào mừng bạn';
+        'Tìm kiếm những món đồ nội thất cổ xưa & hiện đại, tự nhiên, mang đậm nét dân tộc và chân thực cho không gian của bạn. Khám phá bàn ghế, ghế sofa, đèn, tủ, kệ, phụ kiện trang trí,.... Miễn phí vận chuyển tại Việt Nam. Chào mừng bạn';
     const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
     return {
         title: title,

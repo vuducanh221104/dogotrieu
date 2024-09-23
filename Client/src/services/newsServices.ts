@@ -1,4 +1,3 @@
-'use client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';

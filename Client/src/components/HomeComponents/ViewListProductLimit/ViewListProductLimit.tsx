@@ -56,7 +56,7 @@ function ViewListProductLimit() {
                                                     <p className={cx('product-price-real')}>$4,555</p>
                                                     <p className={cx('product-price-discount')}>$5,555</p>
                                                 </div>
-                                                <span className={cx('product-status')}>IN STOCK</span>
+                                                <span className={cx('product-status')}>CÒN HÀNG</span>
                                             </div>
                                         </div>
                                     </a>

@@ -151,9 +151,10 @@ function Header() {
                                                 </li> */}
                                                 <li className={cx('mobile-menu-section-item')}>
                                                     <button
-                                                        className={`${cx('mobile-menu-section-item-button')} ${
-                                                            archivo.className
-                                                        }`}
+                                                        className={`${cx(
+                                                            'mobile-menu-section-item-button',
+                                                            'static',
+                                                        )} ${archivo.className}`}
                                                         onClick={() => setShowShop(!showShop)}
                                                     >
                                                         CỬA HÀNG

@@ -1,7 +1,7 @@
 'use client';
 import styles from '@/styles/Home.module.scss';
 import classNames from 'classnames/bind';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SwiperBanner from '@/components/Swiper/SwiperBanner';
 import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';

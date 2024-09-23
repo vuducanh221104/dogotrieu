@@ -244,7 +244,7 @@ function CartTippy() {
                         ) : (
                             <div className={cx('wrapper-tippy', classActive)}>
                                 <div className={cx('mini-cart')}>
-                                    <p className={cx('mini-cart-tile')}>Nhận vận chuyển miễn phí!</p>
+                                    <p className={cx('mini-cart-tile')}>Vận chuyển miễn phí!</p>
                                     <div className={cx('mini-cart-empty')}>
                                         <CartIcon className={cx('mini-cart-empty-icon')} />
                                         <p className={cx('mini-cart-empty-heading')}>Giỏ hàng của bạn đang trống</p>

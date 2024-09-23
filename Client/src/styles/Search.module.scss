@@ -60,6 +60,7 @@
     & .selected-item {
         & strong {
             font-weight: 400;
+            margin-left: 8px;
         }
     }
     & .gf-label {
@@ -142,9 +143,9 @@
         background: var(--accent-color);
         border-color: var(--accent-color);
         box-shadow: none;
-        & + .icon-check {
-            transform: scale(1);
-        }
+        // & + .icon-check {
+        //     transform: scale(1);
+        // }
     }
 }
 .icon-check {

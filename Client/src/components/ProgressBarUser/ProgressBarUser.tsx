@@ -8,7 +8,7 @@ function ProgressBarUser({ children }: Props) {
         <>
             {children}
             <NextProgressBar
-                height="2.5px"
+                height="2.8px"
                 color="rgba(223, 204, 142)"
                 options={{ showSpinner: false }}
                 shallowRouting

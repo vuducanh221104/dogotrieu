@@ -8,7 +8,7 @@
 }
 
 .page-header-heading {
-    font-size: 2.4rem;
+    font-size: 3rem;
     margin-bottom: 0;
     font-weight: 400;
 }
@@ -33,6 +33,16 @@
     }
 }
 
+.margin-top-time-work {
+    margin-top: -10px !important;
+}
+.margin-bottom-contact {
+    margin-bottom: -4px !important;
+}
+
+.text-bold {
+    font-weight: 600;
+}
 @media screen and (min-width: 641px) {
     .page-header {
         margin: 35px 0;

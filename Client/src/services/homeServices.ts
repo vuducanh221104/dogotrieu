@@ -14,7 +14,7 @@ export const homeGet = () => {
 
     if (error) {
         const err = error as AxiosError;
-        // console.error(err.response?.data);
+        console.error(err.response?.data);
     }
     return { data, error, isLoading, mutate };
 };

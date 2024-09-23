@@ -65,7 +65,7 @@ const CardProductHome = ({ data, windowWidth, productRef }: PropsCardProductHome
                             </p>
                         </div>
                         {item.stock_quantity > 0 ? (
-                            <span className={cx('product-status')}>IN STOCK</span>
+                            <span className={cx('product-status')}>CÒN HÀNG</span>
                         ) : (
                             <span className={cx('product-status', 'out-stock')}>OUT STOCK</span>
                         )}

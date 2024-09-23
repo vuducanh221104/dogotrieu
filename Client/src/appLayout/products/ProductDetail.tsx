@@ -24,7 +24,7 @@ function ProductDetail({ productId: id }: any) {
     const { data, error, isLoading } = productGetId(id);
 
     const productInCart = useSelector((state: RootState) =>
-        data ? state.cart.products?.find((p) => p._id === id) : null,
+        data ? state.cart.products?.find((p: any) => p._id === id) : null,
     );
 
     //Handle Add To Cart

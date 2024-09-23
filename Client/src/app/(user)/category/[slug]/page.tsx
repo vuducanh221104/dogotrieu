@@ -10,11 +10,18 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = params;
 
-    const searchData: any = await categorySEOGET(slug);
+    // const searchData: any = await categorySEOGET(slug);
+    let searchData: any;
+    try {
+        searchData = await categorySEOGET(slug);
+    } catch (error) {
+        searchData = null;
+    }
 
-    const title = searchData?.name_category;
+    const title = searchData?.name_category ?? 'Category -DOGOTRIEU.COM';
     const description = `Trải nghiệm sự thanh lịch và chân thực của Châu Âu và Châu Á của Đồ Gỗ Triệu. Mua sắm ngay để tận hưởng cuộc sống hiện đại đầy phong cách!`;
-    const image = searchData?.image;
+    const image =
+        searchData?.image ?? 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
 
     return {
         title: title,

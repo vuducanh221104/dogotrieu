@@ -245,7 +245,7 @@ function CategoryContent() {
                                                 router.replace(prioritizedUrl);
                                             }}
                                         >
-                                            Clear All
+                                            Xóa hết
                                         </p>
                                     )}
                                 </div>
@@ -253,7 +253,7 @@ function CategoryContent() {
                                     {selectedMaterials.map((filter, index) => (
                                         <div className={cx('selected-item-option-label')} key={filter.slug}>
                                             <span className={cx('selected-item')}>
-                                                <span className={cx('hidden-xs')}>Material</span>:
+                                                <span className={cx('hidden-xs')}>Chất Liệu</span>:
                                                 <strong>
                                                     <span className={cx('gf-label')}>{filter.name}</span>
                                                 </strong>
@@ -269,7 +269,7 @@ function CategoryContent() {
                                     {selectedAvailability.map((filter, index) => (
                                         <div className={cx('selected-item-option-label')} key={filter.slug}>
                                             <span className={cx('selected-item')}>
-                                                <span className={cx('hidden-xs')}>Availability</span>:
+                                                <span className={cx('hidden-xs')}>Sẵn Có</span>:
                                                 <strong>
                                                     <span className={cx('gf-label')}>{filter.name}</span>
                                                 </strong>

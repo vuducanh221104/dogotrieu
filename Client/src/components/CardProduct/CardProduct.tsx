@@ -72,9 +72,9 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                 </div>
 
                 {data.quantity > 0 ? (
-                    <span className={cx('product-status')}>IN STOCK</span>
+                    <span className={cx('product-status')}>CÒN HÀNG</span>
                 ) : (
-                    <span className={cx('product-status', 'out-stock')}>OUT STOCK</span>
+                    <span className={cx('product-status', 'out-stock')}>HẾT HÀNG</span>
                 )}
             </div>
         </div>

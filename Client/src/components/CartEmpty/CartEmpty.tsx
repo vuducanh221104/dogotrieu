@@ -13,11 +13,13 @@ function CartEmpty() {
                 <div className={cx('empty-state-icon-wrapper')}>
                     <CartIcon className={cx('empty-state-icon')} />
                 </div>
-                <p className={`${cx('empty-state-heading')} heading h1 ${archivo.className}`}>Your cart is empty</p>
-                <p className={cx('empty-state-tile')}>Spend $500 more and get free shipping!</p>
+                <p className={`${cx('empty-state-heading')} heading h1 ${archivo.className}`}>
+                    Giỏ hàng của bạn đang trống
+                </p>
+                <p className={cx('empty-state-tile')}>Vận chuyển miễn phí!</p>
                 <div className={cx('empty-state-button')}>
                     <Link href={routes.user.home} className={`${cx('btn-sumbit-link')} button`}>
-                        Shop our products
+                        Tiếp tục mua sắm
                     </Link>
                 </div>
             </div>

@@ -81,19 +81,14 @@ function NewsDetail() {
             </>
         );
     }
+    // return <>div</>;
 }
 
 // export default NewsDetail;
 
 export default function NewsDetailContent() {
     return (
-        <Suspense
-            fallback={
-                <>
-                    <Loading />
-                </>
-            }
-        >
+        <Suspense fallback={<Loading />}>
             <NewsDetail />
         </Suspense>
     );

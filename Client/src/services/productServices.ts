@@ -1,4 +1,3 @@
-'use client';
 import useSWR from 'swr';
 import { Product, ProductDetail, ProductType } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';

@@ -74,7 +74,7 @@ function Navbar() {
                             </li>
                             <li className={cx('navbar-item')}>
                                 <Link href={config.routesCompany.tradeIn} className={cx('navbar-item-link')}>
-                                    THƯƠNG MẠI
+                                    KHÁM PHÁ
                                 </Link>
                             </li>
                             <li className={cx('navbar-item')}>
