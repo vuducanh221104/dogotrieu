@@ -138,7 +138,7 @@ class CategoryController {
             const paginatedData = products.slice(skip, skip + limit);
 
             res.status(200).json({
-                nameCategory: categorySlug === 'all' ? 'All Products' : category.name,
+                nameCategory: categorySlug === 'all' ? 'Tất Cả Sản Phẩm' : category.name,
                 totalItems,
                 totalPages,
                 currentPage: page,
