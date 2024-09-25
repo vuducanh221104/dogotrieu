@@ -2,12 +2,9 @@
     display: block;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 100px;
+    margin-top: 25px;
 }
 .news-header {
-    // display: flex;
-    // justify-content: space-between;
-    // align-items: flex-end;
-    // margin: 28px 0;
     & h1 {
         font-size: 2.2rem;
         font-weight: 500;

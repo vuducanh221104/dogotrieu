@@ -209,7 +209,7 @@ function Header() {
                                             </ul>
                                         </div>
                                         <div className={cx('mobile-menu-section-need-help')}>
-                                            <p className={cx('mobile-menu-section-need-help-tile')}> NEED HELP?</p>
+                                            <p className={cx('mobile-menu-section-need-help-tile')}>BẠN CẦN HỖ TRỢ ?</p>
                                             <ul className={cx('mobile-menu-section-need-help-list')}>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
                                                     <PhoneIcon className={cx('icon-iphone')} />
@@ -217,7 +217,7 @@ function Header() {
                                                         href={routes.social.phone}
                                                         className={cx('mobile-menu-section-need-help-item-link')}
                                                     >
-                                                        0348483612 - Lan
+                                                        0348483612 - Em Lan
                                                     </a>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
@@ -233,7 +233,7 @@ function Header() {
                                             </ul>
                                         </div>
                                         <div className={cx('mobile-menu-section-follow')}>
-                                            <p className={cx('mobile-menu-section-follow-tile')}>FOLLOW US</p>
+                                            <p className={cx('mobile-menu-section-follow-tile')}>THEO DÕI CHÚNG TÔI</p>
 
                                             <ul className={cx('mobile-menu-section-follow-list')}>
                                                 <li className={cx('mobile-menu-section-follow-item')}>

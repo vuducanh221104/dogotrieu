@@ -13,7 +13,8 @@ export const generateMetadata = (): Metadata => {
     const title = 'THƯƠNG MẠI | DOGOTRIEU';
     const description =
         'Nhận giá độc quyền. Không yêu cầu mua tối thiểu. Giá thương mại đã được áp dụng cho hơn 10.000 thiết kế đồ nội thất & trang trí.';
-    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
     return {
         title: title,
         description: description,

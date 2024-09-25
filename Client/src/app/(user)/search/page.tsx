@@ -22,7 +22,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
         `Tìm Kiếm Đồ Gỗ - DOGOTRIEU.COM`;
     const description =
         'Khám phá những món đồ nội thất mới, xưa, tự nhiên, dân tộc và đậm chất bản xứ cho không gian sống của bạn. Tham khảo bàn, ghế, sofa, đèn chiếu sáng, tủ, kệ, phụ kiện, đồ trang trí và nội thất bằng gỗ.';
-    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
     return {
         title: title,
         description: description,

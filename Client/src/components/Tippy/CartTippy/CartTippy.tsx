@@ -109,7 +109,10 @@ function CartTippy() {
                                         <ul className={cx('mini-cart-list')}>
                                             {productsAddToCart.products.map((item: any) => (
                                                 <li className={cx('mini-cart-item')} key={item._id}>
-                                                    <div className={cx('mini-cart-image-wrapper')}>
+                                                    <div
+                                                        className={cx('mini-cart-image-wrapper')}
+                                                        onClick={() => setShowMenu(false)}
+                                                    >
                                                         <div className={cx('aspect-ratio')}>
                                                             <Link
                                                                 href={`/products/${handleSlugify(item.name)}-${
@@ -131,7 +134,10 @@ function CartTippy() {
                                                     </div>
                                                     <div className={cx('mini-cart-item-wrapper')}>
                                                         <div className={cx('mini-cart-product-info')}>
-                                                            <h4 className={cx('mini-cart-product-info-vendor')}>
+                                                            <h4
+                                                                className={cx('mini-cart-product-info-vendor')}
+                                                                onClick={() => setShowMenu(false)}
+                                                            >
                                                                 {item.material_id &&
                                                                     item.material_id?.map(
                                                                         (material: any, index: number) => (
@@ -152,6 +158,7 @@ function CartTippy() {
                                                                     item._id
                                                                 }.html`}
                                                                 className={cx('mini-cart-product-info-name')}
+                                                                onClick={() => setShowMenu(false)}
                                                             >
                                                                 {item.name}
                                                             </Link>

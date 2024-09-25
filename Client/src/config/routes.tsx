@@ -61,7 +61,7 @@ const routes = {
         instagram: 'https://www.instagram.com/do_go_trieu_com/',
         youtube: 'https://www.youtube.com/channel/UChE61X--XCHDUkMhbIfTbEg/',
         printerest: 'https://www.pinterest.com/dogotrieu/',
-        zaloChat: 'https://www.facebook.com/I.Am.DucAnh123',
+        zaloChat: 'https://zalo.me/0348483612',
         messagerChat: 'https://www.facebook.com/I.Am.DucAnh123',
         phone: 'tel:0348483612',
         mail: 'mailto:dogotrieu@gmail.com',

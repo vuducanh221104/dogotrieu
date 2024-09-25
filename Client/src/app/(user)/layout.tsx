@@ -11,6 +11,8 @@ import ProviderRedux from '@/redux/ProviderRedux';
 import Script from 'next/script';
 import { jsonLdOrganization, jsonLdStore, jsonWebsite } from '@/services/menuData/jsonLd';
 import ProgressBarUser from '@/components/ProgressBarUser';
+import Head from 'next/head';
+import { Metadata, Viewport } from 'next/types';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -18,7 +20,15 @@ const poppins = Poppins({
     style: ['italic', 'normal'],
 });
 
-export const metadata = {
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: '#000000',
+};
+
+export const metadata: Metadata = {
     icons: {
         icon: '/favicon.ico',
     },
@@ -27,11 +37,6 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="vn" suppressHydrationWarning={true}>
-            <meta name="theme-color" content="#000000" />
-            <meta
-                content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
-                name="viewport"
-            />
             <body className={poppins.className}>
                 <main>
                     <ProviderRedux>

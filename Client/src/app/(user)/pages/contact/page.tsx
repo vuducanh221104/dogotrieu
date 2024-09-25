@@ -13,7 +13,8 @@ export const generateMetadata = (): Metadata => {
     const title = 'LIÊN HỆ | DOGOTRIEU';
     const description =
         'Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ với mọi yêu cầu về sản phẩm hoặc dịch vụ được đề cập trên trang web của chúng tôi.';
-    const image = 'https://res.cloudinary.com/do4zld720/image/upload/v1721573753/image-SEO-home_hajvj7.jpg';
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
     return {
         title: title,
