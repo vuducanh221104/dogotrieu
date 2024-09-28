@@ -1,0 +1,33 @@
+.website-wrapper {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15%;
+}
+
+.item {
+    width: 100%;
+    text-align: center;
+    & img {
+        width: 60%;
+        max-width: 250px;
+        cursor: pointer;
+    }
+    &:first-child {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 668px) {
+    .website-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    .item {
+        &:nth-child(2) {
+            margin-top: -40px;
+        }
+    }
+}

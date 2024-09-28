@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const url = process.env.NEXT_PUBLIC_CLIENT_URL;
+    const url = process.env.NEXT_PUBLIC_DOMAIN;
     return [
         {
             url: `${url}`,
@@ -21,26 +21,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+
         {
-            url: `${url}search?q=`,
+            url: `${url}pages/about`,
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.6,
         },
         {
-            url: `${url}pages/about`,
+            url: `${url}pages/contact`,
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.5,
         },
         {
-            url: `${url}pages/contact`,
+            url: `${url}pages/trade`,
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.4,
         },
         {
-            url: `${url}pages/trade`,
+            url: `${url}search?q=`,
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.3,
@@ -48,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         {
             url: `${url}blogs/news`,
             lastModified: new Date(),
-            changeFrequency: 'yearly',
+            changeFrequency: 'monthly',
             priority: 0.2,
         },
         {

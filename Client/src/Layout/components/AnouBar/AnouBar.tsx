@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './AnouBar.module.scss';
 import routes from '@/config/routes';
 import Link from 'next/link';
+import { archivo } from '@/assets/FontNext';
 
 const cx = classNames.bind(styles);
 
@@ -10,8 +11,8 @@ function AnouBar() {
     return (
         <div className={cx('wrapper-anou-bar')}>
             <Container>
-                <div className={cx('anou-bar-inner')}>
-                    <Link href={routes.user.categoryAll}>Đồ gỗ cũ xưa & hiện đại | Miễn phí vận chuyển *</Link>
+                <div className={cx('anou-bar-inner', archivo.className)}>
+                    <Link href={routes.user.categoryAll}>ĐỒ GỖ CŨ XƯA & HIỆN ĐẠI</Link>
                 </div>
             </Container>
         </div>

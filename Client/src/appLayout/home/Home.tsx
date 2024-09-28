@@ -54,6 +54,8 @@ function Home() {
 
                     {/* Specification */}
                     <ViewSpecification />
+                    {/*  */}
+                    <FooterLogo />
                 </>
             </>
         );

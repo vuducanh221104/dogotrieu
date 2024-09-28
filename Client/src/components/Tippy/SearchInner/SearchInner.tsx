@@ -15,6 +15,7 @@ import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
 import FormatPrice from '@/components/FormatPrice';
 import { Product } from '@/types/client';
+import { archivo } from '@/assets/FontNext';
 const cx = classNames.bind(styles);
 
 function SearchInner() {
@@ -148,7 +149,7 @@ function SearchInner() {
                                     </>
                                 ) : (
                                     <>
-                                        <p className={cx('search-inner-title')}>sản phẩm</p>
+                                        <p className={cx('search-inner-title', archivo.className)}>sản phẩm</p>
                                         {searchResult?.length > 0 ? (
                                             <>
                                                 <div className={cx('search-inner-list')}>
@@ -200,7 +201,7 @@ function SearchInner() {
                                                     className={cx('wrapper-search-inner-footer')}
                                                     onClick={() => router.push(`/search?q=${searchValue}`)}
                                                 >
-                                                    <p className={cx('search-inner-footer-title')}>
+                                                    <p className={cx('search-inner-footer-title', archivo.className)}>
                                                         Xem tất cả sản phẩm
                                                     </p>
                                                     <FontAwesomeIcon

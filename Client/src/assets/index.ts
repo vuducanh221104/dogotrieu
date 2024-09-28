@@ -4,6 +4,8 @@ const images = {
     _favicon: require('./images-gobal/favicon.ico').default,
     imgPromo: require('./images-header/imgRoom.jpg'),
     imgAdminFooter: require('./images-admin/info-card-1.png'),
+    imgFSC: require('./images-footer/fsc_logo1.png'),
+    imgNFF: require('./images-footer/NFF-logo2.png'),
 };
 
 export default images;

@@ -151,9 +151,9 @@ export const footerMenuItems: FooterMenu[] = [
     },
     {
         id: 2,
-        title: 'KHÁM PHÁ',
+        title: 'MỚI',
         links: [
-            { label: 'GIAO DỊCH', url: config.routesCompany.tradeIn },
+            { label: 'KHÁM PHÁ', url: config.routesCompany.tradeIn },
             { label: 'TIN TỨC', url: config.routes.news },
         ],
         classNameChild: 'link',

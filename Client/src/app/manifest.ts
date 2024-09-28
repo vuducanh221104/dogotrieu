@@ -5,15 +5,15 @@ export default function manifest(): MetadataRoute.Manifest {
         name: 'Đồ Gỗ Triệu',
         short_name: 'DOGOTRIEU',
         description:
-            'Tìm kiếm những món đồ nội thất hiện đại, tự nhiên, mang đậm nét dân tộc và chân thực cho không gian của bạn. Khám phá bàn ghế, ghế sofa, đèn, tủ, kệ, phụ kiện trang trí ,... và nội thất bằng gỗ. Miễn phí vận chuyển tại Việt Nam. Chào mừng bạn',
+            'Khám phá thế giới nội thất độc đáo, kết hợp giữa vẻ đẹp cổ điển và hiện đại, tự nhiên và tinh tế. Những món đồ mang đậm dấu ấn dân tộc, tạo nên không gian sống đậm chất nghệ thuật và chân thực. Từ bàn ghế, ghế sofa, đèn, tủ, kệ đến phụ kiện trang trí, tất cả đều sẵn sàng để tô điểm cho ngôi nhà của bạn. Đặc biệt, miễn phí vận chuyển toàn quốc. Chào mừng bạn đến với trải nghiệm mua sắm hoàn hảo!',
         icons: [
             {
-                src: 'https://res.cloudinary.com/do4zld720/image/upload/v1721657135/images-favicon_mnkbjy.ico',
+                src: 'https://res.cloudinary.com/do4zld720/image/upload/v1727524140/Logo-Favicon_ldfkrx.png',
                 sizes: '192x192',
                 type: 'image/png',
             },
             {
-                src: 'https://res.cloudinary.com/do4zld720/image/upload/v1721657135/images-favicon_mnkbjy.ico',
+                src: 'https://res.cloudinary.com/do4zld720/image/upload/v1727524140/Logo-Favicon_ldfkrx.png',
                 sizes: '512x512',
                 type: 'image/png',
             },

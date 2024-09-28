@@ -13,6 +13,7 @@ import Link from 'next/link';
 import FormatPrice from '../FormatPrice';
 import { CldImage } from 'next-cloudinary';
 import { Product } from '@/types/client';
+import { archivo } from '@/assets/FontNext';
 
 interface SearchOnMobileProps {
     showSearch: boolean;
@@ -160,7 +161,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                             <>
                                 {searchResult?.length > 0 ? (
                                     <>
-                                        <p className={cx('search-inner-title')}>products</p>
+                                        <p className={cx('search-inner-title', archivo.className)}>sản phẩm</p>
                                         <div className={cx('search-inner-list')}>
                                             {searchResult.map((item, index) => (
                                                 <Link
@@ -203,7 +204,9 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                             ))}
                                         </div>
                                         <div className={cx('wrapper-search-inner-footer')} onClick={handleViewAll}>
-                                            <p className={cx('search-inner-footer-title')}>Xem tất cả sản phẩm</p>
+                                            <p className={cx('search-inner-footer-title', archivo.className)}>
+                                                Xem tất cả sản phẩm
+                                            </p>
                                             <FontAwesomeIcon
                                                 icon={faChevronRight}
                                                 style={{

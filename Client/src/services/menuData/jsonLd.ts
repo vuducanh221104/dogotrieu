@@ -1,6 +1,6 @@
 import routes from '@/config/routes';
 
-const imageThumb = 'https://res.cloudinary.com/do4zld720/image/upload/v1721658548/logo_lrp6uu.png';
+const imageThumb = 'https://res.cloudinary.com/do4zld720/image/upload/v1727524103/Logo-full-white_rtyzdt.png';
 
 export const jsonWebsite = {
     '@context': 'http://schema.org',
