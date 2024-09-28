@@ -219,7 +219,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                     </>
                                 ) : (
                                     <div className={cx('no-result')}>
-                                        <p>No results matched</p>
+                                        <p>Không có kết quả nào được tìm thấy</p>
                                     </div>
                                 )}
                             </>

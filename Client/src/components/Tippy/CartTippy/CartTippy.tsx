@@ -113,6 +113,7 @@ function CartTippy() {
                         cursor: 'pointer',
                     }}
                     className={cx('icon-xmark', showMenu && 'onhide')}
+                    onClick={() => setShowMenu(false)}
                 />
             </div>
             <div className={cx('wrapper-tippy', showMenu && 'active')} ref={tippyRef}>
