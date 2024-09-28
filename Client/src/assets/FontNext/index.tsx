@@ -1,7 +1,7 @@
 import { Archivo, Poppins, Lato, Playfair_Display, Open_Sans } from 'next/font/google';
 
 export const archivo = Archivo({
-    subsets: ['latin'],
+    subsets: ['vietnamese'],
     weight: ['400', '500', '600', '700'],
     style: ['italic', 'normal'],
 });
@@ -18,13 +18,13 @@ export const lato = Lato({
 });
 
 export const playFairDisplay = Playfair_Display({
-    subsets: ['latin'],
+    subsets: ['vietnamese'],
     weight: ['400', '500', '600', '700'],
     style: ['italic', 'normal'],
 });
 
 export const openSans = Open_Sans({
-    subsets: ['latin'],
+    subsets: ['vietnamese'],
     weight: ['400', '500', '600', '700'],
     style: ['italic', 'normal'],
 });

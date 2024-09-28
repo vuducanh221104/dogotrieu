@@ -11,7 +11,7 @@ function AnouBar() {
         <div className={cx('wrapper-anou-bar')}>
             <Container>
                 <div className={cx('anou-bar-inner')}>
-                    <Link href={routes.user.categoryAll}>Kho hàng lớn + Miễn phí vận chuyển *</Link>
+                    <Link href={routes.user.categoryAll}>Đồ gỗ cũ xưa & hiện đại | Miễn phí vận chuyển *</Link>
                 </div>
             </Container>
         </div>

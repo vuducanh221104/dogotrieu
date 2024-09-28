@@ -10,6 +10,7 @@ import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto
 import { homeGet } from '@/services/homeServices';
 import Loading from '@/components/Loading';
 import NewsArticle from '@/components/News/NewsArticle';
+import FooterLogo from '@/components/FooterLogo';
 const cx = classNames.bind(styles);
 
 function Home() {
@@ -28,14 +29,14 @@ function Home() {
                     </div>
 
                     {/* Image Customer */}
-                    <div className={cx('slide-show-banner')}>
+                    {/* <div className={cx('slide-show-banner')}>
                         <SwiperCustomer
                             data={dataHome?.images_customer}
                             showImageCustomer={true}
                             propsColorBtn={'var(--color-hover)'}
                             backgroundColor={'#f9eae9'}
                         />
-                    </div>
+                    </div> */}
 
                     {/* Product List */}
                     {dataHome?.featured_product.map((item: any, index: number) => (

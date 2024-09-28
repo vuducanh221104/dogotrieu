@@ -81,10 +81,7 @@ function NewsDetail() {
             </>
         );
     }
-    // return <>div</>;
 }
-
-// export default NewsDetail;
 
 export default function NewsDetailContent() {
     return (

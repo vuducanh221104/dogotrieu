@@ -31,6 +31,8 @@ export const newsGetAll = () => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -63,6 +65,8 @@ export const newGetTaggedPagination = (slug: any, query: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -78,6 +82,8 @@ export const newsGetById = (id: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {

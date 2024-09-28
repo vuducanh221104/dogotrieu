@@ -16,7 +16,7 @@ function CartEmpty() {
                 <p className={`${cx('empty-state-heading')} heading h1 ${archivo.className}`}>
                     Giỏ hàng của bạn đang trống
                 </p>
-                <p className={cx('empty-state-tile')}>Vận chuyển miễn phí!</p>
+                <p className={cx('empty-state-tile', archivo.className)}>Vận chuyển miễn phí!</p>
                 <div className={cx('empty-state-button')}>
                     <Link href={routes.user.home} className={`${cx('btn-sumbit-link')} button`}>
                         Tiếp tục mua sắm

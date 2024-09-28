@@ -31,6 +31,8 @@ export const productGetId = (id: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -45,6 +47,8 @@ export const productGetOnly = () => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -59,6 +63,8 @@ export const productGetAll = () => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -102,6 +108,8 @@ export const featuredProductGet = (query: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -116,6 +124,8 @@ export const featuredProductGetById = (query: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {

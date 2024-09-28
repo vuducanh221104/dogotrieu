@@ -16,6 +16,7 @@ import { addProductToCart } from '@/redux/cartSlice';
 import FormatPrice from '@/components/FormatPrice';
 import { useState, Fragment, ChangeEvent } from 'react';
 import { AppDispatch, RootState } from '@/redux/store';
+import DiscountCalculation from '@/components/DiscountCalculation';
 const cx = classNames.bind(styles);
 
 function ProductDetail({ productId: id }: any) {
@@ -99,14 +100,30 @@ function ProductDetail({ productId: id }: any) {
                                                         >
                                                             {data.name}
                                                         </h1>
-
+                                                        <div className={cx('product-meta-sale')}>
+                                                            {data.price.discount !== null &&
+                                                                data.price.discount !== 0 && (
+                                                                    <DiscountCalculation
+                                                                        price={data.price.original}
+                                                                        discountPrice={data.price.discount}
+                                                                    />
+                                                                )}
+                                                            {data.ship !== 0 && (
+                                                                <p className={cx('product-meta-tag')}>QUICK SHIP</p>
+                                                            )}
+                                                        </div>
                                                         <div className={cx('product-meta-reference')}>
                                                             <span className={cx('product-meta-sku')}>
                                                                 SKU:
                                                                 <span>{data.product_type_id.sku}</span>
                                                             </span>
                                                             <div className={cx('product-sparate')}></div>
-                                                            <div className={cx('product-meta-material-list')}>
+                                                            <div
+                                                                className={cx(
+                                                                    'product-meta-material-list',
+                                                                    archivo.className,
+                                                                )}
+                                                            >
                                                                 {data.material_id &&
                                                                     data.material_id?.map(
                                                                         (material: any, index: number) => (
@@ -158,7 +175,12 @@ function ProductDetail({ productId: id }: any) {
                                                                     Còn Lại:
                                                                 </span>
                                                                 {data.quantity > 0 ? (
-                                                                    <span className={cx('product-meta-status')}>
+                                                                    <span
+                                                                        className={cx(
+                                                                            'product-meta-status',
+                                                                            archivo.className,
+                                                                        )}
+                                                                    >
                                                                         CÒN HÀNG
                                                                     </span>
                                                                 ) : (
@@ -166,6 +188,7 @@ function ProductDetail({ productId: id }: any) {
                                                                         className={cx(
                                                                             'product-meta-status',
                                                                             'out-stock',
+                                                                            archivo.className,
                                                                         )}
                                                                     >
                                                                         HẾT HÀNG

@@ -15,6 +15,7 @@ import { featuredProductGet, featuredProductGetById } from '@/services/productSe
 import useWindowSize from '@/hooks/useWIndowSize';
 import { useMeasure } from '@uidotdev/usehooks';
 import { archivo } from '@/assets/FontNext';
+import DiscountCalculation from '@/components/DiscountCalculation';
 
 const cx = classNames.bind(styles);
 
@@ -124,6 +125,14 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                               }
                                                     }
                                                 >
+                                                    <div className={cx('product-label-list')}>
+                                                        {item.price.discount !== null && item.price.discount !== 0 && (
+                                                            <DiscountCalculation
+                                                                price={item.price.original}
+                                                                discountPrice={item.price.discount}
+                                                            />
+                                                        )}
+                                                    </div>
                                                     <div className={cx('product-image')}>
                                                         <Link
                                                             href={`/products/${handleSlugify(item.name)}-${
@@ -146,7 +155,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         {item.ship !== 0 && (
                                                             <p className={cx('product-tag')}>QUICK SHIP</p>
                                                         )}
-                                                        <h3 className={cx('product-vendor')}>
+                                                        <h3 className={cx('product-vendor', archivo.className)}>
                                                             {item.material_id &&
                                                                 item.material_id?.map(
                                                                     (material: any, indexMaterial: number) => (
@@ -189,9 +198,17 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         </div>
 
                                                         {item.quantity > 0 ? (
-                                                            <span className={cx('product-status')}>CÒN HÀNG</span>
+                                                            <span className={cx('product-status', archivo.className)}>
+                                                                CÒN HÀNG
+                                                            </span>
                                                         ) : (
-                                                            <span className={cx('product-status', 'out-stock')}>
+                                                            <span
+                                                                className={cx(
+                                                                    'product-status',
+                                                                    'out-stock',
+                                                                    archivo.className,
+                                                                )}
+                                                            >
                                                                 HẾT HÀNG
                                                             </span>
                                                         )}
@@ -222,6 +239,14 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                 <>
                                     {data?.map((item: any) => (
                                         <div className={cx('product-item')} key={item._id}>
+                                            <div className={cx('product-label-list')}>
+                                                {item.price.discount !== null && item.price.discount !== 0 && (
+                                                    <DiscountCalculation
+                                                        price={item.price.original}
+                                                        discountPrice={item.price.discount}
+                                                    />
+                                                )}
+                                            </div>
                                             <div className={cx('product-image')}>
                                                 <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
@@ -238,7 +263,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                             </div>
                                             <div className={cx('product-info')}>
                                                 {item.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
-                                                <h3 className={cx('product-vendor')}>
+                                                <h3 className={cx('product-vendor', archivo.className)}>
                                                     {item.material_id &&
                                                         item.material_id?.map(
                                                             (material: any, indexMaterial: number) => (
@@ -276,9 +301,15 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                 </div>
 
                                                 {item.quantity > 0 ? (
-                                                    <span className={cx('product-status')}>CÒN HÀNG</span>
+                                                    <span className={cx('product-status', archivo.className)}>
+                                                        CÒN HÀNG
+                                                    </span>
                                                 ) : (
-                                                    <span className={cx('product-status', 'out-stock')}>HẾT HÀNG</span>
+                                                    <span
+                                                        className={cx('product-status', 'out-stock', archivo.className)}
+                                                    >
+                                                        HẾT HÀNG
+                                                    </span>
                                                 )}
                                             </div>
                                         </div>

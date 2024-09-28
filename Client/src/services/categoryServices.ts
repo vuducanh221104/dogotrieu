@@ -22,6 +22,8 @@ export const categoryFilterGet = (query: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {
@@ -50,6 +52,8 @@ export const categoryGet = () => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {

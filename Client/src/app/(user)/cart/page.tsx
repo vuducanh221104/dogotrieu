@@ -141,6 +141,7 @@ function PageCart() {
                                                                                         )}-${item._id}.html`}
                                                                                         className={cx(
                                                                                             'line-item-vendor-link',
+                                                                                            archivo.className,
                                                                                         )}
                                                                                     >
                                                                                         {index !== 0 && ', '}
@@ -267,7 +268,7 @@ function PageCart() {
                                                         <FormatPrice value={productsAddToCart.totalPrice} />
                                                     </div>
                                                 </div>
-                                                <div className={cx('cart-notice-important')}>
+                                                <div className={cx('cart-notice-important', archivo.className)}>
                                                     <h2>Tạm Thời Bảo Trì Chức Năng Này</h2>
                                                 </div>
                                             </div>

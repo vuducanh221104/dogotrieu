@@ -13,12 +13,9 @@ import { jsonLdOrganization, jsonLdStore, jsonWebsite } from '@/services/menuDat
 import ProgressBarUser from '@/components/ProgressBarUser';
 import Head from 'next/head';
 import { Metadata, Viewport } from 'next/types';
+import { poppins } from '@/assets/FontNext';
 
-const poppins = Poppins({
-    subsets: ['latin'],
-    weight: ['300', '400', '500', '600', '700'],
-    style: ['italic', 'normal'],
-});
+const poppinsFont = poppins;
 
 export const viewport: Viewport = {
     width: 'device-width',
@@ -37,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="vn" suppressHydrationWarning={true}>
-            <body className={poppins.className}>
+            <body className={poppinsFont.className}>
                 <main>
                     <ProviderRedux>
                         <AnouBar />

@@ -10,7 +10,7 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { id }: any = params;
 
     const idNews = handleSplitSlug(id);
@@ -19,7 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     try {
         news = await newsSEOGET(idNews);
     } catch (error) {
-        news = null;
+        return undefined;
+    }
+
+    // Nếu không tìm thấy tin tức, cũng trả về undefined
+    if (!news) {
+        return undefined;
     }
     const title = news?.title ?? 'Tin Tức Đồ Gỗ Triệu';
     const description = cleanMarkDownLimit(news?.content) ?? 'Thông tin mới nhất về đồ gỗ và nội thất';

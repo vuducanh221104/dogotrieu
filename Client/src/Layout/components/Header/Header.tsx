@@ -45,6 +45,7 @@ function Header() {
     const [classActive, setClassActive] = useState<any>('');
     const [toggleIndex, setToggleIndex] = useState<number | null>(null);
     const { width, height } = useWindowSize();
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     const handleScroll = () => {
         if (window.scrollY > 40) {
@@ -53,13 +54,6 @@ function Header() {
             setAnoubarHidden(false);
         }
     };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [showBars]);
 
     const dataMenuPanel = dataMenuNavBar;
 
@@ -74,11 +68,29 @@ function Header() {
     };
 
     useEffect(() => {
+        // Ẩn thông báo khi scroll
+        const handleScroll = () => setAnoubarHidden(window.scrollY > 40);
+
+        // Đóng menu khi click ra ngoài
+        const handleClickOutside = (event: MouseEvent) => {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+                setShowBars(false);
+            }
+        };
+
+        // Reset trạng thái showShop khi đóng menu
+        if (!showBars) setShowShop(false);
+
+        // Thêm event listener
+        window.addEventListener('scroll', handleScroll);
         document.addEventListener('mousedown', handleClickOutside);
+
+        // Cleanup khi unmount
         return () => {
+            window.removeEventListener('scroll', handleScroll);
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
+    }, [showBars]);
 
     //Handle Calc Max Height
     const calculateMobileMenuHeight = () => {
@@ -100,25 +112,19 @@ function Header() {
                     <div className={cx('header-inner')}>
                         {/* Menu Bars */}
                         <nav className={cx('header-bars')}>
-                            {showBars ? (
-                                <button className={cx('btn-bars')} aria-label="Open Menu">
-                                    <XmarkIcon
-                                        style={{ width: '19px', height: '19px' }}
-                                        onClick={() => setShowBars(!showBars)}
-                                    />
-                                </button>
-                            ) : (
-                                <button
-                                    className={cx('btn-bars')}
-                                    onClick={() => setShowBars(!showBars)}
-                                    aria-label="Open Menu"
-                                >
-                                    <BarsIcon
-                                        style={{ width: '20px', height: '16px' }}
-                                        onClick={() => setShowBars(!showBars)}
-                                    />
-                                </button>
-                            )}
+                            <div style={{ position: 'relative' }}>
+                                <BarsIcon
+                                    style={{ width: '20px', height: '16px', cursor: 'pointer' }}
+                                    className={cx('icon-bars', showBars && 'onhide')}
+                                    onClick={() => setShowBars(true)}
+                                />
+
+                                <XmarkIcon
+                                    style={{ width: '19px', height: '19px', cursor: 'pointer' }}
+                                    className={cx('icon-xmark', showBars && 'onhide')}
+                                />
+                            </div>
+
                             {/* MENU MOBILE */}
                             <div
                                 ref={menuRef}
@@ -136,11 +142,10 @@ function Header() {
                                         : {
                                               opacity: '0',
                                               visibility: 'hidden',
-                                              display: 'none',
                                           }
                                 }
                             >
-                                <div className={cx('mobile-menu-inner')}>
+                                <div className={cx('mobile-menu-inner')} ref={wrapperRef}>
                                     <div className={cx('mobile-menu-panel')}>
                                         <div className={cx('mobile-menu-section')}>
                                             <ul className={cx('mobile-menu-section-list')}>
@@ -209,7 +214,9 @@ function Header() {
                                             </ul>
                                         </div>
                                         <div className={cx('mobile-menu-section-need-help')}>
-                                            <p className={cx('mobile-menu-section-need-help-tile')}>BẠN CẦN HỖ TRỢ ?</p>
+                                            <p className={cx('mobile-menu-section-need-help-tile', archivo.className)}>
+                                                BẠN CẦN HỖ TRỢ ?
+                                            </p>
                                             <ul className={cx('mobile-menu-section-need-help-list')}>
                                                 <li className={cx('mobile-menu-section-need-help-item')}>
                                                     <PhoneIcon className={cx('icon-iphone')} />
@@ -233,7 +240,9 @@ function Header() {
                                             </ul>
                                         </div>
                                         <div className={cx('mobile-menu-section-follow')}>
-                                            <p className={cx('mobile-menu-section-follow-tile')}>THEO DÕI CHÚNG TÔI</p>
+                                            <p className={cx('mobile-menu-section-follow-tile', archivo.className)}>
+                                                THEO DÕI CHÚNG TÔI
+                                            </p>
 
                                             <ul className={cx('mobile-menu-section-follow-list')}>
                                                 <li className={cx('mobile-menu-section-follow-item')}>
@@ -290,7 +299,16 @@ function Header() {
                                     {/* -> SHOP PANEL */}
                                     <div
                                         className={cx('mobile-menu-panel-shop')}
-                                        style={showShop ? { transform: 'translateX(0)', visibility: 'visible' } : {}}
+                                        style={
+                                            showShop
+                                                ? {
+                                                      visibility: 'visible',
+                                                      transform: 'translateX(0)',
+                                                  }
+                                                : {
+                                                      visibility: 'hidden',
+                                                  }
+                                        }
                                     >
                                         <div className={cx('mobile-menu-panel-shop-title')}>
                                             <button

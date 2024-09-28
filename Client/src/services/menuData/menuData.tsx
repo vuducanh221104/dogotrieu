@@ -60,7 +60,7 @@ export const dataMenuNavBar: MenuPanel[] = [
         id: 4,
         title: 'TƯỢNG & TRANH',
         subMenu: [
-            { title: 'Tất Cả Tượng & Tranh', link: '/category/tuong-va-tranh' },
+            { title: 'Tất Cả Tượng và Tranh', link: '/category/tuong-va-tranh' },
             { title: 'Tượng Gỗ', link: '/category/tuong-go' },
             { title: 'Tượng Sứ', link: '/category/tuong-su' },
             { title: 'Tượng Đồng', link: '/category/tuong-dong' },
@@ -78,7 +78,7 @@ export const dataMenuNavBar: MenuPanel[] = [
         id: 5,
         title: 'TRANG TRÍ & KHÁC',
         subMenu: [
-            { title: 'Tất Cả Trang Trí & Khác', link: '/category/trang-tri-va-khac' },
+            { title: 'Tất Cả Trang Trí và Khác', link: '/category/trang-tri-va-khac' },
             { title: 'Đồ Gốm Sứ', link: '/category/do-gom-su' },
             { title: 'Rương', link: '/category/ruong' },
             { title: 'Đèn Trần', link: '/category/den-tran' },

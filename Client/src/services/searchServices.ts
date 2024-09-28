@@ -31,6 +31,8 @@ export const searchFilter = (query: string) => {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
     });
 
     if (error) {

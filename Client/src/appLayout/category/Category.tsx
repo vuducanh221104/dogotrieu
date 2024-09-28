@@ -202,21 +202,22 @@ function CategoryContent() {
     const { width: windowWidth } = useWindowSize();
     const dataFilter = dataFilterCategory;
 
-    if (isLoading) {
-        return (
-            <>
-                <Loading />
-                <FilterModal
-                    dataFilter={dataFilter}
-                    showFilterMobile={showFilterMobile}
-                    setShowFilterMobile={setShowFilterMobile}
-                    toggleContent={toggleContent}
-                    showFilterContent={showFilterContent}
-                    dataLength={dataTotalProduct}
-                />
-            </>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <>
+    //             <Loading />
+
+    //             <FilterModal
+    //                 dataFilter={dataFilter}
+    //                 showFilterMobile={showFilterMobile}
+    //                 setShowFilterMobile={setShowFilterMobile}
+    //                 toggleContent={toggleContent}
+    //                 showFilterContent={showFilterContent}
+    //                 dataLength={dataTotalProduct}
+    //             />
+    //         </>
+    //     );
+    // }
 
     if (error) {
         return <NotFound />;
@@ -382,6 +383,7 @@ function CategoryContent() {
                                                             <FontAwesomeIcon
                                                                 icon={faBarsProgress}
                                                                 className={cx('icon-toglle-mobile')}
+                                                                style={{ width: '13px', height: '13px' }}
                                                             />
                                                             Lọc Sản Phẩm
                                                         </span>
@@ -534,42 +536,44 @@ function CategoryContent() {
                                             </div>
                                         </div>
 
-                                        {/* Product Cards */}
-                                        <div className={cx('category-product-item')}>
-                                            {isLoading ? (
-                                                <Loading />
-                                            ) : (
-                                                <>
-                                                    {dataTotalProduct === 0 && (
-                                                        <div className={cx('no-product-in-category')}>
-                                                            {/* Sorry, there are no products in this collection */}
-                                                            Xin lỗi , không có sản phẩm nào ở danh mục này
-                                                        </div>
-                                                    )}
+                                        <div>
+                                            {/* Product Cards */}
+                                            <div className={cx('category-product-item')}>
+                                                {isLoading ? (
+                                                    <Loading />
+                                                ) : (
+                                                    <>
+                                                        {dataTotalProduct === 0 && (
+                                                            <div className={cx('no-product-in-category')}>
+                                                                {/* Sorry, there are no products in this collection */}
+                                                                Xin lỗi , không có sản phẩm nào ở danh mục này
+                                                            </div>
+                                                        )}
 
-                                                    {data?.map((item: any, index: number) => {
-                                                        const isSpecialIndex =
-                                                            windowWidth <= 641
-                                                                ? index % 2 !== 0
-                                                                : windowWidth <= 1279
-                                                                ? (index + 1) % 3 === 0
-                                                                : index % 3 !== 0
-                                                                ? (index + 1) % 4 === 0
-                                                                : (index + 1) % 4 === 0;
-                                                        return (
-                                                            <CardProduct
-                                                                key={item._id}
-                                                                data={item}
-                                                                isSpecialIndex={isSpecialIndex}
-                                                            />
-                                                        );
-                                                    })}
-                                                </>
-                                            )}
+                                                        {data?.map((item: any, index: number) => {
+                                                            const isSpecialIndex =
+                                                                windowWidth <= 641
+                                                                    ? index % 2 !== 0
+                                                                    : windowWidth <= 1279
+                                                                    ? (index + 1) % 3 === 0
+                                                                    : index % 3 !== 0
+                                                                    ? (index + 1) % 4 === 0
+                                                                    : (index + 1) % 4 === 0;
+                                                            return (
+                                                                <CardProduct
+                                                                    key={item._id}
+                                                                    data={item}
+                                                                    isSpecialIndex={isSpecialIndex}
+                                                                />
+                                                            );
+                                                        })}
+                                                    </>
+                                                )}
+                                            </div>
+
+                                            {/* Pagination */}
+                                            {dataTotalProduct > 0 && <Pagination totalPages={dataTotalPage} />}
                                         </div>
-
-                                        {/* Pagination */}
-                                        {dataTotalProduct > 0 && <Pagination totalPages={dataTotalPage} />}
                                     </div>
                                 </div>
                             </div>

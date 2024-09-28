@@ -51,7 +51,7 @@ function SwiperCustomer({ data, navigation = true }: any) {
             spaceBetween: 10,
         },
         995: {
-            slidesPerView: 4,
+            slidesPerView: 6,
             spaceBetween: 10,
         },
         1200: {

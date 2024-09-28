@@ -94,12 +94,13 @@ export const ChervonUpMenuIcon: React.FC<IconsType> = ({ width = '2.4rem', heigh
     </svg>
 );
 
-export const UserIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4rem', className, style }) => (
+export const UserIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4rem', className, style, onClick }) => (
     <svg
         className={className}
         width={width}
         height={height}
         style={style}
+        onClick={onClick}
         viewBox="0 0 20 22"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -113,12 +114,13 @@ export const UserIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4r
     </svg>
 );
 
-export const CartIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4rem', className, style }) => (
+export const CartIcon: React.FC<IconsType> = ({ width = '2.4rem', height = '2.4rem', className, onClick, style }) => (
     <svg
         className={className}
         width={width}
         height={height}
         style={style}
+        onClick={onClick}
         viewBox="0 0 27 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

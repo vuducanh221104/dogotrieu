@@ -5,6 +5,7 @@ import Link from 'next/link';
 import DiscountCalculation from '@/components/DiscountCalculation';
 import slugify from 'slugify';
 import { CldImage } from 'next-cloudinary';
+import { archivo } from '@/assets/FontNext';
 
 interface IPropsCardProduct {
     // data: IProduct;
@@ -43,7 +44,7 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
             </div>
             <div className={cx('product-info')}>
                 {data.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
-                <h2 className={cx('product-vendor')}>
+                <h2 className={cx('product-vendor', archivo.className)}>
                     {data.material_id &&
                         data.material_id?.map((material: any, index: number) => (
                             <Link href={`/products/${handleSlugify(data.name)}-${data._id}.html`} key={index}>
@@ -72,9 +73,9 @@ function CardProduct({ data, isSpecialIndex = false, onPageSearch = false }: IPr
                 </div>
 
                 {data.quantity > 0 ? (
-                    <span className={cx('product-status')}>CÒN HÀNG</span>
+                    <span className={cx('product-status', archivo.className)}>CÒN HÀNG</span>
                 ) : (
-                    <span className={cx('product-status', 'out-stock')}>HẾT HÀNG</span>
+                    <span className={cx('product-status', 'out-stock', archivo.className)}>HẾT HÀNG</span>
                 )}
             </div>
         </div>

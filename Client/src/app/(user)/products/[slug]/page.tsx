@@ -11,7 +11,7 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { slug } = params;
 
     const id = handleSplitSlug(slug);
@@ -21,7 +21,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     try {
         product = await productSEOGET(id);
     } catch (error) {
-        product = null;
+        product = undefined;
+    }
+    if (!product) {
+        return undefined;
     }
 
     const name = product?.name ?? 'Đồ Gỗ Cũ';

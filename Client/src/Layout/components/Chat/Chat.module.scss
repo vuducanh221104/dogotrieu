@@ -1,3 +1,18 @@
+.chat-content {
+    position: absolute;
+    top: -150px;
+    left: -25px;
+    opacity: 0;
+    display: block;
+    visibility: hidden;
+    transform: scale(0.7);
+    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+    &.on-hide {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 .popperover {
     width: 100%;
     transition: opacity 0.7s cubic-bezier(0, 1, 0.4, 1);
@@ -133,5 +148,8 @@
     }
     .icon-message-wrapper {
         left: 8px;
+    }
+    .chat-content {
+        left: -37px;
     }
 }
