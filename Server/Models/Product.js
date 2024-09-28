@@ -28,6 +28,7 @@ const ProductSchema = new Schema(
         category_id: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
         created_at: { type: Date, default: Date.now },
         updated_at: { type: Date, default: Date.now },
+        slug: { type: String, slug: 'name', unique: true, require: true },
     },
     {
         timestamps: false,

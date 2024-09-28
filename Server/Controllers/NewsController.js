@@ -1,4 +1,5 @@
 const NewsSchema = require('../Models/News');
+const mongoose = require('mongoose');
 
 class NewsController {
     // [POST] /news
@@ -40,6 +41,9 @@ class NewsController {
     //[GET]
     async newsGetById(req, res) {
         try {
+            if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+                return res.status(404).json({ message: 'News Id not found' });
+            }
             const news = await NewsSchema.findById(req.params.id);
             if (!news) {
                 return res.status(404).json({ message: 'News not found' });
@@ -69,6 +73,10 @@ class NewsController {
             const query = slug !== 'all' ? { slug_description: { $regex: slug, $options: 'i' } } : {};
 
             const totalItems = await NewsSchema.countDocuments(query);
+
+            if (totalItems === 0) {
+                return res.status(404).json({ message: 'News not found' });
+            }
             const news = await NewsSchema.find(query).skip(skip).limit(limit);
 
             const totalPages = Math.ceil(totalItems / limit);

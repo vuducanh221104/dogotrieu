@@ -58,6 +58,7 @@
         "query-string": "^8.1.0",
         "redis": "^4.6.10",
         "session-mongoose": "^0.5.2",
+        "slugify": "^1.6.6",
         "socket.io": "^4.7.2",
         "sortobject": "^4.16.0",
         "uuid": "^9.0.0"

@@ -1,6 +1,11 @@
 const Product = require('../Models/Product');
 const ProductType = require('../Models/ProductType');
+const mongoose = require('mongoose');
+const slugify = require('slugify');
 
+const createSlug = (str) => {
+    return slugify(str, { lower: true, locale: 'vi' });
+};
 class ProductController {
     //[GET]
     async feaProductByCategory(req, res) {
@@ -74,7 +79,6 @@ class ProductController {
     // [GET]
     async fearProductById(req, res) {
         const { id } = req.query; // Lấy danh sách id sản phẩm từ query params
-        console.log(id);
         try {
             // Chuyển id thành mảng các id
             const ids = Array.isArray(id) ? id : [id];
@@ -163,6 +167,9 @@ class ProductController {
     async getProductAndProductType(req, res) {
         try {
             const productId = req.params.id;
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(404).json({ message: 'Product Id not found' });
+            }
             const product = await Product.findById(productId)
                 .populate('product_type_id')
                 .populate({
@@ -311,8 +318,12 @@ class ProductController {
         try {
             const { q, type } = req.query;
             let query = {};
+
             if (q) {
-                query = { name: { $regex: q, $options: 'i' } };
+                const slugQuery = createSlug(q);
+                query = {
+                    $or: [{ name: { $regex: q, $options: 'i' } }, { slug: { $regex: slugQuery, $options: 'i' } }],
+                };
             }
 
             let productData;
@@ -331,7 +342,6 @@ class ProductController {
             res.status(500).json({ message: 'Server error' });
         }
     }
-
     //[GET]
     async searchProductByQueryAndFilter(req, res) {
         const searchTerm = req.query.q;
