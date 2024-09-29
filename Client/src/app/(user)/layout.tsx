@@ -34,33 +34,33 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="vn" suppressHydrationWarning={true}>
-            <body className={poppinsFont.className}>
-                <main>
-                    <ProviderRedux>
-                        <AnouBar />
-                        <Header />
-                        <ProgressBarUser>{children}</ProgressBarUser>
-                        <ViewSpecification />
-                        <FooterLogo />
-                        <Footer />
-                        <Chat />
-                    </ProviderRedux>
-                    <Script
-                        type="application/jsonLdWebsite"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonWebsite) }}
-                        strategy="lazyOnload"
-                    />
-                    <Script
-                        type="application/jsonLdStore"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdStore) }}
-                        strategy="lazyOnload"
-                    />
-                    <Script
-                        type="application/jsonLdOrganization"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
-                        strategy="lazyOnload"
-                    />
-                </main>
+            <body className={poppinsFont.className} data-instant-intensity="viewport">
+                {/* <main> */}
+                <ProviderRedux>
+                    <AnouBar />
+                    <Header />
+                    <ProgressBarUser>{children}</ProgressBarUser>
+                    <ViewSpecification />
+                    <FooterLogo />
+                    <Footer />
+                    <Chat />
+                </ProviderRedux>
+                <Script
+                    type="application/jsonLdWebsite"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonWebsite) }}
+                    strategy="lazyOnload"
+                />
+                <Script
+                    type="application/jsonLdStore"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdStore) }}
+                    strategy="lazyOnload"
+                />
+                <Script
+                    type="application/jsonLdOrganization"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+                    strategy="lazyOnload"
+                />
+                {/* </main> */}
             </body>
         </html>
     );

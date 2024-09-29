@@ -87,7 +87,7 @@ function PageAboutUs() {
                             <div className={cx('column')}>
                                 <div className={cx('heading-wrapper')}>
                                     <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
-                                        Tình yêu với Thiết Kế
+                                        Tình Yêu Với Thiết Kế
                                     </h3>
                                 </div>
                                 <div className={`${cx('description-wrapper')} ${lato.className}`}>
@@ -115,7 +115,7 @@ function PageAboutUs() {
                                 <div className={cx('column-padding')}>
                                     <div className={cx('heading-wrapper')}>
                                         <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
-                                            Kiến thức chuyên môn
+                                            Kiến Thức Chuyên Môn
                                         </h3>
                                     </div>
                                     <div className={`${cx('description-wrapper')} ${lato.className}`}>
@@ -140,7 +140,7 @@ function PageAboutUs() {
                                 <div className={cx('column-padding')}>
                                     <div className={cx('heading-wrapper')}>
                                         <h3 className={`${cx('heading')} ${playFairDisplay.className}`}>
-                                            Chúng tôi Hướng Đến
+                                            Chúng Tôi Hướng Đến
                                         </h3>
                                     </div>
                                     <div className={`${cx('description-wrapper')} ${lato.className}`}>
