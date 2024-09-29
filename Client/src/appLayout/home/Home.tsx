@@ -1,16 +1,13 @@
 'use client';
 import styles from '@/styles/Home.module.scss';
 import classNames from 'classnames/bind';
-import React, { useEffect } from 'react';
+import React from 'react';
 import SwiperBanner from '@/components/Swiper/SwiperBanner';
-import SwiperCustomer from '@/components/Swiper/SwiperCustomer';
-import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 
 import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto';
 import { homeGet } from '@/services/homeServices';
 import Loading from '@/components/Loading';
 import NewsArticle from '@/components/News/NewsArticle';
-import FooterLogo from '@/components/FooterLogo';
 const cx = classNames.bind(styles);
 
 function Home() {
@@ -51,11 +48,6 @@ function Home() {
 
                     {/* NEWS */}
                     <NewsArticle />
-
-                    {/* Specification */}
-                    <ViewSpecification />
-                    {/*  */}
-                    <FooterLogo />
                 </>
             </>
         );

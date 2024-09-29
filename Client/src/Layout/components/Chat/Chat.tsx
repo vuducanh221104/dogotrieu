@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import { MessageChat, MessageChatXmark } from '@/components/Icons';
 import { useState } from 'react';
 import config from '@/config';
+import routes from '@/config/routes';
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -46,7 +47,7 @@ function Chat() {
                             </a>
                         </li>
                         <li className={cx('minichat-social-item')}>
-                            <a href="tel:18003355">
+                            <a href={routes.social.phone}>
                                 <div className={cx('minichat-icon')}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +70,7 @@ function Chat() {
                             </a>
                         </li>
                         <li className={cx('minichat-social-item')}>
-                            <a href="http://m.me/minhtuanmobilesg" target="_blank" rel="noopener noreferrer">
+                            <a href={routes.social.messagerChat} target="_blank" rel="noopener noreferrer">
                                 <div className={cx('minichat-icon')}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

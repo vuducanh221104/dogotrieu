@@ -373,6 +373,8 @@ function ProductDetail({ productId: id }: any) {
                         </Container>
                     </section>
                 </div>
+
+                {/* 2 */}
                 <div className={cx('product-recommendations-wrapper')}>
                     <section className={cx('section-product-recommendations')}>
                         <ViewListProductAuto

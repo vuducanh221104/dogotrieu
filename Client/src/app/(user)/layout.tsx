@@ -1,4 +1,3 @@
-import { Poppins } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/GobalStyles.scss';
 import '@/styles/SwiperCustom.scss';
@@ -11,9 +10,10 @@ import ProviderRedux from '@/redux/ProviderRedux';
 import Script from 'next/script';
 import { jsonLdOrganization, jsonLdStore, jsonWebsite } from '@/services/menuData/jsonLd';
 import ProgressBarUser from '@/components/ProgressBarUser';
-import Head from 'next/head';
 import { Metadata, Viewport } from 'next/types';
 import { poppins } from '@/assets/FontNext';
+import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
+import FooterLogo from '@/components/FooterLogo';
 
 const poppinsFont = poppins;
 
@@ -40,7 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <AnouBar />
                         <Header />
                         <ProgressBarUser>{children}</ProgressBarUser>
-
+                        <ViewSpecification />
+                        <FooterLogo />
                         <Footer />
                         <Chat />
                     </ProviderRedux>

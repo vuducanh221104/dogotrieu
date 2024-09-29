@@ -5,7 +5,6 @@ import styles from '@/styles/NewsHome.module.scss';
 import { Container } from 'react-bootstrap';
 import { FacebookIcon, InstaIcon, PrinterestIcon, YoutubeIcon } from '@/components/Icons';
 import MapMini from '@/components/MapMini';
-import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { archivo, poppins } from '@/assets/FontNext';
 import config from '@/config';
 import Loading from '@/components/Loading';
@@ -210,7 +209,6 @@ function News() {
                         </div>
                     </Container>
                 </div>
-                <ViewSpecification />
             </>
         );
     }

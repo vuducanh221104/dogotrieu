@@ -4,7 +4,6 @@ import styles from '@/styles/NewsDetail.module.scss';
 import { Container } from 'react-bootstrap';
 import { FacebookIcon, InstaIcon, PrinterestIcon, YoutubeIcon } from '@/components/Icons';
 import MapMini from '@/components/MapMini';
-import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import { useParams } from 'next/navigation';
 import { newsGetById } from '@/services/newsServices';
 import Loading from '@/components/Loading';
@@ -13,6 +12,7 @@ import MarkdownRender from '@/components/MarkdownRender';
 import { CldImage } from 'next-cloudinary';
 import { Suspense } from 'react';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
+import { archivo } from '@/assets/FontNext';
 const cx = classNames.bind(styles);
 
 function NewsDetail() {
@@ -29,7 +29,7 @@ function NewsDetail() {
             <>
                 <div className={cx('news-wrapper')}>
                     <Container>
-                        <header className={cx('news-header')}>
+                        <header className={cx('news-header', archivo.className)}>
                             <h1>{data.title}</h1>
                             <p>{data.description}</p>
                         </header>
@@ -77,7 +77,6 @@ function NewsDetail() {
                         </div>
                     </Container>
                 </div>
-                <ViewSpecification />
             </>
         );
     }

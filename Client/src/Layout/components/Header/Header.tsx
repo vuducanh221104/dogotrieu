@@ -186,7 +186,7 @@ function Header() {
                                                         }`}
                                                         onClick={() => setShowBars(!showBars)}
                                                     >
-                                                        GIAO DỊCH
+                                                        KHÁM PHÁ
                                                     </Link>
                                                 </li>
                                                 <li className={cx('mobile-menu-section-item')}>

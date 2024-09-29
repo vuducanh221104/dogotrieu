@@ -189,6 +189,13 @@
     }
     .footer-block-item {
         border-bottom: 1px solid var(--border-color);
+        &:nth-child(2) {
+            & .footer-block-content-link-item:first-child {
+                & a {
+                    padding: 7.5px 0 0 0;
+                }
+            }
+        }
     }
     .footer-aside {
         padding-top: 12px;

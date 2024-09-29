@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from '@/styles/Trade.module.scss';
 import { DividerSymbol } from '@/components/Icons';
-import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import Image from 'next/image';
 import imagesPage from '@/assets/images-pages';
 import { Metadata } from 'next';
@@ -78,10 +77,6 @@ function PageTrade() {
                                     & Tranh, Các Đồ Trang Trí...
                                 </p>
                                 <p>
-                                    Chúng tôi hân hạnh thông báo rằng chương trình đặc biệt dành riêng cho các đối tác
-                                    thương mại của chúng tôi hiện đã có sẵn trên mọi cổng thông tin.
-                                </p>
-                                <p>
                                     <a>Đồ Gỗ Triệu </a>
                                     Cam Kết tự hào cam kết với bạn rằng mọi sản phẩm gỗ mà chúng tôi cung cấp đều được
                                     xây dựng trên nền tảng uy tín và chất lượng tối đa. Chúng tôi không chỉ là một cửa
@@ -93,7 +88,6 @@ function PageTrade() {
                     </header>
                 </div>
             </div>
-            <ViewSpecification />
         </>
     );
 }

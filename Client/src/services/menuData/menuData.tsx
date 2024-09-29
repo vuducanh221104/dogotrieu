@@ -153,8 +153,8 @@ export const footerMenuItems: FooterMenu[] = [
         id: 2,
         title: 'MỚI',
         links: [
-            { label: 'KHÁM PHÁ', url: config.routesCompany.tradeIn },
-            { label: 'TIN TỨC', url: config.routes.news },
+            { label: 'Khám Phá', url: config.routesCompany.tradeIn },
+            { label: 'TIn Tức', url: config.routes.news },
         ],
         classNameChild: 'link',
         height: '60px',
