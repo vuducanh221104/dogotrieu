@@ -26,12 +26,13 @@ const ProductSchema = new Schema(
         quantity: { type: Number, required: true },
         material_id: [{ type: Schema.Types.ObjectId, ref: 'Material' }],
         category_id: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-        created_at: { type: Date, default: Date.now },
-        updated_at: { type: Date, default: Date.now },
-        slug: { type: String, slug: 'name', unique: true, require: true },
+        slug: { type: String, slug: 'name', require: true },
     },
     {
-        timestamps: false,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         collection: 'product',
     },
 );

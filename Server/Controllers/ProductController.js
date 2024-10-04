@@ -6,6 +6,11 @@ const slugify = require('slugify');
 const createSlug = (str) => {
     return slugify(str, { lower: true, locale: 'vi' });
 };
+const formatPrice = (value) => {
+    const valueFormated = String(value).replace(/,/g, '');
+    return parseFloat(valueFormated);
+};
+
 class ProductController {
     //[GET]
     async feaProductByCategory(req, res) {
@@ -227,11 +232,15 @@ class ProductController {
     async addProductWithType(req, res) {
         try {
             const { product_type_data, product_data } = req.body;
-            if (product_data.price.discount === null || product_data.price.discount === 0) {
+
+            product_data.price.original = formatPrice(product_data.price.original);
+            product_data.price.discount = formatPrice(product_data.price.discount);
+
+            if (product_data.price.discount === NaN || product_data.price.discount == '0') {
                 product_data.price.discount = 0;
             }
-            if (product_data.price.discount_quantity === null || product_data.price.discount_quantity === 0) {
-                product_data.price.discount = 0;
+            if (product_data.price.discount_quantity === NaN || product_data.price.discount_quantity === '0') {
+                product_data.price.discount_quantity = 0;
             }
             // SKU
             // Tạo ProductType trước
@@ -265,7 +274,6 @@ class ProductController {
             }
             res.status(200).json({ message: 'Delete Successfully' });
         } catch (error) {
-            console.error('Error during delete operation:', error.message);
             res.status(500).json({ message: error.message });
         }
     }
@@ -274,6 +282,12 @@ class ProductController {
         try {
             const productId = req.params.id;
             const updateData = req.body;
+
+            if (updateData.price) {
+                updateData.price.original = formatPrice(updateData.price.original);
+                updateData.price.discount = formatPrice(updateData.price.discount);
+                updateData.price.discount_quantity = formatPrice(updateData.price.discount_quantity);
+            }
 
             const product = await Product.findById(productId);
             if (!product) {
@@ -298,12 +312,12 @@ class ProductController {
                 }
             }
 
-            if (updateData.price.discount === null || updateData.price.discount === 0) {
-                updateData.price.discount = 0;
-            }
-            if (updateData.price.discount_quantity === null || updateData.price.discount_quantity === 0) {
-                updateData.price.discount = 0;
-            }
+            // if (updateData.price.discount === null || updateData.price.discount === 0) {
+            //     updateData.price.discount = 0;
+            // }
+            // if (updateData.price.discount_quantity === null || updateData.price.discount_quantity === 0) {
+            //     updateData.price.discount.quantity = 0;
+            // }
 
             // Save the updated product
             await product.save();

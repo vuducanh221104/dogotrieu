@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 const DimensionsSchema = new Schema(
     {
-        width: { type: Number, required: true },
-        height: { type: Number, required: true },
-        length: { type: Number, required: true },
-        unit: { type: String, required: true }, //cm
+        width: { type: Number, default: null },
+        height: { type: Number, default: null },
+        length: { type: Number, default: null },
+        unit: { type: String }, // cm
     },
     {
         _id: false,
@@ -17,15 +17,16 @@ const DimensionsSchema = new Schema(
 const ProductTypeSchema = new Schema(
     {
         sku: { type: String, required: true, unique: true },
-        description: { type: String, required: true },
+        description: { type: String },
         tags: { type: [String], required: true },
-        dimensions: { type: DimensionsSchema, required: true },
-        images: { type: [String], required: true },
-        created_at: { type: Date, default: Date.now },
-        update_at: { type: Date, default: Date.now },
+        dimensions: { type: DimensionsSchema },
+        images: { type: [String] },
     },
     {
-        timestamps: false,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         collection: 'product_type',
     },
 );

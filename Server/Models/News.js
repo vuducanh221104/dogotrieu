@@ -9,12 +9,13 @@ const NewsSchema = new Schema(
         content: { type: String, require: true },
         tags: { type: Array, require: true },
         author: { type: String, require: true },
-        created_at: { type: Date, default: Date.now },
-        updated_at: { type: Date, default: Date.now },
         slug_description: { type: String, required: false, unique: false },
     },
     {
-        timestamps: false,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         collection: 'news',
     },
 );

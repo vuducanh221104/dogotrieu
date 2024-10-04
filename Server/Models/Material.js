@@ -6,12 +6,13 @@ const MaterialSchema = new Schema(
         name: { type: String, required: true },
         parent_id: { type: Schema.Types.ObjectId, ref: 'Material' },
         slug: { type: String, required: true, unique: true },
-        created_at: { type: Date, default: Date.now },
-        updated_at: { type: Date, default: Date.now },
     },
 
     {
-        timestamps: false,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         collection: 'material',
     },
 );
