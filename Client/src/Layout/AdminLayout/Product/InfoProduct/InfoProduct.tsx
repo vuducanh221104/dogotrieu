@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Descriptions, Image, Tag, Tooltip } from 'antd';
 import MarkdownRender from '@/components/MarkdownRender';
+import { NumericFormat } from 'react-number-format';
 
 interface InfoProductProps {
     visible: boolean;
@@ -16,9 +17,24 @@ const InfoProduct: React.FC<InfoProductProps> = ({ visible, onClose, product }) 
                 <Descriptions.Item label="Name">{product.name}</Descriptions.Item>
                 <Descriptions.Item label="SKU">{product.product_type_id.sku}</Descriptions.Item>
                 <Descriptions.Item label="Price">
-                    Original: {product.price.original} {product.price.currency}
+                    Original:{' '}
+                    <NumericFormat
+                        thousandSeparator={true}
+                        decimalScale={2}
+                        placeholder="Original Price"
+                        allowNegative={false}
+                        value={product.price.original}
+                    />
+                    <span>{product.price.currency}</span>
                     <br />
-                    Discount: {product.price.discount} {product.price.currency}
+                    Discount:
+                    <NumericFormat
+                        thousandSeparator={true}
+                        decimalScale={2}
+                        allowNegative={false}
+                        value={product.price.discount}
+                    />
+                    <span>{product.price.currency}</span>
                     <br />
                     Discount Quantity: {product.price.discount_quantity}
                 </Descriptions.Item>

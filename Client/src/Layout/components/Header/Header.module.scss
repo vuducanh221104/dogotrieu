@@ -1,5 +1,5 @@
 .header-wrapper {
-    z-index: 999999;
+    z-index: 999;
     position: sticky;
     position: -webkit-sticky;
     top: 0; /* required */
@@ -142,9 +142,10 @@
     position: absolute;
     visibility: hidden;
     width: 100vw;
+    height: 100vh;
     top: 100%;
     left: 0;
-    height: 100vh;
+    max-height: 0;
     z-index: 99999;
     color: var(--text-color);
     will-change: transform;

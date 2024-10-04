@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 import styles from '@/styles/Category.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
-import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
+import { CheckIcon, ChervonUpIcon, IconClearOnBorder } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
@@ -198,26 +198,33 @@ function CategoryContent() {
         window.history.pushState({}, '', newUrl);
         await router.replace(newUrl);
     };
+    const handleClearAll = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('gf_material');
+        url.searchParams.delete('gf_availab');
+        const prioritizedUrl = prioritizeQuery(url);
+        window.history.pushState({}, '', prioritizedUrl);
+        router.replace(prioritizedUrl);
+    };
 
     const { width: windowWidth } = useWindowSize();
     const dataFilter = dataFilterCategory;
 
-    // if (isLoading) {
-    //     return (
-    //         <>
-    //             <Loading />
-
-    //             <FilterModal
-    //                 dataFilter={dataFilter}
-    //                 showFilterMobile={showFilterMobile}
-    //                 setShowFilterMobile={setShowFilterMobile}
-    //                 toggleContent={toggleContent}
-    //                 showFilterContent={showFilterContent}
-    //                 dataLength={dataTotalProduct}
-    //             />
-    //         </>
-    //     );
-    // }
+    if (isLoading) {
+        return (
+            <>
+                <Loading />
+                <FilterModal
+                    dataFilter={dataFilter}
+                    showFilterMobile={showFilterMobile}
+                    setShowFilterMobile={setShowFilterMobile}
+                    toggleContent={toggleContent}
+                    showFilterContent={showFilterContent}
+                    dataLength={dataTotalProduct}
+                />
+            </>
+        );
+    }
 
     if (error) {
         return <NotFound />;
@@ -231,7 +238,8 @@ function CategoryContent() {
                     <div className={cx('layout-section', 'layout-filter')}>
                         <div className={cx('card')}>
                             <div className={cx('card-section', 'card-section-tight')}>
-                                <div className={cx('filter-title')}>
+                                {/* ----FILTER NAME HIDE WHEN ON TICK---- */}
+                                {/* <div className={cx('filter-title')}>
                                     <div className={cx('title-block')}>
                                         <span>Lọc Sản Phẩm</span>
                                     </div>
@@ -249,8 +257,8 @@ function CategoryContent() {
                                             Xóa hết
                                         </p>
                                     )}
-                                </div>
-                                <div className={cx('filter-selected-items')}>
+                                </div> */}
+                                {/* <div className={cx('filter-selected-items')}>
                                     {selectedMaterials.map((filter, index) => (
                                         <div className={cx('selected-item-option-label')} key={filter.slug}>
                                             <span className={cx('selected-item')}>
@@ -283,7 +291,8 @@ function CategoryContent() {
                                             </span>
                                         </div>
                                     ))}
-                                </div>
+                                </div> */}
+                                {/* ---FILTER PRODUCT--- */}
                                 <div className={cx('filter-group-list')}>
                                     {dataFilter.map((item: any, index: number) => (
                                         <div className={cx('filter-group-item')} key={item.id}>
@@ -318,12 +327,12 @@ function CategoryContent() {
                                                                     className={cx('input-checkbox')}
                                                                     value={contentItem.slug}
                                                                     onChange={
-                                                                        item.title === 'KHẢ DỤNG'
+                                                                        item.title === 'CÒN HÀNG'
                                                                             ? handleAvailabilityChange
                                                                             : handleMaterialChange
                                                                     }
                                                                     checked={
-                                                                        item.title === 'KHẢ DỤNG'
+                                                                        item.title === 'CÒN HÀNG'
                                                                             ? selectedAvailability.some(
                                                                                   (avail) =>
                                                                                       avail.slug === contentItem.slug,
@@ -497,20 +506,29 @@ function CategoryContent() {
                                                 </div>
                                                 <div className={cx('gf-filter-seleted-on-mobile')}>
                                                     <ul>
+                                                        {(selectedMaterials.length > 0 ||
+                                                            selectedAvailability.length > 0) && (
+                                                            <li>
+                                                                <div
+                                                                    className={cx('selected-item-on-mobile-clear-all')}
+                                                                    onClick={() => handleClearAll()}
+                                                                >
+                                                                    <span className={cx('gf-label')}>Xóa Hết</span>
+                                                                </div>
+                                                            </li>
+                                                        )}
                                                         {selectedMaterials.map((filter) => (
                                                             <li
                                                                 key={filter.slug}
                                                                 onClick={() => handleRemoveMaterial(filter.slug)}
                                                             >
-                                                                <div>
-                                                                    <span className={cx('selected-item-on-mobile')}>
-                                                                        <strong>
-                                                                            <span className={cx('gf-label')}>
-                                                                                {filter.name}
-                                                                            </span>
-                                                                        </strong>
+                                                                <div className={cx('selected-item-on-mobile')}>
+                                                                    <span className={cx('gf-label')}>
+                                                                        {filter.name}
                                                                     </span>
-                                                                    <span className={cx('icon-clear')}></span>
+                                                                    <span className={cx('icon-clear')}>
+                                                                        <IconClearOnBorder />
+                                                                    </span>
                                                                 </div>
                                                             </li>
                                                         ))}
@@ -519,15 +537,13 @@ function CategoryContent() {
                                                                 key={filter.slug}
                                                                 onClick={() => handleRemoveAvailability(filter.slug)}
                                                             >
-                                                                <div>
-                                                                    <span className={cx('selected-item-on-mobile')}>
-                                                                        <strong>
-                                                                            <span className={cx('gf-label')}>
-                                                                                {filter.name}
-                                                                            </span>
-                                                                        </strong>
+                                                                <div className={cx('selected-item-on-mobile')}>
+                                                                    <span className={cx('gf-label')}>
+                                                                        {filter.name}
                                                                     </span>
-                                                                    <span className={cx('icon-clear')}></span>
+                                                                    <span className={cx('icon-clear')}>
+                                                                        <IconClearOnBorder />
+                                                                    </span>
                                                                 </div>
                                                             </li>
                                                         ))}

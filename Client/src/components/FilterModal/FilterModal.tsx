@@ -232,12 +232,12 @@ function FilterModal({
                                                                 type="checkbox"
                                                                 value={contentItem.slug}
                                                                 onChange={() =>
-                                                                    item.title === 'KHẢ DỤNG'
+                                                                    item.title === 'CÒN HÀNG'
                                                                         ? handleAvailabilityChange(contentItem.slug)
                                                                         : handleMaterialChange(contentItem.slug)
                                                                 }
                                                                 checked={
-                                                                    item.title === 'KHẢ DỤNG'
+                                                                    item.title === 'CÒN HÀNG'
                                                                         ? selectedAvailability.includes(
                                                                               contentItem.slug,
                                                                           )

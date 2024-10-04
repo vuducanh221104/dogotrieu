@@ -15,6 +15,7 @@ import { transformListSelect } from '@/utils/transformListSelect';
 import { productAdd } from '@/services/productServices';
 import Link from 'next/link';
 import config from '@/config';
+import { NumericFormat } from 'react-number-format';
 
 function PageProductAdd() {
     const { data: categories } = categoryGet();
@@ -43,10 +44,11 @@ function PageProductAdd() {
         try {
             const values = await form.validateFields();
             setLoading(true);
+            const dimensionsWidth = values.dimensions.width || null;
+            const dimensionsHeight = values.dimensions.height || null;
+            const dimensionsLength = values.dimensions.length || null;
             values.description = valueDes;
-
             const skuGenerate = useGenerateSKU();
-
             // Upload Image
             const uploadPromises = [];
             if (thumbnail.length > 0) {
@@ -82,11 +84,17 @@ function PageProductAdd() {
                 sku: skuGenerate,
                 description: values.description,
                 tags: values.tags,
-                dimensions: values.dimensions,
+                dimensions: {
+                    height: dimensionsHeight,
+                    width: dimensionsWidth,
+                    length: dimensionsLength,
+                    unit: values.dimensions.unit,
+                },
                 images: values.images,
             };
+
             // Submit dữ liệu form
-            const postAddProduct = productAdd({
+            productAdd({
                 product_data,
                 product_type_data,
             });
@@ -294,7 +302,14 @@ function PageProductAdd() {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="Original Price" />
+                                    <NumericFormat
+                                        thousandSeparator={true}
+                                        decimalScale={2}
+                                        className="ant-input"
+                                        placeholder="Original Price"
+                                        allowNegative={false}
+                                        customInput={Input}
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     initialValue={0}
@@ -315,7 +330,14 @@ function PageProductAdd() {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="Discount Price" />
+                                    <NumericFormat
+                                        thousandSeparator={true}
+                                        decimalScale={2}
+                                        className="ant-input"
+                                        placeholder="Discount Price"
+                                        allowNegative={false}
+                                        customInput={Input}
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     initialValue={0}
@@ -367,8 +389,8 @@ function PageProductAdd() {
                         ]}
                     >
                         <Select style={{ width: 400 }}>
-                            <Select.Option value={0}>null</Select.Option>
-                            <Select.Option value={1}>QUICK-SHIP</Select.Option>
+                            <Select.Option value={0}>No</Select.Option>
+                            <Select.Option value={1}>QUICK SHIP</Select.Option>
                         </Select>
                     </Form.Item>
                     {/* Quantity */}

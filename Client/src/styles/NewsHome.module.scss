@@ -269,6 +269,9 @@
     .news-body {
         display: block;
     }
+    .wrapper-tippy {
+        right: -6px !important;
+    }
 }
 
 .popperover {
@@ -316,6 +319,9 @@
     font-size: 14px;
     outline: 0;
     width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -380,3 +386,167 @@
 .category-meta-product-count {
     font-size: 1.4rem;
 }
+
+.globo-sort-options {
+    position: relative;
+}
+.wrapper-tippy {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    visibility: hidden;
+    transition: visibility 0.35s ease-in-out;
+    z-index: 1000;
+    &.onhide {
+        visibility: visible;
+        &::before {
+            content: '';
+            opacity: 0.4;
+        }
+    }
+    &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        transition: opacity 0.35s ease-in-out;
+        background: #000000;
+        opacity: 0;
+    }
+}
+.value-picker-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--secondary-background);
+    transform: translateY(100%);
+    transition: visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+    &.onhide-mobile {
+        transform: translateY(0);
+    }
+}
+
+.value-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 20px 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.value-picker-header-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.value-picker-choice-list {
+    padding: 15px 0;
+    max-height: 430px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-scroll-chaining: none;
+    overscroll-behavior: none;
+    list-style: none;
+}
+.filter-item {
+    display: block;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    padding: 8px 50px 7px 20px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    &.active {
+        color: var(--accent-color);
+        font-weight: var(--text-font-bolder-weight);
+    }
+    &:hover {
+        background: var(--accent-background);
+        color: var(--accent-color);
+        font-weight: normal;
+    }
+}
+.value-picker-icon-check {
+    position: absolute;
+    right: 15px;
+    top: 11px;
+    transform: scale(0);
+    transition: transform 0.2s ease-in-out;
+    &.active {
+        transform: scale(1);
+    }
+}
+// --- Layout List Normal---
+// .wrapper-tippy {
+//     position: absolute;
+//     width: auto;
+//     height: auto;
+//     top: calc(100% + 10px);
+//     left: auto;
+//     right: -25px;
+//     bottom: auto;
+//     min-width: 160px;
+//     box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.1);
+//     visibility: hidden;
+//     opacity: 0;
+//     transform: scale(0.9);
+//     background: var(--secondary-background);
+//     color: var(--text-color);
+//     z-index: 4;
+//     cursor: auto;
+//     border-radius: 3px;
+//     transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out, visibility 0.25s ease-in-out;
+//     will-change: transform;
+//     &.onhide {
+//         visibility: visible;
+//         opacity: 1;
+//         transform: scale(1.001);
+//         transition: opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),
+//             visibility 0.4s linear;
+//     }
+// }
+
+// .value-picker-inner {
+//     position: relative;
+//     width: auto;
+//     transform: none !important;
+//     transition: none;
+//     border-radius: 3px;
+//     bottom: 0;
+//     left: 0;
+
+//     background: var(--secondary-background);
+// }
+
+// .value-picker-choice-list {
+//     padding: 15px 0;
+//     max-height: none;
+//     white-space: nowrap;
+
+//     overflow: auto;
+//     -webkit-overflow-scrolling: touch;
+//     -ms-scroll-chaining: none;
+//     overscroll-behavior: none;
+//     list-style: none;
+// }
+// .filter-item {
+//     display: block;
+//     padding: 2px 25px;
+//     cursor: pointer;
+//     transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
+//     font-size: 14px;
+//     &.active {
+//         background: var(--accent-background);
+//         color: var(--accent-color);
+//         font-weight: normal;
+//     }
+//     &:hover {
+//         background: var(--accent-background);
+//         color: var(--accent-color);
+//         font-weight: normal;
+//     }
+// }

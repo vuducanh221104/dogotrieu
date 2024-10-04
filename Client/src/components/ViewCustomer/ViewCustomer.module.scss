@@ -6,7 +6,7 @@
     width: 100%;
     height: 100%;
     background-color: aqua;
-    z-index: 9999;
+    z-index: 999999999;
     -webkit-transition: opacity 0.15s ease 0s;
     -o-transition: opacity 0.15s ease 0s;
     transition: opacity 0.15s ease 0s;
@@ -17,7 +17,7 @@
     position: absolute;
     top: 12px;
     right: 30px;
-    z-index: 99999;
+    z-index: 99999999;
     cursor: pointer;
     & .icon-close {
         font-size: 4rem;
@@ -88,6 +88,6 @@
     bottom: 20px;
     position: absolute;
     width: 100%;
-    z-index: 1080;
+    z-index: 9999999;
     max-height: 350px;
 }

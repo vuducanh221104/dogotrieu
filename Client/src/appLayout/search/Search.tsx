@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Container } from 'react-bootstrap';
-import { CheckIcon, ChervonUpIcon } from '@/components/Icons';
+import { CheckIcon, ChervonUpIcon, IconClearOnBorder } from '@/components/Icons';
 import Tippy from '@tippyjs/react/headless';
 import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
@@ -194,6 +194,14 @@ function SearchContent() {
         window.history.pushState({}, '', newUrl);
         await router.replace(newUrl);
     };
+    const handleClearAll = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('gf_material');
+        url.searchParams.delete('gf_availab');
+        const prioritizedUrl = prioritizeQuery(url);
+        window.history.pushState({}, '', prioritizedUrl);
+        router.replace(prioritizedUrl);
+    };
 
     if (isLoading) {
         return (
@@ -249,7 +257,7 @@ function SearchContent() {
                                 <div className={cx('layout-section', 'layout-filter')}>
                                     <div className={cx('card', 'card-no-border')}>
                                         <div className={cx('card-section', 'card-section-tight')}>
-                                            <div className={cx('filter-title')}>
+                                            {/* <div className={cx('filter-title')}>
                                                 <div className={cx('title-block')}>
                                                     <span>Lọc Sản Phẩm</span>
                                                 </div>
@@ -301,7 +309,7 @@ function SearchContent() {
                                                         </span>
                                                     </div>
                                                 ))}
-                                            </div>
+                                            </div> */}
                                             <div className={cx('filter-group-list')}>
                                                 {dataFilter.map((item, index) => (
                                                     <div className={cx('filter-group-item')} key={item.id}>
@@ -336,12 +344,12 @@ function SearchContent() {
                                                                                 className={cx('input-checkbox')}
                                                                                 value={contentItem.slug}
                                                                                 onChange={
-                                                                                    item.title === 'KHẢ DỤNG'
+                                                                                    item.title === 'CÒN HÀNG'
                                                                                         ? handleAvailabilityChange
                                                                                         : handleMaterialChange
                                                                                 }
                                                                                 checked={
-                                                                                    item.title === 'KHẢ DỤNG'
+                                                                                    item.title === 'CÒN HÀNG'
                                                                                         ? selectedAvailability.some(
                                                                                               (avail) =>
                                                                                                   avail.slug ===
@@ -511,28 +519,37 @@ function SearchContent() {
                                                             </div>
                                                             <div className={cx('gf-filter-seleted-on-mobile')}>
                                                                 <ul>
+                                                                    {(selectedMaterials.length > 0 ||
+                                                                        selectedAvailability.length > 0) && (
+                                                                        <li>
+                                                                            <div
+                                                                                className={cx(
+                                                                                    'selected-item-on-mobile-clear-all',
+                                                                                )}
+                                                                                onClick={() => handleClearAll()}
+                                                                            >
+                                                                                <span className={cx('gf-label')}>
+                                                                                    Xóa Hết
+                                                                                </span>
+                                                                            </div>
+                                                                        </li>
+                                                                    )}
                                                                     {selectedMaterials.map(({ slug, name }) => (
                                                                         <li
                                                                             key={slug}
                                                                             onClick={() => handleRemoveMaterial(slug)}
                                                                         >
-                                                                            <div>
-                                                                                <span
-                                                                                    className={cx(
-                                                                                        'selected-item-on-mobile',
-                                                                                    )}
-                                                                                >
-                                                                                    <strong>
-                                                                                        <span
-                                                                                            className={cx('gf-label')}
-                                                                                        >
-                                                                                            {name}
-                                                                                        </span>
-                                                                                    </strong>
+                                                                            <div
+                                                                                className={cx(
+                                                                                    'selected-item-on-mobile',
+                                                                                )}
+                                                                            >
+                                                                                <span className={cx('gf-label')}>
+                                                                                    {name}
                                                                                 </span>
-                                                                                <span
-                                                                                    className={cx('icon-clear')}
-                                                                                ></span>
+                                                                                <span className={cx('icon-clear')}>
+                                                                                    <IconClearOnBorder />
+                                                                                </span>
                                                                             </div>
                                                                         </li>
                                                                     ))}
@@ -543,23 +560,17 @@ function SearchContent() {
                                                                                 handleRemoveAvailability(slug)
                                                                             }
                                                                         >
-                                                                            <div>
-                                                                                <span
-                                                                                    className={cx(
-                                                                                        'selected-item-on-mobile',
-                                                                                    )}
-                                                                                >
-                                                                                    <strong>
-                                                                                        <span
-                                                                                            className={cx('gf-label')}
-                                                                                        >
-                                                                                            {name}
-                                                                                        </span>
-                                                                                    </strong>
+                                                                            <div
+                                                                                className={cx(
+                                                                                    'selected-item-on-mobile',
+                                                                                )}
+                                                                            >
+                                                                                <span className={cx('gf-label')}>
+                                                                                    {name}
                                                                                 </span>
-                                                                                <span
-                                                                                    className={cx('icon-clear')}
-                                                                                ></span>
+                                                                                <span className={cx('icon-clear')}>
+                                                                                    <IconClearOnBorder />
+                                                                                </span>
                                                                             </div>
                                                                         </li>
                                                                     ))}
@@ -621,13 +632,7 @@ function SearchContent() {
 
 export default function PageSearchWrapper() {
     return (
-        <Suspense
-            fallback={
-                <>
-                    <Loading />
-                </>
-            }
-        >
+        <Suspense fallback={<Loading />}>
             <SearchContent />
         </Suspense>
     );

@@ -9,7 +9,7 @@
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    z-index: 99999999;
+    z-index: 999;
     transition: 0.25s;
     cursor: pointer;
     display: block;
@@ -269,7 +269,7 @@
         clear: left;
         padding: 0 !important;
         background: #fff;
-        z-index: 999999999 !important;
+        z-index: 1000 !important;
         transition: left 0.25s;
         -webkit-overflow-scrolling: touch;
         &.active {

@@ -1,9 +1,9 @@
 'use client';
-import { Suspense } from 'react';
+import { MutableRefObject, Suspense } from 'react';
 import classNames from 'classnames/bind';
 import styles from '@/styles/NewsHome.module.scss';
 import { Container } from 'react-bootstrap';
-import { FacebookIcon, InstaIcon, PrinterestIcon, YoutubeIcon } from '@/components/Icons';
+import { FacebookIcon, IconCheckCategory, InstaIcon, PrinterestIcon, XmarkIcon, YoutubeIcon } from '@/components/Icons';
 import MapMini from '@/components/MapMini';
 import { archivo, poppins } from '@/assets/FontNext';
 import config from '@/config';
@@ -18,7 +18,8 @@ import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
 import { dataTaggedNews } from '@/services/menuData/menuData';
-import Tippy from '@tippyjs/react/headless';
+import { useClickAway } from '@uidotdev/usehooks';
+
 const cx = classNames.bind(styles);
 
 function News() {
@@ -30,6 +31,10 @@ function News() {
     const limitParam = '5';
     const { slug } = params;
     const query = `?page=${pageParam}&limit=${limitParam}`;
+
+    const refClickOutSide: MutableRefObject<any> = useClickAway(() => {
+        setShowOption(false);
+    });
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -65,33 +70,54 @@ function News() {
                             <h1 className={archivo.className}>TIN TỨC</h1>
                             <div className={cx('sort-by')}>
                                 <div className={cx('wrapper-category-tippy')}>
-                                    <Tippy
-                                        interactive
-                                        visible={showOption}
-                                        placement="auto-end"
-                                        offset={[30, 55]}
-                                        onClickOutside={() => setShowOption(!showOption)}
-                                        render={(attrs: any) => (
-                                            <div className={cx('popperover')} tabIndex="-1" {...attrs}>
-                                                {dataTagged.map((item: any) => (
-                                                    <span key={item.id} className={cx(slug === item.url && 'active')}>
-                                                        <Link href={`/blogs/news/tagged/${item.url}`}>
-                                                            {item.title}
-                                                        </Link>
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        )}
+                                    <div
+                                        className={cx('globo-sort-options')}
+                                        onClick={() => setShowOption(!showOption)}
+                                        role="button"
+                                        aria-label="Chọn Phương Thức Sắp Xếp"
+                                    >
+                                        <span> {taggedItem.title}</span>
+                                    </div>
+                                    <div
+                                        className={cx('wrapper-tippy', showOption && 'onhide')}
+                                        // onClick={()=>setShowOption(false)}
                                     >
                                         <div
-                                            className={cx('globo-sort-options')}
-                                            onClick={() => setShowOption(!showOption)}
-                                            role="button"
-                                            aria-label="Chọn Phương Thức Sắp Xếp"
+                                            className={cx('value-picker-inner', showOption && 'onhide-mobile')}
+                                            ref={refClickOutSide}
                                         >
-                                            <span> {taggedItem.title}</span>
+                                            <div className={cx('value-picker-header')}>
+                                                <span className={cx('value-picker-header-title')}>Danh Mục</span>
+                                                <button className={cx('value-picker-button-close')}>
+                                                    <XmarkIcon
+                                                        width="17"
+                                                        height="17"
+                                                        onClick={() => setShowOption(false)}
+                                                    />
+                                                </button>
+                                            </div>
+
+                                            <div className={cx('value-picker-choice-list')}>
+                                                {dataTagged.map((item: any) => (
+                                                    <Link
+                                                        key={item.id}
+                                                        className={cx('filter-item', slug === item.url && 'active')}
+                                                        href={`/blogs/news/tagged/${item.url}`}
+                                                    >
+                                                        {item.title}
+                                                        <IconCheckCategory
+                                                            width="18"
+                                                            height="14"
+                                                            className={cx(
+                                                                'value-picker-icon-check',
+                                                                slug === item.url && 'active',
+                                                            )}
+                                                        />
+                                                    </Link>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </Tippy>
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('new-data-list')}>

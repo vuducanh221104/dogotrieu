@@ -92,16 +92,6 @@ export const dataMenuNavBar: MenuPanel[] = [
 export const dataFilterCategory: FilterItem[] = [
     {
         id: 1,
-        title: 'KHẢ DỤNG',
-        content: [
-            {
-                name: 'Quick Ship',
-                slug: '1',
-            },
-        ],
-    },
-    {
-        id: 2,
         title: 'CHẤT LIỆU',
         content: [
             {
@@ -125,6 +115,16 @@ export const dataFilterCategory: FilterItem[] = [
             {
                 name: 'Nhựa',
                 slug: 'nhua',
+            },
+        ],
+    },
+    {
+        id: 2,
+        title: 'CÒN HÀNG',
+        content: [
+            {
+                name: 'Quick Ship',
+                slug: '1',
             },
         ],
     },
@@ -183,5 +183,25 @@ export const dataTaggedNews: TaggedItem[] | any = [
         id: 3,
         title: 'Đời Sống',
         url: 'doi-song',
+    },
+    {
+        id: 4,
+        title: 'Xu Hướng',
+        url: 'xu-huong',
+    },
+    {
+        id: 5,
+        title: 'Cẩm Nang Đồ Gỗ',
+        url: 'cam-nang-do-go',
+    },
+    {
+        id: 6,
+        title: 'Chuyện nghề mộc',
+        url: 'chuyn-nghe-moc',
+    },
+    {
+        id: 7,
+        title: 'Ưu đãi và khuyến mãi',
+        url: 'uu-dai-va-khuyen-mai',
     },
 ];

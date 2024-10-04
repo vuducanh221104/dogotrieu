@@ -717,3 +717,24 @@ export const ChervonMenu: React.FC<IconsType> = ({ width = '36px', height = '22p
         ></path>
     </svg>
 );
+
+export const IconCheckCategory: React.FC<IconsType> = ({ width = '36px', height = '22px', className, style }) => (
+    <svg className={className} style={style} viewBox="0 0 20 9" role="presentation" width={width} height={height}>
+        <path
+            d="M1 4.166456L5.317719 9 12 1"
+            stroke="currentColor"
+            strokeWidth="2"
+            fill="none"
+            fillRule="evenodd"
+        ></path>
+    </svg>
+);
+
+export const IconClearOnBorder: React.FC<IconsType> = ({ width = '16px', height = '16px', className, style }) => (
+    <svg className={className} style={style} viewBox="0 0 50 50" role="presentation" width={width} height={height}>
+        <path
+            fill="currentColor"
+            d="M25.5 6C15 6 6.5 14.5 6.5 25C6.5 35.5 15 44 25.5 44C36 44 44.5 35.5 44.5 25C44.5 14.5 36 6 25.5 6ZM34.4 31.9L32.5 33.8L25.6 26.9L18.7 33.8L16.8 31.9L23.7 25L16.8 18.1L18.7 16.2L25.6 23.1L32.5 16.2L34.4 18.1L27.4 25L34.4 31.9Z"
+        ></path>
+    </svg>
+);

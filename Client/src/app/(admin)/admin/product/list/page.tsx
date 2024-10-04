@@ -87,7 +87,7 @@ function PageListProduct() {
 
     const priceFormatter = (price: any) => {
         const formatter = new Intl.NumberFormat('vi-VN');
-        return formatter.format(price.original);
+        return formatter.format(price);
     };
 
     const getColumnSearchProps = (dataIndex: any, customRender?: (text: any, record: any) => JSX.Element) => ({
@@ -241,15 +241,22 @@ function PageListProduct() {
             render: (price: any) => (
                 <span style={{ display: 'flex', flexDirection: 'column', fontWeight: '600' }}>
                     <p style={{ fontSize: '1.4rem', fontWeight: '600' }}>
-                        {`${priceFormatter(price)} ${price.currency}`}
+                        {`${priceFormatter(price.original)} ${price.currency}`}
                     </p>
-                    <span
-                        style={{ textDecoration: 'line-through', marginRight: '4px', color: '#999', fontWeight: '400' }}
-                    >
-                        <p style={{ fontSize: '1.3rem', textDecoration: 'line-through' }}>
-                            {`${priceFormatter(price)} ${price.currency}`}
-                        </p>
-                    </span>
+                    {price.discount !== 0 && (
+                        <span
+                            style={{
+                                textDecoration: 'line-through',
+                                marginRight: '4px',
+                                color: '#999',
+                                fontWeight: '400',
+                            }}
+                        >
+                            <p style={{ fontSize: '1.3rem', textDecoration: 'line-through' }}>
+                                {`${priceFormatter(price.discount)} ${price.currency}`}
+                            </p>
+                        </span>
+                    )}
                 </span>
             ),
             sorter: (a: any, b: any) => a.price.original - b.price.original,

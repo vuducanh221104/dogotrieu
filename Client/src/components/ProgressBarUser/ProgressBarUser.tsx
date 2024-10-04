@@ -7,7 +7,7 @@ function ProgressBarUser({ children }: Props) {
     return (
         <>
             {children}
-            <NextProgressBar height="2.8px" color="rgba(223, 204, 142)" options={{ showSpinner: false }} />
+            <NextProgressBar height="2.9px" color="rgba(223, 204, 142)" options={{ showSpinner: false }} />
         </>
     );
 }

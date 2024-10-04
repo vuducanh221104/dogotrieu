@@ -139,10 +139,7 @@ function Header() {
                                                   'opacity 0.4s cubic-bezier(0, 1, 0.4, 1), transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1),visibility 0.4s linear',
                                               maxHeight: calculateMobileMenuHeight(),
                                           }
-                                        : {
-                                              opacity: '0',
-                                              visibility: 'hidden',
-                                          }
+                                        : {}
                                 }
                             >
                                 <div className={cx('mobile-menu-inner')} ref={wrapperRef}>

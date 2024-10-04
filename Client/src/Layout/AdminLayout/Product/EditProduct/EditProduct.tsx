@@ -12,6 +12,7 @@ import { categoryGet } from '@/services/categoryServices';
 import { materialGet } from '@/services/materialServices';
 import { transformListSelect } from '@/utils/transformListSelect';
 import { productPatch } from '@/services/productServices';
+import { NumericFormat } from 'react-number-format';
 
 interface PropsEditProduct {
     visible: boolean;
@@ -315,7 +316,14 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="Original Price" />
+                                    <NumericFormat
+                                        thousandSeparator={true}
+                                        decimalScale={2}
+                                        className="ant-input"
+                                        placeholder="Original Price"
+                                        allowNegative={false}
+                                        customInput={Input}
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount']}
@@ -335,7 +343,14 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="Discount Price" />
+                                    <NumericFormat
+                                        thousandSeparator={true}
+                                        decimalScale={2}
+                                        className="ant-input"
+                                        placeholder="Discount Price"
+                                        allowNegative={false}
+                                        customInput={Input}
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     name={['price', 'discount_quantity']}
@@ -377,8 +392,8 @@ const EditProduct = ({ visible, onClose, product, mutate }: PropsEditProduct) =>
                     {/* Ship */}
                     <Form.Item label="Ship" name="ship">
                         <Select style={{ width: 400 }}>
-                            <Select.Option value={0}>null</Select.Option>
-                            <Select.Option value={1}>Ship-Fast</Select.Option>
+                            <Select.Option value={0}>No</Select.Option>
+                            <Select.Option value={1}>QUICK SHIP</Select.Option>
                         </Select>
                     </Form.Item>
                     {/* Quantity */}
