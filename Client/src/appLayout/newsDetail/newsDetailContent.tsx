@@ -4,7 +4,7 @@ import styles from '@/styles/NewsDetail.module.scss';
 import { Container } from 'react-bootstrap';
 import { FacebookIcon, InstaIcon, PrinterestIcon, YoutubeIcon } from '@/components/Icons';
 import MapMini from '@/components/MapMini';
-import { useParams } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { newsGetById } from '@/services/newsServices';
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
@@ -22,8 +22,8 @@ function NewsDetail() {
     const { data, isLoading, error } = newsGetById(idNews);
     if (isLoading) {
         return <Loading />;
-    } else if (error) {
-        return <NotFound />;
+    } else if (error || !data) {
+        notFound();
     } else {
         return (
             <>

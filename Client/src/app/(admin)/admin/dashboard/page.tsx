@@ -3,15 +3,18 @@ import { Card, Col, Row, Typography } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import '@/styles/AdminStyles/resposive.scss';
-// import EChart from '@/Layout/AdminLayout/chart/EChart';
-// import LineChart from '@/Layout/AdminLayout/chart/LineChart';
 import images from '@/assets';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { notFound, usePathname } from 'next/navigation';
 const EChart = dynamic(() => import('@/Layout/AdminLayout/chart/EChart'), { ssr: false });
 const LineChart = dynamic(() => import('@/Layout/AdminLayout/chart/LineChart'), { ssr: false });
 
 function Dashboard() {
+    const pathname = usePathname();
+    if (pathname !== '/admin/dashboard') {
+        notFound();
+    }
     const { Title, Text } = Typography;
 
     const dollor = [

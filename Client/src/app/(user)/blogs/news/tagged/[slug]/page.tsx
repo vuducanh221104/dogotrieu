@@ -2,6 +2,7 @@ import NewsContent from '@/appLayout/news/NewsContent';
 import routes from '@/config/routes';
 import { dataTaggedNews } from '@/services/menuData/menuData';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 type Props = {
     params: { slug: string };
@@ -13,15 +14,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
     const taggedItem = dataTaggedNews.find((item: any) => item.url === slug);
 
     if (!taggedItem) {
-        return null;
+        notFound();
     }
 
     let title = `Tin Tức - Tagged "${taggedItem.title}"`;
-    if (taggedItem.url === 'all') {
+
+    if (taggedItem?.url === 'all') {
         title = 'Tin Tức';
     }
 
     const description = `Xem các Tin Tức, Bài Đăng mới nhất của DOGOTRIEU`;
+    const url = `${routes.domain.name}${routes.user.newsTaggedOnly}/${slug}`;
     const image =
         'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
@@ -32,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
             title: title,
             description: description,
             type: 'website',
-            url: `${routes.domain.name}${routes.user.news}`,
+            url: url,
             images: [
                 {
                     url: image,

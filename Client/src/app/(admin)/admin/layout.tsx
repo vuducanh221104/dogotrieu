@@ -9,6 +9,10 @@ import { Viewport } from 'next/types';
 export const metadata = {
     title: 'Admin',
     description: 'Admin Page',
+    robots: {
+        index: false, // Ngăn bot lập chỉ mục
+        follow: false, // Ngăn bot theo liên kết trên trang
+    },
 };
 export const viewport: Viewport = {
     width: 'device-width',

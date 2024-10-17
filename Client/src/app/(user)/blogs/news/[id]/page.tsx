@@ -5,6 +5,7 @@ import { cleanMarkDownLimit } from '@/utils/cleanMarkDown';
 import { handleSlugify } from '@/utils/handleSlutify';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 type Props = {
     params: { slug: string };
     searchParams: { [key: string]: string | string[] | undefined };
@@ -15,22 +16,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
 
     const idNews = handleSplitSlug(id);
 
-    let news: any;
-    try {
-        news = await newsSEOGET(idNews);
-    } catch (error) {
-        return undefined;
-    }
+    const news: any = await newsSEOGET(idNews);
 
-    // Nếu không tìm thấy tin tức, cũng trả về undefined
-    if (!news) {
-        return undefined;
+    if (!news || !news.title) {
+        notFound();
     }
-    const title = news?.title ?? 'Tin Tức Đồ Gỗ Triệu';
-    const description = cleanMarkDownLimit(news?.content) ?? 'Thông tin mới nhất về đồ gỗ và nội thất';
-    const image =
-        news?.thumb ??
-        'https://console.cloudinary.com/console/c-e06757fb4929dbf754259ea7b1e297/media_library/folders/c817421c888927f483bed9409c4af0cb88/asset/bee343f71c34a8a65e04781c09433b78/manage?view_mode=mosaic&context=manage';
+    const title = news?.title;
+    const description = cleanMarkDownLimit(news?.content);
+    const url = `${routes.domain.name}${routes.user.newsDetail}/${handleSlugify(news?.title)}-${news?._id}.html`;
+    const image = news?.thumb;
     return {
         title: title,
         description: description,
@@ -38,9 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             title: title,
             description: description,
             type: 'website',
-            url:
-                `${routes.domain.name}${routes.user.news}/${handleSlugify(news?.title)}-${news?._id}.html` ??
-                'Tin Tức Đồ Gỗ Triệu',
+            url: url,
             images: [
                 {
                     url: image,

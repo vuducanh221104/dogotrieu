@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { notFound, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
@@ -226,8 +226,8 @@ function CategoryContent() {
         );
     }
 
-    if (error) {
-        return <NotFound />;
+    if (error || !data) {
+        notFound();
     }
 
     return (

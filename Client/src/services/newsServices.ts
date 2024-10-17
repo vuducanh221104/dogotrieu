@@ -5,9 +5,10 @@ import useSWR from 'swr';
 //[GET]
 export const newsSEOGET = async (id: string) => {
     try {
-        const res = await httpRequest.get<any>(`api/v1/news/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/news/${id}`).then((res) => res.json());
         return res;
     } catch (error) {
+        return undefined;
         const err = error as AxiosError;
         // console.error(err.response?.data);
     }

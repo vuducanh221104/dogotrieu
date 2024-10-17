@@ -1,10 +1,10 @@
 import routes from '@/config/routes';
-import { productSEOGET } from '@/services/productServices';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
-// import ProductDetail from '@/appLayout/products';
+import { productSEOGET } from '@/services/productServices';
 import dynamic from 'next/dynamic';
 const ProductDetail = dynamic(() => import('@/appLayout/products'), { ssr: true });
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 type Props = {
     params: { slug: string };
@@ -15,31 +15,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     const { slug } = params;
 
     const id = handleSplitSlug(slug);
+    // const product = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`).then((res) =>
+    //     res.json(),
+    // );
 
     // const product: any = await productSEOGET(id);
-    let product: any;
-    try {
-        product = await productSEOGET(id);
-    } catch (error) {
-        product = undefined;
+    const product: any = await productSEOGET(id);
+    if (!product || !product.name) {
+        notFound();
     }
-    if (!product) {
-        return undefined;
-    }
-
-    const name = product?.name ?? 'Đồ Gỗ Cũ';
-    const image =
-        product?.thumb ??
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+    const name = product?.name;
+    const description = `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`;
+    const url = `${routes.domain.name}/products/${slug}`;
+    const image = product?.thumb;
 
     return {
         title: name,
-        description: `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`,
+        description: description,
         openGraph: {
             title: name,
-            description: `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`,
+            description: description,
             type: 'website',
-            url: `${routes.domain.name}/products/${slug}`,
+            url: url,
             images: [
                 {
                     url: image,
@@ -49,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
         },
         twitter: {
             title: name,
-            description: `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`,
+            description: description,
             card: 'summary_large_image',
             site: `${routes.domain.nameCamel}$`,
 

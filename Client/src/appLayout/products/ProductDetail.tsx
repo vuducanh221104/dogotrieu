@@ -8,7 +8,6 @@ import ViewListProductAuto from '@/components/HomeComponents/ViewListProductAuto
 import Breadcrumb from '@/components/Breadcrumb';
 import { archivo } from '@/assets/FontNext';
 import Loading from '@/components/Loading';
-import NotFound from '@/components/NotFound';
 import MarkdownRender from '@/components/MarkdownRender';
 import { productGetId } from '@/services/productServices';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +16,7 @@ import FormatPrice from '@/components/FormatPrice';
 import { useState, Fragment, ChangeEvent } from 'react';
 import { AppDispatch, RootState } from '@/redux/store';
 import DiscountCalculation from '@/components/DiscountCalculation';
+import { notFound } from 'next/navigation';
 const cx = classNames.bind(styles);
 
 function ProductDetail({ productId: id }: any) {
@@ -73,8 +73,8 @@ function ProductDetail({ productId: id }: any) {
     if (isLoading) {
         return <Loading />;
     }
-    if (error) {
-        return <NotFound />;
+    if (error || !data) {
+        notFound();
     } else
         return (
             <>

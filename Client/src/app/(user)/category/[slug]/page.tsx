@@ -2,6 +2,7 @@ import CategoryContent from '@/appLayout/category/Category';
 import routes from '@/config/routes';
 import { userBreadCumbs } from '@/services/menuData/breadCrumbData';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 type Props = {
     params: { slug: string };
     searchParams: { [key: string]: string | string[] | undefined };
@@ -12,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
 
     const title = userBreadCumbs[slug];
     if (!title) {
-        return undefined;
+        notFound();
     }
     const description = `Trải nghiệm sự thanh lịch và chân thực của Châu Âu và Châu Á của Đồ Gỗ Triệu. Mua sắm ngay để tận hưởng cuộc sống hiện đại đầy phong cách!`;
     const image =

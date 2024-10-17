@@ -12,7 +12,7 @@ import { newGetTaggedPagination } from '@/services/newsServices';
 import slugify from 'slugify';
 import Link from 'next/link';
 import PaginationNews from '@/components/PaginationNews';
-import { useParams, useSearchParams } from 'next/navigation';
+import { notFound, useParams, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
 import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
@@ -60,7 +60,7 @@ function News() {
         return <Loading />;
     }
     if (error || data?.data.length === 0) {
-        return <NotFound />;
+        notFound();
     } else {
         return (
             <>
