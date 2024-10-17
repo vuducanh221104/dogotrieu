@@ -7,6 +7,7 @@ router.get('/searchQuery', ProductController.seachProductByQuery);
 router.get('/searchSeo', ProductController.searchSeo);
 router.get('/only', ProductController.getOnlyProduct);
 router.get('/list', ProductController.getAllProduct);
+router.get('/seo/:id', ProductController.getProductSEO);
 router.get('/type/:id', ProductController.getProductAndProductType);
 router.get('/category/featured/byId', ProductController.fearProductById);
 router.get('/category/featured/byCate', ProductController.feaProductByCategory);

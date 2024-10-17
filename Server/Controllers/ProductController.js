@@ -12,6 +12,26 @@ const formatPrice = (value) => {
 };
 
 class ProductController {
+    //[GET
+    async getProductSEO(req, res) {
+        try {
+            const productId = req.params.id;
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(404).json({ message: 'Product Id not found' });
+            }
+
+            // Chỉ lấy các trường cần thiết từ Product
+            const product = await Product.findById(productId).select('thumb name').lean().exec();
+
+            if (!product) {
+                return res.status(404).json({ message: 'Product not found' });
+            }
+
+            res.json(product);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
     //[GET]
     async feaProductByCategory(req, res) {
         const { category_id, material_id } = req.query; // Lấy category_id và material_id từ params
