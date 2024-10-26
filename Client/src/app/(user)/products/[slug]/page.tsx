@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'; // Nếu bạn cần axios, nhưng hiện tại bạn đang sử dụng fetch
 import routes from '@/config/routes';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import dynamic from 'next/dynamic';
@@ -11,6 +11,7 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
+// Hàm này tạo metadata cho trang
 export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { slug } = params;
     const id = handleSplitSlug(slug);
@@ -20,8 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             res.json(),
         );
         if (!product || !product.name) {
-            notFound();
+            notFound(); // Trả về 404 nếu không tìm thấy sản phẩm
         }
+
         const name = product.name;
         const description = `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`;
         const url = `${routes.domain.name}/products/${slug}`;
@@ -56,11 +58,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             },
         };
     } catch (error) {
-        notFound();
+        notFound(); // Trả về 404 nếu có lỗi xảy ra
     }
 }
 
-async function ProductDetailPage({ params }: Props) {
+// Component chính của trang sản phẩm
+const ProductDetailPage = async ({ params }: Props) => {
     const { slug } = params;
     const id = handleSplitSlug(slug);
     let product;
@@ -77,6 +80,6 @@ async function ProductDetailPage({ params }: Props) {
 
     // Nếu sản phẩm tồn tại, render sản phẩm
     return <ProductDetail productId={id} />;
-}
+};
 
 export default ProductDetailPage;
