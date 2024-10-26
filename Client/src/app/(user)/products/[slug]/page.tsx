@@ -15,9 +15,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     const { slug } = params;
     const id = handleSplitSlug(slug);
 
-    // Sử dụng axios thay cho fetch
-    // const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`);
-    // const product = res.data;
     try {
         const product = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`).then((res) =>
             res.json(),
@@ -67,20 +64,19 @@ async function ProductDetailPage({ params }: Props) {
     const { slug } = params;
     const id = handleSplitSlug(slug);
     let product;
+
     try {
-        product = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`).then((res) =>
-            res.json(),
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`);
+        product = await res.json();
         if (!product || !product.name) {
             notFound(); // Gọi notFound nếu không có sản phẩm
         }
-    } catch {
-        notFound();
+    } catch (error) {
+        notFound(); // Gọi notFound nếu có lỗi
     }
-    if (product) {
-        return <>{<ProductDetail productId={id} />}</>;
-    }
-    return notFound();
+
+    // Nếu sản phẩm tồn tại, render sản phẩm
+    return <ProductDetail productId={id} />;
 }
 
 export default ProductDetailPage;
