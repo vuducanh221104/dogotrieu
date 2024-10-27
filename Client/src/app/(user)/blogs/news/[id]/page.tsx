@@ -13,50 +13,53 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { id }: any = params;
-
     const idNews = handleSplitSlug(id);
 
-    const news: any = await newsSEOGET(idNews);
+    try {
+        const news: any = await newsSEOGET(idNews);
 
-    if (!news || !news.title) {
+        if (!news || !news.title) {
+            notFound();
+        }
+
+        const title = news?.title;
+        const description = cleanMarkDownLimit(news?.content);
+        const url = `${routes.domain.name}${routes.user.newsDetail}/${handleSlugify(news?.title)}-${news?._id}.html`;
+        const image = news?.thumb;
+        return {
+            title: title,
+            description: description,
+            openGraph: {
+                title: title,
+                description: description,
+                type: 'website',
+                url: url,
+                images: [
+                    {
+                        url: image,
+                        alt: `${title}`,
+                    },
+                ],
+            },
+            twitter: {
+                title: title,
+                description: description,
+                card: 'summary_large_image',
+                site: `${routes.domain.nameCamel}$`,
+                images: [
+                    {
+                        url: image,
+                        alt: `${title}`,
+                    },
+                ],
+            },
+        };
+    } catch (error) {
         notFound();
     }
-    const title = news?.title;
-    const description = cleanMarkDownLimit(news?.content);
-    const url = `${routes.domain.name}${routes.user.newsDetail}/${handleSlugify(news?.title)}-${news?._id}.html`;
-    const image = news?.thumb;
-    return {
-        title: title,
-        description: description,
-        openGraph: {
-            title: title,
-            description: description,
-            type: 'website',
-            url: url,
-            images: [
-                {
-                    url: image,
-                    alt: `${title}`,
-                },
-            ],
-        },
-        twitter: {
-            title: title,
-            description: description,
-            card: 'summary_large_image',
-            site: `${routes.domain.nameCamel}$`,
-            images: [
-                {
-                    url: image,
-                    alt: `${title}`,
-                },
-            ],
-        },
-    };
 }
 
 function PageNews({ params }: Props) {
-    const { id }: any = params;
     return <NewsDetailContent />;
 }
 

@@ -1,10 +1,10 @@
-import axios from 'axios'; // Nếu bạn cần axios, nhưng hiện tại bạn đang sử dụng fetch
 import routes from '@/config/routes';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import dynamic from 'next/dynamic';
 const ProductDetail = dynamic(() => import('@/appLayout/products'), { ssr: true });
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { productSEOGET } from '@/services/productServices';
 
 type Props = {
     params: { slug: string };
@@ -16,14 +16,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     const id = handleSplitSlug(slug);
 
     try {
-        const product = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`).then((res) =>
-            res.json(),
-        );
+        const product = await productSEOGET(id);
         if (!product || !product.name) {
-            return {
-                title: '404',
-                description: '404',
-            };
+            notFound();
         }
 
         const name = product.name;
@@ -60,29 +55,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             },
         };
     } catch (error) {
-        console.error('Error fetching product:', error);
-        return {
-            title: '404',
-            description: '404',
-        };
+        notFound();
     }
 }
 
 const ProductDetailPage = async ({ params }: Props) => {
     const { slug } = params;
     const id = handleSplitSlug(slug);
-    let product;
-
-    try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`);
-        product = await res.json();
-        if (!product || !product.name) {
-            notFound();
-        }
-    } catch (error) {
-        console.error('Error fetching product:', error);
-        notFound();
-    }
 
     return <ProductDetail productId={id} />;
 };

@@ -12,6 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     const { slug } = params;
 
     const title = userBreadCumbs[slug];
+
     if (!title) {
         notFound();
     }
