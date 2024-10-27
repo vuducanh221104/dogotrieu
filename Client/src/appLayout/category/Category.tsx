@@ -226,10 +226,6 @@ function CategoryContent() {
         );
     }
 
-    if (error || !data) {
-        notFound();
-    }
-
     return (
         <>
             <Breadcrumb nameSlug={dataNameCategory} />
