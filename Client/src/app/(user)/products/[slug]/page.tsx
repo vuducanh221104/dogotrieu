@@ -11,7 +11,6 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
-// Hàm này tạo metadata cho trang
 export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { slug } = params;
     const id = handleSplitSlug(slug);
@@ -21,7 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             res.json(),
         );
         if (!product || !product.name) {
-            notFound(); // Trả về 404 nếu không tìm thấy sản phẩm
+            return {
+                title: '404',
+                description: '404',
+            };
         }
 
         const name = product.name;
@@ -58,11 +60,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             },
         };
     } catch (error) {
-        notFound(); // Trả về 404 nếu có lỗi xảy ra
+        console.error('Error fetching product:', error);
+        return {
+            title: '404',
+            description: '404',
+        };
     }
 }
 
-// Component chính của trang sản phẩm
 const ProductDetailPage = async ({ params }: Props) => {
     const { slug } = params;
     const id = handleSplitSlug(slug);
@@ -72,13 +77,13 @@ const ProductDetailPage = async ({ params }: Props) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`);
         product = await res.json();
         if (!product || !product.name) {
-            notFound(); // Gọi notFound nếu không có sản phẩm
+            notFound();
         }
     } catch (error) {
-        notFound(); // Gọi notFound nếu có lỗi
+        console.error('Error fetching product:', error);
+        notFound();
     }
 
-    // Nếu sản phẩm tồn tại, render sản phẩm
     return <ProductDetail productId={id} />;
 };
 
