@@ -29,56 +29,51 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
     const [searchResult, setSearchResult] = useState<Product[]>([]);
     const [showResult, setShowResult] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [noResult, setNoResult] = useState<boolean>(false);
     const debounced: any = useDebounce(searchValue, 500);
-    const [trigger, setTrigger] = useState<number>(0);
 
-    // Handle Input
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
-
-        if (value === '' || value.startsWith(' ')) {
-            setLoading(false);
-            setSearchResult([]);
-            setShowResult(false);
-        } else {
-            setLoading(true);
-            setShowResult(true);
-        }
+        setShowResult(value.length > 0);
     };
 
     useEffect(() => {
-        if (!debounced.trim()) {
-            setLoading(false);
-            setSearchResult([]);
-            return;
-        }
-
         const fetchApi = async () => {
+            if (!debounced.trim()) {
+                setLoading(false);
+                setSearchResult([]);
+                setNoResult(false);
+                return;
+            }
+
             setLoading(true);
             try {
                 const result = await search(debounced);
-                setSearchResult(result);
+
+                setTimeout(() => {
+                    setSearchResult(result);
+                    setNoResult(result.length === 0);
+                    setLoading(false);
+                }, 500);
             } catch (error) {
-                console.error('Error fetching search results:', error);
-            } finally {
                 setLoading(false);
             }
         };
 
         fetchApi();
-    }, [debounced, trigger]);
+    }, [debounced]);
 
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
+        setNoResult(false);
+        setShowResult(false);
         if (nameRef.current) {
             nameRef.current.value = '';
             nameRef.current.focus();
         }
-        setTrigger((prev) => prev + 1);
     };
-
     const handleSearch = () => {
         setClose(true);
         router.replace(`/search?&q=${searchValue.trim()}`);
@@ -86,6 +81,10 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
         if (nameRef.current) {
             nameRef.current.blur();
         }
+    };
+
+    const handleOutside = () => {
+        setShowResult(false);
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

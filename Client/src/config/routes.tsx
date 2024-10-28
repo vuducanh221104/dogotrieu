@@ -64,7 +64,7 @@ const routes = {
         youtube: 'https://www.youtube.com/channel/UChE61X--XCHDUkMhbIfTbEg/',
         printerest: 'https://www.pinterest.com/dogotrieu/',
         zaloChat: 'https://zalo.me/0348483612',
-        messagerChat: 'https://www.facebook.com/profile.php?id=100032741172929',
+        messagerChat: 'https://m.me/100032741172929',
         phone: 'tel:0348483612',
         mail: 'mailto:dogotrieu@gmail.com',
     },

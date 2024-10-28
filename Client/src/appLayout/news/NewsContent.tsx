@@ -14,7 +14,6 @@ import Link from 'next/link';
 import PaginationNews from '@/components/PaginationNews';
 import { notFound, useParams, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
-import NotFound from '@/components/NotFound';
 import { CldImage } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
 import { dataTaggedNews } from '@/services/menuData/menuData';

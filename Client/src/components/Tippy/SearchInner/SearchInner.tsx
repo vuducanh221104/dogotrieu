@@ -7,7 +7,7 @@ import { faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { SearchIcon, XmarkIcon } from '@/components/Icons';
-import useDebounce from '@/hooks/useDebouce';
+import { useDebounce } from '@uidotdev/usehooks';
 import { search } from '@/services/searchServices';
 import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
@@ -16,71 +16,64 @@ import { CldImage } from 'next-cloudinary';
 import FormatPrice from '@/components/FormatPrice';
 import { Product } from '@/types/client';
 import { archivo } from '@/assets/FontNext';
+
 const cx = classNames.bind(styles);
 
 function SearchInner() {
     const nameRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>('');
     const [searchResult, setSearchResult] = useState<Product[]>([]);
     const [showResult, setShowResult] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [trigger, setTrigger] = useState<number>(0);
-    const debounced: any = useDebounce(searchValue, 500);
-    // Handle Input
+    const [noResult, setNoResult] = useState<boolean>(false);
+    const debounced = useDebounce(searchValue, 500);
+
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
-
-        if (value === '' || value.startsWith(' ')) {
-            setLoading(false);
-            setSearchResult([]);
-            setSearchValue('');
-            setShowResult(false);
-        } else {
-            setLoading(true);
-            setShowResult(true);
-        }
+        setShowResult(value.length > 0);
     };
 
     useEffect(() => {
-        if (!debounced.trim()) {
-            setLoading(false);
-            setSearchResult([]);
-            return;
-        }
-
         const fetchApi = async () => {
+            if (!debounced.trim()) {
+                setLoading(false);
+                setSearchResult([]);
+                setNoResult(false);
+                return;
+            }
+
             setLoading(true);
             try {
                 const result = await search(debounced);
-                setSearchResult(result);
+
+                setTimeout(() => {
+                    setSearchResult(result);
+                    setNoResult(result.length === 0);
+                    setLoading(false);
+                }, 500);
             } catch (error) {
-                console.error('Error fetching search results:', error);
-            } finally {
                 setLoading(false);
             }
         };
 
         fetchApi();
-    }, [debounced, trigger]);
+    }, [debounced]);
 
     const handleClear = () => {
         setSearchValue('');
         setSearchResult([]);
+        setNoResult(false);
+        setShowResult(false);
         if (nameRef.current) {
             nameRef.current.value = '';
             nameRef.current.focus();
         }
-        setTrigger((prev) => prev + 1);
-    };
-
-    const handleOutside = () => {
-        setShowResult(false);
     };
 
     const handleSearch = () => {
-        router.replace(`/search?&q=${searchValue.trim()}`);
+        router.push(`/search?q=${searchValue.trim()}`);
         setShowResult(false);
         if (nameRef.current) {
             nameRef.current.blur();
@@ -93,139 +86,133 @@ function SearchInner() {
         }
     };
 
+    const handleOutsideAndResultClick = () => {
+        setShowResult(false);
+    };
+
+    const handleViewAll = () => {
+        setShowResult(false);
+        router.push(`/search?q=${searchValue}`);
+    };
     const handleSlugify = (value: string) => (value ? slugify(value, { lower: true, locale: 'vi' }) : '');
 
     return (
         <div className={cx('wrapper-search-inner')}>
             <Tippy
                 interactive
-                visible={showResult || loading}
+                visible={loading || (showResult && (searchResult.length > 0 || searchValue.length > 0))}
                 placement="bottom"
                 render={(attrs) => (
                     <div className={`${cx('search-result')} search-custom`} tabIndex={-1} {...attrs}>
-                        {searchValue.length > 0 && (
-                            <div className={cx('wrapper-tippy')}>
-                                {loading ? (
-                                    <>
-                                        <div className={cx('search-inner-loading-list')}>
-                                            <div className={cx('search-inner-loading-item')}>
-                                                <div className={cx('search-bar-container')}>
-                                                    <div className={cx('aspect-ratio')}>
-                                                        <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('search-inner-loading-info')}>
-                                                    <div className={cx('search-inner-loading-name')}></div>
-                                                    <div className={cx('search-inner-loading-price')}></div>
-                                                </div>
+                        {loading && (
+                            <>
+                                <div className={cx('search-inner-loading-list')}>
+                                    <div className={cx('search-inner-loading-item')}>
+                                        <div className={cx('search-bar-container')}>
+                                            <div className={cx('aspect-ratio')}>
+                                                <div className={cx('search-inner-loading-wrapper-image')}></div>
                                             </div>
                                         </div>
-                                        <div className={cx('search-inner-loading-list')}>
-                                            <div className={cx('search-inner-loading-item')}>
-                                                <div className={cx('search-bar-container')}>
-                                                    <div className={cx('aspect-ratio')}>
-                                                        <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('search-inner-loading-info')}>
-                                                    <div className={cx('search-inner-loading-name')}></div>
-                                                    <div className={cx('search-inner-loading-price')}></div>
-                                                </div>
+                                        <div className={cx('search-inner-loading-info')}>
+                                            <div className={cx('search-inner-loading-name')}></div>
+                                            <div className={cx('search-inner-loading-price')}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={cx('search-inner-loading-list')}>
+                                    <div className={cx('search-inner-loading-item')}>
+                                        <div className={cx('search-bar-container')}>
+                                            <div className={cx('aspect-ratio')}>
+                                                <div className={cx('search-inner-loading-wrapper-image')}></div>
                                             </div>
                                         </div>
-                                        <div className={cx('search-inner-loading-list')}>
-                                            <div className={cx('search-inner-loading-item')}>
-                                                <div className={cx('search-bar-container')}>
-                                                    <div className={cx('aspect-ratio')}>
-                                                        <div className={cx('search-inner-loading-wrapper-image')}></div>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('search-inner-loading-info')}>
-                                                    <div className={cx('search-inner-loading-name')}></div>
-                                                    <div className={cx('search-inner-loading-price')}></div>
-                                                </div>
+                                        <div className={cx('search-inner-loading-info')}>
+                                            <div className={cx('search-inner-loading-name')}></div>
+                                            <div className={cx('search-inner-loading-price')}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={cx('search-inner-loading-list')}>
+                                    <div className={cx('search-inner-loading-item')}>
+                                        <div className={cx('search-bar-container')}>
+                                            <div className={cx('aspect-ratio')}>
+                                                <div className={cx('search-inner-loading-wrapper-image')}></div>
                                             </div>
                                         </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <p className={cx('search-inner-title', archivo.className)}>sản phẩm</p>
-                                        {searchResult?.length > 0 ? (
-                                            <>
-                                                <div className={cx('search-inner-list')}>
-                                                    {searchResult.map((item) => (
-                                                        <Link
-                                                            href={`/products/${handleSlugify(item.name)}-${
-                                                                item._id
-                                                            }.html`}
-                                                            className={cx('search-inner-item')}
-                                                            key={item._id}
-                                                        >
-                                                            <div className={cx('search-inner-wrapper-image')}>
-                                                                <CldImage
-                                                                    width={'50'}
-                                                                    height={'60'}
-                                                                    src={item.thumb}
-                                                                    alt={item.name}
-                                                                    className={cx('search-inner-image')}
-                                                                />
-                                                            </div>
-                                                            <div className={cx('search-inner-info')}>
-                                                                <p className={cx('search-inner-name')}>{item.name}</p>
-                                                                <div
-                                                                    className={cx(
-                                                                        'product-price-wrapper',
-                                                                        item.price.discount !== null &&
-                                                                            item.price.discount !== 0 &&
-                                                                            'have-price-discount',
-                                                                    )}
-                                                                >
-                                                                    {item.price.discount !== null &&
-                                                                        item.price.discount !== 0 && (
-                                                                            <p className={cx('product-price-discount')}>
-                                                                                <FormatPrice
-                                                                                    value={item.price.discount}
-                                                                                />
-                                                                            </p>
-                                                                        )}
-                                                                    <p className={cx('product-price-real')}>
-                                                                        <FormatPrice value={item.price.original} />
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </Link>
-                                                    ))}
-                                                </div>
-
+                                        <div className={cx('search-inner-loading-info')}>
+                                            <div className={cx('search-inner-loading-name')}></div>
+                                            <div className={cx('search-inner-loading-price')}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        {!loading && searchResult.length > 0 && (
+                            <>
+                                <p className={cx('search-inner-title', archivo.className)}>sản phẩm</p>
+                                <div className={cx('search-inner-list')}>
+                                    {searchResult.map((item) => (
+                                        <Link
+                                            href={`/products/${handleSlugify(item.name)}-${item._id}.html`}
+                                            className={cx('search-inner-item')}
+                                            key={item._id}
+                                            onClick={handleOutsideAndResultClick}
+                                        >
+                                            <div className={cx('search-inner-wrapper-image')}>
+                                                <CldImage
+                                                    width={'50'}
+                                                    height={'60'}
+                                                    src={item.thumb}
+                                                    alt={item.name}
+                                                    className={cx('search-inner-image')}
+                                                />
+                                            </div>
+                                            <div className={cx('search-inner-info')}>
+                                                <p className={cx('search-inner-name')}>{item.name}</p>
                                                 <div
-                                                    className={cx('wrapper-search-inner-footer')}
-                                                    onClick={() => router.push(`/search?q=${searchValue}`)}
+                                                    className={cx(
+                                                        'product-price-wrapper',
+                                                        item.price.discount !== null &&
+                                                            item.price.discount !== 0 &&
+                                                            'have-price-discount',
+                                                    )}
                                                 >
-                                                    <p className={cx('search-inner-footer-title', archivo.className)}>
-                                                        Xem tất cả sản phẩm
+                                                    {item.price.discount !== null && item.price.discount !== 0 && (
+                                                        <p className={cx('product-price-discount')}>
+                                                            <FormatPrice value={item.price.discount} />
+                                                        </p>
+                                                    )}
+                                                    <p className={cx('product-price-real')}>
+                                                        <FormatPrice value={item.price.original} />
                                                     </p>
-                                                    <FontAwesomeIcon
-                                                        icon={faChevronRight}
-                                                        style={{
-                                                            fontSize: '0.8rem',
-                                                            marginLeft: '5px',
-                                                            fontWeight: '600',
-                                                        }}
-                                                    />
                                                 </div>
-                                            </>
-                                        ) : (
-                                            <div className={cx('no-result')}>
-                                                <p>Không có kết quả nào được tìm thấy</p>
                                             </div>
-                                        )}
-                                    </>
-                                )}
+                                        </Link>
+                                    ))}
+                                </div>
+                                <div className={cx('wrapper-search-inner-footer')} onClick={handleViewAll}>
+                                    <p className={cx('search-inner-footer-title', archivo.className)}>
+                                        Xem tất cả sản phẩm
+                                    </p>
+                                    <FontAwesomeIcon
+                                        icon={faChevronRight}
+                                        style={{
+                                            fontSize: '0.8rem',
+                                            marginLeft: '5px',
+                                            fontWeight: '600',
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        )}
+                        {!loading && noResult && searchValue.length > 0 && (
+                            <div className={cx('no-result')}>
+                                <p>Không có kết quả nào được tìm thấy</p>
                             </div>
                         )}
                     </div>
                 )}
-                onClickOutside={handleOutside}
+                onClickOutside={handleOutsideAndResultClick}
                 offset={[0, 0]}
             >
                 <div className={cx('header-search-inner')} role="search" aria-label="Search Input">

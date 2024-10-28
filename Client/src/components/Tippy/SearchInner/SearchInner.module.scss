@@ -49,8 +49,8 @@
 }
 
 .icon-xmark {
-    width: 19px;
-    height: 19px;
+    width: 14px;
+    height: 14px;
     font-size: 1.8rem;
     color: #979797dd;
 }
@@ -82,6 +82,10 @@
 .header-search-content,
 .search-result {
     width: 100%;
+}
+
+.search-result {
+    background-color: #ffffff;
 }
 
 // SEARCH-INNER

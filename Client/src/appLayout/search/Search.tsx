@@ -220,7 +220,7 @@ function SearchContent() {
     }
 
     if (error || valueSearch === '') {
-        return <NotFound />;
+        return <NotFound title="Tìm Kiếm" description={`Không tìm thấy kết quả nào cho "${valueSearch}"`} />;
     } else {
         return (
             <>
