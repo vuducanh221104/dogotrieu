@@ -1,6 +1,5 @@
 'use client';
 import { Suspense } from 'react';
-
 import classNames from 'classnames/bind';
 import styles from '@/styles/Search.module.scss';
 import { useState, useEffect } from 'react';

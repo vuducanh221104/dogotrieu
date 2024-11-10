@@ -239,7 +239,7 @@ function News() {
     }
 }
 
-export default function NewsContent() {
+export default function NewsTagged() {
     return (
         <Suspense fallback={<Loading />}>
             <News />

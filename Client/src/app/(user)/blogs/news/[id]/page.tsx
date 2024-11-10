@@ -1,9 +1,10 @@
-import NewsDetailContent from '@/appLayout/newsDetail/newsDetailContent';
+import NewsDetailContent from '@/appLayout/NewsDetail';
 import routes from '@/config/routes';
 import { newsSEOGET } from '@/services/newsServices';
 import { cleanMarkDownLimit } from '@/utils/cleanMarkDown';
 import { handleSlugify } from '@/utils/handleSlutify';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
+import { transformedImageNews } from '@/utils/handleTranformImage';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 type Props = {
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
         const title = news?.title;
         const description = cleanMarkDownLimit(news?.content);
         const url = `${routes.domain.name}${routes.user.newsDetail}/${handleSlugify(news?.title)}-${news?._id}.html`;
-        const image = news?.thumb;
+        const image = transformedImageNews(news?.thumb);
         return {
             title: title,
             description: description,

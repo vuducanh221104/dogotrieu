@@ -7,7 +7,6 @@ import MapMini from '@/components/MapMini';
 import { notFound, useParams } from 'next/navigation';
 import { newsGetById } from '@/services/newsServices';
 import Loading from '@/components/Loading';
-import NotFound from '@/components/NotFound';
 import MarkdownRender from '@/components/MarkdownRender';
 import { CldImage } from 'next-cloudinary';
 import { Suspense } from 'react';
@@ -15,7 +14,7 @@ import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import { archivo } from '@/assets/FontNext';
 const cx = classNames.bind(styles);
 
-function NewsDetail() {
+function NewsDetailContent() {
     const { id } = useParams() as { id: string };
 
     const idNews = handleSplitSlug(id);
@@ -82,10 +81,10 @@ function NewsDetail() {
     }
 }
 
-export default function NewsDetailContent() {
+export default function NewsDetail() {
     return (
         <Suspense fallback={<Loading />}>
-            <NewsDetail />
+            <NewsDetailContent />
         </Suspense>
     );
 }

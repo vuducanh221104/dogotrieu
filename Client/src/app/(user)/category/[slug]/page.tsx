@@ -1,4 +1,4 @@
-import CategoryContent from '@/appLayout/category/Category';
+import CategoryContent from '@/appLayout/Category/Category';
 import routes from '@/config/routes';
 import { userBreadCumbs } from '@/services/menuData/breadCrumbData';
 import { Metadata } from 'next';
@@ -11,7 +11,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { slug } = params;
 
-    const title = userBreadCumbs[slug];
+    const title = slug === 'tat-ca-san-pham' ? 'Tất cả sản phẩm' : userBreadCumbs[slug];
 
     if (!title) {
         notFound();

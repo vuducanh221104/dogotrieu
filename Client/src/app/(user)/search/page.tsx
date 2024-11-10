@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import PageSearchWrapper from '@/appLayout/search/Search';
+import PageSearchWrapper from '@/appLayout/Search';
 import routes from '@/config/routes';
 type Props = {
     params: { slug: string };

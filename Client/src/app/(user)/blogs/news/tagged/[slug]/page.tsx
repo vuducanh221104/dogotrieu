@@ -1,4 +1,4 @@
-import NewsContent from '@/appLayout/news/NewsContent';
+import NewsContent from '@/appLayout/NewsTagged';
 import routes from '@/config/routes';
 import { dataTaggedNews } from '@/services/menuData/menuData';
 import { Metadata } from 'next';

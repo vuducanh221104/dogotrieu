@@ -1,10 +1,11 @@
 import routes from '@/config/routes';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import dynamic from 'next/dynamic';
-const ProductDetail = dynamic(() => import('@/appLayout/products'), { ssr: true });
+const ProductDetail = dynamic(() => import('@/appLayout/ProductDetail'), { ssr: true });
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { productSEOGET } from '@/services/productServices';
+import { transformedImage } from '@/utils/handleTranformImage';
 
 type Props = {
     params: { slug: string };
@@ -13,6 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata | undefined> {
     const { slug } = params;
+
     const id = handleSplitSlug(slug);
 
     try {
@@ -21,10 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
             notFound();
         }
 
+        const image = transformedImage(product?.thumb);
         const name = product.name;
         const description = `Mua sản phẩm ${name} hiện đang có sẵn tại Dogotrieu.com!`;
         const url = `${routes.domain.name}/products/${slug}`;
-        const image = product?.thumb;
 
         return {
             title: name,

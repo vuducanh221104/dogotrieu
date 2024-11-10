@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Home from '@/appLayout/home';
+import Home from '@/appLayout/Home';
 import routes from '@/config/routes';
 
 export const generateMetadata = (): Metadata => {

@@ -14,7 +14,6 @@ import Pagination from '@/components/Pagination';
 import CardProduct from '@/components/CardProduct';
 import { archivo } from '@/assets/FontNext';
 import { categoryFilterGet } from '@/services/categoryServices';
-import NotFound from '@/components/NotFound';
 import Loading from '@/components/Loading';
 import { dataFilterCategory } from '@/services/menuData/menuData';
 import FilterModal from '@/components/FilterModal';

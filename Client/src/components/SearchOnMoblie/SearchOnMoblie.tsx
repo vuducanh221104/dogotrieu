@@ -158,7 +158,7 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                     {!loading ? (
                         searchValue.trim() && (
                             <>
-                                {searchResult?.length > 0 ? (
+                                {searchResult?.length > 0 && (
                                     <>
                                         <p className={cx('search-inner-title', archivo.className)}>sản phẩm</p>
                                         <div className={cx('search-inner-list')}>
@@ -216,10 +216,6 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                             />
                                         </div>
                                     </>
-                                ) : (
-                                    <div className={cx('no-result')}>
-                                        <p>Không có kết quả nào được tìm thấy</p>
-                                    </div>
                                 )}
                             </>
                         )
@@ -265,6 +261,11 @@ function SearchOnMobile({ showSearch }: SearchOnMobileProps) {
                                 </div>
                             </div>
                         </>
+                    )}
+                    {!loading && noResult && searchValue.length > 0 && (
+                        <div className={cx('no-result')}>
+                            <p>Không có kết quả nào được tìm thấy</p>
+                        </div>
                     )}
                 </div>
             </div>

@@ -54,15 +54,16 @@
 }
 
 html {
-    display: block;
     color: var(--text-color);
     font-size: 62.5%;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
+    padding-bottom: 0 !important;
 }
+
 body {
     display: block;
-    overflow-x: clip;
+    overflow-x: clip !important;
 }
 
 * {

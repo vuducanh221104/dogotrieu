@@ -11,7 +11,7 @@ const routes = {
         news: '/blogs/news/tagged/all',
         newsDetails: '/blogs/news',
         categoryInStock: '/category/in-stock',
-        categoryAll: '/category/all',
+        categoryAll: '/category/tat-ca-san-pham',
         category: '/category', //slug
         productDetail: '/products', //slug
         newsDetail: '/blogs/news', //slug
@@ -56,7 +56,7 @@ const routes = {
     },
 
     imgPromo: {
-        navbar: '/category/all',
+        navbar: '/category/tat-ca-san-pham',
     },
     social: {
         facebook: 'https://www.facebook.com/profile.php?id=100032741172929',

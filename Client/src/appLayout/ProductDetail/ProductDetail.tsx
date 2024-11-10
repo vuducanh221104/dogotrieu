@@ -379,7 +379,7 @@ function ProductDetail({ productId: id }: any) {
                     <section className={cx('section-product-recommendations')}>
                         <ViewListProductAuto
                             query={'?category_id=66655754c3a93469c8e5a58a'}
-                            nextBtnLink={'/category/all'}
+                            nextBtnLink={'/category/tat-ca-san-pham'}
                             title={'Bạn đang quan tâm'}
                         />
                     </section>
