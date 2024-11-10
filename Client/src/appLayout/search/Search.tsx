@@ -614,6 +614,7 @@ function SearchContent() {
                                                     {/* Pagination */}
                                                     {dataTotalProduct !== 0 && (
                                                         <Pagination totalPages={dataTotalPage} />
+                                                        //
                                                     )}
                                                 </div>
                                             </div>
