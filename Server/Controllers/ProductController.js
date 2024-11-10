@@ -27,14 +27,14 @@ class ProductController {
                 return res.status(404).json({ message: 'Product not found' });
             }
 
-            res.json(product);
+            res.status(200).json(product);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
     //[GET]
     async feaProductByCategory(req, res) {
-        const { category_id, material_id } = req.query; // Lấy category_id và material_id từ params
+        const { category_id, material_id } = req.query;
 
         try {
             // Tìm tất cả các sản phẩm trước

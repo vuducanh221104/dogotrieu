@@ -23,7 +23,7 @@ function createCategoryList(categories, parent_id = null) {
 class CategoryController {
     //[GET]
     async categoryAndQueryMaterial(req, res) {
-        const categorySlug = req.params.slug || 'all';
+        const categorySlug = req.params.slug || 'tat-ca-san-pham';
         let queryGfMaterial = req.query.gf_material;
         let queryGfAvailab = req.query.gf_availab;
         const sortBy = req.query.sort_by || 'price-asc';
@@ -74,7 +74,7 @@ class CategoryController {
 
             let category = null;
 
-            if (categorySlug !== 'all') {
+            if (categorySlug !== 'tat-ca-san-pham') {
                 category = await Category.findOne({ slug: categorySlug }).exec();
                 if (!category) {
                     return res.status(404).json({ message: 'Category not found' });
@@ -138,7 +138,7 @@ class CategoryController {
             const paginatedData = products.slice(skip, skip + limit);
 
             res.status(200).json({
-                nameCategory: categorySlug === 'all' ? 'Tất Cả Sản Phẩm' : category.name,
+                nameCategory: categorySlug === 'tat-ca-san-pham' ? 'Tất Cả Sản Phẩm' : category.name,
                 totalItems,
                 totalPages,
                 currentPage: page,
@@ -151,21 +151,21 @@ class CategoryController {
     }
     //[GET]
     async categorySeo(req, res) {
-        const categorySlug = req.params.slug || 'all';
+        const categorySlug = req.params.slug || 'tat-ca-san-pham';
 
         try {
             let products;
             let category = null;
 
-            // Fetch category if not 'all'
-            if (categorySlug !== 'all') {
+            // Fetch category if not 'tat-ca-san-pham'
+            if (categorySlug !== 'tat-ca-san-pham') {
                 category = await Category.findOne({ slug: categorySlug }).exec();
                 if (!category) {
                     return res.status(404).json({ message: 'Category not found' });
                 }
             }
 
-            const matchCondition = categorySlug !== 'all' ? { 'category_id.slug': categorySlug } : {};
+            const matchCondition = categorySlug !== 'tat-ca-san-pham' ? { 'category_id.slug': categorySlug } : {};
 
             products = await Product.find({})
                 .populate({
@@ -181,7 +181,7 @@ class CategoryController {
                 .exec();
 
             res.status(200).json({
-                name_category: categorySlug === 'all' ? 'Products' : category.name,
+                name_category: categorySlug === 'tat-ca-san-pham' ? 'Products' : category.name,
                 image: products[0].thumb,
             });
         } catch (error) {
