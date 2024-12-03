@@ -2,6 +2,21 @@ const NewsSchema = require('../Models/News');
 const mongoose = require('mongoose');
 
 class NewsController {
+    //[GET] ~ SITEMAP
+    async getNewsSITEMAP(req, res) {
+        try {
+            const newSITEMAp = await NewsSchema.find({}).select('_id title thumb updated_at').lean().exec();
+
+            if (!newSITEMAp) {
+                return res.status(404).json({ message: 'News SITEMAP not found' });
+            }
+
+            res.status(200).json(newSITEMAp);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     // [POST] /news
     async newsPost(req, res) {
         try {

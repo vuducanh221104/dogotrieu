@@ -36,7 +36,7 @@ class MaterialController {
     //[POST]
     async materialAdd(req, res) {
         try {
-            const materials = req.body; // Expecting an array of materials
+            const materials = req.body;
             const savedMaterials = [];
 
             for (const material of materials) {
@@ -56,12 +56,10 @@ class MaterialController {
         const updatedMaterials = req.body;
 
         try {
-            // Use Promise.all to handle multiple updates
             const updatePromises = updatedMaterials.map((material) => {
                 return Material.findByIdAndUpdate(material._id, material, { new: true });
             });
 
-            // Wait for all updates to complete
             const results = await Promise.all(updatePromises);
 
             res.json({ message: 'Materials updated successfully', results });
