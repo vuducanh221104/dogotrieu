@@ -40,11 +40,11 @@ function NewsArticle() {
                     {windowWidth >= 1000 ? (
                         <div className={cx('block-list')}>
                             {news?.map((item: any, index: any) => (
-                                <div className={cx('block-list-item')} key={item._id}>
+                                <div className={cx('block-list-item')} key={item?._id}>
                                     <div className={cx('news-item')}>
                                         <Link
-                                            href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
-                                                item._id
+                                            href={`${config.routes.newsDetail}/${handleSlugify(item?.title)}-${
+                                                item?._id
                                             }.html`}
                                             className={cx('news-item-link')}
                                         >
@@ -52,19 +52,19 @@ function NewsArticle() {
                                                 <CldImage
                                                     width={600}
                                                     height={344}
-                                                    src={item.thumb}
-                                                    alt={item.title}
+                                                    src={item?.thumb}
+                                                    alt={item?.title}
                                                     className={cx('news-item-image-cover')}
                                                 />
                                             </div>
                                         </Link>
                                         <h3 className={cx('news-item-title')}>
                                             <Link
-                                                href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
-                                                    item._id
+                                                href={`${config.routes.newsDetail}/${handleSlugify(item?.title)}-${
+                                                    item?._id
                                                 }.html`}
                                             >
-                                                {item.title}
+                                                {item?.title}
                                             </Link>
                                         </h3>
                                         {/* <p className={`${cx('news-item-description')} ${poppins.className}`}>
@@ -82,8 +82,8 @@ function NewsArticle() {
                                         <div className={cx('block-list-item')} key={item._id}>
                                             <div className={cx('news-item')}>
                                                 <Link
-                                                    href={`${config.routes.newsDetail}/${handleSlugify(item.title)}-${
-                                                        item._id
+                                                    href={`${config.routes.newsDetail}/${handleSlugify(item?.title)}-${
+                                                        item?._id
                                                     }.html`}
                                                     className={cx('news-item-link')}
                                                 >
@@ -91,8 +91,8 @@ function NewsArticle() {
                                                         <CldImage
                                                             width={700}
                                                             height={400}
-                                                            src={item.thumb}
-                                                            alt={item.title}
+                                                            src={item?.thumb}
+                                                            alt={item?.title}
                                                             className={cx('news-item-image-cover')}
                                                         />
                                                     </div>
@@ -100,14 +100,14 @@ function NewsArticle() {
                                                 <h3 className={cx('news-item-title')}>
                                                     <Link
                                                         href={`${config.routes.newsDetail}/${handleSlugify(
-                                                            item.title,
-                                                        )}-${item._id}.html`}
+                                                            item?.title,
+                                                        )}-${item?._id}.html`}
                                                     >
-                                                        {item.title}
+                                                        {item?.title}
                                                     </Link>
                                                 </h3>
                                                 <p className={`${cx('news-item-description')} ${poppins.className}`}>
-                                                    {item.description}
+                                                    {item?.description}
                                                 </p>
                                             </div>
                                         </div>

@@ -12,6 +12,7 @@ import { CldImage } from 'next-cloudinary';
 import { Suspense } from 'react';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
 import { archivo } from '@/assets/FontNext';
+import config from '@/config';
 const cx = classNames.bind(styles);
 
 function NewsDetailContent() {
@@ -32,7 +33,7 @@ function NewsDetailContent() {
                             <h1>{data.title}</h1>
                             <p>{data.description}</p>
                         </header>
-                        <div className={cx('news-body')}>
+                        <div className={cx('news-body', archivo.className)}>
                             {/* ROW 1 */}
                             <div className={cx('news-content')}>
                                 <div className={cx('aspect-ratio')}>
@@ -40,6 +41,31 @@ function NewsDetailContent() {
                                 </div>
                                 <div className={cx('news-description')}>
                                     <MarkdownRender content={data.content} />
+                                </div>
+                                <div className={cx('news-footer')}>
+                                    <div className={cx('aspect-ratio')}>
+                                        <CldImage
+                                            width={1000}
+                                            height={700}
+                                            src="https://res.cloudinary.com/do4zld720/image/upload/v1726669926/cp0wpj6dixakireei57x?_a=BAVAZGDW0"
+                                            alt="Banner DOGOTRIEU.COM"
+                                        />
+                                    </div>
+
+                                    <h4 className={cx('text-footer-header')}>ĐỒ GỖ TRIỆU</h4>
+                                    <h4>
+                                        <strong>Cửa Hàng : </strong>
+                                        24 Lương Định Của, Trần Não, TP.Thủ Đức, TP.HCM
+                                    </h4>
+                                    <h4>
+                                        <strong>Kho, Xưởng : </strong>
+                                        25/4 Xuân Thủy, Thảo Điền, TP.Thủ Đức, TP.HCM
+                                    </h4>
+                                    <h4>
+                                        <strong>Email : </strong>
+                                        dogotrieu@gmail.com
+                                    </h4>
+                                    <p className={cx('text-red')}>Hotline/Zalo: 0348483612 (Em Lan)</p>
                                 </div>
                             </div>
                             {/* ROW 2 */}
@@ -50,22 +76,42 @@ function NewsDetailContent() {
                                         <h4>Follow Us</h4>
                                         <ul className={cx('news-content-extra-list')}>
                                             <li className={cx('news-content-extra-item')}>
-                                                <a href="/">
+                                                <a
+                                                    href={config.routesSocial.facebook}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label="Facebook Đồ Gỗ Triệu"
+                                                >
                                                     <FacebookIcon className={cx('icon-social', 'facebook')} />
                                                 </a>
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
-                                                <a href="/">
+                                                <a
+                                                    href={config.routesSocial.instagram}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label="Instagram Đồ Gỗ Triệu"
+                                                >
                                                     <InstaIcon className={cx('icon-social', 'instagram')} />
                                                 </a>
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
-                                                <a href="/">
+                                                <a
+                                                    href={config.routesSocial.printerest}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label="Printerest Đồ Gỗ Triệu"
+                                                >
                                                     <PrinterestIcon className={cx('icon-social', 'pinterest')} />
                                                 </a>
                                             </li>
                                             <li className={cx('news-content-extra-item')}>
-                                                <a href="/">
+                                                <a
+                                                    href={config.routesSocial.youtube}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label="Youtube Đồ Gỗ Triệu"
+                                                >
                                                     <YoutubeIcon className={cx('icon-social', 'youtube')} />
                                                 </a>
                                             </li>

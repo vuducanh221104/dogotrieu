@@ -58,6 +58,7 @@ function News() {
     if (isLoading) {
         return <Loading />;
     }
+
     if (error || data?.data.length === 0) {
         notFound();
     } else {

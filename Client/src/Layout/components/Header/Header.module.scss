@@ -233,6 +233,28 @@
     padding: 7px 0;
 }
 
+.mobile-menu-section-follow-list {
+    li:nth-child(1):hover {
+        .icon-social {
+            color: #3b5998 !important;
+        }
+    }
+    li:nth-child(2):hover {
+        .icon-social {
+            color: #d83776 !important;
+        }
+    }
+    li:nth-child(3):hover {
+        .icon-social {
+            color: #bd081c !important;
+        }
+    }
+    li:nth-child(4):hover {
+        .icon-social {
+            color: #ff0000 !important;
+        }
+    }
+}
 .icon-iphone,
 .icon-mail {
     margin-right: 10px;

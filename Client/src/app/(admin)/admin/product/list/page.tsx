@@ -239,25 +239,33 @@ function PageListProduct() {
             key: 'price',
             width: 150,
             render: (price: any) => (
-                <span style={{ display: 'flex', flexDirection: 'column', fontWeight: '600' }}>
-                    <p style={{ fontSize: '1.4rem', fontWeight: '600' }}>
-                        {`${priceFormatter(price.original)} ${price.currency}`}
-                    </p>
-                    {price.discount !== 0 && (
-                        <span
-                            style={{
-                                textDecoration: 'line-through',
-                                marginRight: '4px',
-                                color: '#999',
-                                fontWeight: '400',
-                            }}
-                        >
-                            <p style={{ fontSize: '1.3rem', textDecoration: 'line-through' }}>
-                                {`${priceFormatter(price.discount)} ${price.currency}`}
+                <div>
+                    {price.discount === 0 ? (
+                        <span style={{ display: 'flex', flexDirection: 'column', fontWeight: '600' }}>
+                            <p style={{ fontSize: '1.4rem', fontWeight: '600' }}>
+                                {`${priceFormatter(price.original)} ${price.currency}`}
                             </p>
                         </span>
+                    ) : (
+                        <span style={{ display: 'flex', flexDirection: 'column', fontWeight: '600' }}>
+                            <p style={{ fontSize: '1.4rem', fontWeight: '600' }}>
+                                {`${priceFormatter(price.discount)} ${price.currency}`}
+                            </p>
+                            <span
+                                style={{
+                                    textDecoration: 'line-through',
+                                    marginRight: '4px',
+                                    color: '#999',
+                                    fontWeight: '400',
+                                }}
+                            >
+                                <p style={{ fontSize: '1.3rem', textDecoration: 'line-through' }}>
+                                    {`${priceFormatter(price.original)} ${price.currency}`}
+                                </p>
+                            </span>
+                        </span>
                     )}
-                </span>
+                </div>
             ),
             sorter: (a: any, b: any) => a.price.original - b.price.original,
             sortDirections: ['descend', 'ascend'],

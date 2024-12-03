@@ -105,7 +105,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                         >
                                             {data?.map((item: any, index: any) => (
                                                 <div
-                                                    key={item._id}
+                                                    key={item?._id}
                                                     ref={index === 0 ? productRef : null}
                                                     className={cx('product-item')}
                                                     style={
@@ -126,25 +126,26 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                     }
                                                 >
                                                     <div className={cx('product-label-list')}>
-                                                        {item.price.discount !== null && item.price.discount !== 0 && (
-                                                            <DiscountCalculation
-                                                                price={item.price.original}
-                                                                discountPrice={item.price.discount}
-                                                            />
-                                                        )}
+                                                        {item?.price.discount !== null &&
+                                                            item?.price.discount !== 0 && (
+                                                                <DiscountCalculation
+                                                                    price={item?.price.original}
+                                                                    discountPrice={item?.price.discount}
+                                                                />
+                                                            )}
                                                     </div>
                                                     <div className={cx('product-image')}>
                                                         <Link
-                                                            href={`/products/${handleSlugify(item.name)}-${
-                                                                item._id
+                                                            href={`/products/${handleSlugify(item?.name)}-${
+                                                                item?._id
                                                             }.html`}
                                                         >
                                                             <div className={cx('aspect-ratio')}>
                                                                 <CldImage
                                                                     width={400}
                                                                     height={600}
-                                                                    alt={`${item.name} | Dogotrieu.com`}
-                                                                    src={item.thumb}
+                                                                    alt={`${item?.name} | Dogotrieu.com`}
+                                                                    src={item?.thumb}
                                                                     sizes={'(min-width: 0px) 100vw'}
                                                                     loading="lazy"
                                                                 />
@@ -152,17 +153,17 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                         </Link>
                                                     </div>
                                                     <div className={cx('product-info')}>
-                                                        {item.ship !== 0 && (
+                                                        {item?.ship !== 0 && (
                                                             <p className={cx('product-tag')}>QUICK SHIP</p>
                                                         )}
                                                         <h3 className={cx('product-vendor', archivo.className)}>
-                                                            {item.material_id &&
-                                                                item.material_id?.map(
+                                                            {item?.material_id &&
+                                                                item?.material_id?.map(
                                                                     (material: any, indexMaterial: number) => (
                                                                         <Link
                                                                             href={`/products/${handleSlugify(
-                                                                                item.name,
-                                                                            )}-${item._id}.html`}
+                                                                                item?.name,
+                                                                            )}-${item?._id}.html`}
                                                                             key={material.name}
                                                                         >
                                                                             {indexMaterial !== 0 && ', '}
@@ -172,32 +173,32 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                                 )}
                                                         </h3>
                                                         <Link
-                                                            href={`/products/${handleSlugify(item.name)}-${
-                                                                item._id
+                                                            href={`/products/${handleSlugify(item?.name)}-${
+                                                                item?._id
                                                             }.html`}
                                                         >
-                                                            <h2 className={cx('product-name')}>{item.name}</h2>
+                                                            <h2 className={cx('product-name')}>{item?.name}</h2>
                                                         </Link>
                                                         <div
                                                             className={cx(
                                                                 'product-price-wrapper',
-                                                                item.price.discount !== null &&
-                                                                    item.price.discount !== 0 &&
+                                                                item?.price.discount !== null &&
+                                                                    item?.price.discount !== 0 &&
                                                                     'have-price-discount',
                                                             )}
                                                         >
-                                                            {item.price.discount !== null &&
-                                                                item.price.discount !== 0 && (
+                                                            {item?.price.discount !== null &&
+                                                                item?.price.discount !== 0 && (
                                                                     <p className={cx('product-price-discount')}>
-                                                                        <FormatPrice value={item.price.discount} />
+                                                                        <FormatPrice value={item?.price.discount} />
                                                                     </p>
                                                                 )}
                                                             <p className={cx('product-price-real')}>
-                                                                <FormatPrice value={item.price.original} />
+                                                                <FormatPrice value={item?.price.original} />
                                                             </p>
                                                         </div>
 
-                                                        {item.quantity > 0 ? (
+                                                        {item?.quantity > 0 ? (
                                                             <span className={cx('product-status', archivo.className)}>
                                                                 CÒN HÀNG
                                                             </span>
@@ -238,23 +239,23 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                             ) : (
                                 <>
                                     {data?.map((item: any) => (
-                                        <div className={cx('product-item')} key={item._id}>
+                                        <div className={cx('product-item')} key={item?._id}>
                                             <div className={cx('product-label-list')}>
-                                                {item.price.discount !== null && item.price.discount !== 0 && (
+                                                {item?.price.discount !== null && item?.price.discount !== 0 && (
                                                     <DiscountCalculation
-                                                        price={item.price.original}
-                                                        discountPrice={item.price.discount}
+                                                        price={item?.price.original}
+                                                        discountPrice={item?.price.discount}
                                                     />
                                                 )}
                                             </div>
                                             <div className={cx('product-image')}>
-                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
+                                                <Link href={`/products/${handleSlugify(item?.name)}-${item?._id}.html`}>
                                                     <div className={cx('aspect-ratio')}>
                                                         <CldImage
                                                             width={600}
                                                             height={900}
-                                                            src={item.thumb}
-                                                            alt={`${item.name} | Dogotrieu.com`}
+                                                            src={item?.thumb}
+                                                            alt={`${item?.name} | Dogotrieu.com`}
                                                             sizes={'(min-width: 0px) 100vw'}
                                                             loading="lazy"
                                                         />
@@ -262,15 +263,15 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                 </Link>
                                             </div>
                                             <div className={cx('product-info')}>
-                                                {item.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
+                                                {item?.ship !== 0 && <p className={cx('product-tag')}>QUICK SHIP</p>}
                                                 <h3 className={cx('product-vendor', archivo.className)}>
-                                                    {item.material_id &&
-                                                        item.material_id?.map(
+                                                    {item?.material_id &&
+                                                        item?.material_id?.map(
                                                             (material: any, indexMaterial: number) => (
                                                                 <Link
                                                                     key={material.name}
-                                                                    href={`/products/${handleSlugify(item.name)}-${
-                                                                        item._id
+                                                                    href={`/products/${handleSlugify(item?.name)}-${
+                                                                        item?._id
                                                                     }.html`}
                                                                 >
                                                                     {indexMaterial !== 0 && ', '}
@@ -279,28 +280,28 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                                             ),
                                                         )}
                                                 </h3>
-                                                <Link href={`/products/${handleSlugify(item.name)}-${item._id}.html`}>
-                                                    <h2 className={cx('product-name')}>{item.name}</h2>
+                                                <Link href={`/products/${handleSlugify(item?.name)}-${item?._id}.html`}>
+                                                    <h2 className={cx('product-name')}>{item?.name}</h2>
                                                 </Link>
                                                 <div
                                                     className={cx(
                                                         'product-price-wrapper',
-                                                        item.price.discount !== null &&
-                                                            item.price.discount !== 0 &&
+                                                        item?.price.discount !== null &&
+                                                            item?.price.discount !== 0 &&
                                                             'have-price-discount',
                                                     )}
                                                 >
-                                                    {item.price.discount !== null && item.price.discount !== 0 && (
+                                                    {item?.price.discount !== null && item?.price.discount !== 0 && (
                                                         <p className={cx('product-price-discount')}>
-                                                            <FormatPrice value={item.price.discount} />
+                                                            <FormatPrice value={item?.price.discount} />
                                                         </p>
                                                     )}
                                                     <p className={cx('product-price-real')}>
-                                                        <FormatPrice value={item.price.original} />
+                                                        <FormatPrice value={item?.price.original} />
                                                     </p>
                                                 </div>
 
-                                                {item.quantity > 0 ? (
+                                                {item?.quantity > 0 ? (
                                                     <span className={cx('product-status', archivo.className)}>
                                                         CÒN HÀNG
                                                     </span>
