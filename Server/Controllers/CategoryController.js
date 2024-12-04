@@ -21,6 +21,15 @@ function createCategoryList(categories, parent_id = null) {
 }
 
 class CategoryController {
+    //[GET ]~SITEMAP
+    async categorySITEMAP(req, res) {
+        try {
+            const dataCategory = await Category.find({});
+            res.status(200).json(dataCategory);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
     //[GET]
     async categoryAndQueryMaterial(req, res) {
         const categorySlug = req.params.slug || 'tat-ca-san-pham';
@@ -188,7 +197,6 @@ class CategoryController {
             res.status(500).json({ message: error.message });
         }
     }
-
     //[GET]
     async categoryList(req, res) {
         try {
