@@ -1,35 +1,24 @@
 import { productSITEMAP } from '@/services/sitemapServices';
 import { handleSlugify } from '@/utils/handleSlutify';
+import { getServerSideSitemap } from 'next-sitemap';
 
 export async function GET() {
     const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://dogotrieu.com/';
-    const data = await productSITEMAP();
 
-    const sitemapXML = `
-        <?xml version="1.0" encoding="UTF-8"?>
-        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-                xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            ${data
-                ?.map(
-                    (item) => `
-                    <url>
-                        <loc>${domain}products/${handleSlugify(item.name)}-${item._id}.html</loc>
-                        <lastmod>${item.updated_at}</lastmod>
-                        <changefreq>daily</changefreq>
-                        <image:image>
-                            <image:loc>${item.thumb}</image:loc>
-                            <image:title>${item.name}</image:title>
-                        </image:image>
-                    </url>
-                `,
-                )
-                .join('')}
-        </urlset>
-    `;
+    try {
+        const data: any = await productSITEMAP();
 
-    return new Response(sitemapXML.trim(), {
-        headers: {
-            'Content-Type': 'application/xml',
-        },
-    });
+        const post = data?.map((item: any) => {
+            return {
+                loc: `${domain}products/${handleSlugify(item.name)}-${item._id}.html`,
+                lastmod: item.updated_at,
+                changefreq: 'daily',
+                images: [{ loc: { href: item.thumb }, title: item.name }],
+            };
+        });
+
+        return getServerSideSitemap([...post]);
+    } catch (error) {
+        return new Response(null, { status: 500, statusText: 'Internal Server Error' });
+    }
 }
