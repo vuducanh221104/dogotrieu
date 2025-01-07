@@ -42,7 +42,7 @@ function Login() {
                 <div className={cx('wrapper-content')}>
                     <div className={cx('form-wrapper')}>
                         {/* Don't hide , delete only div  */}
-                        <div className={cx('modal-overlay', showMenu && 'active')}>Chức Năng Này Chưa Hoàn Thiện</div>
+                        {/* <div className={cx('modal-overlay', showMenu && 'active')}>Chức Năng Này Chưa Hoàn Thiện</div> */}
                         <div className={cx('login-panel', showRegister && 'active-login')}>
                             <header className={cx('popper-header')}>
                                 <h2 className={cx('popper-title')}>Login to my account</h2>
@@ -62,7 +62,10 @@ function Login() {
                                     <span className={cx('social-title')}>Sign in with Facebook</span>
                                     <FacebookLoginIcon className={cx('social-icon', 'facebook')} />
                                 </a>
-                                <a className={cx('social-link', 'google')}>
+                                <a
+                                    href="http://localhost:4000/api/v1/auth/google"
+                                    className={cx('social-link', 'google')}
+                                >
                                     <span className={cx('social-title', 'goole')}>Sign in with Google</span>
                                     <GoogleLoginIcon className={cx('social-icon', 'google')} />
                                 </a>

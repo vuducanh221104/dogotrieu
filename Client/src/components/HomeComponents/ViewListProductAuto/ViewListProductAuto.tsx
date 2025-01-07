@@ -1,7 +1,7 @@
 'use client';
 import styles from './ViewListProductAuto.module.scss';
 import classNames from 'classnames/bind';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Container } from 'react-bootstrap';
 import { ChervonLeft, ChervonRight } from '@/components/Icons';
@@ -28,23 +28,23 @@ interface IProps {
 
 function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
     const { width: windowWidth } = useWindowSize();
-    const [productRef, { height: productHeight }] = useMeasure();
     const hasCategoryOrMaterial = query.includes('category_id') || query.includes('material_id');
     const { data } = hasCategoryOrMaterial ? featuredProductGet(query) : featuredProductGetById(query);
     const [currentTransform, setCurrentTransform] = useState<number>(0);
 
+    const [maxHeight, setMaxHeight] = useState<number>(0);
+    const productRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+    const updateMaxHeight = () => {
+        const heights = productRefs.current.map((item) => item?.offsetHeight || 0);
+        setMaxHeight(Math.max(...heights));
+    };
+
     useEffect(() => {
-        if (windowWidth >= 1440) {
-            if (currentTransform === -140) setCurrentTransform(-100);
-            if (currentTransform === -200) setCurrentTransform(-100);
-        } else if (windowWidth >= 1280 && windowWidth < 1440) {
-            if (currentTransform === -200) setCurrentTransform(-140);
-            if (currentTransform === -100) setCurrentTransform(-140);
-        } else if (windowWidth < 1280) {
-            if (currentTransform === -140) setCurrentTransform(-200);
-            if (currentTransform === -100) setCurrentTransform(-200);
+        if (data) {
+            updateMaxHeight();
         }
-    }, [windowWidth]);
+    }, [data, windowWidth]);
 
     const handleNavigation = (value: string) => {
         if (windowWidth < 1280 && value === 'next' && currentTransform !== -200) {
@@ -98,7 +98,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                 <p>Loading...</p>
                             ) : windowWidth >= 1000 ? (
                                 <>
-                                    <div className={cx('flickity-viewport')} style={{ height: `${productHeight}px` }}>
+                                    <div className={cx('flickity-viewport')} style={{ height: `${maxHeight}px` }}>
                                         <div
                                             className={cx('flickity-slider')}
                                             style={{ transform: `translateX(${currentTransform}%)` }}
@@ -106,7 +106,7 @@ function ViewListProductAuto({ query, isLoading, title, nextBtnLink }: IProps) {
                                             {data?.map((item: any, index: any) => (
                                                 <div
                                                     key={item?._id}
-                                                    ref={index === 0 ? productRef : null}
+                                                    ref={(refItem) => (productRefs.current[index] = refItem)}
                                                     className={cx('product-item')}
                                                     style={
                                                         windowWidth >= 1440
