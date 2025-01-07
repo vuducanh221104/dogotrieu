@@ -42,7 +42,7 @@ function Login() {
                 <div className={cx('wrapper-content')}>
                     <div className={cx('form-wrapper')}>
                         {/* Don't hide , delete only div  */}
-                        {/* <div className={cx('modal-overlay', showMenu && 'active')}>Chức Năng Này Chưa Hoàn Thiện</div> */}
+                        <div className={cx('modal-overlay', showMenu && 'active')}>Chức Năng Này Chưa Hoàn Thiện</div>
                         <div className={cx('login-panel', showRegister && 'active-login')}>
                             <header className={cx('popper-header')}>
                                 <h2 className={cx('popper-title')}>Login to my account</h2>
