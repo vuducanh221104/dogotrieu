@@ -10,7 +10,9 @@ const db = require('./Config/db');
 const routes = require('./routes');
 const methodOverride = require('method-override');
 const http = require('http');
+const doLoginWithGoogle = require('./oAuth2/google/GoogleController');
 const server = http.createServer(app);
+
 // CORS
 
 app.use(
@@ -26,6 +28,9 @@ app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
+
+//PASSPORTJS
+doLoginWithGoogle();
 
 // Call API
 db.connect();
