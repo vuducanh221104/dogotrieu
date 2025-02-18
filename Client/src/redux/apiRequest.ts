@@ -1,24 +1,29 @@
-// import httpRequest from '~/utils/httpRequest';
-// import { loginFailed, loginStart, loginSuccess } from './authSlice';
+import httpRequest from '@/utils/httpRequest';
+import { loginFailed, loginStart, loginSuccess, logOutFailed, logOutStart, logOutSuccess } from './authSlice';
 
-// export const loginUser = async (user:any, dispatch:any, navigate:any) => {
-//     dispatch(loginStart());
-//     try {
-//         const res = await httpRequest.post('api/user/loginUser', user);
-//         dispatch(loginSuccess(res.data));
-//         navigate('/');
-//         return res.data
-//     } catch (error) {
-//         dispatch(loginFailed());
-//     }
-// };
+export const login = async (user: any, tokenCaptcha: string, dispatch: any, router: any) => {
+    dispatch(loginStart());
+    try {
+        const { usernameOrEmail, password } = user;
+        const res = await httpRequest.post<any>(`api/v1/auth/login`, {
+            usernameOrEmail,
+            password,
+            tokenCaptcha: tokenCaptcha,
+        });
+        router.navigate('/');
+        return res.data;
+    } catch (error) {
+        dispatch(loginFailed());
+    }
+};
 
-// export const logoutUser = async () => {
-//     try {
-//         // to delete coookies inside headers
-//         await httpRequest.post('api/user/logoutUser');
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
-export const login = () => {};
+export const logout = async (dispatch: any, router: any) => {
+    dispatch(logOutStart());
+    try {
+        await httpRequest.post('api/v1/auth/logout');
+        dispatch(logOutSuccess());
+        router.navigate('/');
+    } catch (err) {
+        dispatch(logOutFailed());
+    }
+};

@@ -1,0 +1,70 @@
+.auth-header {
+    margin-bottom: 30px;
+    display: block;
+}
+
+.auth-description {
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 0;
+    &.sub-title {
+        color: rgba(0, 0, 0, 0.65) !important;
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    &.header {
+        font-weight: 600;
+        font-size: 2.5rem;
+        margin-bottom: 5px;
+        line-height: 1.3;
+    }
+    &.header-2 {
+        font-weight: 600;
+        font-size: 2rem;
+    }
+    &.middle {
+        font-weight: 500;
+        font-size: 1.7rem;
+    }
+}
+.auth-description-verify-email {
+    font-size: 1.5rem;
+    &:nth-child(3) {
+        margin-top: 30px;
+        text-decoration: underline;
+    }
+}
+
+.icon-email-verify {
+    width: 80px;
+    height: 80px;
+    color: red;
+    margin-bottom: 10px;
+}
+.btn-submit {
+    font-size: 1.6rem;
+    display: block;
+    margin-top: 20px !important;
+    width: 100%;
+    background: #d9c37a;
+    color: #ffffff;
+    &.verify-clicked {
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
+    &:hover {
+        background-color: rgba(217, 195, 122, 0.85);
+    }
+}
+.auth-wrapper {
+    display: block;
+    max-width: 350px;
+    margin: 60px auto;
+    text-align: center;
+}
+@media screen and (min-width: 641px) {
+    .auth-wrapper {
+        margin-top: 110px;
+        margin-bottom: 150px;
+    }
+}

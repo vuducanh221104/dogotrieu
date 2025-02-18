@@ -1,4 +1,5 @@
 .auth-wrapper {
+    position: relative;
     display: block;
     max-width: 350px;
     margin: 60px auto;
@@ -14,14 +15,22 @@
     font-weight: 400;
     margin-bottom: 0;
 }
+.auth-description-verify-email {
+    font-size: 1.5rem;
+    &:nth-child(3) {
+        margin-top: 30px;
+        text-decoration: underline;
+    }
+}
 .form-search-wrapper {
     max-width: 410px;
     margin: 40px auto 25px auto;
 }
 .form-search-inner {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
+    // display: flex;
+    // align-items: center;
+    min-width: 100%;
+    margin-bottom: 14px !important;
 }
 .form-input {
     margin-bottom: 0;
@@ -29,7 +38,7 @@
     width: 100%;
 }
 .form-field {
-    display: block;
+    display: flex;
     padding: 12px 12px;
     border-radius: 2px;
     border: 1px solid var(--form-border-color);
@@ -48,10 +57,18 @@
 
 .btn-submit {
     display: block;
-    margin-top: 20px;
+    margin-top: 20px !important;
+    // margin: 0 !important;
     width: 100%;
     background: #030303;
     color: #ffffff;
+    &.verify-clicked {
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
+    &:hover {
+        background-color: rgba(3, 3, 3, 0.8);
+    }
 }
 // Footer
 .auth-footer {
@@ -113,6 +130,28 @@
         padding-right: 10px;
         position: relative;
     }
+}
+
+.modal-loading {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.spin-icon {
+    position: absolute !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    top: 40% !important;
+    left: 46% !important;
+}
+.error-message {
+    margin-top: 10px;
+    color: #f1416c;
+    font-weight: 600;
+    font-size: 1.4rem;
 }
 
 @media screen and (min-width: 641px) {

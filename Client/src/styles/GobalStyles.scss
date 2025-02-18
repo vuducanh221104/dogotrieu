@@ -273,6 +273,32 @@ button {
     padding-bottom: 125% !important;
 }
 
+.ant-form-item-explain-error {
+    // padding: 10px 10px 0 0x;
+    text-align: left !important;
+    font-size: 1.3rem;
+    margin: 0 20px 0 0 !important;
+}
+.ant-form-item.css-dev-only-do-not-override-ni1kz0 {
+    margin-bottom: 0 !important;
+    font-size: 1.4rem !important;
+    font-family: inherit !important;
+    line-height: none !important;
+    min-width: 100% !important;
+    & input {
+        width: 100%;
+    }
+
+    & input::placeholder {
+        color: #000;
+        opacity: 0.5;
+        font-size: 1.4rem !important;
+    }
+    & svg {
+        opacity: 0.9 !important;
+    }
+}
+
 @media screen and (min-width: 641px) {
     .h1 {
         font-size: 2.4rem;

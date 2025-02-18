@@ -1,15 +1,54 @@
 'use client';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { ChervonMenu, FacebookLoginIcon, GoogleLoginIcon, UserIcon, XmarkIcon } from '@/components/Icons';
+import { ChervonMenu, GoogleLoginIcon, UserIcon, XmarkIcon } from '@/components/Icons';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Form, Input, Spin } from 'antd';
+import Turnstile from 'react-turnstile';
+import { archivo } from '@/assets/FontNext';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginFailed, loginStart, loginSuccess } from '@/redux/authSlice';
+import { authLogin } from '@/services/authServices';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { login, logout } from '@/redux/apiRequest';
+import { useRouter } from 'next-nprogress-bar';
+import config from '@/config';
 
 const cx = classNames.bind(styles);
+
 function Login() {
+    const router = useRouter();
+    const [form] = Form.useForm();
+    const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState<boolean>(false);
-    const [showRegister, setShowRegister] = useState<boolean>(false);
+    const [tokenCaptcha, setToken] = useState(null);
+    const [isFailedLogin, setIsFailedLogin] = useState(false);
+    const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+    const handleSubmit = async () => {
+        dispatch(loginStart());
+        try {
+            const values = await form.validateFields();
+            const user = await authLogin(values, tokenCaptcha);
+            if (!user) {
+                dispatch(loginFailed());
+                setIsFailedLogin(true);
+
+                return;
+            }
+            setIsFailedLogin(false);
+            dispatch(loginSuccess(user));
+            form.resetFields();
+        } catch (error) {
+            setIsFailedLogin(false);
+            dispatch(loginFailed());
+        }
+    };
+    const logoutSubmit = () => {
+        router.replace('/auth/logout');
+    };
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -37,89 +76,119 @@ function Login() {
                     className={cx('icon-xmark', showMenu && 'onhide')}
                 />
             </div>
-            <div className={cx('wrapper-tippy', showMenu && 'active')} ref={wrapperRef}>
+
+            <div className={cx('wrapper-tippy', showMenu && 'active', currentUser && 'is-login')} ref={wrapperRef}>
+                {isFetching && (
+                    <div className={cx('wrapper-loading')}>
+                        <Spin size="large" className={cx('spin-icon')} />
+                        <div className={cx('modal-loading')}></div>
+                    </div>
+                )}
                 <ChervonMenu className={cx('icon-chervon-menu')} />
                 <div className={cx('wrapper-content')}>
                     <div className={cx('form-wrapper')}>
-                        {/* Don't hide , delete only div  */}
-                        <div className={cx('modal-overlay', showMenu && 'active')}>Chức Năng Này Chưa Hoàn Thiện</div>
-                        <div className={cx('login-panel', showRegister && 'active-login')}>
-                            <header className={cx('popper-header')}>
-                                <h2 className={cx('popper-title')}>Login to my account</h2>
-                                <p className={cx('popper-desc')}>Enter your e-mail and password:</p>
-                            </header>
-                            <div className={cx('popper-input')}>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="Email" />
-                                </div>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="Password" />
-                                </div>
-                            </div>
-                            <button className={cx('btn-submit')}>Login</button>
-                            <div className={cx('popper-social')}>
-                                <a className={cx('social-link', 'facebook')}>
-                                    <span className={cx('social-title')}>Sign in with Facebook</span>
-                                    <FacebookLoginIcon className={cx('social-icon', 'facebook')} />
-                                </a>
-                                <a
-                                    href="http://localhost:4000/api/v1/auth/google"
-                                    className={cx('social-link', 'google')}
-                                >
-                                    <span className={cx('social-title', 'goole')}>Sign in with Google</span>
-                                    <GoogleLoginIcon className={cx('social-icon', 'google')} />
-                                </a>
-                            </div>
-                            <div className={cx('popper-auth')}>
-                                <p>
-                                    New customer?
-                                    <button onClick={() => setShowRegister(!showRegister)}>Create your account</button>
-                                </p>
+                        {currentUser ? (
+                            <ul>
+                                <li>Hello, {currentUser.user_name}</li>
+                                <li>
+                                    <Link href="/auth/info">Thông Tin</Link>
+                                </li>
+                                <li>
+                                    <Link href="/auth/info">Xác Nhận Email</Link>
+                                </li>
+                                <li onClick={() => logoutSubmit()}>
+                                    <Link href="/auth/logout">Đăng Xuất</Link>
+                                </li>
+                            </ul>
+                        ) : (
+                            <div className={cx('login-panel')}>
+                                <header className={cx('popper-header')}>
+                                    <h2 className={cx('popper-title')}>Đăng Nhập</h2>
+                                    <p className={cx('popper-desc')}>Nhập E-mail/Tên Người Dùng và Mật Khẩu</p>
+                                </header>
+                                <div className={cx('popper-input')}>
+                                    <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                                        <div className={cx('form-search-wrapper')}>
+                                            <div className={cx('input-item')}>
+                                                <Form.Item
+                                                    name="usernameOrEmail"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: 'Vui lòng nhập tên người dùng hoặc email!',
+                                                        },
+                                                    ]}
+                                                >
+                                                    <Input
+                                                        type="text"
+                                                        className={`${archivo.className}  ${cx('input-form')}`}
+                                                        placeholder={'Tên Người Dùng hoặc Email'}
+                                                    />
+                                                </Form.Item>
+                                            </div>
+                                            <div className={cx('input-item')}>
+                                                <Form.Item
+                                                    name="password"
+                                                    rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+                                                >
+                                                    <Input.Password
+                                                        iconRender={(visible) =>
+                                                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                                                        }
+                                                        type="password"
+                                                        className={`${archivo.className}  ${cx('input-form')}`}
+                                                        placeholder={'Mật Khẩu'}
+                                                    />
+                                                </Form.Item>
+                                            </div>
+                                        </div>
 
-                                <p>
-                                    Lost password?
-                                    <a>Recover password</a>
-                                </p>
-                            </div>
-                        </div>
+                                        <Turnstile
+                                            sitekey={`${process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}`}
+                                            size={'flexible'}
+                                            theme={'light'}
+                                            onVerify={(token: any) => setToken(token)}
+                                        />
 
-                        <div className={cx('register-panel', showRegister && 'active-register')}>
-                            <header className={cx('popper-header')}>
-                                <h2 className={cx('popper-title')}>Create my account</h2>
-                                <p className={cx('popper-desc')}>Please fill in the information below:</p>
-                            </header>
-                            <div className={cx('popper-input')}>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="First Name" />
+                                        <Form.Item>
+                                            <button
+                                                className={`${archivo.className}  ${cx('btn-submit')} button`}
+                                                id="btn-submit"
+                                                type="submit"
+                                            >
+                                                Đăng Nhập
+                                            </button>
+                                        </Form.Item>
+                                        {isFailedLogin && (
+                                            <p className={cx('error-message')}>Sai Mật Khẩu Hoặc Tài Khoản !!</p>
+                                        )}
+                                    </Form>
                                 </div>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="Last Name" />
+                                <div className={cx('popper-social')}>
+                                    <a
+                                        href="http://localhost:4000/api/v1/auth/google"
+                                        className={cx('social-link', 'google')}
+                                    >
+                                        <span className={cx('social-title', 'goole')}>Sign in with Google</span>
+                                        <GoogleLoginIcon className={cx('social-icon', 'google')} />
+                                    </a>
                                 </div>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="Email" />
-                                </div>
-                                <div className={cx('input-item')}>
-                                    <input className={cx('input-form')} placeholder="Password" />
+                                <div className={cx('popper-auth')}>
+                                    <div className={`${cx('auth-footer')} link`}>
+                                        <p>Người Mới?</p>
+                                        <button>
+                                            <Link href={config.routes.register}>Tạo Tài Khoản</Link>
+                                        </button>
+                                    </div>
+                                    <div className={`${cx('auth-footer')} link`} style={{ margin: '0' }}>
+                                        <p>Bạn Quên Mật Khẩu?</p>
+                                        <button>
+                                            <Link href={config.routes.recover}>Lấy Lại Mật Khẩu</Link>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <button className={cx('btn-submit')}>Create my account</button>
-                            <div className={cx('popper-social')}>
-                                <a className={cx('social-link', 'facebook')}>
-                                    <span className={cx('social-title')}>Sign in with Facebook</span>
-                                    <FacebookLoginIcon className={cx('social-icon', 'facebook')} />
-                                </a>
-                                <a className={cx('social-link', 'google')}>
-                                    <span className={cx('social-title', 'goole')}>Sign in with Google</span>
-                                    <GoogleLoginIcon className={cx('social-icon', 'google')} />
-                                </a>
-                            </div>
-                            <div className={cx('popper-auth')}>
-                                <p>
-                                    Already have an account?
-                                    <button onClick={() => setShowRegister(!showRegister)}>Login</button>
-                                </p>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
