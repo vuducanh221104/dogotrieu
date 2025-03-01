@@ -4,6 +4,9 @@ const routes = {
         login: '/auth/login',
         recover: '/auth/recover',
         register: '/auth/register',
+        verifyEmail: '/auth/verifyEmail',
+        info: '/auth/info',
+        logout: '/auth/logout',
         // Routes Main
         search: '/search',
         cart: '/cart',

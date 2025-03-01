@@ -1,101 +1,64 @@
 'use client';
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { Form, Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from '@/styles/Auth.module.scss';
-import { Form, Input } from 'antd';
-import Link from 'next/link';
-import { authResetPassword, authVerifyTokenResetPassword } from '@/services/authServices';
-import Loading from '@/components/Loading';
-import AuthMessageNotification from '@/components/AuthMessageNotification';
-import NotFound from '@/components/NotFound';
-import routes from '@/config/routes';
-import AuthSpinLoading from '@/components/AuthSpinLoading';
 import { archivo } from '@/assets/FontNext';
 import config from '@/config';
+import Link from 'next/link';
+import { authChangePassword } from '@/services/authServices';
+import AuthMessageNotification from '@/components/AuthMessageNotification';
+import { useSelector } from 'react-redux';
+import routes from '@/config/routes';
+import AuthSpinLoading from '@/components/AuthSpinLoading';
+import useMultiCooldown from '@/utils/hookMultiCooldown';
 
 const cx = classNames.bind(styles);
 
-function ResetPasswordContent() {
-    const searchParams = useSearchParams();
-    const token: any = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
+function PageChangePasswordInfo() {
+    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [passwordCurrentFailed, setPasswordCurrentFailed] = useState(null);
     const [form] = Form.useForm();
-
-    useEffect(() => {
-        if (!token) {
-            setLoading(false);
-            setTokenValid(false);
-            return;
-        }
-
-        const verifyToken = async () => {
-            try {
-                const response = await authVerifyTokenResetPassword(token);
-                if (response.status === 200) {
-                    setTokenValid(true);
-                } else {
-                    setTokenValid(false);
-                }
-            } catch (error) {
-                setTokenValid(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        verifyToken();
-    }, [token]);
+    const { currentUser } = useSelector((state: any) => state.auth.login);
+    const { cooldown: infoChangePasswordCoolDown, startCooldown: startInfoChangePasswordCoolDown } =
+        useMultiCooldown('infoChangePasswordCoolDown');
 
     const handleSubmit = async () => {
+        setPasswordCurrentFailed(null);
+        setLoading(true);
+
         try {
-            setLoading(true);
             const values = await form.validateFields();
-            const response = await authResetPassword(token, values.password);
+            const response = await authChangePassword(currentUser.email, values.oldPassword, values.password);
 
             if (response.status === 200) {
                 form.resetFields();
                 setSuccess(true);
+                setLoading(false);
+                startInfoChangePasswordCoolDown();
             }
-        } catch (error) {
-            console.log('An error occurred.');
-        } finally {
+        } catch (error: any) {
+            if (error.response.status === 400 || 401) {
+                setPasswordCurrentFailed(error.response.status);
+                setLoading(false);
+                return;
+            }
             setLoading(false);
         }
     };
-
-    if (loading) {
-        return <Loading height="300px" />;
-    }
-    if (!token) {
-        return <NotFound />;
-    }
-
-    if (!tokenValid) {
-        return (
-            <AuthMessageNotification
-                title="Liên kết này không hợp lệ hoặc đã hết hạn."
-                subTitle="  Nếu bạn cần khôi phục mật khẩu, vui lòng nhấn vào nút bên dưới."
-                textButton="Quên Mật Khẩu ?"
-                iconHeader="warning"
-                btnLinkTo={routes.user.recover}
-            />
-        );
-    }
 
     if (success) {
         return (
             <AuthMessageNotification
                 title="  Mật khẩu đã được thay đổi thành công."
-                subTitle="Quay Về Đăng Nhập "
-                textButton="Đăng Nhập"
+                subTitle="Quay Về Trang Thông Tin"
+                textButton="Tiếp Tục"
+                btnLinkTo={routes.user.info}
                 iconHeader="success"
             />
         );
     }
-
     return (
         <div className={cx('auth-wrapper')}>
             <AuthSpinLoading loading={loading} />
@@ -106,6 +69,18 @@ function ResetPasswordContent() {
                 </header>
                 <Form form={form} layout="vertical" onFinish={handleSubmit}>
                     <div className={cx('form-search-wrapper')}>
+                        <div className={cx('form-search-inner')}>
+                            <Form.Item
+                                name="oldPassword"
+                                rules={[{ required: true, message: 'Vui lòng nhập mật khẩu cũ!' }]}
+                            >
+                                <Input.Password
+                                    type="password"
+                                    className={`${archivo.className} ${cx('form-field')}`}
+                                    placeholder={'Mật khẩu cũ'}
+                                />
+                            </Form.Item>
+                        </div>
                         <div className={cx('form-search-inner')}>
                             <Form.Item
                                 name="password"
@@ -144,16 +119,28 @@ function ResetPasswordContent() {
                             </Form.Item>
                         </div>
                     </div>
+
                     <Form.Item>
-                        <button className={`${cx('btn-submit')} button`} type="submit">
-                            Tiếp Tục
+                        <button
+                            className={`${archivo.className} ${cx(
+                                'btn-submit',
+                                infoChangePasswordCoolDown > 0 && 'verify-clicked',
+                            )} button `}
+                            type="submit"
+                            disabled={infoChangePasswordCoolDown > 0}
+                        >
+                            {infoChangePasswordCoolDown > 0 ? `Cập Nhật (${infoChangePasswordCoolDown}s)` : 'Cập Nhật'}
                         </button>
                     </Form.Item>
                 </Form>
+                {passwordCurrentFailed === 400 && <p className={cx('error-message')}>Mật Khẩu Cũ Không Đúng !!</p>}
+                {passwordCurrentFailed === 401 && (
+                    <p className={cx('error-message')}>Mật Khẩu Cũ Và Mật Khẩu Mới Phải Khác Nhau !!</p>
+                )}
                 <div className={`${cx('auth-footer')} link`}>
                     <p></p>
                     <button>
-                        <Link href={config.routes.login}>Quay lại Đăng Nhập!</Link>
+                        <Link href={config.routes.info}>Quay lại Trang Thông Tin.</Link>
                     </button>
                 </div>
             </div>
@@ -161,12 +148,4 @@ function ResetPasswordContent() {
     );
 }
 
-function ResetPassword() {
-    return (
-        <Suspense fallback={<Loading height="300px" />}>
-            <ResetPasswordContent />
-        </Suspense>
-    );
-}
-
-export default ResetPassword;
+export default PageChangePasswordInfo;

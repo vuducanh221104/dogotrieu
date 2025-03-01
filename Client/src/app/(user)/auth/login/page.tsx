@@ -6,13 +6,15 @@ import { archivo } from '@/assets/FontNext';
 import config from '@/config';
 import { Form, Input, Spin } from 'antd';
 import { authLogin } from '@/services/authServices';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Turnstile from 'react-turnstile';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailed } from '@/redux/authSlice';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { GoogleLoginIcon } from '@/components/Icons';
+
 import { useRouter } from 'next-nprogress-bar';
+import AuthSpinLoading from '@/components/AuthSpinLoading';
 
 const cx = classNames.bind(styles);
 
@@ -21,42 +23,40 @@ function PageLogin() {
     const [form] = Form.useForm();
     const [tokenCaptcha, setToken] = useState(null);
     const [isFailedLogin, setIsFailedLogin] = useState(false);
+    const [isFailedToken, setFailedToken] = useState(false);
+
     const dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
 
-    useEffect(() => {
-        if (currentUser) {
-            router.replace('/');
-        }
-    }, [currentUser, router]);
-
     const handleSubmit = async () => {
+        setIsFailedLogin(false);
+        setFailedToken(false);
         dispatch(loginStart());
         try {
             const values = await form.validateFields();
             const user = await authLogin(values, tokenCaptcha);
-            if (!user) {
+
+            dispatch(loginSuccess(user));
+            setIsFailedLogin(false);
+            router.replace('/');
+        } catch (error: any) {
+            if (error.response.status === 404) {
                 dispatch(loginFailed());
                 setIsFailedLogin(true);
                 return;
             }
-            setIsFailedLogin(false);
-            dispatch(loginSuccess(user));
-            router.replace('/');
-        } catch (error) {
+            if (error.response.status === 400) {
+                dispatch(loginFailed());
+                setFailedToken(true);
+                return;
+            }
             setIsFailedLogin(false);
             dispatch(loginFailed());
         }
     };
-
     return (
         <div className={cx('auth-wrapper')}>
-            {isFetching && (
-                <div className={cx('wrapper-loading')}>
-                    <Spin size="large" className={cx('spin-icon')} />
-                    <div className={cx('modal-loading')}></div>
-                </div>
-            )}
+            <AuthSpinLoading loading={isFetching} />
 
             <div className="container">
                 <header className={cx('auth-header')}>
@@ -106,6 +106,9 @@ function PageLogin() {
                         </button>
                     </Form.Item>
                     {isFailedLogin && <p className={cx('error-message')}>Sai Mật Khẩu Hoặc Tài Khoản !!</p>}
+                    {isFailedToken && !isFailedLogin && (
+                        <p className={cx('error-message')}>Xảy ra lỗi hoặc sai Captcha !!</p>
+                    )}
                 </Form>
                 <div className={cx('popper-social')}>
                     <a className={cx('social-link', 'google')} aria-label="Đăng nhập với Google">

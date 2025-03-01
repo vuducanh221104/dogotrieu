@@ -14,12 +14,27 @@ export const authLogin = async (user: any, tokenCaptcha: string | null): Promise
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
+        throw err;
+        // return error;
         // console.error(err.response?.data);
     }
 };
 export const authLogout = async (): Promise<any> => {
     try {
         const res = await httpRequest.post<any>(`/api/v1/auth/logout`);
+        return res.data;
+    } catch (error: any) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+};
+
+export const authUpdatePhoneNumber = async (userId: string, phoneNumber: string): Promise<any> => {
+    try {
+        const res = await httpRequest.patch<any>(`api/v1/auth/updatePhoneNumber`, {
+            userId: userId,
+            phoneNumber: phoneNumber,
+        });
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
@@ -58,6 +73,7 @@ export const authRegister = async (user: any, tokenCaptcha: string | null): Prom
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
+        throw err;
         // console.error(err.response?.data);
     }
 };
@@ -69,6 +85,7 @@ export const authFotgotPassword = async (usernameOrEmail: string | null): Promis
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
+        throw err;
         // console.error(err.response?.data);
     }
 };
@@ -81,6 +98,21 @@ export const authResetPassword = async (token: string | null, newPassword: strin
         return res;
     } catch (error) {
         const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+};
+
+export const authChangePassword = async (email: string, currentPassword: string, newPassword: string): Promise<any> => {
+    try {
+        const res = await httpRequest.post<any>(`api/v1/auth/changePassword`, {
+            email: email,
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+        });
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        throw err;
         // console.error(err.response?.data);
     }
 };
@@ -99,6 +131,26 @@ export const authResendRegisterEmail = async (email: string | null): Promise<any
             email: email,
         });
         return res.data;
+    } catch (error) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);s
+    }
+};
+
+export const authVerifyResendEmail = async (token: string) => {
+    try {
+        const res = await httpRequest.get<any>(`api/v1/auth/verifyResendEmail?token=${token}`);
+        return res;
+    } catch (error) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+};
+
+export const authVerifyEmail = async (token: string) => {
+    try {
+        const res = await httpRequest.get<any>(`api/v1/auth/verifyEmail?token=${token}`);
+        return res;
     } catch (error) {
         const err = error as AxiosError;
         // console.error(err.response?.data);

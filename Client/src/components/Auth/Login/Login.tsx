@@ -11,37 +11,43 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginFailed, loginStart, loginSuccess } from '@/redux/authSlice';
 import { authLogin } from '@/services/authServices';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { login, logout } from '@/redux/apiRequest';
 import { useRouter } from 'next-nprogress-bar';
 import config from '@/config';
+import AuthSpinLoading from '@/components/AuthSpinLoading';
 
 const cx = classNames.bind(styles);
 
 function Login() {
     const router = useRouter();
     const [form] = Form.useForm();
-    const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState<boolean>(false);
     const [tokenCaptcha, setToken] = useState(null);
     const [isFailedLogin, setIsFailedLogin] = useState(false);
+    const [isFailedToken, setFailedToken] = useState(false);
+    const dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
-
     const handleSubmit = async () => {
+        setIsFailedLogin(false);
+        setFailedToken(false);
         dispatch(loginStart());
         try {
             const values = await form.validateFields();
             const user = await authLogin(values, tokenCaptcha);
-            if (!user) {
+            dispatch(loginSuccess(user));
+            setIsFailedLogin(false);
+            form.resetFields();
+        } catch (error: any) {
+            if (error.response.status === 404) {
                 dispatch(loginFailed());
                 setIsFailedLogin(true);
-
                 return;
             }
-            setIsFailedLogin(false);
-            dispatch(loginSuccess(user));
-            form.resetFields();
-        } catch (error) {
+            if (error.response.status === 400) {
+                dispatch(loginFailed());
+                setFailedToken(true);
+                return;
+            }
             setIsFailedLogin(false);
             dispatch(loginFailed());
         }
@@ -78,12 +84,8 @@ function Login() {
             </div>
 
             <div className={cx('wrapper-tippy', showMenu && 'active', currentUser && 'is-login')} ref={wrapperRef}>
-                {isFetching && (
-                    <div className={cx('wrapper-loading')}>
-                        <Spin size="large" className={cx('spin-icon')} />
-                        <div className={cx('modal-loading')}></div>
-                    </div>
-                )}
+                <AuthSpinLoading loading={isFetching} />
+
                 <ChervonMenu className={cx('icon-chervon-menu')} />
                 <div className={cx('wrapper-content')}>
                     <div className={cx('form-wrapper')}>
@@ -91,13 +93,15 @@ function Login() {
                             <ul>
                                 <li>Hello, {currentUser.user_name}</li>
                                 <li>
-                                    <Link href="/auth/info">Thông Tin</Link>
+                                    <Link href={config.routes.info}>Thông Tin</Link>
                                 </li>
-                                <li>
-                                    <Link href="/auth/info">Xác Nhận Email</Link>
-                                </li>
+                                {!currentUser.is_verified && (
+                                    <li>
+                                        <Link href={config.routes.verifyEmail}>Xác Nhận Email</Link>
+                                    </li>
+                                )}
                                 <li onClick={() => logoutSubmit()}>
-                                    <Link href="/auth/logout">Đăng Xuất</Link>
+                                    <Link href={config.routes.logout}>Đăng Xuất</Link>
                                 </li>
                             </ul>
                         ) : (
@@ -161,6 +165,9 @@ function Login() {
                                         </Form.Item>
                                         {isFailedLogin && (
                                             <p className={cx('error-message')}>Sai Mật Khẩu Hoặc Tài Khoản !!</p>
+                                        )}
+                                        {isFailedToken && !isFailedLogin && (
+                                            <p className={cx('error-message')}>Xảy ra lỗi hoặc sai Captcha !!</p>
                                         )}
                                     </Form>
                                 </div>

@@ -12,6 +12,7 @@ import { authCheckEmail, authCheckUsername, authRegister } from '@/services/auth
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useDebounce } from '@uidotdev/usehooks';
 import AuthMessageNotification from '@/components/AuthMessageNotification';
+import AuthSpinLoading from '@/components/AuthSpinLoading';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +25,7 @@ function PageLogin() {
     const [usernameError, setUsernameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [registerSuccess, setRegisterSuccess] = useState(false);
+    const [isFailedToken, setFailedToken] = useState(false);
 
     const debouncedUsername = useDebounce(username, 500);
     const debouncedEmail = useDebounce(email, 500);
@@ -85,6 +87,9 @@ function PageLogin() {
     };
 
     const handleSubmit = async () => {
+        setRegisterSuccess(false);
+        setFailedToken(false);
+
         try {
             await form.validateFields();
 
@@ -97,8 +102,12 @@ function PageLogin() {
             await authRegister(values, tokenCaptcha);
             setRegisterSuccess(true);
             setLoading(false);
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            if (error.response?.status === 400) {
+                setFailedToken(true);
+                setLoading(false);
+                return;
+            }
             setLoading(false);
         }
     };
@@ -114,12 +123,7 @@ function PageLogin() {
     }
     return (
         <div className={cx('auth-wrapper')}>
-            {loading && (
-                <div className={cx('wrapper-loading')}>
-                    <Spin size="large" className={cx('spin-icon')} />
-                    <div className={cx('modal-loading')}></div>
-                </div>
-            )}
+            <AuthSpinLoading loading={loading} />
 
             <div className="container">
                 <header className={cx('auth-header')}>
@@ -238,7 +242,7 @@ function PageLogin() {
                         </button>
                     </Form.Item>
                 </Form>
-
+                {isFailedToken && <p className={cx('error-message')}>Xảy ra lỗi hoặc sai Captcha !!</p>}
                 <div className={cx('popper-social')}>
                     <a className={cx('social-link', 'google')} aria-label="Đường Dẫn Tới Google">
                         <span className={cx('social-title', 'google')}>Đăng nhập với Google</span>

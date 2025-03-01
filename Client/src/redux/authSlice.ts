@@ -38,10 +38,29 @@ const authSlice = createSlice({
             state.login.isFetching = false;
             state.login.error = true;
         },
+        updatePhoneNumber: (state: any, action) => {
+            if (state.login.currentUser) {
+                state.login.currentUser.phone_number = action.payload;
+            }
+        },
+        updateIsVerified: (state: any, action) => {
+            if (state.login.currentUser) {
+                state.login.currentUser.is_verified = action.payload;
+            }
+        },
     },
 });
 
-export const { changeUser, loginStart, loginFailed, loginSuccess, logOutStart, logOutSuccess, logOutFailed } =
-    authSlice.actions;
+export const {
+    changeUser,
+    loginStart,
+    loginSuccess,
+    loginFailed,
+    logOutStart,
+    logOutSuccess,
+    logOutFailed,
+    updatePhoneNumber,
+    updateIsVerified,
+} = authSlice.actions;
 
 export default authSlice.reducer;

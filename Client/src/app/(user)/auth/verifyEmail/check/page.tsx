@@ -1,0 +1,93 @@
+'use client';
+import { Suspense } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import classNames from 'classnames/bind';
+import styles from '@/styles/Auth.module.scss';
+
+import { authVerifyResendEmail } from '@/services/authServices';
+import Loading from '@/components/Loading';
+import AuthMessageNotification from '@/components/AuthMessageNotification';
+import routes from '@/config/routes';
+import NotFound from '@/components/NotFound';
+import { useRouter } from 'next-nprogress-bar';
+import { useDispatch } from 'react-redux';
+import { updateIsVerified } from '@/redux/authSlice';
+
+const cx = classNames.bind(styles);
+
+function VerifyEmailContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token');
+    const [tokenValid, setTokenValid] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [success, setSuccess] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!token) {
+            setLoading(false);
+            return;
+        }
+
+        const verifyToken = async () => {
+            try {
+                const response = await authVerifyResendEmail(token);
+                if (response.status === 200) {
+                    setTokenValid(true);
+                    setSuccess(true);
+                    dispatch(updateIsVerified(true)); // Cập nhật trạng thái is_verified
+                } else {
+                    setTokenValid(false);
+                }
+            } catch (error) {
+                setTokenValid(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        verifyToken();
+    }, [token, dispatch]);
+
+    if (loading) {
+        return <Loading height="300px" />;
+    }
+
+    if (!token) {
+        return <NotFound />;
+    }
+
+    if (success) {
+        return (
+            <AuthMessageNotification
+                title="Xác thực Email thành công"
+                subTitle="Quay Về Trang Chủ"
+                textButton="Trang Chủ"
+                iconHeader="success"
+                btnLinkTo={routes.user.login}
+            />
+        );
+    }
+
+    return (
+        <AuthMessageNotification
+            title="Liên kết này không hợp lệ hoặc đã hết hạn."
+            subTitle="Nếu bạn muốn xác minh Email , Vui lòng bấm vào nút bên dưới "
+            textButton="Xác Minh Email"
+            iconHeader="warning"
+            btnLinkTo={routes.user.verifyEmail}
+        />
+    );
+}
+
+function PageVerifyEmailCheck() {
+    return (
+        <Suspense fallback={<Loading height="300px" />}>
+            <VerifyEmailContent />
+        </Suspense>
+    );
+}
+
+export default PageVerifyEmailCheck;

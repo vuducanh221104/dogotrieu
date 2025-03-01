@@ -1,45 +1,52 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-    resendCooldown: 0,
+const now = Math.floor(Date.now() / 1000);
+
+interface VerifyEmailState {
+    recoverCooldown: number;
+    recoverCooldownExpiry: number;
+    infoCooldown: number;
+    infoCooldownExpiry: number;
+    resendCooldown: number;
+    resendCooldownExpiry: number;
+    infoChangePasswordCooldown: number;
+    infoChangePasswordCooldownExpiry: number;
+}
+
+const initialState: VerifyEmailState = {
     recoverCooldown: 0,
+    recoverCooldownExpiry: now,
+    infoCooldown: 0,
+    infoCooldownExpiry: now,
+    resendCooldown: 0,
+    resendCooldownExpiry: now,
+    infoChangePasswordCooldown: 0,
+    infoChangePasswordCooldownExpiry: now,
 };
 
 const verifyEmailSlice = createSlice({
     name: 'verifyEmail',
     initialState,
     reducers: {
-        setResendCooldown: (state, action) => {
-            state.resendCooldown = action.payload;
+        setCooldown: (state: any, action: PayloadAction<{ key: string; value: number }>) => {
+            const now = Math.floor(Date.now() / 1000);
+            state[action.payload.key] = action.payload.value;
+            state[`${action.payload.key}Expiry`] = now + action.payload.value;
+            localStorage.setItem(`${action.payload.key}Expiry`, (now + action.payload.value).toString());
         },
-        decrementResendCooldown: (state) => {
-            if (state.resendCooldown > 0) {
-                state.resendCooldown -= 1;
+        decrementCooldown: (state: any, action: PayloadAction<string>) => {
+            if (state[action.payload] > 0) {
+                state[action.payload] -= 1;
             }
         },
-        resetResendCooldown: (state) => {
-            state.resendCooldown = 0;
-        },
-        setRecoverCooldown: (state, action) => {
-            state.recoverCooldown = action.payload;
-        },
-        decrementRecoverCooldown: (state) => {
-            if (state.recoverCooldown > 0) {
-                state.recoverCooldown -= 1;
-            }
-        },
-        resetRecoverCooldown: (state) => {
-            state.recoverCooldown = 0;
+        resetCooldown: (state: any, action: PayloadAction<string>) => {
+            state[action.payload] = 0;
+            state[`${action.payload}Expiry`] = 0;
+            localStorage.removeItem(`${action.payload}Expiry`);
         },
     },
 });
 
-export const {
-    setResendCooldown,
-    decrementResendCooldown,
-    resetResendCooldown,
-    setRecoverCooldown,
-    decrementRecoverCooldown,
-    resetRecoverCooldown,
-} = verifyEmailSlice.actions;
+export const { setCooldown, decrementCooldown, resetCooldown } = verifyEmailSlice.actions;
+
 export default verifyEmailSlice.reducer;

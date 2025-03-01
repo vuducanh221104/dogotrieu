@@ -18,9 +18,11 @@ function AuthMessageNotification({ title, message, subTitle, textButton, iconHea
                     <p className={`${archivo.className} ${cx('auth-description', 'header-2')}`}>{message}</p>
                     <p className={`${archivo.className} ${cx('auth-description', 'middle')}`}></p>
                     <p className={`${archivo.className} ${cx('auth-description', 'sub-title')}`}>{subTitle}</p>
-                    <button className={`${archivo.className}  ${cx('btn-submit')} button`} id="btn-submit">
-                        <Link href={btnLinkTo || routes.user.login}>{textButton}</Link>
-                    </button>
+                    <Link href={btnLinkTo || routes.user.login}>
+                        <button className={`${archivo.className}  ${cx('btn-submit')} button`} id="btn-submit">
+                            {textButton}
+                        </button>
+                    </Link>
                 </header>
             </div>
         </div>

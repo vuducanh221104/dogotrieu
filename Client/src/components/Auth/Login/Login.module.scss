@@ -7,6 +7,9 @@
         font-size: 1.5rem;
         padding: 0 10px 8px 10px;
         cursor: pointer;
+        &:first-child {
+            margin-bottom: 5px;
+        }
         &:hover {
             color: var(--border-color);
         }
