@@ -10,6 +10,7 @@ router.post('/addNewUser', AuthController.addUser);
 router.post('/login', AuthController.loginUser);
 router.post('/logout', AuthController.logoutUser);
 router.get('/verifyEmail', AuthController.verifyEmail);
+router.get('/verifyResendEmail', AuthController.verifyResendEmail);
 router.post('/resendVerifyEmail', AuthController.resendVerifyRegistrationEmail);
 //Forgot Password
 router.post('/forgotPassword', AuthController.forgotPassword);
@@ -23,7 +24,8 @@ router.get('/verifyNewEmail', AuthController.verifyChangeEmail);
 router.post('/resendVerifyChangeEmail', AuthController.resendVerifyChangeEmail);
 
 //Change Password
-router.post('/changePassword', jwtMiddleware.verifyToken, AuthController.changePassword);
+// router.post('/changePassword', jwtMiddleware.verifyToken, AuthController.changePassword);
+router.post('/changePassword', AuthController.changePassword);
 
 //QUERY CHECK
 router.get('/checkUsername', AuthController.checkUsername);
@@ -31,5 +33,8 @@ router.get('/checkEmail', AuthController.checkEmail);
 
 //Token
 router.post('/refreshToken', AuthController.requestRefreshToken);
+
+//Update
+router.patch('/updatePhoneNumber', AuthController.updatePhoneNumber);
 
 module.exports = router;
