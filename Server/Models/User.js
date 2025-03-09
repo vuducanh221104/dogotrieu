@@ -14,9 +14,10 @@ const TokenSchema = new Schema(
 
 const UserSchema = new Schema(
     {
+        id_auth_provider: { type: String, required: false },
         user_name: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        password: { type: String, required: false },
         full_name: { type: String, required: false },
         type: { type: String, required: true, enum: ['WEBSITE', 'GOOGLE'], default: 'WEBSITE' },
         role: { type: Number, required: true, enum: [0, 1, 2], default: 0 }, // Role (0) User , (1) Manager (2) Admin

@@ -3,8 +3,11 @@ const router = express.Router();
 const AuthController = require('../Controllers/AuthController');
 const jwtMiddleware = require('../middlewares/JwtMiddleware');
 
-router.get('/google/redirect', AuthController.loginRedirect);
-router.get('/google', AuthController.loginGoogle);
+// Google OAuth routes
+// router.get('/google', AuthController.loginGoogle);
+// router.get('/google/redirect', AuthController.loginRedirect);
+router.post('/google/verify', AuthController.verifyGoogleToken);
+
 //User
 router.post('/addNewUser', AuthController.addUser);
 router.post('/login', AuthController.loginUser);

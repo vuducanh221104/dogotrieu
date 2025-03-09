@@ -11,10 +11,10 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const apiToRedirectEmail = `${process.env.BASE_URL_CLIENT}/auth/verifyEmail/check?token=`; //cái này là Email đăng ký và xác nhận lại Email khi đã tạo tlk
-const apiToRedirectRegisterEmail = `${process.env.BASE_URL_CLIENT}/auth/verifyEmail/checkRegister?token=`;
-const apiToRedirectFotgotPassword = `${process.env.BASE_URL_CLIENT}/auth/resetPassword?token=`;
-const apiToRedirectNewEmail = `${process.env.BASE_URL_CLIENT}/auth/verifyEmail/check?token=`; //thay đổi thành new Email nhé
+const apiToRedirectEmail = `${process.env.BASE_URL_CLIENT_DOMAIN}/auth/verifyEmail/check?token=`; //cái này là Email đăng ký và xác nhận lại Email khi đã tạo tlk
+const apiToRedirectRegisterEmail = `${process.env.BASE_URL_CLIENT_DOMAIN}/auth/verifyEmail/checkRegister?token=`;
+const apiToRedirectFotgotPassword = `${process.env.BASE_URL_CLIENT_DOMAIN}/auth/resetPassword?token=`;
+const apiToRedirectNewEmail = `${process.env.BASE_URL_CLIENT_DOMAIN}/auth/verifyEmail/check?token=`; //thay đổi thành new Email nhé
 
 async function sendResendEmail(emailUser, verifyToken) {
     const mailOptions = {

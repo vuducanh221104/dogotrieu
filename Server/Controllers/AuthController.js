@@ -9,8 +9,10 @@ const {
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const axios = require('axios');
 const verifyCaptcha = require('../Services/handlerCaptcha');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_APP_ID);
+
 const generateToken = (expireTime) => {
     return {
         value: crypto.randomBytes(32).toString('hex'),
@@ -20,17 +22,16 @@ const generateToken = (expireTime) => {
 };
 
 class AuthController {
+    //[PATCH]
     async updatePhoneNumber(req, res) {
         try {
             const { userId, phoneNumber } = req.body;
 
-            // Tìm người dùng bằng userId
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            // Cập nhật số điện thoại
             user.phone_number = phoneNumber;
             await user.save();
 
@@ -63,8 +64,7 @@ class AuthController {
                 return res.status(404).json({ message: 'Wrong password' });
             }
 
-            // Tạo accessToken và refreshToken
-            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '15m' });
+            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '15s' });
 
             const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, { expiresIn: '7d' });
 
@@ -74,7 +74,6 @@ class AuthController {
                 path: '/',
                 sameSite: 'strict',
             });
-            // Cập nhật cookie isVerifyEmail
             res.cookie('isVerifyEmail', user.is_verified, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -97,7 +96,7 @@ class AuthController {
             const newAccessToken = jwt.sign(
                 { _id: decoded._id },
                 process.env.JWT_ACCESS_KEY,
-                { expiresIn: '15m' }, // Thời gian tồn tại của accessToken mới là 15 phút
+                { expiresIn: '30m' }, // Thời gian tồn tại của accessToken mới là 15 phút
             );
 
             const newRefreshToken = jwt.sign(
@@ -149,7 +148,6 @@ class AuthController {
                 tokenCaptcha,
             } = req.body;
 
-            // Kiểm tra các trường bắt buộc
             if (!user_name || !email || !password) {
                 return res.status(401).json({ message: 'Missing required fields' });
             }
@@ -162,7 +160,7 @@ class AuthController {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             // Tạo token xác minh email
-            const emailVerificationToken = generateToken(3000 * 1000);
+            const emailVerificationToken = generateToken(30 * 60 * 1000);
             // Tạo đối tượng user mới
             const newUser = new User({
                 user_name,
@@ -204,21 +202,26 @@ class AuthController {
             const user = await User.findOne({ 'email_verification_token.value': token });
             if (!user) {
                 return res.status(400).json({ status: 400, message: 'Invalid or expired token' });
-                // return res.redirect('/verification-result?status=invalid');
             }
 
             // Kiểm tra token hết hạn
             if (new Date(user.email_verification_token.expires_at) < new Date()) {
                 return res.status(400).json({ status: 400, message: 'Token has expired' });
-                // return res.redirect('/verification-result?status=expired');
             }
 
-            // Xác minh tài khoản
             user.is_verified = true;
-            user.email_verification_token = undefined; // Xóa token
+            user.email_verification_token = undefined;
             await user.save();
 
-            return res.status(200).json({ status: 200, message: 'Email Verify successfully!' });
+            if (user.type === 'GOOGLE') {
+                res.cookie('isVerifyEmail', user.is_verified, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    path: '/',
+                    sameSite: 'strict',
+                });
+            }
+            return res.status(200).json({ status: 200, message: 'Email Verify successfully!', type: user.type });
             // return res.redirect('/verification-result?status=success');
         } catch (error) {
             console.error('Error verifying email:', error);
@@ -235,13 +238,11 @@ class AuthController {
             const user = await User.findOne({ 'email_verification_token.value': token });
             if (!user) {
                 return res.status(400).json({ status: 400, message: 'Invalid or expired token' });
-                // return res.redirect('/verification-result?status=invalid');
             }
 
             // Kiểm tra token hết hạn
             if (new Date(user.email_verification_token.expires_at) < new Date()) {
                 return res.status(400).json({ status: 400, message: 'Token has expired' });
-                // return res.redirect('/verification-result?status=expired');
             }
 
             // Xác minh tài khoản
@@ -258,7 +259,6 @@ class AuthController {
             });
 
             return res.status(200).json({ status: 200, message: 'Email Verify successfully!' });
-            // return res.redirect('/verification-result?status=success');
         } catch (error) {
             console.error('Error verifying email:', error);
             return res.status(500).json({ status: 500, message: 'Internal server error', error });
@@ -277,14 +277,11 @@ class AuthController {
                 return res.status(400).json({ message: 'User with given email or username does not exist' });
             }
 
-            // Tạo token quên mật khẩu
-            const forgotPasswordToken = generateToken(3000 * 1000);
+            const forgotPasswordToken = generateToken(30 * 60 * 1000);
 
-            // Cập nhật token quên mật khẩu cho người dùng
             user.forgot_password_token = forgotPasswordToken;
             await user.save();
 
-            // Gửi email quên mật khẩu
             await sendForgotPasswordEmail(user.email, forgotPasswordToken.value);
 
             return res.status(200).json({ message: 'Password reset email sent successfully!' });
@@ -301,20 +298,17 @@ class AuthController {
 
             if (!user) {
                 return res.status(400).json({ status: 400, message: 'Invalid or expired token' });
-                // return res.redirect('/passwordResult?status=failed');
             }
 
             // Kiểm tra token hết hạn
             if (new Date(user.forgot_password_token.expires_at) < new Date()) {
                 return res.status(400).json({ status: 400, message: 'Token has expired' });
-                // return res.redirect('/passwordResult?status=expired');
             }
 
-            // user.forgot_password_token = undefined;
-            // await user.save();
+            user.forgot_password_token = undefined;
+            await user.save();
 
             return res.status(200).json({ status: 200, message: 'Password reset successfully!' });
-            // return res.redirect('/passwordResult?status=success');
         } catch (error) {
             console.error('Error in resetPassword:', error);
             return res.status(500).json({ status: 500, message: 'Internal server error', error });
@@ -325,22 +319,18 @@ class AuthController {
         try {
             const { token, newPassword } = req.body;
 
-            // Tìm người dùng bằng token
             const user = await User.findOne({ 'forgot_password_token.value': token });
 
             if (!user) {
                 return res.status(400).json({ message: 'Invalid or expired token' });
             }
 
-            // Kiểm tra token hết hạn
             if (new Date(user.forgot_password_token.expires_at) < new Date()) {
                 return res.status(400).json({ message: 'Token has expired' });
             }
 
-            // Hash mật khẩu mới
             const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-            // Cập nhật mật khẩu mới và xóa token
             user.password = hashedPassword;
             user.forgot_password_token = undefined;
             await user.save();
@@ -358,24 +348,19 @@ class AuthController {
             const { email } = req.body;
             const user = await User.findOne({ email });
 
-            // Kiểm tra người dùng với email đã tồn tại chưa
             if (!user) {
                 return res.status(400).json({ message: 'Người dùng với email này không tồn tại' });
             }
 
-            // Kiểm tra xem người dùng đã được xác minh hay chưa
             if (user.is_verified) {
                 return res.status(400).json({ message: 'Người dùng đã được xác minh' });
             }
 
-            // Tạo mã xác minh email mới
-            const emailVerificationToken = generateToken(3000 * 1000);
+            const emailVerificationToken = generateToken(30 * 60 * 1000);
 
-            // Cập nhật mã xác minh email cho người dùng
             user.email_verification_token = emailVerificationToken;
             await user.save();
 
-            // Gửi email xác minh mới
             await sendResendEmail(email, emailVerificationToken.value);
 
             return res.status(200).json({ message: 'Gửi lại email xác minh thành công!' });
@@ -393,15 +378,12 @@ class AuthController {
                 $or: [{ email: usernameOrEmail }, { user_name: usernameOrEmail }],
             });
 
-            // Kiểm tra người dùng với email hoặc tên người dùng đã tồn tại chưa
             if (!user) {
                 return res.status(400).json({ message: 'User with given email or username does not exist' });
             }
 
-            // Tạo token quên mật khẩu mới
-            const forgotPasswordToken = generateToken(30 * 1000);
+            const forgotPasswordToken = generateToken(30 * 60 * 1000);
 
-            // Cập nhật token quên mật khẩu cho người dùng
             user.forgot_password_token = forgotPasswordToken;
             await user.save();
 
@@ -418,21 +400,17 @@ class AuthController {
         try {
             const { email, newEmail } = req.body;
 
-            // Tìm người dùng bằng email
             const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({ message: 'User with given email does not exist' });
             }
 
-            // Tạo token xác minh email mới
-            const emailVerificationToken = generateToken(30 * 1000);
+            const emailVerificationToken = generateToken(30 * 60 * 1000);
 
             user.new_email = newEmail;
-            // Cập nhật token xác minh email mới cho người dùng
             user.email_verification_token = emailVerificationToken;
             await user.save();
 
-            // Gửi email xác minh mới
             await sendNewEmail(newEmail, emailVerificationToken.value);
 
             return res.status(200).json({ message: 'New email verification sent!' });
@@ -450,23 +428,18 @@ class AuthController {
 
             if (!user) {
                 return res.status(400).json({ message: 'Invalid or expired token' });
-                // return res.redirect('/newEmail?status=failed');
             }
 
-            // Kiểm tra token hết hạn
             if (new Date(user.email_verification_token.expires_at) < new Date()) {
                 return res.status(400).json({ message: 'Token has expired' });
-                // return res.redirect('/newEmail?status=expired');
             }
 
-            // Xác minh email mới
             user.email = user.new_email;
             user.new_email = undefined;
-            user.email_verification_token = undefined; // Xóa token
+            user.email_verification_token = undefined;
             await user.save();
 
             return res.status(200).json({ message: 'New email verified and updated successfully!' });
-            // return res.redirect('/newEmail?status=success');
         } catch (error) {
             console.error('Error verifying new email:', error);
             return res.status(500).json({ message: 'Internal server error', error });
@@ -479,24 +452,19 @@ class AuthController {
             const { email } = req.body;
             const user = await User.findOne({ email });
 
-            // Kiểm tra người dùng với email đã tồn tại chưa
             if (!user) {
                 return res.status(400).json({ message: 'Người dùng với email này không tồn tại' });
             }
 
-            // Kiểm tra xem người dùng đã được xác minh hay chưa
             if (user.is_verified) {
                 return res.status(400).json({ message: 'Người dùng đã được xác minh' });
             }
 
-            // Tạo mã xác minh email mới
-            const emailVerificationToken = generateToken(30 * 1000);
+            const emailVerificationToken = generateToken(30 * 60 * 1000);
 
-            // Cập nhật mã xác minh email cho người dùng
             user.email_verification_token = emailVerificationToken;
             await user.save();
 
-            // Gửi email xác minh mới
             await sendNewEmail(user.new_email, emailVerificationToken.value);
 
             return res.status(200).json({ message: 'Gửi lại email xác minh thành công!' });
@@ -548,22 +516,18 @@ class AuthController {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            // Kiểm tra mật khẩu hiện tại
             const isMatch = await bcrypt.compare(currentPassword, user.password);
             if (!isMatch) {
                 return res.status(400).json({ message: 'Current password is incorrect' });
             }
 
-            // Kiểm tra nếu mật khẩu mới giống với mật khẩu hiện tại
             const isSamePassword = await bcrypt.compare(newPassword, user.password);
             if (isSamePassword) {
                 return res.status(401).json({ message: 'New password cannot be the same as the current password' });
             }
 
-            // Hash mật khẩu mới
             const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-            // Cập nhật mật khẩu mới
             user.password = hashedPassword;
             await user.save();
 
@@ -574,15 +538,123 @@ class AuthController {
     }
 
     //FOR GOOOGLE
-    async loginGoogle(req, res, next) {
-        passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
-    }
+    // async loginGoogle(req, res, next) {
+    //     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+    // }
 
-    async loginRedirect(req, res) {
-        passport.authenticate('google', { failureRedirect: '/login' })(req, res, () => {
-            // Successful authentication
-            res.redirect('/'); // Redirect to the homepage or any other desired location
-        });
+    // async loginRedirect(req, res) {
+    //     passport.authenticate('google', {
+    //         failureRedirect: `http://localhost:3000/auth/login`,
+    //         session: false,
+    //     })(req, res, async () => {
+    //         try {
+    //             if (!req.user) {
+    //                 return res.redirect(`http://localhost:3000/auth/google?error=google_auth_failed`);
+    //             }
+
+    //             const accessToken = jwt.sign({ _id: req.user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '30m' });
+    //             const refreshToken = jwt.sign({ _id: req.user._id }, process.env.JWT_REFRESH_KEY, { expiresIn: '7d' });
+
+    //             res.cookie('refreshToken', refreshToken, {
+    //                 httpOnly: true,
+    //                 secure: process.env.NODE_ENV === 'production',
+    //                 path: '/',
+    //                 sameSite: 'strict',
+    //                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    //             });
+
+    //             res.cookie('isVerifyEmail', req.user.is_verified, {
+    //                 httpOnly: false,
+    //                 secure: process.env.NODE_ENV === 'production',
+    //                 path: '/',
+    //                 sameSite: 'strict',
+    //                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    //             });
+
+    //             // Prepare user info for client
+    //             const { password, email_verification_token, ...otherDetails } = req.user.toObject();
+    //             const userInfo = {
+    //                 ...otherDetails,
+    //                 accessToken,
+    //             };
+
+    //             // Encode user info for URL
+    //             const encodedUserInfo = encodeURIComponent(JSON.stringify(userInfo));
+
+    //             return res.redirect(`http://localhost:3000/auth/google?userInfo=${encodedUserInfo}`);
+    //         } catch (error) {
+    //             console.error('Google login error:', error);
+    //             return res.redirect(`http://localhost:3000/auth/google?error=google_auth_failed`);
+    //         }
+    //     });
+    // }
+
+    async verifyGoogleToken(req, res) {
+        try {
+            const { credential } = req.body;
+
+            const ticket = await client.verifyIdToken({
+                idToken: credential,
+                audience: process.env.GOOGLE_APP_ID,
+            });
+
+            const payload = ticket.getPayload();
+
+            let user = await User.findOne({
+                $or: [{ email: payload.email }, { id_auth_provider: payload.sub }],
+            });
+
+            if (!user) {
+                const emailVerificationToken = generateToken(30 * 60 * 1000);
+
+                user = new User({
+                    user_name: `google_${payload.sub}`,
+                    email: payload.email,
+                    full_name: payload.name,
+                    type: 'GOOGLE',
+                    id_auth_provider: payload.sub,
+                    is_verified: false,
+                    status: 1,
+                    email_verification_token: emailVerificationToken,
+                });
+                await user.save();
+
+                await sendRegistrationEmail(payload.email, emailVerificationToken.value);
+            }
+
+            const accessToken = jwt.sign({ id: user._id, admin: user.admin }, process.env.JWT_ACCESS_KEY, {
+                expiresIn: '30m',
+            });
+
+            const refreshToken = jwt.sign({ id: user._id, admin: user.admin }, process.env.JWT_REFRESH_KEY, {
+                expiresIn: '7d',
+            });
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            });
+
+            res.cookie('isVerifyEmail', user.is_verified, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            });
+
+            const { password, email_verification_token, ...otherDetails } = user.toObject();
+            return res.status(200).json({
+                ...otherDetails,
+                accessToken,
+            });
+        } catch (error) {
+            console.error('Google auth error:', error);
+            return res.status(401).json({ message: 'Invalid Google token' });
+        }
     }
 }
 module.exports = new AuthController();
