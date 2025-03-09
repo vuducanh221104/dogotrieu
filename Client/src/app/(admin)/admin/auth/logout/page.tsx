@@ -13,7 +13,7 @@ function Logout() {
         const handleLogOut = () => {
             dispatch(logOutSuccess());
             if (typeof window !== 'undefined') {
-                router.push(config.routesAdmin.login);
+                router.replace(config.routesAdmin.login);
             }
         };
         handleLogOut();

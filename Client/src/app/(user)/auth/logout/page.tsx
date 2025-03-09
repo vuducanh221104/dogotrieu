@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next-nprogress-bar';
 import { logOutFailed, logOutStart, logOutSuccess } from '@/redux/authSlice';
 import { authLogout } from '@/services/authServices';
+import routes from '@/config/routes';
 
 function PageLogout() {
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function PageLogout() {
             try {
                 await authLogout();
                 dispatch(logOutSuccess());
-                router.push('/');
+                router.replace(routes.user.home);
             } catch (err) {
                 dispatch(logOutFailed());
             }

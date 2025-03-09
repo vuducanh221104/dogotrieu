@@ -339,3 +339,36 @@
         right: 75px;
     }
 }
+
+.google-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+
+    > div {
+        width: 100% !important;
+    }
+}
+
+.btn-submit {
+    display: block;
+    margin-top: 20px !important;
+    // margin: 0 !important;
+    width: 100%;
+    background: #030303;
+    color: #ffffff;
+    &.verify-clicked {
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
+    &:hover {
+        background-color: rgba(3, 3, 3, 0.8);
+    }
+}
+
+.btn-submit {
+    background-color: var(--button-auth-color);
+    border-color: var(--button-auth-color);
+}

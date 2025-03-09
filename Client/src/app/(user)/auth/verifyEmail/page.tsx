@@ -1,84 +1,70 @@
-'use client';
-import { Suspense, useState } from 'react';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames/bind';
-import { Form } from 'antd';
-import AuthSpinLoading from '@/components/AuthSpinLoading';
-import { archivo } from '@/assets/FontNext';
-import styles from '@/styles/Auth.module.scss';
-import { authResendRegisterEmail } from '@/services/authServices';
-import Loading from '@/components/Loading';
-import AuthMessageNotification from '@/components/AuthMessageNotification';
-import useMultiCooldown from '@/utils/hookMultiCooldown';
+import routes from '@/config/routes';
+import { Metadata } from 'next';
+import AuthVerifyEmail from '@/appLayout/Auth/AuthVerifyEmail';
 
-const cx = classNames.bind(styles);
+export async function generateMetadata(): Promise<Metadata> {
+    const title = 'Xác Thực Email | Đồ Gỗ Triệu';
+    const description = `Xác thực địa chỉ email của bạn để hoàn tất đăng ký tài khoản tại Đồ Gỗ Triệu. Quá trình xác thực đơn giản và nhanh chóng giúp bảo vệ tài khoản của bạn và đảm bảo bạn nhận được các thông báo quan trọng từ chúng tôi.`;
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
-function PageVerifyEmailContent() {
-    const [form] = Form.useForm();
-    const { currentUser } = useSelector((state: any) => state.auth.login);
-    const [loading, setLoading] = useState(false);
-    const [sentEmail, setSentEmail] = useState(false);
-
-    const { cooldown: resendCooldown, startCooldown: startResendCooldown } = useMultiCooldown('resendCooldown');
-
-    const handleSubmit = async () => {
-        setLoading(true);
-        try {
-            await authResendRegisterEmail(currentUser.email);
-            setSentEmail(true);
-            startResendCooldown();
-        } catch (error) {
-            console.error('Lỗi khi gửi lại email:', error);
-        } finally {
-            setLoading(false);
-        }
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}/auth/verifyEmail`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Xác Thực Email | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+            siteName: 'Đồ Gỗ Triệu',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            site: `${routes.domain.nameCamel}`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Xác Thực Email | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+        keywords: [
+            'xác thực email đồ gỗ triệu',
+            'verify email',
+            'xác nhận tài khoản',
+            'kích hoạt tài khoản',
+            'đăng ký đồ gỗ triệu',
+            'bảo mật tài khoản',
+            'đồ gỗ triệu',
+            'xác minh email',
+            'hoàn tất đăng ký',
+            'email verification',
+        ],
+        authors: [{ name: 'Đồ Gỗ Triệu' }],
+        robots: {
+            index: false,
+            follow: false,
+        },
+        alternates: {
+            canonical: `${routes.domain.name}/auth/verifyEmail`,
+        },
     };
-
-    if (sentEmail) {
-        return (
-            <AuthMessageNotification
-                title="Xác Nhận Email"
-                message={'Link Xác Nhận Đã Được Gửi !'}
-                subTitle="Hãy kiểm tra hộp thư đến hoặc mục Spam nếu không thấy Email."
-                textButton="Quay Về Trang Chủ"
-            />
-        );
-    }
-
-    return (
-        <div className={cx('auth-wrapper')}>
-            <AuthSpinLoading loading={loading} />
-            <div className="container">
-                <header className={cx('auth-header')}>
-                    <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Xác Nhận Email</h1>
-                    <p className={cx('auth-description')}>Bấm vào nút phía dưới để gửi lại Email Xác Nhận</p>
-                </header>
-                <Form form={form} layout="vertical" onFinish={handleSubmit}>
-                    <Form.Item>
-                        <button
-                            className={`${archivo.className} ${cx(
-                                'btn-submit',
-                                resendCooldown > 0 && 'verify-clicked',
-                            )} button `}
-                            id="btn-submit"
-                            type="submit"
-                            disabled={resendCooldown > 0}
-                        >
-                            {resendCooldown > 0 ? `Gửi Lại Email (${resendCooldown}s)` : 'Gửi Lại Email'}
-                        </button>
-                    </Form.Item>
-                </Form>
-            </div>
-        </div>
-    );
 }
 
 function PageVerifyEmail() {
-    return (
-        <Suspense fallback={<Loading height="300px" />}>
-            <PageVerifyEmailContent />
-        </Suspense>
-    );
+    return <AuthVerifyEmail />;
 }
 
 export default PageVerifyEmail;

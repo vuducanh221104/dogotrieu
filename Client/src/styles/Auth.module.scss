@@ -29,8 +29,10 @@
 .form-search-inner {
     // display: flex;
     // align-items: center;
+    // margin-bottom: 14px !important;
+    margin-bottom: 24px !important;
+
     min-width: 100%;
-    margin-bottom: 14px !important;
 }
 .form-input {
     margin-bottom: 0;
@@ -38,21 +40,28 @@
     width: 100%;
 }
 .form-field {
-    display: flex;
-    padding: 12px 12px;
-    border-radius: 2px;
-    border: 1px solid var(--form-border-color);
-    width: 100%;
-    line-height: normal;
-    height: 48px;
-    color: var(--heading-color);
-    background: var(--input-background);
-    resize: none;
-    font-size: 1.4rem;
-    box-shadow: 0 1px rgba(var(--border-color-rgb), 0.25) inset;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 12px 12px !important;
+    border-radius: 2px !important;
+    border: 1px solid var(--form-border-color) !important;
+    width: 100% !important;
+    line-height: normal !important;
+    height: 48px !important;
+    // color: var(--heading-color) !important;
+    background: var(--input-background) !important;
+    resize: none !important;
+    font-size: 1.4rem !important;
+    box-shadow: 0 1px rgba(var(--border-color-rgb), 0.25) inset !important;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    &:focus {
+        border-color: #1677ff !important;
+    }
+    &:hover {
+        border-color: #4096ff !important;
+    }
 }
 
 .btn-submit {
@@ -202,8 +211,20 @@
 }
 
 .btn-submit {
-    background-color: #d9c37a;
-    border-color: #d9c37a;
+    background-color: var(--button-auth-color);
+    border-color: var(--button-auth-color);
+}
+
+.google-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+
+    > div {
+        width: 100% !important;
+    }
 }
 
 @media screen and (min-width: 641px) {

@@ -1,93 +1,70 @@
-'use client';
-import { Suspense } from 'react';
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import classNames from 'classnames/bind';
-import styles from '@/styles/Auth.module.scss';
-
-import { authVerifyResendEmail } from '@/services/authServices';
-import Loading from '@/components/Loading';
-import AuthMessageNotification from '@/components/AuthMessageNotification';
 import routes from '@/config/routes';
-import NotFound from '@/components/NotFound';
-import { useRouter } from 'next-nprogress-bar';
-import { useDispatch } from 'react-redux';
-import { updateIsVerified } from '@/redux/authSlice';
+import { Metadata } from 'next';
+import AuthVerifyEmailCheck from '@/appLayout/Auth/AuthVerifyEmailCheck';
 
-const cx = classNames.bind(styles);
+export async function generateMetadata(): Promise<Metadata> {
+    const title = 'Xác Thực Email | Đồ Gỗ Triệu';
+    const description = `Xác thực địa chỉ email của bạn tại Đồ Gỗ Triệu. Hoàn tất quá trình xác thực để đảm bảo tài khoản của bạn an toàn và nhận được các thông báo quan trọng về đơn hàng, khuyến mãi đặc biệt từ chúng tôi.`;
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
-function VerifyEmailContent() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const token = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState(false);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (!token) {
-            setLoading(false);
-            return;
-        }
-
-        const verifyToken = async () => {
-            try {
-                const response = await authVerifyResendEmail(token);
-                if (response.status === 200) {
-                    setTokenValid(true);
-                    setSuccess(true);
-                    dispatch(updateIsVerified(true)); // Cập nhật trạng thái is_verified
-                } else {
-                    setTokenValid(false);
-                }
-            } catch (error) {
-                setTokenValid(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        verifyToken();
-    }, [token, dispatch]);
-
-    if (loading) {
-        return <Loading height="300px" />;
-    }
-
-    if (!token) {
-        return <NotFound />;
-    }
-
-    if (success) {
-        return (
-            <AuthMessageNotification
-                title="Xác thực Email thành công"
-                subTitle="Quay Về Trang Chủ"
-                textButton="Trang Chủ"
-                iconHeader="success"
-                btnLinkTo={routes.user.login}
-            />
-        );
-    }
-
-    return (
-        <AuthMessageNotification
-            title="Liên kết này không hợp lệ hoặc đã hết hạn."
-            subTitle="Nếu bạn muốn xác minh Email , Vui lòng bấm vào nút bên dưới "
-            textButton="Xác Minh Email"
-            iconHeader="warning"
-            btnLinkTo={routes.user.verifyEmail}
-        />
-    );
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}/auth/verifyEmail/check`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Xác Thực Email | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+            siteName: 'Đồ Gỗ Triệu',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            site: `${routes.domain.nameCamel}`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Xác Thực Email | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+        keywords: [
+            'xác thực email đồ gỗ triệu',
+            'xác minh email',
+            'xác nhận địa chỉ email',
+            'bảo mật tài khoản đồ gỗ triệu',
+            'hoàn tất xác thực',
+            'đồ gỗ triệu',
+            'email verification',
+            'xác thực tài khoản',
+            'bảo mật email',
+            'xác nhận email',
+        ],
+        authors: [{ name: 'Đồ Gỗ Triệu' }],
+        robots: {
+            index: false,
+            follow: false,
+        },
+        alternates: {
+            canonical: `${routes.domain.name}/auth/verifyEmail/check`,
+        },
+    };
 }
 
 function PageVerifyEmailCheck() {
-    return (
-        <Suspense fallback={<Loading height="300px" />}>
-            <VerifyEmailContent />
-        </Suspense>
-    );
+    return <AuthVerifyEmailCheck />;
 }
 
 export default PageVerifyEmailCheck;

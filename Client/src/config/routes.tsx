@@ -7,6 +7,7 @@ const routes = {
         verifyEmail: '/auth/verifyEmail',
         info: '/auth/info',
         logout: '/auth/logout',
+        changePasswordInfo: '/auth/info/changePassword',
         // Routes Main
         search: '/search',
         cart: '/cart',

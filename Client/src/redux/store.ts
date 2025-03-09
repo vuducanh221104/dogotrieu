@@ -2,7 +2,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
-import verifyEmailReducer from './verifyEmailSlice';
+
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
@@ -16,7 +16,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     cart: cartReducer,
-    verifyEmail: verifyEmailReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

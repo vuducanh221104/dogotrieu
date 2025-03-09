@@ -12,6 +12,7 @@
     --border-color: #917256e6;
     --border-color-rgb: 223, 204, 142;
     --form-border-color: #d9c37a;
+    --button-auth-color: #d9c37a;
     --accent-color: #030303;
     --accent-color-rgb: 3, 3, 3;
     --link-color: #000000;
@@ -278,6 +279,12 @@ button {
     text-align: left !important;
     font-size: 1.3rem;
     margin: 0 20px 0 0 !important;
+}
+.ant-form-item.css-ni1kz0 {
+    margin-bottom: 0 !important;
+}
+.ant-form-item-explain-error {
+    padding-top: 4px !important;
 }
 .ant-form-item.css-dev-only-do-not-override-ni1kz0 {
     margin-bottom: 0 !important;

@@ -46,7 +46,7 @@
     display: block;
     margin-top: 20px !important;
     width: 100%;
-    background: #d9c37a;
+    background: var(--button-auth-color);
     color: #ffffff;
     &.verify-clicked {
         opacity: 0.8;

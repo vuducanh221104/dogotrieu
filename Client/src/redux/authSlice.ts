@@ -48,6 +48,11 @@ const authSlice = createSlice({
                 state.login.currentUser.is_verified = action.payload;
             }
         },
+        updateAccessToken: (state: any, action) => {
+            if (state.login.currentUser) {
+                state.login.currentUser.accessToken = action.payload;
+            }
+        },
     },
 });
 
@@ -61,6 +66,7 @@ export const {
     logOutFailed,
     updatePhoneNumber,
     updateIsVerified,
+    updateAccessToken,
 } = authSlice.actions;
 
 export default authSlice.reducer;

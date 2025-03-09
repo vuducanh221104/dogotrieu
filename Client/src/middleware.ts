@@ -6,11 +6,6 @@ export function middleware(request: NextRequest) {
     const isVerifyEmail = request.cookies.get('isVerifyEmail')?.value;
     const { pathname } = request.nextUrl;
 
-    // Nếu chưa đăng nhập (không có refreshToken) và truy cập trang /auth/verifyEmail => Chuyển hướng về "/auth/login"
-    if (!refreshToken && pathname === '/auth/verifyEmail') {
-        return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
-
     // Nếu đã đăng nhập (có refreshToken) và truy cập các trang login, recover, register, resetPassword => Chuyển hướng về "/"
     if (refreshToken && ['/auth/login', '/auth/recover', '/auth/register', '/auth/resetPassword'].includes(pathname)) {
         return NextResponse.redirect(new URL('/', request.url));
@@ -20,11 +15,15 @@ export function middleware(request: NextRequest) {
     if (
         refreshToken &&
         isVerifyEmail === 'true' &&
-        ['/auth/verifyEmail', '/auth/verifyEmail/check'].includes(pathname)
+        ['/auth/verifyEmail', '/auth/verifyEmail/check', '/auth/verifyEmail/checkRegister'].includes(pathname)
     ) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
+    // // Nếu chưa đăng nhập (không có refreshToken) và truy cập các trang yêu cầu xác thực => Chuyển hướng về "/auth/login"
+    if (!refreshToken && ['/auth/verifyEmail'].includes(pathname)) {
+        return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
     // Các trường hợp khác cho phép tiếp tục
     return NextResponse.next();
 }

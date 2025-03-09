@@ -14,6 +14,7 @@ import { Metadata, Viewport } from 'next/types';
 import { poppins } from '@/assets/FontNext';
 import ViewSpecification from '@/components/HomeComponents/ViewSpecification';
 import FooterLogo from '@/components/FooterLogo';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const poppinsFont = poppins;
 
@@ -32,18 +33,22 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
     return (
         <html lang="vn" suppressHydrationWarning={true}>
             <body className={poppinsFont.className} data-instant-intensity="viewport">
                 {/* <main> */}
                 <ProviderRedux>
-                    <AnouBar />
-                    <Header />
-                    <ProgressBarUser>{children}</ProgressBarUser>
-                    <ViewSpecification />
-                    <FooterLogo />
-                    <Footer />
-                    <Chat />
+                    <GoogleOAuthProvider clientId={clientId || ''}>
+                        <AnouBar />
+                        <Header />
+                        <ProgressBarUser>{children}</ProgressBarUser>
+                        <ViewSpecification />
+                        <FooterLogo />
+                        <Footer />
+                        <Chat />
+                    </GoogleOAuthProvider>
                 </ProviderRedux>
                 <Script
                     type="application/jsonLdWebsite"

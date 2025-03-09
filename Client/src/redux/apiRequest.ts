@@ -1,5 +1,6 @@
 import httpRequest from '@/utils/httpRequest';
 import { loginFailed, loginStart, loginSuccess, logOutFailed, logOutStart, logOutSuccess } from './authSlice';
+import routes from '@/config/routes';
 
 export const login = async (user: any, tokenCaptcha: string, dispatch: any, router: any) => {
     dispatch(loginStart());
@@ -10,7 +11,7 @@ export const login = async (user: any, tokenCaptcha: string, dispatch: any, rout
             password,
             tokenCaptcha: tokenCaptcha,
         });
-        router.navigate('/');
+        router.navigate(routes.user.home);
         return res.data;
     } catch (error) {
         dispatch(loginFailed());
@@ -22,7 +23,7 @@ export const logout = async (dispatch: any, router: any) => {
     try {
         await httpRequest.post('api/v1/auth/logout');
         dispatch(logOutSuccess());
-        router.navigate('/');
+        router.navigate(routes.user.home);
     } catch (err) {
         dispatch(logOutFailed());
     }

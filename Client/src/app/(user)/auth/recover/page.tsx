@@ -1,110 +1,70 @@
-'use client';
-import classNames from 'classnames/bind';
-import styles from '@/styles/Auth.module.scss';
-import Link from 'next/link';
-import { archivo } from '@/assets/FontNext';
-import config from '@/config';
-import { Form } from 'antd';
-import { useState } from 'react';
-import { authFotgotPassword } from '@/services/authServices';
-import useMultiCooldown from '@/utils/hookMultiCooldown';
-import AuthMessageNotification from '@/components/AuthMessageNotification';
-import AuthSpinLoading from '@/components/AuthSpinLoading';
+import routes from '@/config/routes';
+import { Metadata } from 'next';
+import AuthRecover from '@/appLayout/Auth/AuthRecover';
 
-const cx = classNames.bind(styles);
+export async function generateMetadata(): Promise<Metadata> {
+    const title = 'Quên Mật Khẩu | Đồ Gỗ Triệu';
+    const description = `Quên mật khẩu? Không cần lo lắng! Hệ thống khôi phục mật khẩu an toàn của Đồ Gỗ Triệu sẽ giúp bạn lấy lại quyền truy cập tài khoản nhanh chóng. Chỉ cần nhập email hoặc tên đăng nhập, chúng tôi sẽ gửi hướng dẫn chi tiết để đặt lại mật khẩu qua email của bạn.`;
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
-function PageRecoverPassword() {
-    const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
-    const [sentEmail, setSentEmail] = useState(false);
-    const [isFailedForgot, setIsFailedForgot] = useState(false);
-
-    const { cooldown: recoverCoolDown, startCooldown: startrecoverCoolDown } = useMultiCooldown('recoverCooldown');
-
-    const handleSubmit = async () => {
-        setIsFailedForgot(false);
-        try {
-            const values = await form.validateFields();
-            setLoading(true);
-
-            const sentEmailRecover = await authFotgotPassword(values.email);
-            if (sentEmailRecover) {
-                setSentEmail(true);
-            }
-            setLoading(false);
-            startrecoverCoolDown();
-        } catch (error: any) {
-            if (error.response.status === 400) {
-                setIsFailedForgot(true);
-                setLoading(false);
-                return;
-            }
-
-            setLoading(false);
-        }
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}/auth/recover`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Quên Mật Khẩu | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+            siteName: 'Đồ Gỗ Triệu',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            site: `${routes.domain.nameCamel}`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Quên Mật Khẩu | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+        keywords: [
+            'quên mật khẩu đồ gỗ triệu',
+            'khôi phục mật khẩu',
+            'lấy lại mật khẩu',
+            'đặt lại mật khẩu',
+            'quên tài khoản đồ gỗ triệu',
+            'reset mật khẩu',
+            'bảo mật tài khoản',
+            'đồ gỗ triệu',
+            'hỗ trợ đăng nhập',
+            'xác thực email',
+        ],
+        authors: [{ name: 'Đồ Gỗ Triệu' }],
+        robots: {
+            index: true,
+            follow: true,
+        },
+        alternates: {
+            canonical: `${routes.domain.name}/auth/recover`,
+        },
     };
-
-    if (sentEmail) {
-        return (
-            <AuthMessageNotification
-                title="Quên Mật Khẩu ?"
-                message={'Link Xác Nhận Email Đã Được Gửi !'}
-                subTitle="Hãy kiểm tra hộp thư đến hoặc mục Spam nếu không thấy Email."
-                textButton="Quay Về Đăng Nhập"
-            />
-        );
-    }
-
-    return (
-        <div className={cx('auth-wrapper')}>
-            <AuthSpinLoading loading={loading} />
-            <div className="container">
-                <header className={cx('auth-header')}>
-                    <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Quên Mật Khẩu ?</h1>
-                    <p className={cx('auth-description')}>Nhập Email hoặc Username</p>
-                </header>
-                <Form form={form} layout="vertical" onFinish={handleSubmit}>
-                    <div className={cx('form-search-wrapper')}>
-                        <div className={cx('form-search-inner')}>
-                            <Form.Item
-                                name="email"
-                                rules={[
-                                    { required: true, message: 'Vui lòng nhập email!' },
-                                    { type: 'email', message: 'Định dạng email không hợp lệ!' },
-                                ]}
-                            >
-                                <input
-                                    type="email"
-                                    className={`${archivo.className}  ${cx('form-field')}`}
-                                    placeholder={'Nhập Email hoặc Username'}
-                                />
-                            </Form.Item>
-                        </div>
-                    </div>
-                    <Form.Item>
-                        <button
-                            className={`${archivo.className} ${cx(
-                                'btn-submit',
-                                recoverCoolDown > 0 && 'verify-clicked',
-                            )} button `}
-                            id="btn-submit"
-                            type="submit"
-                            disabled={recoverCoolDown > 0}
-                        >
-                            {recoverCoolDown > 0 ? `Tiếp Tục (${recoverCoolDown}s)` : 'Tiếp Tục'}
-                        </button>
-                    </Form.Item>
-                </Form>
-                {isFailedForgot && <p className={cx('error-message')}>Sai Email hoặc không tìm thấy Email !!</p>}
-                <div className={`${cx('auth-footer')} link`}>
-                    <p>Bạn Quên Mật Khẩu?</p>
-                    <button>
-                        <Link href={config.routes.login}>Quay lại Đăng Nhập</Link>
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
 }
 
-export default PageRecoverPassword;
+function PageRecover() {
+    return <AuthRecover />;
+}
+
+export default PageRecover;

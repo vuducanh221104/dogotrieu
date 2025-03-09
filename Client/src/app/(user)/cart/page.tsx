@@ -1,10 +1,6 @@
 import Cart from '@/appLayout/Cart';
 import routes from '@/config/routes';
 import { Metadata } from 'next';
-type Props = {
-    params: { slug: string };
-    searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export async function generateMetadata(): Promise<Metadata | undefined> {
     const title = 'Giỏ Hàng Của Tôi';

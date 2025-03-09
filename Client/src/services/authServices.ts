@@ -156,3 +156,17 @@ export const authVerifyEmail = async (token: string) => {
         // console.error(err.response?.data);
     }
 };
+
+//Google
+export const authGoogleLogin = async (credentialResponse: any) => {
+    try {
+        const res = await httpRequest.post<any>(`api/v1/auth/google/verify`, {
+            credential: credentialResponse,
+        });
+        return res.data;
+    } catch (error) {
+        const err = error as AxiosError;
+        throw err;
+        // console.error(err.response?.data);
+    }
+};

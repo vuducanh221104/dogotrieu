@@ -1,19 +1,21 @@
 'use client';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { ChervonMenu, GoogleLoginIcon, UserIcon, XmarkIcon } from '@/components/Icons';
+import { ChervonMenu, UserIcon, XmarkIcon } from '@/components/Icons';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Form, Input, Spin } from 'antd';
+import { Form, Input } from 'antd';
 import Turnstile from 'react-turnstile';
 import { archivo } from '@/assets/FontNext';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginFailed, loginStart, loginSuccess } from '@/redux/authSlice';
-import { authLogin } from '@/services/authServices';
+import { authGoogleLogin, authLogin } from '@/services/authServices';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useRouter } from 'next-nprogress-bar';
 import config from '@/config';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
+import routes from '@/config/routes';
+import { GoogleLogin } from '@react-oauth/google';
 
 const cx = classNames.bind(styles);
 
@@ -24,10 +26,18 @@ function Login() {
     const [tokenCaptcha, setToken] = useState(null);
     const [isFailedLogin, setIsFailedLogin] = useState(false);
     const [isFailedToken, setFailedToken] = useState(false);
+    const [isFailedGoogle, setIsFailedGoogle] = useState(false);
+    const [turnstileKey, setTurnstileKey] = useState(0);
     const dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
+
     const handleSubmit = async () => {
+        if (!tokenCaptcha) {
+            setFailedToken(true);
+            return;
+        }
+
         setIsFailedLogin(false);
         setFailedToken(false);
         dispatch(loginStart());
@@ -36,25 +46,63 @@ function Login() {
             const user = await authLogin(values, tokenCaptcha);
             dispatch(loginSuccess(user));
             setIsFailedLogin(false);
+            router.replace(routes.user.home);
             form.resetFields();
         } catch (error: any) {
-            if (error.response.status === 404) {
-                dispatch(loginFailed());
-                setIsFailedLogin(true);
-                return;
-            }
-            if (error.response.status === 400) {
-                dispatch(loginFailed());
-                setFailedToken(true);
-                return;
-            }
-            setIsFailedLogin(false);
             dispatch(loginFailed());
+
+            if (error.response?.status === 404) {
+                setIsFailedLogin(true);
+                setFailedToken(false);
+                form.setFieldValue('password', '');
+
+                setToken(null);
+                setTurnstileKey((prev) => prev + 1);
+                return;
+            }
+            if (error.response?.status === 400) {
+                // Lỗi captcha
+                setFailedToken(true);
+                setIsFailedLogin(false);
+                setToken(null);
+                setTurnstileKey((prev) => prev + 1);
+                return;
+            }
+
+            setIsFailedLogin(false);
+            setFailedToken(false);
+            setToken(null);
+            setTurnstileKey((prev) => prev + 1);
+            form.setFieldValue('password', '');
         }
     };
-    const logoutSubmit = () => {
-        router.replace('/auth/logout');
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        try {
+            if (!credentialResponse.credential) {
+                setIsFailedGoogle(true);
+                return;
+            }
+
+            dispatch(loginStart());
+            const response = await authGoogleLogin(credentialResponse.credential);
+            dispatch(loginSuccess(response));
+            router.replace(routes.user.home);
+        } catch (error) {
+            dispatch(loginFailed());
+            setIsFailedGoogle(true);
+        }
     };
+
+    const handleGoogleError = () => {
+        dispatch(loginFailed());
+        setIsFailedGoogle(true);
+    };
+
+    const logoutSubmit = () => {
+        router.replace(routes.user.logout);
+    };
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -91,11 +139,11 @@ function Login() {
                     <div className={cx('form-wrapper')}>
                         {currentUser ? (
                             <ul>
-                                <li>Hello, {currentUser.user_name}</li>
+                                <li>Hello, {currentUser?.full_name || currentUser?.user_name}</li>
                                 <li>
                                     <Link href={config.routes.info}>Thông Tin</Link>
                                 </li>
-                                {!currentUser.is_verified && (
+                                {!currentUser?.is_verified && (
                                     <li>
                                         <Link href={config.routes.verifyEmail}>Xác Nhận Email</Link>
                                     </li>
@@ -146,13 +194,24 @@ function Login() {
                                                 </Form.Item>
                                             </div>
                                         </div>
-
-                                        <Turnstile
-                                            sitekey={`${process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}`}
-                                            size={'flexible'}
-                                            theme={'light'}
-                                            onVerify={(token: any) => setToken(token)}
-                                        />
+                                        <div className={cx('captcha-container')} style={{ height: '65px' }}>
+                                            <Turnstile
+                                                key={turnstileKey}
+                                                sitekey={`${process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}`}
+                                                size={'flexible'}
+                                                theme={'light'}
+                                                onVerify={(token: any) => setToken(token)}
+                                                onError={() => {
+                                                    setFailedToken(true);
+                                                    setToken(null);
+                                                }}
+                                                onExpire={() => {
+                                                    setToken(null);
+                                                    setTurnstileKey((prev) => prev + 1);
+                                                }}
+                                                refreshExpired="auto"
+                                            />
+                                        </div>
 
                                         <Form.Item>
                                             <button
@@ -169,16 +228,24 @@ function Login() {
                                         {isFailedToken && !isFailedLogin && (
                                             <p className={cx('error-message')}>Xảy ra lỗi hoặc sai Captcha !!</p>
                                         )}
+                                        {isFailedGoogle && (
+                                            <p className={cx('error-message')}>Xảy ra lỗi khi đăng nhập với Google!!</p>
+                                        )}
                                     </Form>
                                 </div>
                                 <div className={cx('popper-social')}>
-                                    <a
-                                        href="http://localhost:4000/api/v1/auth/google"
-                                        className={cx('social-link', 'google')}
-                                    >
-                                        <span className={cx('social-title', 'goole')}>Sign in with Google</span>
-                                        <GoogleLoginIcon className={cx('social-icon', 'google')} />
-                                    </a>
+                                    <div className={cx('google-login-container')}>
+                                        <GoogleLogin
+                                            onSuccess={handleGoogleSuccess}
+                                            onError={handleGoogleError}
+                                            theme="filled_black"
+                                            text="signin_with"
+                                            shape="rectangular"
+                                            locale="vi"
+                                            width="100%"
+                                            useOneTap={false}
+                                        />
+                                    </div>
                                 </div>
                                 <div className={cx('popper-auth')}>
                                     <div className={`${cx('auth-footer')} link`}>

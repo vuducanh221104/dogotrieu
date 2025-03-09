@@ -1,172 +1,70 @@
-'use client';
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import classNames from 'classnames/bind';
-import styles from '@/styles/Auth.module.scss';
-import { Form, Input } from 'antd';
-import Link from 'next/link';
-import { authResetPassword, authVerifyTokenResetPassword } from '@/services/authServices';
-import Loading from '@/components/Loading';
-import AuthMessageNotification from '@/components/AuthMessageNotification';
-import NotFound from '@/components/NotFound';
+import { Metadata } from 'next';
+import AuthResetPassword from '@/appLayout/Auth/AuthResetPassword';
 import routes from '@/config/routes';
-import AuthSpinLoading from '@/components/AuthSpinLoading';
-import { archivo } from '@/assets/FontNext';
-import config from '@/config';
 
-const cx = classNames.bind(styles);
+export async function generateMetadata(): Promise<Metadata> {
+    const title = 'Đặt Lại Mật Khẩu | Đồ Gỗ Triệu';
+    const description = `Đặt lại mật khẩu cho tài khoản Đồ Gỗ Triệu của bạn một cách an toàn và bảo mật. Chúng tôi sử dụng công nghệ mã hóa tiên tiến để bảo vệ thông tin của bạn. Hãy chọn một mật khẩu mạnh để bảo vệ tài khoản của bạn tốt hơn.`;
+    const image =
+        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
 
-function ResetPasswordContent() {
-    const searchParams = useSearchParams();
-    const token: any = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState(false);
-    const [form] = Form.useForm();
-
-    useEffect(() => {
-        if (!token) {
-            setLoading(false);
-            setTokenValid(false);
-            return;
-        }
-
-        const verifyToken = async () => {
-            try {
-                const response = await authVerifyTokenResetPassword(token);
-                if (response.status === 200) {
-                    setTokenValid(true);
-                } else {
-                    setTokenValid(false);
-                }
-            } catch (error) {
-                setTokenValid(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        verifyToken();
-    }, [token]);
-
-    const handleSubmit = async () => {
-        try {
-            setLoading(true);
-            const values = await form.validateFields();
-            const response = await authResetPassword(token, values.password);
-
-            if (response.status === 200) {
-                form.resetFields();
-                setSuccess(true);
-            }
-        } catch (error) {
-            console.log('An error occurred.');
-        } finally {
-            setLoading(false);
-        }
+    return {
+        title: title,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            type: 'website',
+            url: `${routes.domain.name}/auth/resetPassword`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Đặt Lại Mật Khẩu | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+            siteName: 'Đồ Gỗ Triệu',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            site: `${routes.domain.nameCamel}`,
+            images: [
+                {
+                    url: image,
+                    alt: 'Trang Đặt Lại Mật Khẩu | DOGOTRIEU',
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+        },
+        keywords: [
+            'đặt lại mật khẩu đồ gỗ triệu',
+            'reset mật khẩu',
+            'thay đổi mật khẩu',
+            'mật khẩu mới đồ gỗ triệu',
+            'quên mật khẩu',
+            'bảo mật tài khoản',
+            'đồ gỗ triệu',
+            'cập nhật mật khẩu',
+            'khôi phục tài khoản',
+            'xác thực tài khoản',
+        ],
+        authors: [{ name: 'Đồ Gỗ Triệu' }],
+        robots: {
+            index: false,
+            follow: false,
+        },
+        alternates: {
+            canonical: `${routes.domain.name}/auth/resetPassword`,
+        },
     };
-
-    if (loading) {
-        return <Loading height="300px" />;
-    }
-    if (!token) {
-        return <NotFound />;
-    }
-
-    if (!tokenValid) {
-        return (
-            <AuthMessageNotification
-                title="Liên kết này không hợp lệ hoặc đã hết hạn."
-                subTitle="  Nếu bạn cần khôi phục mật khẩu, vui lòng nhấn vào nút bên dưới."
-                textButton="Quên Mật Khẩu ?"
-                iconHeader="warning"
-                btnLinkTo={routes.user.recover}
-            />
-        );
-    }
-
-    if (success) {
-        return (
-            <AuthMessageNotification
-                title="  Mật khẩu đã được thay đổi thành công."
-                subTitle="Quay Về Đăng Nhập "
-                textButton="Đăng Nhập"
-                iconHeader="success"
-            />
-        );
-    }
-
-    return (
-        <div className={cx('auth-wrapper')}>
-            <AuthSpinLoading loading={loading} />
-            <div className="container">
-                <header className={cx('auth-header')}>
-                    <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Tạo Mật Khẩu Mới</h1>
-                    <p className={cx('auth-description')}>Nhập mật khẩu mới</p>
-                </header>
-                <Form form={form} layout="vertical" onFinish={handleSubmit}>
-                    <div className={cx('form-search-wrapper')}>
-                        <div className={cx('form-search-inner')}>
-                            <Form.Item
-                                name="password"
-                                rules={[
-                                    { required: true, message: 'Vui lòng nhập mật khẩu!' },
-                                    { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự!' },
-                                ]}
-                            >
-                                <Input.Password
-                                    type="password"
-                                    className={`${archivo.className} ${cx('form-field')}`}
-                                    placeholder={'Mật khẩu mới'}
-                                />
-                            </Form.Item>
-                        </div>
-                        <div className={cx('form-search-inner')}>
-                            <Form.Item
-                                name="confirmPassword"
-                                rules={[
-                                    { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (!value || getFieldValue('password') === value) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('Mật khẩu không khớp!'));
-                                        },
-                                    }),
-                                ]}
-                            >
-                                <Input.Password
-                                    type="password"
-                                    className={`${archivo.className} ${cx('form-field')}`}
-                                    placeholder={'Nhập lại mật khẩu mới'}
-                                />
-                            </Form.Item>
-                        </div>
-                    </div>
-                    <Form.Item>
-                        <button className={`${cx('btn-submit')} button`} type="submit">
-                            Tiếp Tục
-                        </button>
-                    </Form.Item>
-                </Form>
-                <div className={`${cx('auth-footer')} link`}>
-                    <p></p>
-                    <button>
-                        <Link href={config.routes.login}>Quay lại Đăng Nhập!</Link>
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
 }
 
-function ResetPassword() {
-    return (
-        <Suspense fallback={<Loading height="300px" />}>
-            <ResetPasswordContent />
-        </Suspense>
-    );
+function PageResetPassword() {
+    return <AuthResetPassword />;
 }
 
-export default ResetPassword;
+export default PageResetPassword;
