@@ -149,6 +149,8 @@ export const footerMenuItems: FooterMenu[] = [
         links: [
             { label: 'Về Chúng Tôi', url: config.routesCompany.aboutUs },
             { label: 'Liên Hệ', url: config.routesCompany.contact },
+            { label: 'Privacy Policy', url: config.routesCompany.privacy },
+            { label: 'Terms of service', url: config.routesCompany.terms },
         ],
         classNameChild: 'link',
         height: '60px',

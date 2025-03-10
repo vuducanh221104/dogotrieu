@@ -52,6 +52,8 @@ const routes = {
         contact: '/pages/contact',
         aboutUs: '/pages/about',
         tradeIn: '/pages/trade',
+        privacy: '/privacy',
+        terms: '/terms',
     },
 
     domain: {
