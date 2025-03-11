@@ -23,19 +23,38 @@ const generateToken = (expireTime) => {
 
 class AuthController {
     //[PATCH]
-    async updatePhoneNumber(req, res) {
+    async updateInfoUser(req, res) {
         try {
-            const { userId, phoneNumber } = req.body;
+            const { userId, phoneNumber, full_name } = req.body;
 
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            user.phone_number = phoneNumber;
-            await user.save();
+            let isUpdated = false;
 
-            return res.status(200).json({ message: 'Phone number updated successfully' });
+            if (phoneNumber !== undefined && phoneNumber !== user.phone_number) {
+                user.phone_number = phoneNumber;
+                isUpdated = true;
+            }
+
+            if (full_name !== undefined && full_name !== user.full_name) {
+                user.full_name = full_name;
+                isUpdated = true;
+            }
+
+            if (isUpdated) {
+                await user.save();
+            }
+
+            return res.status(200).json({
+                message: isUpdated ? 'Updated successfully' : 'No changes made',
+                user: {
+                    phone_number: user.phone_number,
+                    full_name: user.full_name,
+                },
+            });
         } catch (error) {
             return res.status(500).json({ message: 'Internal server error', error });
         }
@@ -612,6 +631,7 @@ class AuthController {
                     email: payload.email,
                     full_name: payload.name,
                     type: 'GOOGLE',
+                    avatar: '',
                     id_auth_provider: payload.sub,
                     is_verified: false,
                     status: 1,

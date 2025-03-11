@@ -38,6 +38,6 @@ router.get('/checkEmail', AuthController.checkEmail);
 router.post('/refreshToken', AuthController.requestRefreshToken);
 
 //Update
-router.patch('/updatePhoneNumber', AuthController.updatePhoneNumber);
+router.patch('/updateInfoUser', AuthController.updateInfoUser);
 
 module.exports = router;
