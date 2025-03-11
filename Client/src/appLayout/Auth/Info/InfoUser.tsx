@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Form, Input, Tag } from 'antd';
@@ -7,11 +7,12 @@ import Link from 'next/link';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
 import { archivo } from '@/assets/FontNext';
 import styles from '@/styles/Auth.module.scss';
-import { authUpdatePhoneNumber } from '@/services/authServices';
-import { updatePhoneNumber } from '@/redux/authSlice';
+import { updateInfoUser } from '@/services/authServices';
+import { updatePhoneNumber, updateFullName } from '@/redux/authSlice';
 import Loading from '@/components/Loading';
 import useMultiCooldown from '@/utils/hookMultiCooldown';
 import routes from '@/config/routes';
+import React from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -24,28 +25,69 @@ function AccountInfoContent() {
 
     const { cooldown: infoCooldown, startCooldown: startInfoCooldown } = useMultiCooldown('infoCooldown');
 
+    // Set initial values for form
+    useEffect(() => {
+        form.setFieldsValue({
+            phoneNumber: currentUser?.phone_number,
+            fullName: currentUser?.full_name,
+        });
+    }, [currentUser, form]);
+
     const handleSubmit = async () => {
         setLoading(true);
         try {
             const values = await form.validateFields();
-            if (values.phoneNumber === currentUser.phone_number) {
+            const hasPhoneChanged = values.phoneNumber !== currentUser.phone_number;
+            const hasNameChanged = values.fullName !== currentUser.full_name;
+
+            if (!hasPhoneChanged && !hasNameChanged) {
                 setLoading(false);
                 return;
             }
 
             startInfoCooldown();
 
-            await authUpdatePhoneNumber(currentUser._id, values.phoneNumber);
-            dispatch(updatePhoneNumber(values.phoneNumber));
+            // Chỉ gửi những giá trị đã thay đổi
+            const response = await updateInfoUser(
+                currentUser._id,
+                hasPhoneChanged ? values.phoneNumber : undefined,
+                hasNameChanged ? values.fullName : undefined,
+            );
+
+            if (hasPhoneChanged) {
+                dispatch(updatePhoneNumber(values.phoneNumber));
+            }
+            if (hasNameChanged) {
+                dispatch(updateFullName(values.fullName));
+            }
+
             setLoading(false);
             setSuccess(true);
         } catch (error) {
             setLoading(false);
-            console.error('Failed to update phone number:', error);
+            console.error('Failed to update:', error);
         }
     };
 
     const userInfoList = [
+        {
+            label: 'Họ và Tên',
+            value: (
+                <Form.Item
+                    name="fullName"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập họ và tên!' },
+                        {
+                            pattern:
+                                /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+$/,
+                            message: 'Họ tên chỉ được chứa chữ cái và khoảng trắng!',
+                        },
+                    ]}
+                >
+                    <Input placeholder="Nhập Họ và Tên" />
+                </Form.Item>
+            ),
+        },
         { label: 'Tên đăng nhập', value: currentUser?.user_name },
         { label: 'Email', value: currentUser?.email },
         {
@@ -69,17 +111,9 @@ function AccountInfoContent() {
                             pattern: /^(0?)(3[2-9]|5[6|8|9]|7[0|6|7|8|9]|8[1-5]|9[0-4|6-9])[0-9]{7}$/,
                             message: 'Số điện thoại không hợp lệ!',
                         },
-                        () => ({
-                            validator(_, value) {
-                                if (value && value === currentUser?.phone_number) {
-                                    return Promise.reject('Vui lòng nhập số điện thoại khác!');
-                                }
-                                return Promise.resolve();
-                            },
-                        }),
                     ]}
                 >
-                    <Input defaultValue={currentUser?.phone_number} type="text" placeholder="Nhập Số Điện Thoại" />
+                    <Input placeholder="Nhập Số Điện Thoại" />
                 </Form.Item>
             ),
         },

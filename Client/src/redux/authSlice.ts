@@ -43,6 +43,11 @@ const authSlice = createSlice({
                 state.login.currentUser.phone_number = action.payload;
             }
         },
+        updateFullName: (state: any, action) => {
+            if (state.login.currentUser) {
+                state.login.currentUser.full_name = action.payload;
+            }
+        },
         updateIsVerified: (state: any, action) => {
             if (state.login.currentUser) {
                 state.login.currentUser.is_verified = action.payload;
@@ -65,6 +70,7 @@ export const {
     logOutSuccess,
     logOutFailed,
     updatePhoneNumber,
+    updateFullName,
     updateIsVerified,
     updateAccessToken,
 } = authSlice.actions;

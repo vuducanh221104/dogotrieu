@@ -318,11 +318,11 @@
     }
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 427px) {
     .wrapper-tippy {
         width: 100vw;
         height: 100vh;
-        right: -74px;
+        right: -82px;
         min-width: 0;
         &.is-login {
             width: 100% !important;
@@ -330,7 +330,7 @@
             right: -62px !important;
 
             & .icon-chervon-menu {
-                right: 64px;
+                right: 82px;
             }
         }
     }

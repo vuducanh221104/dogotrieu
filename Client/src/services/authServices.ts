@@ -29,16 +29,17 @@ export const authLogout = async (): Promise<any> => {
     }
 };
 
-export const authUpdatePhoneNumber = async (userId: string, phoneNumber: string): Promise<any> => {
+export const updateInfoUser = async (userId: string, phoneNumber?: string, full_name?: string): Promise<any> => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/auth/updatePhoneNumber`, {
-            userId: userId,
-            phoneNumber: phoneNumber,
-        });
+        const data: any = { userId };
+        if (phoneNumber !== undefined) data.phoneNumber = phoneNumber;
+        if (full_name !== undefined) data.full_name = full_name;
+
+        const res = await httpRequest.patch<any>(`api/v1/auth/updateInfoUser`, data);
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
-        // console.error(err.response?.data);
+        throw err;
     }
 };
 

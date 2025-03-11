@@ -132,7 +132,7 @@ function Login() {
             </div>
 
             <div className={cx('wrapper-tippy', showMenu && 'active', currentUser && 'is-login')} ref={wrapperRef}>
-                <AuthSpinLoading loading={isFetching} />
+                <AuthSpinLoading loading={isFetching} zIndex={10000} />
 
                 <ChervonMenu className={cx('icon-chervon-menu')} />
                 <div className={cx('wrapper-content')}>
