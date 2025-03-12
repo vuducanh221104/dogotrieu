@@ -83,7 +83,7 @@ class AuthController {
                 return res.status(404).json({ message: 'Wrong password' });
             }
 
-            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '15s' });
+            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '30m' });
 
             const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, { expiresIn: '7d' });
 
@@ -294,6 +294,14 @@ class AuthController {
 
             if (!user) {
                 return res.status(400).json({ message: 'User with given email or username does not exist' });
+            }
+
+            // Kiểm tra nếu tài khoản được tạo bằng Google
+            if (user.type === 'GOOGLE') {
+                return res.status(403).json({
+                    message: 'This account was created with Google. Please use Google Sign-In instead.',
+                    type: 'GOOGLE',
+                });
             }
 
             const forgotPasswordToken = generateToken(30 * 60 * 1000);
@@ -676,5 +684,206 @@ class AuthController {
             return res.status(401).json({ message: 'Invalid Google token' });
         }
     }
+
+    // [POST] ~ LOGIN ADMIN
+    async loginAdmin(req, res) {
+        try {
+            const { usernameOrEmail, password: passwordHashed, tokenCaptcha } = req.body;
+
+            // Verify captcha
+            const verifyResponse = await verifyCaptcha(tokenCaptcha);
+            if (!verifyResponse.valid) {
+                return res
+                    .status(verifyResponse.status)
+                    .json({ status: verifyResponse.status, message: verifyResponse.message });
+            }
+
+            // Tìm user
+            const user = await User.findOne({
+                $or: [{ user_name: usernameOrEmail }, { email: usernameOrEmail }],
+            });
+
+            // Kiểm tra user tồn tại
+            if (!user) {
+                return res.status(404).json({ message: 'Invalid credentials or insufficient permissions' });
+            }
+
+            // Kiểm tra password
+            const validPassword = await bcrypt.compare(passwordHashed, user.password);
+            if (!validPassword) {
+                return res.status(404).json({ message: 'Invalid credentials or insufficient permissions' });
+            }
+
+            // Kiểm tra role
+            if (!user.role || user.role <= 0) {
+                return res.status(403).json({ message: 'Insufficient permissions' });
+            }
+
+            // Tạo tokens
+            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '1h' });
+            const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, { expiresIn: '7d' });
+
+            // Set cookie
+            res.cookie('refreshTokenAdmin', refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                path: '/',
+                sameSite: 'strict',
+            });
+
+            // Trả về thông tin user (loại bỏ password và token)
+            const { password, email_verification_token, ...other } = user._doc;
+            return res.status(200).json({ ...other, accessToken });
+        } catch (error) {
+            console.error('Admin login error:', error);
+            return res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    // [POST] ~ REQUEST REFRESH TOKEN ADMIN
+    async requestRefreshTokenAdmin(req, res) {
+        const { refreshTokenAdmin } = req.cookies;
+        if (!refreshTokenAdmin) return res.status(403).json({ message: 'Refresh token is missing' });
+
+        try {
+            const decoded = jwt.verify(refreshTokenAdmin, process.env.JWT_REFRESH_KEY);
+
+            // Tìm user và kiểm tra role
+            const user = await User.findById(decoded._id);
+            if (!user || !user.role || user.role <= 0) {
+                return res.status(403).json({ message: 'Invalid refresh token or insufficient permissions' });
+            }
+
+            const newAccessToken = jwt.sign({ _id: decoded._id }, process.env.JWT_ACCESS_KEY, { expiresIn: '1h' });
+
+            const newRefreshToken = jwt.sign({ _id: decoded._id }, process.env.JWT_REFRESH_KEY, { expiresIn: '7d' });
+
+            res.cookie('refreshTokenAdmin', newRefreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                path: '/',
+                sameSite: 'strict',
+            });
+
+            return res.status(200).json({ accessToken: newAccessToken });
+        } catch (error) {
+            console.error('Admin refresh token error:', error);
+            return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+    }
+
+    // [POST] ~ LOGOUT ADMIN
+    async logoutAdmin(req, res) {
+        try {
+            res.clearCookie('refreshTokenAdmin');
+            return res.status(200).json({ message: 'Logged out successfully' });
+        } catch (error) {
+            console.error('Admin logout error:', error);
+            return res.status(500).json({ message: 'Error Server:', error });
+        }
+    }
+
+    // User Management Functions
+    async getAllUsers(req, res) {
+        try {
+            const users = await User.find({}, { password: 0, email_verification_token: 0, forgot_password_token: 0 });
+            return res.status(200).json(users);
+        } catch (error) {
+            console.error('Error getting users:', error);
+            return res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async updateUserByAdmin(req, res) {
+        try {
+            const { userId } = req.params;
+            const updateData = req.body;
+
+            delete updateData.password;
+            delete updateData.email_verification_token;
+            delete updateData.forgot_password_token;
+
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            if (user.role === 2 && (!req.user || req.user.role !== 2)) {
+                return res.status(403).json({ message: 'Not authorized to update admin users' });
+            }
+
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { $set: updateData },
+                { new: true, select: '-password -email_verification_token -forgot_password_token' },
+            );
+
+            return res.status(200).json({
+                message: 'User updated successfully',
+                user: updatedUser,
+            });
+        } catch (error) {
+            console.error('Error updating user:', error);
+            return res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const { userId } = req.params;
+
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            if (user.role === 2 && (!req.user || req.user.role !== 2)) {
+                return res.status(403).json({ message: 'Not authorized to delete admin users' });
+            }
+
+            await User.findByIdAndDelete(userId);
+
+            return res.status(200).json({ message: 'User deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            return res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async addUserByAdmin(req, res) {
+        try {
+            const { email, password, username, full_name, phone_number, role, status } = req.body;
+
+            if (!email || !password || !username) {
+                return res.status(400).json({ message: 'Missing required fields' });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const newUser = new User({
+                user_name: username,
+                email,
+                password: hashedPassword,
+                full_name: full_name || '',
+                type: 'WEBSITE',
+                role: role || 0,
+                phone_number: phone_number || '',
+                is_verified: true,
+                status: status || 1,
+            });
+
+            const savedUser = await newUser.save();
+            const { password: _, ...userWithoutPassword } = savedUser._doc;
+
+            return res.status(200).json({
+                message: 'User added successfully!',
+                user: userWithoutPassword,
+            });
+        } catch (error) {
+            console.error('Error adding user:', error);
+            return res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
 }
+
 module.exports = new AuthController();

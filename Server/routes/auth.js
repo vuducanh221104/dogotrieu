@@ -8,6 +8,17 @@ const jwtMiddleware = require('../middlewares/JwtMiddleware');
 // router.get('/google/redirect', AuthController.loginRedirect);
 router.post('/google/verify', AuthController.verifyGoogleToken);
 
+//Admin
+router.post('/admin/login', AuthController.loginAdmin);
+router.post('/admin/logout', AuthController.logoutAdmin);
+router.post('/admin/refreshToken', AuthController.requestRefreshTokenAdmin);
+router.post('/admin/users', jwtMiddleware.verifyTokenAdmin, AuthController.addUserByAdmin);
+
+//User Management
+router.get('/users', AuthController.getAllUsers);
+router.patch('/users/:userId', jwtMiddleware.verifyTokenAdmin, AuthController.updateUserByAdmin);
+router.delete('/users/:userId', jwtMiddleware.verifyTokenAdmin, AuthController.deleteUser);
+
 //User
 router.post('/addNewUser', AuthController.addUser);
 router.post('/login', AuthController.loginUser);
