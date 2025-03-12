@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
     const description = `Giỏ hàng của bạn tại Đồ Gỗ Triệu đang chờ đón những thiết kế đỉnh cao, kết hợp chất lượng bền vững và phong cách độc đáo. Hoàn thiện không gian sống đẳng cấp của bạn ngay hôm nay!
     `;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

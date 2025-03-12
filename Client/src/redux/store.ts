@@ -2,6 +2,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
+import adminAuthReducer from './adminAuthSlice';
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
@@ -15,6 +16,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    adminAuth: adminAuthReducer,
     cart: cartReducer,
 });
 

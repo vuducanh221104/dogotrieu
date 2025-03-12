@@ -1,6 +1,7 @@
 'use client';
 import { Category } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
+import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
@@ -66,7 +67,7 @@ export const categoryGet = () => {
 //[POST]
 export const categoryAdd = async (data: any): Promise<any> => {
     try {
-        const res = await httpRequest.post<any>(`api/v1/category`, data);
+        const res = await httpRequestAdmin.adminPost<any>(`api/v1/category`, data);
         return res.data;
     } catch (error: any) {
         const err = error as AxiosError;
@@ -77,7 +78,7 @@ export const categoryAdd = async (data: any): Promise<any> => {
 //[PATCH]
 export const categoryUpdate = async (data: any): Promise<any> => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/category`, data);
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/category`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -88,7 +89,7 @@ export const categoryUpdate = async (data: any): Promise<any> => {
 //[DELETE]
 export const categoryDelete = async (ids: {}): Promise<any> => {
     try {
-        const res = await httpRequest.deleted<any>(`api/v1/category`, {
+        const res = await httpRequestAdmin.adminDeleted<any>(`api/v1/category`, {
             data: { ids },
         });
         return res.data;

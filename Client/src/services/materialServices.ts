@@ -1,12 +1,13 @@
 'use client';
 import * as httpRequest from '@/utils/httpRequest';
+import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 import { AxiosError } from 'axios';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 //[POST]
 export const materialAdd = async (data: {}) => {
     try {
-        const res = await httpRequest.post<any>(`api/v1/material`, data);
+        const res = await httpRequestAdmin.adminPost<any>(`api/v1/material`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -34,7 +35,7 @@ export const materialGet = () => {
 //[PATCH]
 export const materialUpdate = async (data: any) => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/material`, data);
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/material`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -44,7 +45,7 @@ export const materialUpdate = async (data: any) => {
 //[DELETE]
 export const materialDelete = async (ids: {}) => {
     try {
-        const res = await httpRequest.deleted<any>(`api/v1/material`, {
+        const res = await httpRequestAdmin.adminDeleted<any>(`api/v1/material`, {
             data: { ids },
         });
         return res.data;

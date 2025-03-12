@@ -13,7 +13,7 @@ export const generateMetadata = (): Metadata => {
     const description =
         'Đồ Gỗ Triệu tự hào giới thiệu Nội Thất Đồ Gỗ Cũ. Những giá trị ban đầu của chúng tôi là bền vững, lâu dài, độc quyền và chất lượng.';
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
     return {
         title: title,
         description: description,

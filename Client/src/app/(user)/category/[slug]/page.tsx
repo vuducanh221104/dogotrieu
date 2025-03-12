@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     }
     const description = `Trải nghiệm sự thanh lịch và chân thực của Châu Âu và Châu Á của Đồ Gỗ Triệu. Mua sắm ngay để tận hưởng cuộc sống hiện đại đầy phong cách!`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

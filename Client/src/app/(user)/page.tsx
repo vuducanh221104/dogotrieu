@@ -8,7 +8,7 @@ export const generateMetadata = (): Metadata => {
     const description =
         'Khám phá thế giới nội thất độc đáo, kết hợp giữa vẻ đẹp cổ điển và hiện đại, tự nhiên và tinh tế. Những món đồ mang đậm dấu ấn dân tộc, tạo nên không gian sống đậm chất nghệ thuật và chân thực. Từ bàn ghế, ghế sofa, đèn, tủ, kệ đến phụ kiện trang trí, tất cả đều sẵn sàng để tô điểm cho ngôi nhà của bạn. Đặc biệt, miễn phí vận chuyển toàn quốc. Chào mừng bạn đến với trải nghiệm mua sắm hoàn hảo!';
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
     return {
         title: title,
         description: description,

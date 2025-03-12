@@ -318,11 +318,11 @@
     }
 }
 
-@media screen and (max-width: 427px) {
+@media screen and (max-width: 450px) {
     .wrapper-tippy {
-        width: 100vw;
-        height: 100vh;
-        right: -82px;
+        width: 100vw !important;
+        height: 100vh !important;
+        right: -74px;
         min-width: 0;
         &.is-login {
             width: 100% !important;

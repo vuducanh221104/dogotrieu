@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = 'Xác Thực Email | Đồ Gỗ Triệu';
     const description = `Xác thực địa chỉ email của bạn để hoàn tất đăng ký tài khoản tại Đồ Gỗ Triệu. Quá trình xác thực đơn giản và nhanh chóng giúp bảo vệ tài khoản của bạn và đảm bảo bạn nhận được các thông báo quan trọng từ chúng tôi.`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

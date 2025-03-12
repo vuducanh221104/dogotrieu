@@ -64,5 +64,7 @@ export const adminBreadCumbs = [
     { url: '/admin/home/bannerOnMobile', urlTile: 'Home', name: 'Image Banner On Mobile' },
     { url: '/admin/news/list', urlTile: 'News', name: 'List News' },
     { url: '/admin/home/featuredNews', urlTile: 'Home', name: 'Featured News' },
+    { url: '/admin/user/list', urlTile: 'User', name: 'List User' },
+    { url: '/admin/user/add', urlTile: 'User', name: 'Add User' },
     //..thêm nữa
 ];

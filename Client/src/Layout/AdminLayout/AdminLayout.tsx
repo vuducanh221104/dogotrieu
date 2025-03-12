@@ -80,6 +80,15 @@ const menuItems = [
         label: 'Blogs/News',
         children: [{ key: '12', label: <Link href={config.routesAdmin.blogsList}>List Blogs/News</Link> }],
     },
+    {
+        key: 'sub9',
+        icon: <UserOutlined />,
+        label: 'User',
+        children: [
+            { key: '13', label: <Link href={config.routesAdmin.userList}>List User</Link> },
+            { key: '14', label: <Link href={config.routesAdmin.userAdd}>Add User</Link> },
+        ],
+    },
 ];
 
 interface AdminLayoutProps {
@@ -93,12 +102,6 @@ function AdminLayout({ children }: AdminLayoutProps) {
     const authPage = urlAuth.some((url: string) => pathname.startsWith(url));
     const dataUser = useSelector((state: any) => state.auth.login.currentUser);
     const [visible, setVisible] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!dataUser && !authPage) {
-            router.push(config.routesAdmin.login);
-        }
-    }, [dataUser, pathname]);
 
     const {
         token: { colorBgContainer },

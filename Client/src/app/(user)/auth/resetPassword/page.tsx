@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = 'Đặt Lại Mật Khẩu | Đồ Gỗ Triệu';
     const description = `Đặt lại mật khẩu cho tài khoản Đồ Gỗ Triệu của bạn một cách an toàn và bảo mật. Chúng tôi sử dụng công nghệ mã hóa tiên tiến để bảo vệ thông tin của bạn. Hãy chọn một mật khẩu mạnh để bảo vệ tài khoản của bạn tốt hơn.`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

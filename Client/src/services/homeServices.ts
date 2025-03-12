@@ -1,5 +1,6 @@
 'use client';
 import * as httpRequest from '@/utils/httpRequest';
+import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
@@ -24,7 +25,7 @@ export const homeGet = () => {
 //[PATCH]
 export const homePatch = async (data: any) => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/home`, {
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/home`, {
             ...data,
         });
         return res.data;
@@ -37,7 +38,7 @@ export const homePatch = async (data: any) => {
 //[PATCH]
 export const homePatchFeatProduct = async (idFeatProduct: string, data: any) => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/home/featProduct/${idFeatProduct}`, {
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/home/featProduct/${idFeatProduct}`, {
             ...data,
         });
         return res.data;
@@ -50,7 +51,7 @@ export const homePatchFeatProduct = async (idFeatProduct: string, data: any) => 
 
 export const homeDeleteFeatProduct = async (idFeatProduct: string) => {
     try {
-        const res = await httpRequest.deleted<any>(`api/v1/home/featProduct/${idFeatProduct}`);
+        const res = await httpRequestAdmin.adminDeleted<any>(`api/v1/home/featProduct/${idFeatProduct}`);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;

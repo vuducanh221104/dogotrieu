@@ -1,4 +1,7 @@
+'use client';
+import { Category } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
+import { adminPatch } from '@/utils/httpRequestAdmin';
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
@@ -42,22 +45,6 @@ export const newsGetAll = () => {
     }
     return { data, error, isLoading, mutate };
 };
-
-//[GET]
-// export const newGetAllLimit = (query: string) => {
-//     const url = `api/v1/news/all${query}`;
-//     const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequest.fetcher, {
-//         revalidateIfStale: false,
-//         revalidateOnFocus: false,
-//         revalidateOnReconnect: false,
-//     });
-
-//     if (error) {
-//         const err = error as AxiosError;
-//         console.error(err.response?.data);
-//     }
-//     return { data, error, isLoading, mutate };
-// };
 
 //[GET]
 export const newGetTaggedPagination = (slug: any, query: string) => {
@@ -112,13 +99,11 @@ export const newsFeaturedGet = (queryString: any) => {
 //[PATCH]
 export const newsPatchById = async (id: string, data: any) => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/news/${id}`, {
-            ...data,
-        });
+        const res = await adminPatch<any>(`api/v1/news/${id}`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
-        // console.error(err.response?.data);
+        throw err;
     }
 };
 //[DELETE]

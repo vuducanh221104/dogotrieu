@@ -3,7 +3,7 @@ import { KeyedMutator } from 'swr';
 import { jwtDecode } from 'jwt-decode';
 import { store } from '@/redux/store';
 import { loginSuccess, logOutSuccess, updateAccessToken } from '@/redux/authSlice';
-import { authLogout } from '@/services/authServices';
+import { authLogout, authRefreshToken } from '@/services/authServices';
 
 interface UserState {
     accessToken?: string;
@@ -65,21 +65,14 @@ httpRequest.interceptors.request.use(
                     if (!isRefreshing) {
                         isRefreshing = true;
                         try {
-                            const response = await httpRequest.post('/api/v1/auth/refreshToken', null, {
-                                skipAuthRefresh: true,
-                            } as CustomAxiosRequestConfig);
-                            const { accessToken: newToken } = response.data;
+                            const data = await authRefreshToken();
+                            const { accessToken: newToken } = data;
                             store.dispatch(updateAccessToken(newToken));
                             config.headers['Authorization'] = `Bearer ${newToken}`;
                             processQueue(null, newToken);
                         } catch (error) {
                             processQueue(error, null);
                             store.dispatch(loginSuccess(null as any));
-                            // if (typeof window !== 'undefined') {
-                            //     await authLogout();
-                            //     store.dispatch(logOutSuccess());
-                            //     window.location.href = '/auth/login';
-                            // }
                             return Promise.reject(error);
                         } finally {
                             isRefreshing = false;
@@ -146,7 +139,7 @@ httpRequest.interceptors.response.use(
 
                 try {
                     // Gọi API refresh token
-                    const { data } = await httpRequest.post('/api/v1/auth/refreshToken');
+                    const data = await authRefreshToken();
                     const { accessToken } = data;
 
                     if (accessToken) {

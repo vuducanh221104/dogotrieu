@@ -13,7 +13,7 @@ export const generateMetadata = (): Metadata => {
     const description =
         'Khám phá những thiết kế nội thất độc đáo và tinh tế tại Đồ Gỗ Triệu. Rất nhiều sản phẩm chất lượng cao đang chờ đón bạn, không yêu cầu mua tối thiểu và giá tốt nhất trên thị trường.';
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
     return {
         title: title,
         description: description,

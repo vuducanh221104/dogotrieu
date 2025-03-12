@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import { Product, ProductDetail, ProductType } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
 import { AxiosError } from 'axios';
+import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 
 //GET ~ GET SSR SEO
 export const productSEOGET = async (id: string): Promise<ProductDetail | undefined> => {
@@ -20,7 +21,7 @@ export const productSEOGET = async (id: string): Promise<ProductDetail | undefin
 //[POST]
 export const productAdd = async (data: any): Promise<ProductDetail | undefined> => {
     try {
-        const res = await httpRequest.post<any>(`api/v1/product`, data);
+        const res = await httpRequestAdmin.adminPost<any>(`api/v1/product`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -79,7 +80,9 @@ export const productGetAll = () => {
 //[DELETE]
 export const productDelete = async (product_id: string, product_type_id: string): Promise<void> => {
     try {
-        const res = await httpRequest.deleted<void>(`api/v1/product`, { data: { product_id, product_type_id } });
+        const res = await httpRequestAdmin.adminDeleted<void>(`api/v1/product`, {
+            data: { product_id, product_type_id },
+        });
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -93,7 +96,7 @@ export const productPatch = async (
     product_type_data: Partial<ProductType>,
 ): Promise<Product | undefined> => {
     try {
-        const res = await httpRequest.patch<any>(`api/v1/product/${id}`, {
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/product/${id}`, {
             ...product_data,
             product_type_id: product_type_data,
         });

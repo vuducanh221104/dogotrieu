@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = 'Đăng Nhập | Đồ Gỗ Triệu';
     const description = `Đăng nhập vào tài khoản Đồ Gỗ Triệu của bạn để trải nghiệm mua sắm trực tuyến an toàn và tiện lợi. Tận hưởng các ưu đãi độc quyền, theo dõi đơn hàng và quản lý thông tin cá nhân. Chúng tôi cam kết bảo mật thông tin với hệ thống xác thực hai lớp và mã hóa dữ liệu tiên tiến.`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

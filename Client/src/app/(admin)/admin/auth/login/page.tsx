@@ -5,10 +5,13 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
-import { changeUser } from '@/redux/authSlice';
+import { adminLoginStart, adminLoginSuccess, adminLoginFailed } from '@/redux/adminAuthSlice';
 import { useRouter } from 'next-nprogress-bar';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import config from '@/config';
+import Turnstile from 'react-turnstile';
+import { authAdminLogin } from '@/services/authServices';
+
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -16,8 +19,12 @@ const { Text, Title, Link } = Typography;
 export default function PageAdminLogin() {
     const router = useRouter();
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean>(false);
-    const [auth, setAuth] = useState<boolean>(false);
+    const [form] = Form.useForm();
+    const [tokenCaptcha, setToken] = useState(null);
+    const [isFailedLogin, setIsFailedLogin] = useState(false);
+    const [isFailedToken, setFailedToken] = useState(false);
+    const [turnstileKey, setTurnstileKey] = useState(0);
+    const [loading, setLoading] = useState(false);
     const { token } = useToken();
     const screens = useBreakpoint();
 
@@ -51,43 +58,66 @@ export default function PageAdminLogin() {
         title: {
             fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
         },
+        errorText: {
+            color: token.colorError,
+            textAlign: 'center',
+            marginTop: '-12px',
+            marginBottom: token.marginSM,
+        },
     };
 
-    const authAccount = {
-        name: 'admin',
-        password: process.env.NEXT_PUBLIC_AUTH_ACCOUNT,
-    };
+    const onFinish = async (values: any) => {
+        // Kiểm tra token captcha
+        if (!tokenCaptcha) {
+            setFailedToken(true);
+            return;
+        }
 
-    const onFinish = (values: any) => {
+        setIsFailedLogin(false);
+        setFailedToken(false);
         setLoading(true);
-        if (values.name === authAccount.name && values.password === authAccount.password) {
-            setAuth(false);
-            dispatch(
-                changeUser({
-                    name: 'admin',
-                    role: 3,
-                }),
-            );
+        dispatch(adminLoginStart());
+
+        try {
+            const response = await authAdminLogin(values, tokenCaptcha);
+            dispatch(adminLoginSuccess(response));
             router.push(config.routesAdmin.dashboard);
-        } else {
-            setAuth(true);
+        } catch (error: any) {
+            dispatch(adminLoginFailed());
+
+            if (error.response?.status === 404 || error.response?.status === 403) {
+                setIsFailedLogin(true);
+                setFailedToken(false);
+                form.setFieldValue('password', '');
+            } else if (error.response?.status === 400) {
+                setFailedToken(true);
+                setIsFailedLogin(false);
+            } else {
+                setIsFailedLogin(false);
+                setFailedToken(false);
+            }
+            setToken(null);
+            setTurnstileKey((prev) => prev + 1);
+        } finally {
             setLoading(false);
         }
     };
+
     if (loading) {
         return <ModalLoadingAdmin />;
     }
+
     return (
         <section style={styles.section}>
             <div style={styles.container}>
                 <div style={styles.header}>
                     <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
-
-                    <Title style={styles.title}>Login</Title>
+                    <Title style={styles.title}>Admin Login</Title>
                     <Text style={styles.text}>Welcome You To Đồ Gỗ Triệu Dashboard</Text>
                 </div>
                 <Form
-                    name="normal_login"
+                    form={form}
+                    name="admin_login"
                     initialValues={{
                         remember: true,
                     }}
@@ -96,15 +126,15 @@ export default function PageAdminLogin() {
                     requiredMark="optional"
                 >
                     <Form.Item
-                        name="name"
+                        name="usernameOrEmail"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your Email!',
+                                message: 'Please input your username or email!',
                             },
                         ]}
                     >
-                        <Input prefix={<MailOutlined />} placeholder="Name" />
+                        <Input prefix={<MailOutlined />} placeholder="Username or Email" />
                     </Form.Item>
                     <Form.Item
                         name="password"
@@ -118,22 +148,38 @@ export default function PageAdminLogin() {
                         <Input.Password prefix={<LockOutlined />} type="password" placeholder="Password" />
                     </Form.Item>
 
-                    {auth && (
-                        <Link
-                            type="danger"
-                            href="#"
-                            style={{
-                                marginTop: '-12px',
-                                display: 'flex',
-                                justifyContent: 'center',
+                    <div style={{ height: '65px', marginBottom: token.marginMD }}>
+                        <Turnstile
+                            key={turnstileKey}
+                            sitekey={`${process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}`}
+                            size={'normal'}
+                            theme={'light'}
+                            onVerify={(token: any) => setToken(token)}
+                            onError={() => {
+                                setFailedToken(true);
+                                setToken(null);
                             }}
-                        >
-                            Name Or Password Failed
-                        </Link>
+                            onExpire={() => {
+                                setToken(null);
+                                setTurnstileKey((prev) => prev + 1);
+                            }}
+                            refreshExpired="auto"
+                        />
+                    </div>
+
+                    {isFailedLogin && (
+                        <Text type="danger" style={styles.errorText}>
+                            Invalid credentials or insufficient permissions
+                        </Text>
+                    )}
+                    {isFailedToken && !isFailedLogin && (
+                        <Text type="danger" style={styles.errorText}>
+                            Please complete the Captcha!
+                        </Text>
                     )}
 
                     <Form.Item>
-                        <Form.Item valuePropName="checked" noStyle>
+                        <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox>Remember me</Checkbox>
                         </Form.Item>
                         <Link style={styles.forgotPassword} href="#">
@@ -141,7 +187,7 @@ export default function PageAdminLogin() {
                         </Link>
                     </Form.Item>
                     <Form.Item style={{ marginBottom: '0px' }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
                             Log in
                         </Button>
                     </Form.Item>

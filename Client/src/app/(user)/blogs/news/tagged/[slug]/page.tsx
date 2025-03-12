@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
     const description = `Xem các Tin Tức, Bài Đăng mới nhất của DOGOTRIEU`;
     const url = `${routes.domain.name}${routes.user.newsTaggedOnly}/${slug}`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,

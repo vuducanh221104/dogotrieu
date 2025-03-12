@@ -234,7 +234,15 @@ function Login() {
                                     </Form>
                                 </div>
                                 <div className={cx('popper-social')}>
-                                    <div className={cx('google-login-container')}>
+                                    <div
+                                        className={cx('google-login-container')}
+                                        style={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <GoogleLogin
                                             onSuccess={handleGoogleSuccess}
                                             onError={handleGoogleError}
@@ -250,13 +258,13 @@ function Login() {
                                 <div className={cx('popper-auth')}>
                                     <div className={`${cx('auth-footer')} link`}>
                                         <p>Người Mới?</p>
-                                        <button>
+                                        <button onClick={() => setShowMenu(false)}>
                                             <Link href={config.routes.register}>Tạo Tài Khoản</Link>
                                         </button>
                                     </div>
                                     <div className={`${cx('auth-footer')} link`} style={{ margin: '0' }}>
                                         <p>Bạn Quên Mật Khẩu?</p>
-                                        <button>
+                                        <button onClick={() => setShowMenu(false)}>
                                             <Link href={config.routes.recover}>Lấy Lại Mật Khẩu</Link>
                                         </button>
                                     </div>

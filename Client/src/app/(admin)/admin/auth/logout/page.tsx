@@ -1,19 +1,25 @@
 'use client';
-import { logOutSuccess } from '@/redux/authSlice';
+import { adminLogOutStart, adminLogOutSuccess, adminLogOutFailed } from '@/redux/adminAuthSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next-nprogress-bar';
 import config from '@/config';
+import { authAdminLogout } from '@/services/authServices';
 
 function Logout() {
     const router = useRouter();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const handleLogOut = () => {
-            dispatch(logOutSuccess());
-            if (typeof window !== 'undefined') {
+        const handleLogOut = async () => {
+            try {
+                dispatch(adminLogOutStart());
+                await authAdminLogout();
+                dispatch(adminLogOutSuccess());
                 router.replace(config.routesAdmin.login);
+            } catch (error) {
+                dispatch(adminLogOutFailed());
+                router.replace(config.routesAdmin.dashboard);
             }
         };
         handleLogOut();

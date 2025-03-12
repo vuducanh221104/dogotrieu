@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = 'Điều Khoản Sử Dụng | Đồ Gỗ Triệu';
     const description = `Điều khoản sử dụng của Đồ Gỗ Triệu - Quy định và điều kiện khi sử dụng website và dịch vụ của chúng tôi. Vui lòng đọc kỹ các điều khoản trước khi sử dụng.`;
     const image =
-        'https://res.cloudinary.com/do4zld720/image/upload/v1727272176/The%CC%82m_tie%CC%82u_%C4%91e%CC%82%CC%80_1_q39ljx.png';
+        'https://res.cloudinary.com/do4zld720/image/upload/q_auto:best/v1741769745/dogotrieu_image_bjb0ga.jpg';
 
     return {
         title: title,
