@@ -7,10 +7,10 @@ import routes from '@/config/routes';
 
 interface AuthMessageNotificationProps {
     title: string;
-    message: string;
-    subTitle: string;
+    message?: string;
+    subTitle?: string;
     textButton: string;
-    iconHeader?: 'success' | 'warning' | 'verifyEmail';
+    iconHeader?: string;
     btnLinkTo?: string;
 }
 
@@ -20,7 +20,7 @@ function AuthMessageNotification({
     message,
     subTitle,
     textButton,
-    iconHeader = 'verifyEmail',
+    iconHeader,
     btnLinkTo,
 }: AuthMessageNotificationProps) {
     return (

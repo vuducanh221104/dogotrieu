@@ -65,6 +65,7 @@ function ResetPasswordContent() {
         return (
             <AuthMessageNotification
                 title="Xác thực Email thành công"
+                message="Email của bạn đã được xác thực thành công"
                 subTitle="Quay Về Trang Thông Tin"
                 textButton="Quay Về Trang Thông Tin"
                 iconHeader="success"
@@ -77,6 +78,7 @@ function ResetPasswordContent() {
         return (
             <AuthMessageNotification
                 title="Xác thực Email thành công"
+                message="Email của bạn đã được xác thực thành công"
                 subTitle="Quay Về Trang Đăng Nhập"
                 textButton="Quay Về Đăng Nhập"
                 iconHeader="success"
@@ -88,6 +90,7 @@ function ResetPasswordContent() {
     return (
         <AuthMessageNotification
             title="Liên kết này không hợp lệ hoặc đã hết hạn."
+            message="Không thể xác thực email của bạn"
             subTitle="Bạn có thể đăng nhập mà không cần xác minh Email"
             textButton="Quay Về Đăng Nhập"
             iconHeader="warning"
