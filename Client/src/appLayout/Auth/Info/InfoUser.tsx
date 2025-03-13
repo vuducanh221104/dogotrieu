@@ -13,28 +13,47 @@ import Loading from '@/components/Loading';
 import useMultiCooldown from '@/utils/hookMultiCooldown';
 import routes from '@/config/routes';
 import React from 'react';
+import { AuthState, UpdateInfoFormValues, ApiError, CooldownHook } from '@/types/client';
+import { Dispatch } from 'redux';
 
 const cx = classNames.bind(styles);
 
 function AccountInfoContent() {
-    const [form] = Form.useForm();
-    const { currentUser } = useSelector((state: any) => state.auth.login);
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const dispatch = useDispatch();
+    const [form] = Form.useForm<UpdateInfoFormValues>();
+    const { currentUser } = useSelector((state: AuthState) => state.auth.login);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const dispatch: Dispatch = useDispatch();
 
-    const { cooldown: infoCooldown, startCooldown: startInfoCooldown } = useMultiCooldown('infoCooldown');
+    const {
+        cooldown: infoCooldown,
+        startCooldown: startInfoCooldown,
+        checkCooldown,
+    } = useMultiCooldown('infoCooldown') as CooldownHook;
 
     // Set initial values for form
     useEffect(() => {
-        form.setFieldsValue({
-            phoneNumber: currentUser?.phone_number,
-            fullName: currentUser?.full_name,
-        });
+        if (currentUser) {
+            form.setFieldsValue({
+                phoneNumber: currentUser.phone_number,
+                fullName: currentUser.full_name,
+            });
+        }
     }, [currentUser, form]);
 
+    // Kiểm tra cooldown khi component mount và mỗi khi có thay đổi
+    useEffect(() => {
+        checkCooldown();
+    }, [checkCooldown]);
+
     const handleSubmit = async () => {
+        // Kiểm tra lại cooldown trước khi submit
+        if (infoCooldown > 0 || !currentUser) {
+            return;
+        }
+
         setLoading(true);
+        setSuccess(false);
         try {
             const values = await form.validateFields();
             const hasPhoneChanged = values.phoneNumber !== currentUser.phone_number;
@@ -45,8 +64,6 @@ function AccountInfoContent() {
                 return;
             }
 
-            startInfoCooldown();
-
             // Chỉ gửi những giá trị đã thay đổi
             const response = await updateInfoUser(
                 currentUser._id,
@@ -54,18 +71,20 @@ function AccountInfoContent() {
                 hasNameChanged ? values.fullName : undefined,
             );
 
-            if (hasPhoneChanged) {
-                dispatch(updatePhoneNumber(values.phoneNumber));
+            if (response) {
+                if (hasPhoneChanged) {
+                    dispatch(updatePhoneNumber(values.phoneNumber));
+                }
+                if (hasNameChanged) {
+                    dispatch(updateFullName(values.fullName));
+                }
+                setSuccess(true);
+                startInfoCooldown(); // Bắt đầu cooldown khi cập nhật thành công
             }
-            if (hasNameChanged) {
-                dispatch(updateFullName(values.fullName));
-            }
-
-            setLoading(false);
-            setSuccess(true);
-        } catch (error) {
-            setLoading(false);
+        } catch (error: ApiError | any) {
             console.error('Failed to update:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -84,7 +103,7 @@ function AccountInfoContent() {
                         },
                     ]}
                 >
-                    <Input placeholder="Nhập Họ và Tên" />
+                    <Input placeholder="Nhập Họ và Tên" disabled={infoCooldown > 0} />
                 </Form.Item>
             ),
         },
@@ -113,7 +132,7 @@ function AccountInfoContent() {
                         },
                     ]}
                 >
-                    <Input placeholder="Nhập Số Điện Thoại" />
+                    <Input placeholder="Nhập Số Điện Thoại" disabled={infoCooldown > 0} />
                 </Form.Item>
             ),
         },

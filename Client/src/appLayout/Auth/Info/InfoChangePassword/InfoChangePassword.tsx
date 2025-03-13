@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Input } from 'antd';
 import classNames from 'classnames/bind';
 import styles from '@/styles/Auth.module.scss';
@@ -12,21 +12,39 @@ import { useSelector } from 'react-redux';
 import routes from '@/config/routes';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
 import useMultiCooldown from '@/utils/hookMultiCooldown';
+import { AuthState, ChangePasswordFormValues, ApiError, CooldownHook } from '@/types/client';
 
 const cx = classNames.bind(styles);
 
 function InfoChangePassword() {
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [passwordCurrentFailed, setPasswordCurrentFailed] = useState(null);
-    const [form] = Form.useForm();
-    const { currentUser } = useSelector((state: any) => state.auth.login);
-    const { cooldown: infoChangePasswordCoolDown, startCooldown: startInfoChangePasswordCoolDown } =
-        useMultiCooldown('infoChangePasswordCoolDown');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [passwordCurrentFailed, setPasswordCurrentFailed] = useState<number | null>(null);
+    const [form] = Form.useForm<ChangePasswordFormValues>();
+    const { currentUser } = useSelector((state: AuthState) => state.auth.login);
+
+    const {
+        cooldown: infoChangePasswordCoolDown,
+        startCooldown: startInfoChangePasswordCoolDown,
+        checkCooldown,
+    } = useMultiCooldown('infoChangePasswordCoolDown') as CooldownHook;
+
+    useEffect(() => {
+        checkCooldown();
+    }, [checkCooldown]);
 
     const handleSubmit = async () => {
+        if (infoChangePasswordCoolDown > 0) {
+            return;
+        }
+
+        if (!currentUser) {
+            return;
+        }
+
         setPasswordCurrentFailed(null);
         setLoading(true);
+        setSuccess(false);
 
         try {
             const values = await form.validateFields();
@@ -35,15 +53,13 @@ function InfoChangePassword() {
             if (response.status === 200) {
                 form.resetFields();
                 setSuccess(true);
-                setLoading(false);
                 startInfoChangePasswordCoolDown();
             }
-        } catch (error: any) {
-            if (error.response.status === 400 || 401) {
+        } catch (error: ApiError | any) {
+            if (error.response?.status === 400 || error.response?.status === 401) {
                 setPasswordCurrentFailed(error.response.status);
-                setLoading(false);
-                return;
             }
+        } finally {
             setLoading(false);
         }
     };
@@ -51,21 +67,26 @@ function InfoChangePassword() {
     if (success) {
         return (
             <AuthMessageNotification
-                title="  Mật khẩu đã được thay đổi thành công."
-                subTitle="Quay Về Trang Thông Tin"
+                title="Mật khẩu đã được thay đổi thành công."
+                subTitle={'Quay Về Trang Thông Tin'}
                 textButton="Tiếp Tục"
                 btnLinkTo={routes.user.info}
                 iconHeader="success"
             />
         );
     }
+
     return (
         <div className={cx('auth-wrapper')}>
             <AuthSpinLoading loading={loading} />
             <div className="container">
                 <header className={cx('auth-header')}>
                     <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Tạo Mật Khẩu Mới</h1>
-                    <p className={cx('auth-description')}>Nhập mật khẩu mới</p>
+                    <p className={cx('auth-description')}>
+                        {infoChangePasswordCoolDown > 0
+                            ? `Vui lòng đợi ${infoChangePasswordCoolDown} giây trước khi thay đổi mật khẩu.`
+                            : 'Nhập mật khẩu mới'}
+                    </p>
                 </header>
                 <Form form={form} layout="vertical" onFinish={handleSubmit}>
                     <div className={cx('form-search-wrapper')}>
@@ -78,6 +99,7 @@ function InfoChangePassword() {
                                     type="password"
                                     className={`${archivo.className} ${cx('form-field')}`}
                                     placeholder={'Mật khẩu cũ'}
+                                    disabled={infoChangePasswordCoolDown > 0}
                                 />
                             </Form.Item>
                         </div>
@@ -93,6 +115,7 @@ function InfoChangePassword() {
                                     type="password"
                                     className={`${archivo.className} ${cx('form-field')}`}
                                     placeholder={'Mật khẩu mới'}
+                                    disabled={infoChangePasswordCoolDown > 0}
                                 />
                             </Form.Item>
                         </div>
@@ -115,6 +138,7 @@ function InfoChangePassword() {
                                     type="password"
                                     className={`${archivo.className} ${cx('form-field')}`}
                                     placeholder={'Nhập lại mật khẩu mới'}
+                                    disabled={infoChangePasswordCoolDown > 0}
                                 />
                             </Form.Item>
                         </div>

@@ -27,16 +27,13 @@ export interface APIResponseSWR<T> {
     mutate: KeyedMutator<any>;
 }
 
-// Base config
 const baseConfig = {
     baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
     withCredentials: true,
 };
 
-// Admin instance
 const httpRequestAdmin = axios.create(baseConfig);
 
-// Admin refresh token state
 let isRefreshingAdmin = false;
 let failedAdminQueue: Array<{
     resolve: (value?: unknown) => void;
@@ -54,7 +51,6 @@ const processAdminQueue = (error: any, token: string | null = null) => {
     failedAdminQueue = [];
 };
 
-// Admin interceptors
 httpRequestAdmin.interceptors.request.use(
     async (config: InternalAxiosRequestConfig) => {
         const customConfig = config as CustomInternalAxiosRequestConfig;
@@ -178,7 +174,6 @@ httpRequestAdmin.interceptors.response.use(
     },
 );
 
-// Export methods for admin requests
 export const adminGet = async <T>(path: string, options: AxiosRequestConfig = {}): Promise<T> => {
     const res = await httpRequestAdmin.get<T>(path, options);
     return res.data;

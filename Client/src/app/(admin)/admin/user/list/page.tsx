@@ -9,27 +9,13 @@ import Highlighter from 'react-highlight-words';
 import { deleteUser, getAllUsers, updateUser } from '@/services/authServices';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { useMessageNotify } from '@/components/MessageNotify';
+import { AdminUser, AdminUserUpdateFormValues, ApiError } from '@/types/client';
 
-interface DataType {
-    key: string;
-    _id: string;
-    user_name: string;
-    email: string;
-    full_name: string;
-    phone_number: string;
-    role: number;
-    type: string;
-    is_verified: boolean;
-    status: number;
-    created_at: string;
-    updated_at: string;
-}
-
-type DataIndex = keyof DataType;
+type DataIndex = keyof AdminUser;
 
 function UserListPage() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<AdminUserUpdateFormValues>();
 
     let { data, isLoading, error, mutate } = getAllUsers();
     const [searchText, setSearchText] = useState<string>('');
@@ -41,20 +27,20 @@ function UserListPage() {
     const searchInput = useRef<InputRef>(null);
 
     data = data
-        ?.sort((a: any, b: any) => {
+        ?.sort((a: AdminUser, b: AdminUser) => {
             if (a.role !== b.role) {
                 return b.role - a.role;
             }
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         })
-        .map((item: any, index: number) => ({
+        .map((item: AdminUser, index: number) => ({
             ...item,
             index: index + 1,
         }));
 
     const handleDeleteClick = async (userId: string) => {
         setLoading(true);
-        const newData = data.filter((user: any) => user._id !== userId);
+        const newData = data.filter((user: AdminUser) => user._id !== userId);
         mutate(newData, false);
 
         try {
@@ -70,7 +56,7 @@ function UserListPage() {
         }
     };
 
-    const handleUpdateClick = async (values: any) => {
+    const handleUpdateClick = async (values: AdminUserUpdateFormValues) => {
         setLoading(true);
         try {
             await updateUser(isModalEdit!, values);

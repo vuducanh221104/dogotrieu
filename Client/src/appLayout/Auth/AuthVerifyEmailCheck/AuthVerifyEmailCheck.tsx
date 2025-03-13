@@ -2,7 +2,6 @@
 import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-
 import { authVerifyResendEmail } from '@/services/authServices';
 import Loading from '@/components/Loading';
 import AuthMessageNotification from '@/components/AuthMessageNotification';
@@ -10,14 +9,16 @@ import routes from '@/config/routes';
 import NotFound from '@/components/NotFound';
 import { useDispatch } from 'react-redux';
 import { updateIsVerified } from '@/redux/authSlice';
+import { ApiError } from '@/types/client';
+import { Dispatch } from 'redux';
 
 function VerifyEmailContent() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState(false);
-    const dispatch = useDispatch();
+    const [tokenValid, setTokenValid] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [success, setSuccess] = useState<boolean>(false);
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         if (!token) {
@@ -35,7 +36,7 @@ function VerifyEmailContent() {
                 } else {
                     setTokenValid(false);
                 }
-            } catch (error) {
+            } catch (error: ApiError | any) {
                 setTokenValid(false);
             } finally {
                 setLoading(false);

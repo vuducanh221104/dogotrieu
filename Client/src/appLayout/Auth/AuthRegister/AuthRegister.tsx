@@ -18,28 +18,30 @@ import { loginFailed, loginStart, loginSuccess } from '@/redux/authSlice';
 import { GoogleLogin } from '@react-oauth/google';
 import routes from '@/config/routes';
 import { useRouter } from 'next-nprogress-bar';
+import { Dispatch } from 'redux';
+import { ApiError, GoogleCredentialResponse, RegisterFormValues } from '@/types/client';
 
 const cx = classNames.bind(styles);
 
 function PageRegister() {
-    const [form] = Form.useForm();
-    const [tokenCaptcha, setToken] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [usernameError, setUsernameError] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [registerSuccess, setRegisterSuccess] = useState(false);
-    const [isFailedToken, setFailedToken] = useState(false);
-    const [turnstileKey, setTurnstileKey] = useState(0);
-    const [isCaptchaLoading, setIsCaptchaLoading] = useState(true);
+    const [form] = Form.useForm<RegisterFormValues>();
+    const [tokenCaptcha, setToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [usernameError, setUsernameError] = useState<string>('');
+    const [emailError, setEmailError] = useState<string>('');
+    const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
+    const [isFailedToken, setFailedToken] = useState<boolean>(false);
+    const [turnstileKey, setTurnstileKey] = useState<number>(0);
+    const [isCaptchaLoading, setIsCaptchaLoading] = useState<boolean>(true);
+    const [isFailedGoogle, setIsFailedGoogle] = useState<boolean>(false);
 
-    const debouncedUsername = useDebounce(username, 500);
-    const debouncedEmail = useDebounce(email, 500);
-    const [isFailedGoogle, setIsFailedGoogle] = useState(false);
+    const debouncedUsername = useDebounce<string>(username, 500);
+    const debouncedEmail = useDebounce<string>(email, 500);
     const router = useRouter();
+    const dispatch: Dispatch = useDispatch();
 
-    const dispatch = useDispatch();
     useEffect(() => {
         if (!debouncedUsername) return;
 
@@ -55,7 +57,7 @@ function PageRegister() {
                     ]);
                     setUsernameError(res?.exists ? 'Tên người dùng đã tồn tại!' : '');
                 }
-            } catch (err) {
+            } catch (err: ApiError | any) {
                 console.error(err);
             }
         };
@@ -78,7 +80,7 @@ function PageRegister() {
                     ]);
                     setEmailError(res?.exists ? 'Email đã tồn tại!' : '');
                 }
-            } catch (err) {
+            } catch (err: ApiError | any) {
                 console.error(err);
             }
         };
@@ -119,7 +121,7 @@ function PageRegister() {
             await authRegister(values, tokenCaptcha);
             setRegisterSuccess(true);
             setLoading(false);
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             // Nếu lỗi validate form thì return luôn, không reset captcha
             if (error.errorFields) {
                 return;
@@ -139,7 +141,7 @@ function PageRegister() {
         }
     };
 
-    const handleGoogleSuccess = async (credentialResponse: any) => {
+    const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
         try {
             if (!credentialResponse.credential) {
                 setIsFailedGoogle(true);
@@ -150,7 +152,7 @@ function PageRegister() {
             const response = await authGoogleLogin(credentialResponse.credential);
             dispatch(loginSuccess(response));
             router.replace(routes.user.home);
-        } catch (error) {
+        } catch (error: ApiError | any) {
             dispatch(loginFailed());
             setIsFailedGoogle(true);
         }

@@ -13,16 +13,17 @@ import routes from '@/config/routes';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
 import { archivo } from '@/assets/FontNext';
 import config from '@/config';
+import { ApiError, ResetPasswordFormValues } from '@/types/client';
 
 const cx = classNames.bind(styles);
 
 function ResetPasswordContent() {
     const searchParams = useSearchParams();
-    const token: any = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState(false);
-    const [form] = Form.useForm();
+    const token = searchParams.get('token');
+    const [tokenValid, setTokenValid] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [form] = Form.useForm<ResetPasswordFormValues>();
 
     useEffect(() => {
         if (!token) {
@@ -39,7 +40,7 @@ function ResetPasswordContent() {
                 } else {
                     setTokenValid(false);
                 }
-            } catch (error) {
+            } catch (error: ApiError | any) {
                 setTokenValid(false);
             } finally {
                 setLoading(false);
@@ -59,7 +60,7 @@ function ResetPasswordContent() {
                 form.resetFields();
                 setSuccess(true);
             }
-        } catch (error) {
+        } catch (error: ApiError | any) {
             console.log('An error occurred.');
         } finally {
             setLoading(false);

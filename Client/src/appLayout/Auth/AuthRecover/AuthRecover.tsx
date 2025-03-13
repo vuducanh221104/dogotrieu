@@ -10,21 +10,22 @@ import { authFotgotPassword } from '@/services/authServices';
 import useMultiCooldown from '@/utils/hookMultiCooldown';
 import AuthMessageNotification from '@/components/AuthMessageNotification';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
+import { ApiError, CooldownHook, RecoverFormValues } from '@/types/client';
 
 const cx = classNames.bind(styles);
 
 function AuthRecover() {
-    const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
-    const [sentEmail, setSentEmail] = useState(false);
-    const [isFailedForgot, setIsFailedForgot] = useState(false);
-    const [isGoogleAccount, setIsGoogleAccount] = useState(false);
+    const [form] = Form.useForm<RecoverFormValues>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [sentEmail, setSentEmail] = useState<boolean>(false);
+    const [isFailedForgot, setIsFailedForgot] = useState<boolean>(false);
+    const [isGoogleAccount, setIsGoogleAccount] = useState<boolean>(false);
 
     const {
         cooldown: recoverCoolDown,
         startCooldown: startrecoverCoolDown,
         checkCooldown,
-    } = useMultiCooldown('recoverCooldown');
+    } = useMultiCooldown('recoverCooldown') as CooldownHook;
 
     // Kiểm tra cooldown khi component mount
     useEffect(() => {
@@ -44,7 +45,7 @@ function AuthRecover() {
                 startrecoverCoolDown(); // Bắt đầu cooldown khi gửi email thành công
             }
             setLoading(false);
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             if (error.response?.status === 400) {
                 setIsFailedForgot(true);
             } else if (error.response?.status === 403 && error.response.data?.type === 'GOOGLE') {
@@ -62,11 +63,7 @@ function AuthRecover() {
             <AuthMessageNotification
                 title="Quên Mật Khẩu ?"
                 message={'Link Xác Nhận Email Đã Được Gửi !'}
-                subTitle={
-                    recoverCoolDown > 0
-                        ? `Vui lòng đợi ${recoverCoolDown} giây trước khi yêu cầu lại mật khẩu mới.`
-                        : 'Hãy kiểm tra hộp thư đến hoặc mục Spam nếu không thấy Email.'
-                }
+                subTitle={'Hãy kiểm tra hộp thư đến hoặc mục Spam nếu không thấy Email.'}
                 textButton="Quay Về Đăng Nhập"
             />
         );
@@ -78,11 +75,7 @@ function AuthRecover() {
             <div className="container">
                 <header className={cx('auth-header')}>
                     <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Quên Mật Khẩu ?</h1>
-                    <p className={cx('auth-description')}>
-                        {recoverCoolDown > 0
-                            ? `Vui lòng đợi ${recoverCoolDown} giây trước khi yêu cầu lại mật khẩu mới.`
-                            : 'Nhập Email hoặc Username'}
-                    </p>
+                    <p className={cx('auth-description')}>{'Nhập Email hoặc Username'}</p>
                 </header>
                 <Form form={form} layout="vertical" onFinish={handleSubmit}>
                     <div className={cx('form-search-wrapper')}>

@@ -15,22 +15,24 @@ import { useRouter } from 'next-nprogress-bar';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
 import routes from '@/config/routes';
 import { GoogleLogin } from '@react-oauth/google';
+import { AuthState, LoginFormValues, ApiError, GoogleCredentialResponse } from '@/types/client';
+import { Dispatch } from 'redux';
 
 const cx = classNames.bind(styles);
 
 function AuthLogin() {
     const router = useRouter();
-    const [form] = Form.useForm();
-    const [tokenCaptcha, setToken] = useState(null);
-    const [isFailedLogin, setIsFailedLogin] = useState(false);
-    const [isFailedToken, setFailedToken] = useState(false);
-    const [isFailedGoogle, setIsFailedGoogle] = useState(false);
-    const [turnstileKey, setTurnstileKey] = useState(0);
+    const [form] = Form.useForm<LoginFormValues>();
+    const [tokenCaptcha, setToken] = useState<string | null>(null);
+    const [isFailedLogin, setIsFailedLogin] = useState<boolean>(false);
+    const [isFailedToken, setFailedToken] = useState<boolean>(false);
+    const [isFailedGoogle, setIsFailedGoogle] = useState<boolean>(false);
+    const [turnstileKey, setTurnstileKey] = useState<number>(0);
 
-    const dispatch = useDispatch();
-    const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
+    const dispatch: Dispatch = useDispatch();
+    const { currentUser, isFetching, error } = useSelector((state: AuthState) => state.auth.login);
 
-    const handleGoogleSuccess = async (credentialResponse: any) => {
+    const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
         try {
             if (!credentialResponse.credential) {
                 setIsFailedGoogle(true);
@@ -53,7 +55,6 @@ function AuthLogin() {
     };
 
     const handleSubmit = async () => {
-        // Kiểm tra token captcha trước
         if (!tokenCaptcha) {
             setFailedToken(true);
             return;
@@ -69,7 +70,7 @@ function AuthLogin() {
             dispatch(loginSuccess(user));
             setIsFailedLogin(false);
             router.replace(routes.user.home);
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             dispatch(loginFailed());
 
             if (error.response?.status === 404) {
@@ -98,10 +99,10 @@ function AuthLogin() {
             form.setFieldValue('password', '');
         }
     };
+
     return (
         <div className={cx('auth-wrapper')}>
             <AuthSpinLoading loading={isFetching} />
-
             <div className="container">
                 <header className={cx('auth-header')}>
                     <h1 className={`heading h1 ${archivo.className} ${cx('auth-heading')}`}>Đăng Nhập</h1>
@@ -138,7 +139,7 @@ function AuthLogin() {
                             sitekey={`${process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}`}
                             size={'flexible'}
                             theme={'light'}
-                            onVerify={(token: any) => setToken(token)}
+                            onVerify={(token: string) => setToken(token)}
                             onError={() => {
                                 setFailedToken(true);
                                 setToken(null);

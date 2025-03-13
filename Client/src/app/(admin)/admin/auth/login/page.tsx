@@ -11,6 +11,8 @@ import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import config from '@/config';
 import Turnstile from 'react-turnstile';
 import { authAdminLogin } from '@/services/authServices';
+import { AdminLoginFormValues, ApiError } from '@/types/client';
+import { Dispatch } from 'redux';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -18,13 +20,13 @@ const { Text, Title, Link } = Typography;
 
 export default function PageAdminLogin() {
     const router = useRouter();
-    const dispatch = useDispatch();
-    const [form] = Form.useForm();
-    const [tokenCaptcha, setToken] = useState(null);
-    const [isFailedLogin, setIsFailedLogin] = useState(false);
-    const [isFailedToken, setFailedToken] = useState(false);
-    const [turnstileKey, setTurnstileKey] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const dispatch: Dispatch = useDispatch();
+    const [form] = Form.useForm<AdminLoginFormValues>();
+    const [tokenCaptcha, setToken] = useState<string | null>(null);
+    const [isFailedLogin, setIsFailedLogin] = useState<boolean>(false);
+    const [isFailedToken, setFailedToken] = useState<boolean>(false);
+    const [turnstileKey, setTurnstileKey] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
     const { token } = useToken();
     const screens = useBreakpoint();
 
@@ -66,7 +68,7 @@ export default function PageAdminLogin() {
         },
     };
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: AdminLoginFormValues) => {
         // Kiểm tra token captcha
         if (!tokenCaptcha) {
             setFailedToken(true);
@@ -82,7 +84,7 @@ export default function PageAdminLogin() {
             const response = await authAdminLogin(values, tokenCaptcha);
             dispatch(adminLoginSuccess(response));
             router.push(config.routesAdmin.dashboard);
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             dispatch(adminLoginFailed());
 
             if (error.response?.status === 404 || error.response?.status === 403) {

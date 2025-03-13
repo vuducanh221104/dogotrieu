@@ -4,13 +4,14 @@ import { Button, Form, Input, Select, message } from 'antd';
 import { useRouter } from 'next-nprogress-bar';
 import { adminAddUser } from '@/services/authServices';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
+import { AdminUserFormValues, ApiError } from '@/types/client';
 
 function UserAddPage() {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<AdminUserFormValues>();
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit = async (values: any) => {
+    const handleSubmit = async (values: AdminUserFormValues) => {
         setLoading(true);
         try {
             const userData = {
@@ -30,7 +31,7 @@ function UserAddPage() {
                 role: 0,
                 status: 1,
             });
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             if (error.response?.data?.message) {
                 message.error(error.response.data.message);
             } else {

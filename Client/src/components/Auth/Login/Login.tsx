@@ -16,20 +16,22 @@ import config from '@/config';
 import AuthSpinLoading from '@/components/AuthSpinLoading';
 import routes from '@/config/routes';
 import { GoogleLogin } from '@react-oauth/google';
+import { AuthState, LoginFormValues, GoogleCredentialResponse, ApiError } from '@/types/client';
+import { Dispatch } from 'redux';
 
 const cx = classNames.bind(styles);
 
 function Login() {
     const router = useRouter();
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<LoginFormValues>();
     const [showMenu, setShowMenu] = useState<boolean>(false);
-    const [tokenCaptcha, setToken] = useState(null);
-    const [isFailedLogin, setIsFailedLogin] = useState(false);
-    const [isFailedToken, setFailedToken] = useState(false);
-    const [isFailedGoogle, setIsFailedGoogle] = useState(false);
-    const [turnstileKey, setTurnstileKey] = useState(0);
-    const dispatch = useDispatch();
-    const { currentUser, isFetching, error } = useSelector((state: any) => state.auth.login);
+    const [tokenCaptcha, setToken] = useState<string | null>(null);
+    const [isFailedLogin, setIsFailedLogin] = useState<boolean>(false);
+    const [isFailedToken, setFailedToken] = useState<boolean>(false);
+    const [isFailedGoogle, setIsFailedGoogle] = useState<boolean>(false);
+    const [turnstileKey, setTurnstileKey] = useState<number>(0);
+    const dispatch: Dispatch = useDispatch();
+    const { currentUser, isFetching, error } = useSelector((state: AuthState) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     const handleSubmit = async () => {
@@ -48,7 +50,7 @@ function Login() {
             setIsFailedLogin(false);
             router.replace(routes.user.home);
             form.resetFields();
-        } catch (error: any) {
+        } catch (error: ApiError | any) {
             dispatch(loginFailed());
 
             if (error.response?.status === 404) {
@@ -77,7 +79,7 @@ function Login() {
         }
     };
 
-    const handleGoogleSuccess = async (credentialResponse: any) => {
+    const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
         try {
             if (!credentialResponse.credential) {
                 setIsFailedGoogle(true);

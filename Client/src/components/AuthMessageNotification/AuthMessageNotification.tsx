@@ -5,8 +5,24 @@ import { archivo } from '@/assets/FontNext';
 import Link from 'next/link';
 import routes from '@/config/routes';
 
+interface AuthMessageNotificationProps {
+    title: string;
+    message: string;
+    subTitle: string;
+    textButton: string;
+    iconHeader?: 'success' | 'warning' | 'verifyEmail';
+    btnLinkTo?: string;
+}
+
 const cx = classNames.bind(styles);
-function AuthMessageNotification({ title, message, subTitle, textButton, iconHeader = 'verifyEmail', btnLinkTo }: any) {
+function AuthMessageNotification({
+    title,
+    message,
+    subTitle,
+    textButton,
+    iconHeader = 'verifyEmail',
+    btnLinkTo,
+}: AuthMessageNotificationProps) {
     return (
         <div className={cx('auth-wrapper')}>
             <div className="container">

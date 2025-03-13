@@ -8,15 +8,21 @@ import routes from '@/config/routes';
 import NotFound from '@/components/NotFound';
 import { updateIsVerified } from '@/redux/authSlice';
 import { useDispatch } from 'react-redux';
+import { ApiError, ApiResponse } from '@/types/client';
+import { Dispatch } from 'redux';
+
+interface VerifyResponse extends ApiResponse<any> {
+    type?: 'GOOGLE';
+}
 
 function ResetPasswordContent() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
-    const [tokenValid, setTokenValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [success, setSuccess] = useState(false);
-    const [successGoogle, setSuccessGoogle] = useState(false);
-    const dispatch = useDispatch();
+    const [tokenValid, setTokenValid] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [successGoogle, setSuccessGoogle] = useState<boolean>(false);
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         if (!token) {
@@ -26,7 +32,7 @@ function ResetPasswordContent() {
 
         const verifyToken = async () => {
             try {
-                const response = await authVerifyEmail(token);
+                const response: VerifyResponse = await authVerifyEmail(token);
                 if (response.status === 200) {
                     setTokenValid(true);
                     setSuccess(true);
@@ -37,7 +43,7 @@ function ResetPasswordContent() {
                 } else {
                     setTokenValid(false);
                 }
-            } catch (error) {
+            } catch (error: ApiError | any) {
                 setTokenValid(false);
             } finally {
                 setLoading(false);

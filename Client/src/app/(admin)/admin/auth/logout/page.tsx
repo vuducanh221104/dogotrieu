@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next-nprogress-bar';
 import config from '@/config';
 import { authAdminLogout } from '@/services/authServices';
-
+import { Dispatch } from 'redux';
 function Logout() {
     const router = useRouter();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         const handleLogOut = async () => {
