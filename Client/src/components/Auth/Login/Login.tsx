@@ -18,6 +18,7 @@ import routes from '@/config/routes';
 import { GoogleLogin } from '@react-oauth/google';
 import { AuthState, LoginFormValues, GoogleCredentialResponse, ApiError } from '@/types/client';
 import { Dispatch } from 'redux';
+import useWindowDimensions from '@/hooks/useWindowDimensions';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +34,8 @@ function Login() {
     const dispatch: Dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: AuthState) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const { width } = useWindowDimensions();
+    const googleButtonWidth = width < 300 ? '200' : '300';
 
     const handleSubmit = async () => {
         if (!tokenCaptcha) {
@@ -236,23 +239,15 @@ function Login() {
                                     </Form>
                                 </div>
                                 <div className={cx('popper-social')}>
-                                    <div
-                                        className={cx('google-login-container')}
-                                        style={{
-                                            width: '100%',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
+                                    <div className={cx('google-login-container')}>
                                         <GoogleLogin
                                             onSuccess={handleGoogleSuccess}
                                             onError={handleGoogleError}
                                             theme="filled_black"
-                                            text="signin_with"
+                                            text="continue_with"
                                             shape="rectangular"
                                             locale="vi"
-                                            width="100%"
+                                            width={googleButtonWidth}
                                             useOneTap={false}
                                         />
                                     </div>

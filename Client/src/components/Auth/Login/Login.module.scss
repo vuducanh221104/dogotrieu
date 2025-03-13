@@ -341,15 +341,11 @@
 }
 
 .google-login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 10px 0;
-
-    > div {
-        width: 100% !important;
-    }
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-bottom: 15px !important;
 }
 
 .btn-submit {
