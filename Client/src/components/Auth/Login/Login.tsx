@@ -18,7 +18,7 @@ import routes from '@/config/routes';
 import { GoogleLogin } from '@react-oauth/google';
 import { AuthState, LoginFormValues, GoogleCredentialResponse, ApiError } from '@/types/client';
 import { Dispatch } from 'redux';
-import useWindowDimensions from '@/hooks/useWindowDimensions';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
@@ -34,8 +34,8 @@ function Login() {
     const dispatch: Dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: AuthState) => state.auth.login);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
-    const { width } = useWindowDimensions();
-    const googleButtonWidth = width < 300 ? '200' : '300';
+    const { width } = useWindowSize();
+    const googleButtonWidth = width < 297 ? '200' : width < 349 ? '250' : '300';
 
     const handleSubmit = async () => {
         if (!tokenCaptcha) {
@@ -244,7 +244,7 @@ function Login() {
                                             onSuccess={handleGoogleSuccess}
                                             onError={handleGoogleError}
                                             theme="filled_black"
-                                            text="continue_with"
+                                            text="signin_with"
                                             shape="rectangular"
                                             locale="vi"
                                             width={googleButtonWidth}

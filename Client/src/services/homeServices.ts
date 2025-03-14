@@ -58,3 +58,23 @@ export const homeDeleteFeatProduct = async (idFeatProduct: string) => {
         // console.error(err.response?.data);
     }
 };
+
+//ADMIN
+
+//[GET]
+export const homeGetForAdmin = () => {
+    const url = `api/v1/home`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
+    });
+
+    if (error) {
+        const err = error as AxiosError;
+        console.error(err.response?.data);
+    }
+    return { data, error, isLoading, mutate };
+};

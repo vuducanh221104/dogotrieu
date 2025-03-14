@@ -17,6 +17,7 @@ import routes from '@/config/routes';
 import { GoogleLogin } from '@react-oauth/google';
 import { AuthState, LoginFormValues, ApiError, GoogleCredentialResponse } from '@/types/client';
 import { Dispatch } from 'redux';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
@@ -31,6 +32,8 @@ function AuthLogin() {
 
     const dispatch: Dispatch = useDispatch();
     const { currentUser, isFetching, error } = useSelector((state: AuthState) => state.auth.login);
+    const { width } = useWindowSize();
+    const googleButtonWidth = width < 297 ? '200' : width < 349 ? '250' : '300';
 
     const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
         try {
@@ -176,7 +179,8 @@ function AuthLogin() {
                             text="signin_with"
                             shape="rectangular"
                             locale="vi"
-                            width="100%"
+                            width={googleButtonWidth}
+                            useOneTap={false}
                         />
                     </div>
                 </div>

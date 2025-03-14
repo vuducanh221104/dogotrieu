@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Col, Row, Tag, Tooltip, Modal, Form, Input, Space } from 'antd';
 import { PlusOutlined, EditOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import { materialAdd, materialDelete, materialGet, materialUpdate } from '@/services/materialServices';
+import { materialAdd, materialDelete, materialGetForAdmin, materialUpdate } from '@/services/materialServices';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { Material } from '@/types/client';
 
 const PageListCategory: React.FC = () => {
-    const { data, isLoading, mutate } = materialGet();
+    const { data, isLoading, mutate } = materialGetForAdmin();
     const materials = data?.material_list;
     const [editForm] = Form.useForm<Material>();
     const [addForm] = Form.useForm<Material>();

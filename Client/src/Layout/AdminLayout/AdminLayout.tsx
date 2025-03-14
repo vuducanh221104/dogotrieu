@@ -177,14 +177,15 @@ function AdminLayout({ children }: AdminLayoutProps) {
                                 <BreadcrumbAdmin />
                             </div>
                         </Col>
-                        <Col span={24} xs={0} sm={4} md={6} xl={3} className="max-md:!hidden">
+                        <Col span={24} xs={2} sm={4} md={6} xl={3} className="flex justify-end">
                             <Space wrap className="cursor-pointer">
                                 <Popover
                                     content={<Link href={config.routesAdmin.logout}>Logout!</Link>}
                                     trigger="click"
-                                    className="w-100 cursor-pointer	"
+                                    placement="bottom"
+                                    className="w-100 cursor-pointer"
                                 >
-                                    <Avatar size={'default'} icon={<UserOutlined />} /> Admin
+                                    <Avatar size={'large'} icon={<UserOutlined />} />
                                 </Popover>
                             </Space>
                         </Col>

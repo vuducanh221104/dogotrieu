@@ -5,10 +5,10 @@ import { Button, Form, Upload, Image } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { uploadCloud } from '@/services/uploadService';
-import { homeGet, homePatch } from '@/services/homeServices';
+import { homeGetForAdmin, homePatch } from '@/services/homeServices';
 
 function PageImageCustomer() {
-    const { data } = homeGet();
+    const { data } = homeGetForAdmin();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);

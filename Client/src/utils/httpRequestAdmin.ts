@@ -57,37 +57,52 @@ httpRequestAdmin.interceptors.request.use(
         const state = store.getState();
         const currentAdmin = state.adminAuth.login.currentAdmin as AdminState | null;
 
-        if (currentAdmin?.accessToken) {
-            try {
-                const decodedToken: any = jwtDecode(currentAdmin.accessToken);
-                const currentTime = Date.now() / 1000;
+        // Skip token check for login and register
+        if (config.url === '/api/v1/auth/admin/login') {
+            return config;
+        }
 
-                if (decodedToken.exp < currentTime) {
-                    if (!isRefreshingAdmin) {
-                        isRefreshingAdmin = true;
-                        try {
-                            const response = await authAdminRefreshToken();
-                            const { accessToken: newToken } = response;
-                            store.dispatch(updateAdminAccessToken(newToken));
-                            config.headers['Authorization'] = `Bearer ${newToken}`;
-                            processAdminQueue(null, newToken);
-                        } catch (error) {
-                            processAdminQueue(error, null);
-                            store.dispatch(adminLogOutSuccess());
-                            return Promise.reject(error);
-                        } finally {
-                            isRefreshingAdmin = false;
+        // Nếu không có token thì bỏ qua
+        if (!currentAdmin?.accessToken) {
+            return config;
+        }
+
+        try {
+            const decodedToken: any = jwtDecode(currentAdmin.accessToken);
+            const currentTime = Date.now() / 1000;
+
+            if (decodedToken.exp < currentTime) {
+                if (!isRefreshingAdmin) {
+                    isRefreshingAdmin = true;
+                    try {
+                        const response = await authAdminRefreshToken();
+                        const { accessToken: newToken } = response;
+                        store.dispatch(updateAdminAccessToken(newToken));
+                        config.headers['Authorization'] = `Bearer ${newToken}`;
+                        processAdminQueue(null, newToken);
+                    } catch (error) {
+                        processAdminQueue(error, null);
+                        store.dispatch(adminLogOutSuccess());
+                        if (typeof window !== 'undefined') {
+                            window.location.href = '/admin/auth/login';
                         }
+                        return Promise.reject(error);
+                    } finally {
+                        isRefreshingAdmin = false;
                     }
                 }
-
-                if (!customConfig.skipAuthRefresh) {
-                    config.headers['Authorization'] = `Bearer ${currentAdmin.accessToken}`;
-                }
-            } catch (error) {
-                console.error('Error decoding token:', error);
-                return Promise.reject(error);
             }
+
+            if (!customConfig.skipAuthRefresh) {
+                config.headers['Authorization'] = `Bearer ${currentAdmin.accessToken}`;
+            }
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            store.dispatch(adminLogOutSuccess());
+            if (typeof window !== 'undefined') {
+                window.location.href = '/admin/auth/login';
+            }
+            return Promise.reject(error);
         }
         return config;
     },
@@ -100,15 +115,70 @@ httpRequestAdmin.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+
+        // Skip refresh token logic for login request
+        if (originalRequest.url === '/api/v1/auth/admin/login') {
+            return Promise.reject(error);
+        }
+
         const state = store.getState();
         const currentAdmin = state.adminAuth.login.currentAdmin as AdminState | null;
 
-        if (!currentAdmin || (error.response?.status === 403 && currentAdmin)) {
-            if (
-                !currentAdmin ||
-                error.response?.data?.message === 'Refresh token is missing' ||
-                error.response?.data?.message === 'Invalid refresh token'
-            ) {
+        // Nếu không có token hoặc không phải lỗi 403 thì bỏ qua
+        if (!currentAdmin?.accessToken || error.response?.status !== 403) {
+            return Promise.reject(error);
+        }
+
+        // Handle refresh token missing or invalid
+        if (
+            error.response?.data?.message === 'Refresh token is missing' ||
+            error.response?.data?.message === 'Invalid refresh token'
+        ) {
+            try {
+                await authAdminLogout();
+            } catch (logoutError) {
+                console.error('Error during admin logout:', logoutError);
+            } finally {
+                store.dispatch(adminLogOutSuccess());
+                if (typeof window !== 'undefined') {
+                    window.location.href = '/admin/auth/login';
+                }
+            }
+            return Promise.reject(error);
+        }
+
+        // Handle token refresh
+        if (!originalRequest._retry) {
+            if (isRefreshingAdmin) {
+                return new Promise((resolve, reject) => {
+                    failedAdminQueue.push({ resolve, reject });
+                })
+                    .then((token) => {
+                        if (token) {
+                            originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                        }
+                        return httpRequestAdmin(originalRequest);
+                    })
+                    .catch((err) => Promise.reject(err));
+            }
+
+            originalRequest._retry = true;
+            isRefreshingAdmin = true;
+
+            try {
+                const response = await authAdminRefreshToken();
+                const { accessToken } = response;
+
+                if (accessToken) {
+                    store.dispatch(updateAdminAccessToken(accessToken));
+                    httpRequestAdmin.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+                }
+
+                processAdminQueue(null, accessToken);
+                return httpRequestAdmin(originalRequest);
+            } catch (refreshError) {
+                processAdminQueue(refreshError, null);
                 try {
                     await authAdminLogout();
                 } catch (logoutError) {
@@ -119,54 +189,9 @@ httpRequestAdmin.interceptors.response.use(
                         window.location.href = '/admin/auth/login';
                     }
                 }
-                return Promise.reject(error);
-            }
-
-            if (!originalRequest._retry) {
-                if (isRefreshingAdmin) {
-                    return new Promise((resolve, reject) => {
-                        failedAdminQueue.push({ resolve, reject });
-                    })
-                        .then((token) => {
-                            if (token) {
-                                originalRequest.headers['Authorization'] = `Bearer ${token}`;
-                            }
-                            return httpRequestAdmin(originalRequest);
-                        })
-                        .catch((err) => Promise.reject(err));
-                }
-
-                originalRequest._retry = true;
-                isRefreshingAdmin = true;
-
-                try {
-                    const response = await authAdminRefreshToken();
-                    const { accessToken } = response;
-
-                    if (accessToken) {
-                        store.dispatch(updateAdminAccessToken(accessToken));
-                        httpRequestAdmin.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-                        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-                    }
-
-                    processAdminQueue(null, accessToken);
-                    return httpRequestAdmin(originalRequest);
-                } catch (refreshError) {
-                    processAdminQueue(refreshError, null);
-                    try {
-                        await authAdminLogout();
-                    } catch (logoutError) {
-                        console.error('Error during admin logout:', logoutError);
-                    } finally {
-                        store.dispatch(adminLogOutSuccess());
-                        if (typeof window !== 'undefined') {
-                            window.location.href = '/admin/auth/login';
-                        }
-                    }
-                    return Promise.reject(refreshError);
-                } finally {
-                    isRefreshingAdmin = false;
-                }
+                return Promise.reject(refreshError);
+            } finally {
+                isRefreshingAdmin = false;
             }
         }
 

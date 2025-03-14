@@ -12,7 +12,7 @@ import { Dropdown, Form, InputRef, Menu, Modal, Select, TableColumnsType, TableC
 import { Button, Input, Space, Table } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
-import { homeDeleteFeatProduct, homeGet, homePatch } from '@/services/homeServices';
+import { homeDeleteFeatProduct, homeGetForAdmin, homePatch } from '@/services/homeServices';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { categoryGet } from '@/services/categoryServices';
@@ -32,7 +32,7 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 function PageListMaterial() {
-    const { data, mutate }: any = homeGet();
+    const { data, mutate }: any = homeGetForAdmin();
     const { data: categories } = categoryGet();
     const { data: materials } = materialGet();
     const transformedCategories = transformListSelect(categories?.category_list || []);

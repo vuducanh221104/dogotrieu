@@ -1,7 +1,8 @@
 'use client';
 import { Category } from '@/types/client';
 import * as httpRequest from '@/utils/httpRequest';
-import { adminPatch } from '@/utils/httpRequestAdmin';
+import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
+
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
@@ -20,7 +21,7 @@ export const newsSEOGET = async (id: string) => {
 //[POST]
 export const newsAdd = async (data: {}) => {
     try {
-        const res = await httpRequest.post<any>(`api/v1/news`, data);
+        const res = await httpRequestAdmin.adminPost<any>(`api/v1/news`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -99,7 +100,7 @@ export const newsFeaturedGet = (queryString: any) => {
 //[PATCH]
 export const newsPatchById = async (id: string, data: any) => {
     try {
-        const res = await adminPatch<any>(`api/v1/news/${id}`, data);
+        const res = await httpRequestAdmin.adminPatch<any>(`api/v1/news/${id}`, data);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
@@ -109,10 +110,28 @@ export const newsPatchById = async (id: string, data: any) => {
 //[DELETE]
 export const newsDelete = async (idNews: string) => {
     try {
-        const res = await httpRequest.deleted<any>(`api/v1/news/${idNews}`);
+        const res = await httpRequestAdmin.adminDeleted<any>(`api/v1/news/${idNews}`);
         return res.data;
     } catch (error) {
         const err = error as AxiosError;
         // console.error(err.response?.data);
     }
+};
+
+//ADMIN
+export const newsGetAllForAdmin = () => {
+    const url = `api/v1/news`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
+    });
+
+    if (error) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+    return { data, error, isLoading, mutate };
 };

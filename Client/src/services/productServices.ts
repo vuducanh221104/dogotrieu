@@ -139,3 +139,20 @@ export const featuredProductGetById = (query: string) => {
     }
     return { data, error, isLoading };
 };
+
+//ADMIN
+export const productGetAllForAdmin = () => {
+    const url = `api/v1/product/list`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
+    });
+
+    if (error) {
+        // console.error(error.response?.data);
+    }
+    return { data, error, isLoading, mutate };
+};

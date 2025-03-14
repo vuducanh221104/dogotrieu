@@ -4,11 +4,11 @@ import { Button, Card, Col, Row, Tag, Tooltip, Modal, Form, Input, Space } from 
 import { PlusOutlined, EditOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
-import { categoryAdd, categoryDelete, categoryGet, categoryUpdate } from '@/services/categoryServices';
+import { categoryAdd, categoryDelete, categoryGetForAdmin, categoryUpdate } from '@/services/categoryServices';
 import { Category } from '@/types/client';
 
 const PageListCategory: React.FC = () => {
-    const { data, isLoading, mutate } = categoryGet();
+    const { data, isLoading, mutate } = categoryGetForAdmin();
     const categories = data?.category_list;
     const [editForm] = Form.useForm<Category>();
     const [addForm] = Form.useForm<Category>();

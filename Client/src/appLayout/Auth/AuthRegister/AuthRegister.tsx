@@ -20,6 +20,7 @@ import routes from '@/config/routes';
 import { useRouter } from 'next-nprogress-bar';
 import { Dispatch } from 'redux';
 import { ApiError, GoogleCredentialResponse, RegisterFormValues } from '@/types/client';
+import useWindowSize from '@/hooks/useWIndowSize';
 
 const cx = classNames.bind(styles);
 
@@ -41,6 +42,8 @@ function PageRegister() {
     const debouncedEmail = useDebounce<string>(email, 500);
     const router = useRouter();
     const dispatch: Dispatch = useDispatch();
+    const { width } = useWindowSize();
+    const googleButtonWidth = width < 297 ? '200' : width < 349 ? '250' : '300';
 
     useEffect(() => {
         if (!debouncedUsername) return;
@@ -322,7 +325,8 @@ function PageRegister() {
                             text="signin_with"
                             shape="rectangular"
                             locale="vi"
-                            width="100%"
+                            width={googleButtonWidth}
+                            useOneTap={false}
                         />
                     </div>
                 </div>

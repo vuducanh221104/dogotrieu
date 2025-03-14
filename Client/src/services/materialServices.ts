@@ -54,3 +54,21 @@ export const materialDelete = async (ids: {}) => {
         // console.error(err.response?.data);
     }
 };
+
+//ADMIN
+export const materialGetForAdmin = () => {
+    const url = `api/v1/material`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
+    });
+
+    if (error) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+    return { data, error, isLoading, mutate };
+};

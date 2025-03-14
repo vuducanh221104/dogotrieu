@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { useMessageNotify } from '@/components/MessageNotify';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
-import { homeGet, homePatch } from '@/services/homeServices';
+import { homeGetForAdmin, homePatch } from '@/services/homeServices';
 
 function PageFeaturedNews() {
-    const { data } = homeGet();
+    const { data } = homeGetForAdmin();
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);

@@ -6,7 +6,7 @@ import { Button, Input, Space, Table } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import transformTime from '@/utils/transformTime';
 import Highlighter from 'react-highlight-words';
-import { newsDelete, newsGetAll } from '@/services/newsServices';
+import { newsDelete, newsGetAllForAdmin } from '@/services/newsServices';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { useMessageNotify } from '@/components/MessageNotify';
 import EditNews from '@/Layout/AdminLayout/News/EditNews';
@@ -31,7 +31,7 @@ type DataIndex = keyof DataType;
 function PageListNews() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
 
-    let { data, isLoading, error, mutate } = newsGetAll();
+    let { data, isLoading, error, mutate } = newsGetAllForAdmin();
     const [searchText, setSearchText] = useState<string>('');
     const [searchedColumn, setSearchedColumn] = useState<string>('');
     const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);

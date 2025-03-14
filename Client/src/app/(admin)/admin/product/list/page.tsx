@@ -6,7 +6,7 @@ import { Button, Input, Space, Table } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import transformTime from '@/utils/transformTime';
-import { productDelete, productGetAll } from '@/services/productServices';
+import { productDelete, productGetAll, productGetAllForAdmin } from '@/services/productServices';
 import Link from 'next/link';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { useMessageNotify } from '@/components/MessageNotify';
@@ -27,7 +27,7 @@ type DataIndex = keyof DataType;
 function PageListProduct() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
 
-    let { data, isLoading, error, mutate } = productGetAll();
+    let { data, isLoading, error, mutate } = productGetAllForAdmin();
     const [searchText, setSearchText] = useState<string>('');
     const [searchedColumn, setSearchedColumn] = useState<string>('');
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);

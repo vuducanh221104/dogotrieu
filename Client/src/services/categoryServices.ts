@@ -98,3 +98,21 @@ export const categoryDelete = async (ids: {}): Promise<any> => {
         // console.error(err.response?.data);
     }
 };
+//ADMIN
+//[GET]
+export const categoryGetForAdmin = () => {
+    const url = `api/v1/category`;
+    const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        shouldRetryOnError: false,
+        errorRetryCount: 0,
+    });
+
+    if (error) {
+        const err = error as AxiosError;
+        // console.error(err.response?.data);
+    }
+    return { data, error, isLoading, mutate };
+};

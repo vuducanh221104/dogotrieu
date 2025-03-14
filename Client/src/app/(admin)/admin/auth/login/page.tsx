@@ -7,7 +7,7 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { adminLoginStart, adminLoginSuccess, adminLoginFailed } from '@/redux/adminAuthSlice';
 import { useRouter } from 'next-nprogress-bar';
-import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
+import AuthSpinLoading from '@/components/AuthSpinLoading';
 import config from '@/config';
 import Turnstile from 'react-turnstile';
 import { authAdminLogin } from '@/services/authServices';
@@ -75,15 +75,18 @@ export default function PageAdminLogin() {
             return;
         }
 
-        setIsFailedLogin(false);
-        setFailedToken(false);
-        setLoading(true);
-        dispatch(adminLoginStart());
-
         try {
+            setIsFailedLogin(false);
+            setFailedToken(false);
+            setLoading(true);
+            dispatch(adminLoginStart());
+
             const response = await authAdminLogin(values, tokenCaptcha);
-            dispatch(adminLoginSuccess(response));
-            router.push(config.routesAdmin.dashboard);
+
+            if (response) {
+                dispatch(adminLoginSuccess(response));
+                await router.push(config.routesAdmin.dashboard);
+            }
         } catch (error: ApiError | any) {
             dispatch(adminLoginFailed());
 
@@ -94,10 +97,9 @@ export default function PageAdminLogin() {
             } else if (error.response?.status === 400) {
                 setFailedToken(true);
                 setIsFailedLogin(false);
-            } else {
-                setIsFailedLogin(false);
-                setFailedToken(false);
             }
+
+            // Reset captcha trong mọi trường hợp lỗi
             setToken(null);
             setTurnstileKey((prev) => prev + 1);
         } finally {
@@ -105,13 +107,10 @@ export default function PageAdminLogin() {
         }
     };
 
-    if (loading) {
-        return <ModalLoadingAdmin />;
-    }
-
     return (
         <section style={styles.section}>
-            <div style={styles.container}>
+            <div style={{ ...styles.container, position: 'relative' }}>
+                <AuthSpinLoading loading={loading} />
                 <div style={styles.header}>
                     <Image src={images._favicon} alt="Logo" height={30} className="mr-2" />
                     <Title style={styles.title}>Admin Login</Title>
@@ -126,6 +125,7 @@ export default function PageAdminLogin() {
                     onFinish={onFinish}
                     layout="vertical"
                     requiredMark="optional"
+                    preserve={false}
                 >
                     <Form.Item
                         name="usernameOrEmail"
