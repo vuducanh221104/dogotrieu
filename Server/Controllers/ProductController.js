@@ -178,6 +178,15 @@ class ProductController {
     //[GET]
     async getAllProduct(req, res) {
         try {
+            // Get pagination parameters
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const skip = (page - 1) * limit;
+
+            // Get total count for pagination info
+            const totalCount = await Product.countDocuments();
+
+            // Fetch products with pagination
             const products = await Product.find({})
                 .populate('product_type_id')
                 .populate({
@@ -196,8 +205,21 @@ class ProductController {
                         select: 'name slug',
                     },
                 })
+                .sort({ updated_at: -1 }) // Sort by latest updated first
+                .skip(skip)
+                .limit(limit)
                 .exec();
-            res.status(200).json(products);
+
+            // Return products with pagination metadata
+            res.status(200).json({
+                products,
+                pagination: {
+                    total: totalCount,
+                    page,
+                    limit,
+                    totalPages: Math.ceil(totalCount / limit),
+                },
+            });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

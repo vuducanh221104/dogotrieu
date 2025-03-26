@@ -127,6 +127,18 @@ class NewsController {
             res.status(500).json({ message: error.message });
         }
     }
+    //[GET]
+    async newsSEOGetById(req, res) {
+        try {
+            const news = await NewsSchema.findById(req.params.id);
+            if (!news) {
+                return res.status(404).json({ message: 'News not found' });
+            }
+            res.status(200).json(news);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = new NewsController();
