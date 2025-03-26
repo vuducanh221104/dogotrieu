@@ -141,8 +141,8 @@ export const featuredProductGetById = (query: string) => {
 };
 
 //ADMIN
-export const productGetAllForAdmin = () => {
-    const url = `api/v1/product/list`;
+export const productGetAllForAdmin = (page = 1, limit = 10) => {
+    const url = `api/v1/product/list?page=${page}&limit=${limit}`;
     const { data, error, isLoading, mutate } = useSWR<any, AxiosError>(url, httpRequestAdmin.adminFetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,

@@ -1,12 +1,12 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { SearchOutlined, DeleteOutlined, EditOutlined, FormOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Dropdown, InputRef, Menu, Modal, Tag, Tooltip } from 'antd';
+import { Dropdown, InputRef, Menu, Modal, Tag, Tooltip, Pagination } from 'antd';
 import { Button, Input, Space, Table } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import transformTime from '@/utils/transformTime';
-import { productDelete, productGetAll, productGetAllForAdmin } from '@/services/productServices';
+import { productDelete, productGetAllForAdmin } from '@/services/productServices';
 import Link from 'next/link';
 import ModalLoadingAdmin from '@/components/ModalLoadingAdmin';
 import { useMessageNotify } from '@/components/MessageNotify';
@@ -27,7 +27,12 @@ type DataIndex = keyof DataType;
 function PageListProduct() {
     const { messageCustomError, messageCustomSuccess, contextHolder } = useMessageNotify();
 
-    let { data, isLoading, error, mutate } = productGetAllForAdmin();
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
+
+    let { data, isLoading, error, mutate } = productGetAllForAdmin(currentPage, pageSize);
     const [searchText, setSearchText] = useState<string>('');
     const [searchedColumn, setSearchedColumn] = useState<string>('');
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -36,11 +41,26 @@ function PageListProduct() {
     const [isInfoModalVisible, setIsInfoModalVisible] = useState<boolean>(false);
     const [editingProduct, setEditingProduct] = useState<DataType | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [products, setProducts] = useState<any[]>([]);
     const searchInput = useRef<InputRef>(null);
-    data = data?.map((item: any, index: number) => ({
-        ...item,
-        index: index + 1,
-    }));
+
+    // Update products and pagination state when data changes
+    useEffect(() => {
+        if (data) {
+            const productsWithIndex = data.products.map((item: any, index: number) => ({
+                ...item,
+                index: (currentPage - 1) * pageSize + index + 1,
+            }));
+            setProducts(productsWithIndex);
+            setTotal(data.pagination.total);
+        }
+    }, [data, currentPage, pageSize]);
+
+    // Handle page change
+    const handlePageChange = (page: number, pageSize?: number) => {
+        setCurrentPage(page);
+        if (pageSize) setPageSize(pageSize);
+    };
 
     //Handle Modal Info
     //Handle Info
@@ -305,32 +325,6 @@ function PageListProduct() {
                 </div>
             ),
         },
-        // {
-        //     title: 'Tags',
-        //     dataIndex: ['product_type_id', 'tags'],
-        //     key: 'product_type_id.tags',
-        //     width: 100,
-        //     render: (tags: string[]) => (
-        //         <>
-        //             {tags.map((tag, index) => (
-        //                 <Tag color={'volcano'} key={index}>
-        //                     {tag}
-        //                 </Tag>
-        //             ))}
-        //         </>
-        //     ),
-        //     sortDirections: ['descend', 'ascend'],
-        // },
-        // SHIP
-        // {
-        //     title: 'Ship',
-        //     dataIndex: 'ship',
-        //     key: 'ship',
-        //     width: 100,
-        //     ...getColumnSearchProps('ship'),
-        //     render: (text: any) => (text === 0 ? <Tag color="#f50">null</Tag> : <Tag color="#87d068">QUICK SHIP</Tag>),
-        //     sortDirections: ['descend', 'ascend'],
-        // },
         {
             title: 'Quantity',
             dataIndex: 'quantity',
@@ -433,12 +427,27 @@ function PageListProduct() {
             {contextHolder}
             {isLoading || (loading && <ModalLoadingAdmin />)}
             <div>
-                <div className="flex justify-end items-center mr-6 mb-2">
+                <div className="flex justify-between items-center mx-6 mb-4">
+                    <div className="text-lg font-semibold">Tổng số sản phẩm: {total}</div>
                     <Link href={config.routesAdmin.productAdd}>
                         <Button type="primary">Add Product</Button>
                     </Link>
                 </div>
-                <Table columns={columns} dataSource={data} scroll={{ x: 1300 }} />
+
+                <Table columns={columns} dataSource={products} scroll={{ x: 1300 }} pagination={false} />
+
+                <div className="mt-4 flex justify-end px-6">
+                    <Pagination
+                        current={currentPage}
+                        pageSize={pageSize}
+                        total={total}
+                        onChange={handlePageChange}
+                        showSizeChanger
+                        pageSizeOptions={['10', '20', '50', '100']}
+                        showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} sản phẩm`}
+                    />
+                </div>
+
                 {editingProduct && (
                     <EditProduct
                         visible={isModalVisible}
@@ -447,6 +456,7 @@ function PageListProduct() {
                         mutate={mutate}
                     />
                 )}
+
                 {infoProduct && (
                     <InfoProduct
                         visible={isInfoModalVisible}

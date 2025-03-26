@@ -1,5 +1,5 @@
 'use client';
-import { Category } from '@/types/client';
+
 import * as httpRequest from '@/utils/httpRequest';
 import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 
@@ -9,12 +9,14 @@ import useSWR from 'swr';
 //[GET]
 export const newsSEOGET = async (id: string) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/news/${id}`).then((res) => res.json());
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/news/seo/${id}`).then((res) =>
+            res.json(),
+        );
         return res;
     } catch (error) {
         return undefined;
-        const err = error as AxiosError;
-        // console.error(err.response?.data);
+        // const err = error as AxiosError;
+        // console.error(err);
     }
 };
 

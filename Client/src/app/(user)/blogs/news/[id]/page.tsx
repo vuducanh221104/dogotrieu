@@ -1,6 +1,7 @@
 import NewsDetailContent from '@/appLayout/NewsDetail';
 import routes from '@/config/routes';
 import { newsSEOGET } from '@/services/newsServices';
+
 import { cleanMarkDownLimit } from '@/utils/cleanMarkDown';
 import { handleSlugify } from '@/utils/handleSlutify';
 import { handleSplitSlug } from '@/utils/handleSplitSlug';
@@ -17,8 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | un
     const idNews = handleSplitSlug(id);
 
     try {
-        const news: any = await newsSEOGET(idNews);
-
+        // const news: any = await newsSEOGET(idNews);
+        const news = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/news/seo/${idNews}`).then((res) =>
+            res.json(),
+        );
         if (!news || !news.title) {
             notFound();
         }
