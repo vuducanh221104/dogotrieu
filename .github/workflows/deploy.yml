@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prod
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -42,6 +43,42 @@ jobs:
             type=ref,event=branch
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Create Server .env file
+        run: |
+          cat > Server/.env << EOF
+          PORT=4000
+          BASE_URL_CLIENT=${{ secrets.BASE_URL_CLIENT }}
+          BASE_URL_CLIENT_2=${{ secrets.BASE_URL_CLIENT }}
+          BASE_URL_SERVER=${{ secrets.BASE_URL_SERVER }}
+          BASE_URL_CLIENT_DOMAIN=${{ secrets.BASE_URL_CLIENT }}
+          DOMAIN=${{ secrets.DOMAIN }}
+          JWT_ACCESS_KEY=${{ secrets.JWT_ACCESS_KEY }}
+          JWT_REFRESH_KEY=${{ secrets.JWT_REFRESH_KEY }}
+          NODE_ENV=production
+          DB_URI=${{ secrets.DB_URI }}
+          GOOGLE_APP_ID=${{ secrets.GOOGLE_APP_ID }}
+          GOOGLE_APP_SECRET=${{ secrets.GOOGLE_APP_SECRET }}
+          GOOGLE_APP_REDIRECT_LOGIN=${{ secrets.GOOGLE_APP_REDIRECT_LOGIN }}
+          EMAIL_USER=${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+          TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+          EOF
+
+      - name: Create Client .env file
+        run: |
+          cat > Client/.env << EOF
+          NEXT_PUBLIC_CLIENT_URL=${{ secrets.BASE_URL_CLIENT }}
+          NEXT_PUBLIC_SERVER_URL=${{ secrets.BASE_URL_SERVER }}
+          NEXT_PUBLIC_DOMAIN=${{ secrets.BASE_URL_CLIENT }}
+          NEXT_PUBLIC_SERVER_URL_ORI=${{ secrets.BASE_URL_SERVER }}
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          NEXT_PUBLIC_AUTH_ACCOUNT=${{ secrets.AUTH_ACCOUNT }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
+          NEXT_PRIVATE_TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+          NEXT_PUBLIC_URL_IMAGE_SEO=${{ secrets.URL_IMAGE_SEO }}
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          EOF
 
       - name: Build and push Backend image
         uses: docker/build-push-action@v5
