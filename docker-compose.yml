@@ -37,7 +37,7 @@ services:
 
   # Backend Server
   backend:
-    image: ghcr.io/${{ github.repository }}-backend:latest
+    image: ghcr.io/vuducanh221104/dogotrieu-backend:latest
     container_name: dogotrieu-backend
     restart: always
     ports:
@@ -60,7 +60,7 @@ services:
 
   # Next.js Frontend
   frontend:
-    image: ghcr.io/${{ github.repository }}-frontend:latest
+    image: ghcr.io/vuducanh221104/dogotrieu-frontend:latest
     container_name: dogotrieu-frontend
     restart: always
     ports:
@@ -76,7 +76,7 @@ services:
 
   # Nginx Reverse Proxy
   nginx:
-    image: ghcr.io/${{ github.repository }}-nginx:latest
+    image: ghcr.io/vuducanh221104/dogotrieu-nginx:latest
     container_name: dogotrieu-nginx
     restart: always
     ports:
