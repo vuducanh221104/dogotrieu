@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: dogotrieu-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - dogotrieu-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:alpine
+    container_name: dogotrieu-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - dogotrieu-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Server
+  backend:
+    image: ghcr.io/vuducanh221104/dogotrieu-backend:latest
+    container_name: dogotrieu-backend
+    restart: always
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./Server/.env
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - MONGO_URI=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/dogotrieu?authSource=admin
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - dogotrieu-network
+
+  # Next.js Frontend
+  frontend:
+    image: ghcr.io/vuducanh221104/dogotrieu-frontend:latest
+    container_name: dogotrieu-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./Client/.env
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - dogotrieu-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: ghcr.io/vuducanh221104/dogotrieu-nginx:latest
+    container_name: dogotrieu-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/certs
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - dogotrieu-network
+
+networks:
+  dogotrieu-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
+  nginx_logs:
