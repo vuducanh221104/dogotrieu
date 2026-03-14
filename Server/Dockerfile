@@ -5,7 +5,7 @@ WORKDIR /Ecommerce/backend
 
 COPY package*.json ./
 
-RUN apk add --no-cache python3
+RUN apk add --no-cache python3 make g++
 
 RUN npm install
 
