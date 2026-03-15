@@ -26,7 +26,7 @@ interface CategoryExec {
 //GET
 export const productSITEMAP = async (): Promise<ProductExec[] | undefined> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/siteMap`).then((res) =>
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}/api/v1/product/siteMap`).then((res) =>
             res.json(),
         );
         return res;
@@ -38,7 +38,7 @@ export const productSITEMAP = async (): Promise<ProductExec[] | undefined> => {
 //GET
 export const newsSITEMAP = async (): Promise<NewsExec[] | undefined> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/news/siteMap`).then((res) =>
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}/api/v1/news/siteMap`).then((res) =>
             res.json(),
         );
         return res;
@@ -50,7 +50,7 @@ export const newsSITEMAP = async (): Promise<NewsExec[] | undefined> => {
 //GET
 export const categorySITEMAP = async (): Promise<CategoryExec[] | undefined> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/category/siteMap`).then((res) =>
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}/api/v1/category/siteMap`).then((res) =>
             res.json(),
         );
         return res;

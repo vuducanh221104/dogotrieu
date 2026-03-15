@@ -30,4 +30,3 @@ router.post('/', upload.fields([{ name: 'img', maxCount: 1, folder: 'avatar-user
         res.status(500).json({ error: 'Lỗi khi lưu trữ avatar' });
     }
 });
-// 
