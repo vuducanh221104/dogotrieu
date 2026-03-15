@@ -7,7 +7,7 @@ import * as httpRequestAdmin from '@/utils/httpRequestAdmin';
 //GET ~ GET SSR SEO
 export const productSEOGET = async (id: string): Promise<ProductDetail | undefined> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}api/v1/product/seo/${id}`).then((res) =>
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL_ORI}/api/v1/product/seo/${id}`).then((res) =>
             res.json(),
         );
         return res;
