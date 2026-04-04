@@ -63,7 +63,7 @@ class AuthController {
     async loginUser(req, res) {
         try {
             const { usernameOrEmail, password: passwordHashed, tokenCaptcha } = req.body;
-            const verifyResponse = await verifyCaptcha(tokenCaptcha);
+            const verifyResponse = await verifyCaptcha(tokenCaptcha, req.ip);
             if (!verifyResponse.valid) {
                 return res
                     .status(verifyResponse.status)
@@ -171,7 +171,7 @@ class AuthController {
                 return res.status(401).json({ message: 'Missing required fields' });
             }
 
-            const verifyResponse = await verifyCaptcha(tokenCaptcha);
+            const verifyResponse = await verifyCaptcha(tokenCaptcha, req.ip);
             if (!verifyResponse.valid) {
                 return res.status(verifyResponse.status).json({ message: verifyResponse.message });
             }
@@ -691,7 +691,7 @@ class AuthController {
             const { usernameOrEmail, password: passwordHashed, tokenCaptcha } = req.body;
 
             // Verify captcha
-            const verifyResponse = await verifyCaptcha(tokenCaptcha);
+            const verifyResponse = await verifyCaptcha(tokenCaptcha, req.ip);
             if (!verifyResponse.valid) {
                 return res
                     .status(verifyResponse.status)
